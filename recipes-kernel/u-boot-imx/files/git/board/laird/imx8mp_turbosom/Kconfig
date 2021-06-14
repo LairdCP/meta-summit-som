@@ -1,0 +1,14 @@
+if TARGET_IMX8MP_TURBOSOM
+
+config SYS_BOARD
+	default "imx8mp_turbosom"
+
+config SYS_VENDOR
+	default "laird"
+
+config SYS_CONFIG_NAME
+	default "imx8mp_turbosom"
+
+source "board/freescale/common/Kconfig"
+
+endif

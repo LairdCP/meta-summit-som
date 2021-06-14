@@ -1,0 +1,14 @@
+--- a/drivers/mfd/Kconfig	2021-02-18 00:00:41.000000000 
++++ b/drivers/mfd/Kconfig	2021-02-18 07:51:48.000000000 
+@@ -1991,8 +1991,10 @@
+ 
+ config MFD_PCA9450
+ 	tristate "PCA9450 Power Management chip"
+-	depends on I2C=y
++	depends on I2C
+ 	select MFD_CORE
++	select REGMAP_I2C
++	select REGMAP_IRQ
+ 	help
+ 	  if you say yes here you get support for the PCA9450
+ 	  Power Management chips.

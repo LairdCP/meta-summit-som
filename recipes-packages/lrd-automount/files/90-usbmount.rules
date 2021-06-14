@@ -1,0 +1,3 @@
+# Rules for USB mount -*- conf -*-
+
+SUBSYSTEM=="block", ACTION=="add", ENV{ID_BUS}=="usb", ENV{ID_FS_USAGE}=="filesystem", PROGRAM="/bin/systemd-escape -p --template=usb-mount@.service $env{DEVNAME}", ENV{SYSTEMD_WANTS}+="%c"

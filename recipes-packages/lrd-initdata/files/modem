@@ -1,0 +1,14 @@
+#! /bin/sh
+
+case "${1}" in
+    on)
+        echo 1 > /sys/devices/platform/gpio/lte_power/value
+        sleep 1
+        echo 1 > /sys/devices/platform/gpio/lte_on/value
+        sleep 1
+        echo 0 > /sys/devices/platform/gpio/lte_on/value
+        ;;
+    off)
+        echo 0 > /sys/devices/platform/gpio/lte_power/value
+        ;;
+esac

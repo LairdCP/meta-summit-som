@@ -1,0 +1,45 @@
+--- a/sound/soc/codecs/ts3a227e.c	2021-05-19 16:01:07.000000000 
++++ b/sound/soc/codecs/ts3a227e.c	2021-05-17 19:29:57.000000000 
+@@ -236,7 +236,19 @@
+ int ts3a227e_enable_jack_detect(struct snd_soc_component *component,
+ 				struct snd_soc_jack *jack)
+ {
++	return snd_soc_component_set_jack(component, jack, NULL);
++}
++EXPORT_SYMBOL_GPL(ts3a227e_enable_jack_detect);
++
++static int ts3a227e_set_jack(struct snd_soc_component *component,
++			struct snd_soc_jack *jack, void *data)
++{
+ 	struct ts3a227e *ts3a227e = snd_soc_component_get_drvdata(component);
++
++	if (!jack) {
++		ts3a227e->jack = NULL;
++		return 0;
++	}
+ 
+ 	snd_jack_set_key(jack->jack, SND_JACK_BTN_0, KEY_PLAYPAUSE);
+ 	snd_jack_set_key(jack->jack, SND_JACK_BTN_1, KEY_VOICECOMMAND);
+@@ -248,7 +260,6 @@
+ 
+ 	return 0;
+ }
+-EXPORT_SYMBOL_GPL(ts3a227e_enable_jack_detect);
+ 
+ static struct snd_soc_component_driver ts3a227e_soc_driver;
+ 
+@@ -316,10 +327,14 @@
+ 		return ret;
+ 	}
+ 
++	ts3a227e_soc_driver.set_jack = ts3a227e_set_jack;
++
+ 	ret = devm_snd_soc_register_component(&i2c->dev, &ts3a227e_soc_driver,
+ 					      NULL, 0);
+ 	if (ret)
+ 		return ret;
++
++	regmap_update_bits(ts3a227e->regmap, TS3A227E_REG_SETTING_1, 0x7, 0x6);
+ 
+ 	/* Enable interrupts except for ADC complete. */
+ 	regmap_update_bits(ts3a227e->regmap, TS3A227E_REG_INTERRUPT_DISABLE,

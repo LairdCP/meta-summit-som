@@ -1,0 +1,69 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2021 Laird Connectivity
+ */
+
+/ {
+	reg_pmu_enable: regulator_pmu_enablegrp {
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_wifi_pmu>;
+
+		compatible = "regulator-fixed";
+
+		regulator-name = "WIFI PMU EN";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+
+		gpio = <&gpio2 10 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+
+		startup-delay-us = <300000>;
+	};
+
+	gpio_wifi {
+		status = "okay";
+
+		wifi_bs0 {
+			init-high;
+		};
+
+		wifi_bs1 {
+			init-high;
+		};
+	};
+};
+
+&pcie {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_pcie>;
+
+	disable-gpio = <&gpio2 6 GPIO_ACTIVE_LOW>;
+	reset-gpio = <&gpio2 7 GPIO_ACTIVE_LOW>;
+	epdev_on-supply = <&reg_pmu_enable>;
+
+	status = "okay";
+};
+
+&pcie_phy {
+	status = "okay";
+};
+
+&uart3 { /* BT */
+	status = "okay";
+};
+
+&iomuxc {
+	pinctrl_pcie: pciegrp {
+		fsl,pins = <
+			MX8MP_IOMUXC_I2C4_SCL__PCIE_CLKREQ_B		0x60 /* open drain, pull up */
+			MX8MP_IOMUXC_SD1_DATA4__GPIO2_IO06		0x40
+			MX8MP_IOMUXC_SD1_DATA5__GPIO2_IO07		0x40
+		>;
+	};
+
+	pinctrl_wifi_pmu: wifipmugrp {
+		fsl,pins = <
+			MX8MP_IOMUXC_SD1_RESET_B__GPIO2_IO10       0x00000006
+		>;
+	};
+};

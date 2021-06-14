@@ -1,0 +1,20 @@
+#!/bin/sh
+
+case "${1}" in
+	start)
+		amixer set "Left Input Boost Mixer LINPUT1" 2
+		;;
+
+	stop)
+		;;
+
+	restart|reload)
+		amixer set "Left Input Boost Mixer LINPUT1" 2
+		;;
+
+	*)
+		echo "Usage: $0 {start|stop|restart}"
+		exit 1
+esac
+
+exit $?

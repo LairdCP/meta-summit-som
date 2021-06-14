@@ -1,0 +1,9 @@
+[Unit]
+Description=Setup Microphone gain
+
+[Service]
+Type=oneshot
+ExecStart=amixer set "Left Input Boost Mixer LINPUT1" 2
+
+[Install]
+WantedBy=multi-user.target

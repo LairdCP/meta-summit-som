@@ -1,0 +1,14 @@
+#! /bin/sh
+
+case "$1" in
+  pcie)
+    FDT_FILE=imx8mp-turbosom-dvk-pcie.dtb
+    ;;
+
+  sdio)
+    FDT_FILE=imx8mp-turbosom-dvk-sdio.dtb
+    ;;
+esac
+
+fw_setenv fdt_file ${FDT_FILE}
+reboot

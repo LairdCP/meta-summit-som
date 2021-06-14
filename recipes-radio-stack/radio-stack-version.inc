@@ -1,0 +1,6 @@
+PV = "8.0.0.135"
+
+BB_STRICT_CHECKSUM = "ignore"
+
+PREMIRRORS = ""
+MIRRORS = ""
