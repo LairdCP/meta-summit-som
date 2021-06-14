@@ -140,6 +140,18 @@
 			output;
 			init-low;
 		};
+
+		poe_type4_det {
+			gpio-name = "poe_type4_det";
+			gpio = <&pca6416 1 GPIO_ACTIVE_HIGH>;
+			input;
+		};
+
+		poe_type2_det {
+			gpio-name = "poe_type2_det";
+			gpio = <&pca6416 2 GPIO_ACTIVE_HIGH>;
+			input;
+		};
 	};
 
 	gpiokeys: gpio-keys {
