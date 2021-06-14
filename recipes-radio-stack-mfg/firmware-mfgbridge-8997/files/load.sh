@@ -19,3 +19,8 @@ case "${dtb}" in
 esac
 
 btattach -B /dev/ttymxc2 -P h4 -S 3000000 &
+
+sleep 2
+
+nmcli device set mlan0 managed no
+killall bluetoothd sdcsupp
