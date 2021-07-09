@@ -11,6 +11,7 @@ RDEPENDS_${PN} = " \
 	kernel-module-backports-laird \
 	radio-firmware \
 	summit-supplicant \
+	summit-supplicant-cli \
 	adaptive-ww \
 	laird-networkmanager \
 	"

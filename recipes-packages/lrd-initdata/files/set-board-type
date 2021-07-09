@@ -3,12 +3,12 @@
 FDT_FILE=$(fw_printenv -n fdt_file)
 
 case "$1" in
-  pcie)
-    FDT_FILE=${FDT_FILE/sdio/pcie}
+  mfg)
+    FDT_FILE=${FDT_FILE/dvk/mfg}
     ;;
 
-  sdio)
-    FDT_FILE=${FDT_FILE/pcie/sdio}
+  dvk)
+    FDT_FILE=${FDT_FILE/mfg/dvk}
     ;;
 esac
 

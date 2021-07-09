@@ -13,6 +13,7 @@ SRC_URI = " \
     file://file-cache.conf \
     file://modem \
     file://set-radio-mode \
+    file://set-board-type \
     file://sound-setup.service \
     file://sound-setup \
      "
