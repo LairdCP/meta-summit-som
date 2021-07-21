@@ -9,3 +9,7 @@
 #include "imx8mp-turbosom-sdio-uart.dtsi"
 #include "imx8mp-turbosom-dvk.dtsi"
 #include "imx8mp-turbosom-media-dvk.dtsi"
+#include "imx8mp-turbosom-gpu.dtsi"
+#include "imx8mp-turbosom-mipi-dvk.dtsi"
+#include "imx8mp-turbosom-hdmi-dvk.dtsi"
+#include "imx8mp-turbosom-lvds-bridge-dvk.dtsi"

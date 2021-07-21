@@ -13,6 +13,10 @@ SRC_URI += " \
 	file://config/imx8mp-turbosom-mfg.dtsi \
 	file://config/imx8mp-turbosom-mfg-sdio.dts \
 	file://config/imx8mp-turbosom-mfg-pcie.dts \
+	file://config/imx8mp-turbosom-gpu.dtsi \
+	file://config/imx8mp-turbosom-mipi-dvk.dtsi \
+	file://config/imx8mp-turbosom-hdmi-dvk.dtsi \
+	file://config/imx8mp-turbosom-lvds-bridge-dvk.dtsi \
 	\
 	file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch \
 	file://0002-gpio-add-gpio_of_helper.patch \
@@ -41,6 +45,7 @@ SRC_URI += " \
 	file://0111-usb-dwc3-qcom-Add-missing-DWC3-OF-node-refcount-decr.patch \
 	file://0112-usb-dwc3-qcom-Honor-wakeup-enabled-disabled-state.patch \
 	file://0114-ts3a227.patch \
+	file://0115-hdmi.patch \
 	"
 
 DEFCONFIG ?= "turbosom_defconfig"

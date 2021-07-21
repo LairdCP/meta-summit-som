@@ -20,13 +20,14 @@
 		enable-active-high;
 		regulator-always-on;
 	};
-/*
+
 	sound-xcvr {
 		compatible = "fsl,imx-audio-xcvr";
 		model = "imx-audio-xcvr";
 		cpu-dai = <&xcvr>;
+		status = "disabled";
 	};
-*/
+
 	sound-wm8960 {
 		compatible = "lrd,imx7d-dvk-wm8960", "lrd,imx-audio-wm8960";
 
@@ -110,12 +111,12 @@
 		>;
 	};
 };
-/*
+
 &xcvr {
 	#sound-dai-cells = <0>;
-	status = "okay";
+//	status = "okay";
 };
-*/
+
 &sai3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_sai3>;
