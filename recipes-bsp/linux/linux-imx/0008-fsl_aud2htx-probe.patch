@@ -1,0 +1,37 @@
+diff --git a/sound/soc/fsl/fsl_aud2htx.c b/sound/soc/fsl/fsl_aud2htx.c
+index bb689ed93d05..c885ccfe5467 100644
+--- a/sound/soc/fsl/fsl_aud2htx.c
++++ b/sound/soc/fsl/fsl_aud2htx.c
+@@ -259,7 +259,8 @@ static int fsl_aud2htx_probe(struct platform_device *pdev)
+ 
+ 	aud2htx->bus_clk = devm_clk_get(&pdev->dev, "bus");
+ 	if (IS_ERR(aud2htx->bus_clk)) {
+-		dev_err(&pdev->dev, "failed to get mem clock\n");
++		dev_err_probe(&pdev->dev, PTR_ERR(aud2htx->bus_clk),
++			"failed to get mem clock\n");
+ 		return PTR_ERR(aud2htx->bus_clk);
+ 	}
+ 
+@@ -277,13 +278,19 @@ static int fsl_aud2htx_probe(struct platform_device *pdev)
+ 					      &fsl_aud2htx_dai, 1);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to register ASoC DAI\n");
+-		return ret;
++		goto fail;
+ 	}
+ 
+ 	ret = imx_pcm_dma_init(pdev, IMX_DEFAULT_DMABUF_SIZE);
+-	if (ret)
+-		dev_err(&pdev->dev, "failed to init imx pcm dma: %d\n", ret);
++	if (ret) {
++		dev_err_probe(&pdev->dev, ret, "failed to init imx pcm dma\n");
++		goto fail;
++	}
+
++	return 0;
++
++fail:
++	pm_runtime_disable(&pdev->dev);
+ 	return ret;
+ }
+ 

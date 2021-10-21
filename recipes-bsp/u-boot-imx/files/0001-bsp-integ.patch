@@ -1,0 +1,36 @@
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 585ebc6c11..3b2c31539f 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -877,6 +877,7 @@ dtb-$(CONFIG_ARCH_IMX8M) += \
+ 	imx8mp-ddr4-evk.dtb \
+ 	imx8mp-evk.dtb \
+ 	imx8mp-phyboard-pollux-rdk.dtb \
++	imx8mp-summitsom-dvk.dtb \
+ 	imx8mq-pico-pi.dtb \
+ 	imx8mm-ddr4-ab2.dtb \
+ 	imx8mm-ab2.dtb \
+diff --git a/arch/arm/mach-imx/imx8m/Kconfig b/arch/arm/mach-imx/imx8m/Kconfig
+index 245b085499..c10deb4594 100644
+--- a/arch/arm/mach-imx/imx8m/Kconfig
++++ b/arch/arm/mach-imx/imx8m/Kconfig
+@@ -259,6 +259,12 @@ config TARGET_PHYCORE_IMX8MP
+ 	select IMX8MP
+         select SUPPORT_SPL
+ 	select IMX8M_LPDDR4
++
++config TARGET_IMX8MP_SUMMITSOM
++	bool "Laird Connectivity i.MX8M Plus Summit SOM"
++	select IMX8MP
++	select SUPPORT_SPL
++	select IMX8M_LPDDR4
+ endchoice
+ 
+ source "board/freescale/imx8mq_evk/Kconfig"
+@@ -276,5 +282,6 @@ source "board/beacon/imx8mm/Kconfig"
+ source "board/beacon/imx8mn/Kconfig"
+ source "board/phytec/phycore_imx8mm/Kconfig"
+ source "board/phytec/phycore_imx8mp/Kconfig"
++source "board/laird/imx8mp_summitsom/Kconfig"
+ 
+ endif

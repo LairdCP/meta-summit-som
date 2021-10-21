@@ -1,0 +1,43 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2021 Laird Connectivity
+ */
+
+/ {
+	reg_pmu_enable: regulator_pmu_enablegrp {
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_wifi_pmu>, <&pinctrl_wifibs>;
+
+		compatible = "regulator-gpio";
+
+		regulator-name = "WIFI PMU EN";
+		//regulator-min-microvolt = <1800000>;
+		//regulator-max-microvolt = <1800000>;
+
+		gpios = <&gpio2  8 GPIO_ACTIVE_HIGH>,
+		        <&gpio2  9 GPIO_ACTIVE_HIGH>,
+		        <&gpio2 10 GPIO_ACTIVE_HIGH>;
+		states = <1800000 7>, <0 0>;
+		enable-active-high;
+	};
+};
+
+&pcie {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_pcie_gpio &pinctrl_pcie_clkreq>;
+
+	disable-gpio = <&gpio2 7 GPIO_ACTIVE_LOW>;
+	reset-gpio = <&gpio2 6 GPIO_ACTIVE_LOW>;
+	epdev_on-supply = <&reg_pmu_enable>;
+
+	status = "okay";
+};
+
+&pcie_phy {
+	status = "okay";
+};
+
+&uart3 {
+	/* BT */
+	status = "okay";
+};

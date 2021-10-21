@@ -1,0 +1,74 @@
+--- a/Makefile
++++ b/Makefile
+@@ -157,9 +157,9 @@
+ hci_uart-y							:= mbt_char.o
+ hci_uart-y							+= hci_ldisc.o
+ hci_uart-y							+= hci_wrapper.o
+-hci_uart-$(CONFIG_BT_HCIUART_H4)	+= hci_h4.o
+-hci_uart-$(CONFIG_BT_HCIUART_BCSP)	+= hci_bcsp.o
+-hci_uart-$(CONFIG_BT_HCIUART_LL)	+= hci_ll.o
++hci_uart-$(CPTCFG_BT_HCIUART_H4)	+= hci_h4.o
++hci_uart-$(CPTCFG_BT_HCIUART_BCSP)	+= hci_bcsp.o
++hci_uart-$(CPTCFG_BT_HCIUART_LL)	+= hci_ll.o
+ hci_uart-$(CONFIG_BT_HCIUART_PS)	+= hci_ps.o
+ hci_uart-objs				:= $(hci_uart-y)
+ 
+--- a/hci_ldisc.c
++++ b/hci_ldisc.c
+@@ -843,13 +843,13 @@
+ 		       err);
+ 		return err;
+ 	}
+-#ifdef CONFIG_BT_HCIUART_H4
++#ifdef CPTCFG_BT_HCIUART_H4
+ 	h4_init();
+ #endif
+-#ifdef CONFIG_BT_HCIUART_BCSP
++#ifdef CPTCFG_BT_HCIUART_BCSP
+ 	bcsp_init();
+ #endif
+-#ifdef CONFIG_BT_HCIUART_LL
++#ifdef CPTCFG_BT_HCIUART_LL
+ 	ll_init();
+ #endif
+ #ifdef CONFIG_BT_HCIUART_PS
+@@ -865,13 +865,13 @@
+ 	/** Destroy char device class */
+ 	class_destroy(chardev_class);
+ 
+-#ifdef CONFIG_BT_HCIUART_H4
++#ifdef CPTCFG_BT_HCIUART_H4
+ 	h4_deinit();
+ #endif
+-#ifdef CONFIG_BT_HCIUART_BCSP
++#ifdef CPTCFG_BT_HCIUART_BCSP
+ 	bcsp_deinit();
+ #endif
+-#ifdef CONFIG_BT_HCIUART_LL
++#ifdef CPTCFG_BT_HCIUART_LL
+ 	ll_deinit();
+ #endif
+
+--- ./hci_uart.h
++++ ./hci_uart.h
+@@ -99,17 +99,17 @@
+ int hci_uart_unregister_proto(struct hci_uart_proto *p);
+ int hci_uart_tx_wakeup(struct hci_uart *hu);
+ 
+-#ifdef CONFIG_BT_HCIUART_H4
++#ifdef CPTCFG_BT_HCIUART_H4
+ int h4_init(void);
+ int h4_deinit(void);
+ #endif
+ 
+-#ifdef CONFIG_BT_HCIUART_BCSP
++#ifdef CPTCFG_BT_HCIUART_BCSP
+ int bcsp_init(void);
+ int bcsp_deinit(void);
+ #endif
+ 
+-#ifdef CONFIG_BT_HCIUART_LL
++#ifdef CPTCFG_BT_HCIUART_LL
+ int ll_init(void);
+ int ll_deinit(void);
+ #endif

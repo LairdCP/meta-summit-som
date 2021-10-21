@@ -1,0 +1,14 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2021 Laird Connectivity
+ */
+
+/dts-v1/;
+
+#include "imx8mp-summitsom.dtsi"
+#include "imx8mp-summitsom-sdio-uart.dtsi"
+#include "imx8mp-summitsom-wbx.dtsi"
+#include "imx8mp-summitsom-gpu.dtsi"
+#include "imx8mp-summitsom-mipi-dvk.dtsi"
+#include "imx8mp-summitsom-hdmi-dvk.dtsi"
+#include "imx8mp-summitsom-lvds-bridge-dvk.dtsi"

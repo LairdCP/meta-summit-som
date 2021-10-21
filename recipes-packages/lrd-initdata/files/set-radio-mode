@@ -1,16 +1,31 @@
 #! /bin/sh
 
-FDT_FILE=$(fw_printenv -n fdt_file)
+FDT_FILE=$(fw_printenv -n fdtfile)
 
-case "$1" in
-  pcie)
-    FDT_FILE=${FDT_FILE/sdio/pcie}
+case "${1}" in
+  pcie-uart)
+    FDT_FILEN=${FDT_FILE/sdio-uart/pcie-uart}
+    FDT_FILEN=${FDT_FILEN/sdio-sdio/pcie-uart}
     ;;
 
-  sdio)
-    FDT_FILE=${FDT_FILE/pcie/sdio}
+  sdio-uart)
+    FDT_FILEN=${FDT_FILE/pcie-uart/sdio-uart}
+    FDT_FILEN=${FDT_FILEN/sdio-sdio/sdio-uart}
+    ;;
+
+  sdio-sdio)
+    FDT_FILEN=${FDT_FILE/pcie-uart/sdio-sdio}
+    FDT_FILEN=${FDT_FILEN/sdio-uart/sdio-sdio}
+    ;;
+
+  *)
+    echo "usage: set-radio-mode [sdio-uart | sdio-sdio | pcie-uart ]"
+    exit 1
     ;;
 esac
 
-fw_setenv fdt_file ${FDT_FILE}
-reboot
+[ "${FDT_FILE}" == "${FDT_FILEN}" ] && exit
+
+fw_setenv fdtfile ${FDT_FILEN}
+
+systemctl reboot

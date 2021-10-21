@@ -1,0 +1,33 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2021 Laird Connectivity
+ */
+
+/ {
+	wifi_pwrseq: wifi_pwrseqgrp {
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_wifi_pmu>, <&pinctrl_wifibs>;
+
+		compatible = "mmc-pwrseq-simple";
+		reset-gpios =
+			<&gpio2 8 GPIO_ACTIVE_LOW>,
+			<&gpio2 10 GPIO_ACTIVE_LOW>;
+		power-off-delay-us = <100000>;
+	};
+};
+
+&usdhc1 {
+	status = "okay";
+
+	assigned-clocks = <&clk IMX8MP_CLK_USDHC1>;
+	assigned-clock-rates = <400000000>;
+
+	mmc-pwrseq = <&wifi_pwrseq>;
+
+	non-removable;
+	keep-power-in-suspend;
+};
+
+&wifi_wake {
+	gpios = <&gpio3 14 GPIO_ACTIVE_LOW>;
+};

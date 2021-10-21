@@ -1,0 +1,12 @@
+diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -611,7 +611,7 @@ static int max310x_set_ref_clk(struct device *dev, struct max310x_port *s,
+ 	/* Wait for crystal */
+ 	if (xtal) {
+ 		unsigned int val;
+-		msleep(10);
++		msleep(100);
+ 		regmap_read(s->regmap, MAX310X_STS_IRQSTS_REG, &val);
+ 		if (!(val & MAX310X_STS_CLKREADY_BIT)) {
+ 			dev_warn(dev, "clock is not stable yet\n");

@@ -11,16 +11,14 @@ DEPENDS = " \
     libxslt-native \
     glib-2.0-native \
     libnl \
-    libgudev \
+    udev \
     util-linux \
     libndp \
     libnewt \
     curl \
 "
 
-RDEPENDS_${PN} += "less ethtool"
-
-inherit autotools gettext update-rc.d systemd bash-completion gtk-doc
+inherit gnomebase gettext update-rc.d systemd gtk-doc update-alternatives upstream-version-is-even
 
 include ../radio-stack-version.inc
 
@@ -32,7 +30,7 @@ SRC_URI = " \
     file://NetworkManager.conf \
     file://0001-Fixed-configure.ac-Fix-pkgconfig-sysroot-locations.patch \
     file://0002-Do-not-create-settings-settings-property-documentati.patch \
-    file://0001-install-firewalld-to-var-libdir-rather-than-hardcod-.patch \
+    file://0003-install-firewalld-to-var-libdir-rather-than-hardcod-.patch \
 "
 
 S = "${WORKDIR}/lrd-network-manager-${PV}"
@@ -42,7 +40,12 @@ EXTRA_OECONF = " \
     --disable-more-warnings \
     --with-iptables=${sbindir}/iptables \
     --disable-tests \
+    --with-nmtui=yes \
     --with-udev-dir=${nonarch_base_libdir}/udev \
+    --with-dhclient=no \
+    --with-dhcpcd=no \
+    --with-dhcpcanon=no \
+    --with-netconfig=no \
     --disable-ovs \
     --disable-introspection \
     --disable-nls \
@@ -52,46 +55,60 @@ EXTRA_OECONF = " \
     --disable-gtk-doc-pdf \
 "
 
+# stolen from https://github.com/void-linux/void-packages/blob/master/srcpkgs/NetworkManager/template
+# avoids:
+# | ../NetworkManager-1.16.0/libnm-core/nm-json.c:106:50: error: 'RTLD_DEEPBIND' undeclared (first use in this function); did you mean 'RTLD_DEFAULT'?
+CFLAGS_append_libc-musl = " \
+    -DRTLD_DEEPBIND=0 \
+"
+
 do_compile_prepend() {
-    export GIR_EXTRA_LIBS_PATH="${B}/libnm/.libs:${B}/libnm-glib/.libs:${B}/libnm-util/.libs"
+    export GIR_EXTRA_LIBS_PATH="${B}/src/libnm-client-impl/.libs"
 }
 
-PACKAGECONFIG ?= "gnutls dnsmasq \
-    ${@bb.utils.contains('DISTRO_FEATURES','systemd','systemd','consolekit',d)} \
-    ${@bb.utils.contains('DISTRO_FEATURES','bluetooth','bluez5','',d)} \
-    ${@bb.utils.contains('DISTRO_FEATURES','wifi','wifi','',d)} \
-    ${@bb.utils.contains('DISTRO_FEATURES','polkit','polkit','',d)} \
+PACKAGECONFIG ?= "gnutls dnsmasq nmcli \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'systemd', bb.utils.contains('DISTRO_FEATURES', 'x11', 'consolekit', '', d), d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'bluez5', '', d)} \
+    ${@bb.utils.filter('DISTRO_FEATURES', 'wifi polkit', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'selinux', 'selinux audit', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES','3g','modemmanager','',d)} \
 "
+
+inherit ${@bb.utils.contains('PACKAGECONFIG', 'nmcli', 'bash-completion', '', d)}
+
 PACKAGECONFIG[systemd] = " \
     --with-systemdsystemunitdir=${systemd_unitdir}/system --with-session-tracking=systemd, \
     --without-systemdsystemunitdir, \
 "
-PACKAGECONFIG[polkit] = "--enable-polkit --enable-polkit-agent,--disable-polkit --disable-polkit-agent,polkit"
+PACKAGECONFIG[polkit] = "--enable-polkit,--disable-polkit,polkit"
 PACKAGECONFIG[bluez5] = "--enable-bluez5-dun,--disable-bluez5-dun,bluez5"
 # consolekit is not picked by shlibs, so add it to RDEPENDS too
 PACKAGECONFIG[consolekit] = "--with-session-tracking=consolekit,,consolekit,consolekit"
-PACKAGECONFIG[modemmanager] = "--with-modem-manager-1,--without-modem-manager-1,modemmanager"
+PACKAGECONFIG[modemmanager] = "--with-modem-manager-1=yes,--with-modem-manager-1=no,modemmanager"
 PACKAGECONFIG[ofono] = "--with-ofono,--without-ofono,ofono"
 PACKAGECONFIG[ppp] = "--enable-ppp,--disable-ppp,ppp,ppp"
-# Use full featured dhcp client instead of internal one
-PACKAGECONFIG[dhclient] = "--with-dhclient=${base_sbindir}/dhclient,,,dhcp-client"
-PACKAGECONFIG[dhcpcd] = "--with-dhcpcd=${base_sbindir}/dhcpcd,,,dhcpcd"
-PACKAGECONFIG[dnsmasq] = "--with-dnsmasq=${bindir}/dnsmasq"
+PACKAGECONFIG[dnsmasq] = "--with-dnsmasq=${bindir}/dnsmasq,,,dnsmasq"
 PACKAGECONFIG[nss] = "--with-crypto=nss,,nss"
 PACKAGECONFIG[resolvconf] = "--with-resolvconf=${base_sbindir}/resolvconf,,,resolvconf"
 PACKAGECONFIG[gnutls] = "--with-crypto=gnutls,,gnutls"
-PACKAGECONFIG[wifi] = "--enable-wifi=yes,--enable-wifi=no,wpa-supplicant"
+PACKAGECONFIG[wifi] = "--with-wext=no --enable-wifi=yes,--with-wext=no --enable-wifi=no,wpa-supplicant"
 PACKAGECONFIG[ifupdown] = "--enable-ifupdown,--disable-ifupdown"
 PACKAGECONFIG[qt4-x11-free] = "--enable-qt,--disable-qt,qt4-x11-free"
 PACKAGECONFIG[cloud-setup] = "--with-nm-cloud-setup=yes,--with-nm-cloud-setup=no"
+PACKAGECONFIG[nmcli] = "--with-nmcli=yes,--with-nmcli=no,readline"
+PACKAGECONFIG[ovs] = "--enable-ovs,--disable-ovs,jansson"
+PACKAGECONFIG[audit] = "--with-libaudit,--without-libaudit,audit"
+PACKAGECONFIG[selinux] = "--with-selinux,--without-selinux,libselinux"
 
 PACKAGES =+ " \
+  ${PN}-nmcli ${PN}-nmcli-doc \
   ${PN}-nmtui ${PN}-nmtui-doc \
   ${PN}-adsl ${PN}-cloud-setup \
 "
 
-FILES_${PN}-adsl = "${libdir}/NetworkManager/libnm-device-plugin-adsl.so"
+SYSTEMD_PACKAGES = "${PN} ${PN}-cloud-setup"
+
+FILES_${PN}-adsl = "${libdir}/NetworkManager/*/libnm-device-plugin-adsl.so"
 
 FILES_${PN}-cloud-setup = " \
     ${libexecdir}/nm-cloud-setup \
@@ -120,10 +137,11 @@ FILES_${PN} += " \
     ${nonarch_base_libdir}/udev/* \
     ${systemd_system_unitdir} \
     ${libdir}/pppd \
-    "
+"
 
+RDEPENDS_${PN} += "ethtool"
 RRECOMMENDS_${PN} += "iptables \
-    ${@bb.utils.contains('PACKAGECONFIG','dnsmasq','dnsmasq','',d)} \
+    ${@bb.utils.filter('PACKAGECONFIG', 'dnsmasq', d)} \
 "
 RCONFLICTS_${PN} = "connman networkmanager"
 RREPLACES_${PN} = "networkmanager"
@@ -133,6 +151,16 @@ FILES_${PN}-dev += " \
     ${libdir}/pppd/*/*.la \
     ${libdir}/NetworkManager/*.la \
     ${libdir}/NetworkManager/*/*.la \
+"
+
+RRECOMMENDS_${PN}-nmcli += "less"
+
+FILES_${PN}-nmcli = " \
+    ${bindir}/nmcli \
+"
+
+FILES_${PN}-nmcli-doc = " \
+    ${mandir}/man1/nmcli* \
 "
 
 FILES_${PN}-nmtui = " \
@@ -147,7 +175,7 @@ FILES_${PN}-nmtui-doc = " \
 "
 
 INITSCRIPT_NAME = "network-manager"
-SYSTEMD_SERVICE_${PN} = "${@bb.utils.contains('PACKAGECONFIG', 'systemd', 'NetworkManager.service', '', d)}"
+SYSTEMD_SERVICE_${PN} = "${@bb.utils.contains('PACKAGECONFIG', 'systemd', 'NetworkManager.service NetworkManager-dispatcher.service', '', d)}"
 
 ALTERNATIVE_PRIORITY = "100"
 ALTERNATIVE_${PN} = "${@bb.utils.contains('DISTRO_FEATURES','systemd','resolv-conf','',d)}"

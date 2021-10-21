@@ -1,6 +1,6 @@
 SUMMARY = "Laird Connectivity Wi-Fi Backports for Summit 60"
 
-BACKPORTS_CONFIG = "defconfig-summit60"
+BACKPORTS_CONFIG = "defconfig-som8mplus"
 
 LRD_URI = "https://files.devops.rfpros.com/builds/linux/backports/laird/${PV}"
 

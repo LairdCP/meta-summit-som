@@ -10,6 +10,7 @@ SRC_URI += " \
     file://unload.sh \
     file://bridge_init.conf \
     file://sdio8997_uart_combo.bin \
+    file://sdio8997_sdio_combo.bin \
     file://pcie8997_uart_combo.bin \
     file://wifi-blacklist.conf \
     "
@@ -23,6 +24,7 @@ do_install () {
     install -D -m 755 ${S}/unload.sh ${D}/home/root/unload.sh
     install -D -m 644 ${S}/bridge_init.conf ${D}/home/root/bridge_init.conf
     install -D -m 644 ${S}/sdio8997_uart_combo.bin ${D}${nonarch_base_libdir}/firmware/nxp/sdio8997_uart_combo.bin
+    install -D -m 644 ${S}/sdio8997_sdio_combo.bin ${D}${nonarch_base_libdir}/firmware/nxp/sdio8997_sdio_combo.bin
     install -D -m 644 ${S}/pcie8997_uart_combo.bin ${D}${nonarch_base_libdir}/firmware/nxp/pcie8997_uart_combo.bin
     install -D -m 644 ${S}/wifi-blacklist.conf ${D}${sysconfdir}/modprobe.d/wifi-blacklist.conf
 }
