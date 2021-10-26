@@ -9,4 +9,5 @@ RDEPENDS_${PN} = " \
 	mfgbridge-9098 \
 	kernel-module-mlan-9098 \
 	firmware-mfgbridge-9098 \
+	lrd-brg-scripts-9098 \
 	"

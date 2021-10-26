@@ -10,6 +10,7 @@ RDEPENDS_${PN} = " \
 	kernel-module-mlan-8997-pcie \
 	kernel-module-mlan-8997-sdio \
 	firmware-mfgbridge-8997 \
+	lrd-brg-scripts-8997 \
 	radio-firmware-st \
 	mfg60n-lrt \
 	"
