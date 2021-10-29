@@ -102,6 +102,14 @@
 	clock-frequency = <384000>;
 };
 
+&uart1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart1>;
+
+	uart-has-rtscts;
+	status = "okay";
+};
+
 &usb3_phy0 {
 	vbus-supply = <&reg_usb0>;
 
@@ -202,6 +210,15 @@
 		fsl,pins = <
 			MX8MP_IOMUXC_I2C3_SCL__I2C3_SCL			0x400001c2
 			MX8MP_IOMUXC_I2C3_SDA__I2C3_SDA			0x400001c2
+		>;
+	};
+
+	pinctrl_uart1: uart1grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_UART1_RXD__UART1_DCE_RX		0x000001C0
+			MX8MP_IOMUXC_UART1_TXD__UART1_DCE_TX		0x000001C0
+			MX8MP_IOMUXC_UART3_RXD__UART1_DCE_CTS		0x000001C0
+			MX8MP_IOMUXC_UART3_TXD__UART1_DCE_RTS		0x000001C0
 		>;
 	};
 };

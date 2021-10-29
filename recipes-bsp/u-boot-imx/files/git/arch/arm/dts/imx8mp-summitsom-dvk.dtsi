@@ -260,5 +260,3 @@
 		>;
 	};
 };
-
-//#include "imx8mp-summitsom-dvk-u-boot.dtsi"
