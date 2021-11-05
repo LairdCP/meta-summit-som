@@ -413,7 +413,7 @@
 	bq25790: charger@6b {
 		reg = <0x6b>;
 
-		compatible = "ti,bq25790";
+		compatible = "ti,bq25792";
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_bq25790>;

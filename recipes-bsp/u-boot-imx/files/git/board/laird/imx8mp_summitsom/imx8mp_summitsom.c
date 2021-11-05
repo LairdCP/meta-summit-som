@@ -107,6 +107,15 @@ static int setup_charger(uint8_t i2c_bus, uint8_t addr)
 		return -ENODEV;
 	}
 
+	ret = dm_i2c_read(i2c_dev, 0x48, &valb, 1);
+	if (ret) {
+		printf("%s dm_i2c_read failed, err %d\n", __func__, ret);
+		return -EIO;
+	}
+
+	if (valb != 0)
+		return 0;
+
 	valb = 5;
 	ret = dm_i2c_write(i2c_dev, 0x10, &valb, 1);
 	if (ret) {
