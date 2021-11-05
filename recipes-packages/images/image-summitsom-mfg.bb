@@ -50,4 +50,6 @@ IMAGE_INSTALL += "\
 IMAGE_INSTALL += "\
 	packagegroup-radio-stack-mfg \
 	packagegroup-radio-stack-mfgbridge-8997 \
+	mfg60n-lrt-som \
+	sterling60-firmware-som \
 	"

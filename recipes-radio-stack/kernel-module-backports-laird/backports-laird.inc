@@ -5,13 +5,14 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 inherit module
 
-include ../radio-stack-version.inc
-
 DEPENDS += "coreutils-native bison-native flex-native"
 
 S = "${WORKDIR}/laird-backport-${PV}"
 
-BACKPORTS_FILE = "backports-laird-${PV}.tar.bz2"
+LRD_URI ?= "${LRD_URI_BASE}"
+LRD_URI_laird-internal = "https://files.devops.rfpros.com/builds/linux/backports/laird/${PV}"
+
+SRC_URI += "${LRD_URI}/backports-laird-${PV}.tar.bz2;name=backports-laird"
 
 EXTRA_OEMAKE = "\
 	KLIB_BUILD=${STAGING_KERNEL_DIR} \

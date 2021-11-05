@@ -1,9 +1,14 @@
 echo "Loading lrdmwl Drivers"
 
 case "${1}" in
-SU|ST) ;;
+SU|ST)
+  systemctl start adaptive_bt
+  systemctl start adaptive_ww
+  ;;
 mfg)
   suffix="_mfg"
+  systemctl stop adaptive_bt
+  systemctl stop adaptive_ww
   ;;
 *)
    echo "usage load-lrdmwl.sh [SU | ST | mfg]"

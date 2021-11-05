@@ -63,10 +63,10 @@ MACHINE_EXTRA_RDEPENDS += "${MACHINE_FIRMWARE} kernel-modules"
 
 IMXBOOT_TARGETS_BASENAME = "flash_evk"
 
-PREFERRED_RPROVIDER_wireless-regdb-static = "radio-firmware"
-PREFERRED_RPROVIDER_wpa-supplicant = "summit-supplicant"
-PREFERRED_RPROVIDER_wpa-supplicant-cli = "summit-supplicant"
-PREFERRED_RPROVIDER_wpa-supplicant-passphrase = "summit-supplicant"
+PREFERRED_RPROVIDER_wireless-regdb-static = "summit60-firmware-som"
+PREFERRED_RPROVIDER_wpa-supplicant = "summit-supplicant-som"
+PREFERRED_RPROVIDER_wpa-supplicant-cli = "summit-supplicant-som"
+PREFERRED_RPROVIDER_wpa-supplicant-passphrase = "summit-supplicant-som"
 
 MACHINE_FEATURES_remove = "nxp8987 nxp8997"
 MACHINE_FIRMWARE_remove = "linux-firmware-ath10k"

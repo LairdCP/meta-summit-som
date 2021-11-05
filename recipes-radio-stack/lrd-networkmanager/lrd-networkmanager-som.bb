@@ -1,0 +1,1 @@
+require lrd-networkmanager.inc radio-stack-som-version.inc

@@ -1,6 +1,0 @@
-PV = "9.0.0.27"
-
-BB_STRICT_CHECKSUM = "ignore"
-
-PREMIRRORS = ""
-MIRRORS = ""

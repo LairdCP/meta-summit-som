@@ -3,18 +3,18 @@ SECTION = "net/misc"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
 
-include ../radio-stack-version.inc
+require radio-stack-som-version.inc
 
 inherit packagegroup
 
 RDEPENDS_${PN} = " \
-	kernel-module-backports-laird \
-	radio-firmware \
-	${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'lrd-bt-uart-scripts', '', d)} \
-	summit-supplicant \
-	summit-supplicant-cli \
-	adaptive-ww \
-	laird-networkmanager \
-	laird-networkmanager-nmcli \
+	kernel-module-som-backports-laird \
+	summit60-firmware-som \
+	${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'adaptive-bt-som lrd-bt-uart-scripts-som', '', d)} \
+	summit-supplicant-som \
+	summit-supplicant-som-cli \
+	adaptive-ww-som \
+	lrd-networkmanager-som \
+	lrd-networkmanager-som-nmcli \
 	iptables \
 	"
