@@ -78,13 +78,15 @@ create_gadget() {
 
 		mkdir -p strings/0x409
 		if [ -e /sys/devices/soc0/soc_uid ]; then
-			cat /sys/devices/soc0/soc_uid > strings/0x409/serialnumber
+			read -r soc_uid < /sys/devices/soc0/soc_uid
+			echo "${soc_uid}" > strings/0x409/serialnumber
 		else
 			echo "deadbeefdeadbeef" > strings/0x409/serialnumber
 		fi
 
 		echo "Laird Connectivity" > strings/0x409/manufacturer
-		echo "$(cat /sys/firmware/devicetree/base/model)" > strings/0x409/product
+		read -r model < /sys/firmware/devicetree/base/model
+		echo "${model}" > strings/0x409/product
 
 		mkdir -p configs/c.1/strings/0x409
 		echo "USB Composite Configuration" > configs/c.1/strings/0x409/configuration
@@ -113,7 +115,8 @@ create_gadgets () {
 	[ ${USB_GADGET_SERIAL_PORTS:-0} -gt 0 ] || \
 		{ echo "No usb-gadget specified"; exit 1; }
 
-	case "$(cat /sys/devices/soc0/soc_id)" in
+	read -r soc_id < /sys/devices/soc0/soc_id
+	case "${soc_id}" in
 		at91sam9g20)
 			modprobe at91_udc
 			;;

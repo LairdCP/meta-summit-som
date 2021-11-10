@@ -64,7 +64,7 @@ do_mount()
     OPTS="rw,relatime,noexec,nosuid,nodev"
 
     # File system type specific mount options
-    if [ ${TYPE} == "vfat" ]; then
+    if [ ${TYPE} = "vfat" ]; then
         OPTS="${OPTS},users,umask=000,shortname=mixed,utf8=1,flush"
         if [ -n "${MOUNT_USER}" ]; then
             OPTS="${OPTS},uid=$(id -u ${MOUNT_USER}),gid=$(id -g ${MOUNT_USER})"
