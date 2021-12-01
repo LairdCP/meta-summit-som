@@ -19,6 +19,9 @@
 		        <&gpio2 10 GPIO_ACTIVE_HIGH>;
 		states = <1800000 7>, <0 0>;
 		enable-active-high;
+
+		startup-delay-us = <10000>;
+		off-on-delay-us = <100000>;
 	};
 };
 

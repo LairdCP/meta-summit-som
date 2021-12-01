@@ -1,0 +1,12 @@
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index d3ca0d9fe028..503ae118a392 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1245,7 +1245,6 @@ static void imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
+ 		break;
+ 	case IMX8MP:
+ 	case IMX8MP_EP:
+-		msleep(20);
+ 		reset_control_deassert(imx6_pcie->pciephy_reset);
+ 		reset_control_deassert(imx6_pcie->pciephy_perst);
+ 

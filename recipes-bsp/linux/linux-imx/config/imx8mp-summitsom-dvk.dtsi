@@ -458,13 +458,13 @@
 		samp-rate = <8>;
 		status = "okay";
 
-		ch1: channel@0 {
+		ch1: channel1 {
 			uohms-shunt-res = <33000>; /* shunt resistor is 33 mOhm */
 			rail-name = "MODULE";
 			channel_enabled;
 		};
 
-		ch2: channel@1 {
+		ch2: channel2 {
 			uohms-shunt-res = <33000>; /* shunt resistor is 33 mOhm */
 			rail-name = "BATTERY";
 			channel_enabled;

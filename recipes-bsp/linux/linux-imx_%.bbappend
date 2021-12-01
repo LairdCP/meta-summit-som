@@ -35,6 +35,8 @@ SRC_URI += " \
 	file://0013-lcdifv3.patch \
 	file://0014-phy-fsl-samsung-hdmi.patch \
 	file://0015-imx8mp-hdmi-pavi.patch \
+	file://0016-gpio-regulator-off-delay.patch \
+	file://0017-fix-88w8997-pcie-enum.patch \
 	"
 
 KBUILD_DEFCONFIG_remove = "${IMX_KERNEL_CONFIG_AARCH64}"

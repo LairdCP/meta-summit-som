@@ -12,7 +12,9 @@
 		reset-gpios =
 			<&gpio2 8 GPIO_ACTIVE_LOW>,
 			<&gpio2 10 GPIO_ACTIVE_LOW>;
+
 		power-off-delay-us = <100000>;
+		post-power-on-delay-ms = <10>;
 	};
 };
 

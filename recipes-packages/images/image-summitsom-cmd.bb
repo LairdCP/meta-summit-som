@@ -16,7 +16,7 @@ IMAGE_FEATURES_remove = "\
 	"
 
 IMAGE_INSTALL += "\
-	kernel-module-pca193x \
+	kernel-module-pac193x \
 	packagegroup-radio-stack \
 	ca-certificates \
 	tzdata \
