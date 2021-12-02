@@ -1,7 +1,5 @@
 require mfg-reg.inc
 
-RDEPENDS_${PN} += "libcrypto (>= 1.1.0)"
-
 REG_NAME = "mfg60n"
 
 do_install() {
