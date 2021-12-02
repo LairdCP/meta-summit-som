@@ -199,13 +199,27 @@
 		regulator-always-on;
 	};
 
-	reg_usbhub: regulator-usbhub {
+	reg_usb_hub_reset: regulator-usb_hub_reset {
 		compatible = "regulator-fixed";
-		regulator-name = "USB_HUB_RESET";
+		regulator-name = "USB Hub Reset";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 		gpio = <&pca6416 0 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
+
+		startup-delay-us = <1000>;
+		off-on-delay-us = <5>;
+	};
+
+	reg_usb_hub_vbus_det: regulator-usb_hub_vbus_det {
+		compatible = "regulator-fixed";
+		regulator-name = "USB Hub VBus Detect";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&pca6416 13 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+
+		vin-supply = <&reg_usb_hub_reset>;
 	};
 
 	cbtl04gp {
@@ -229,6 +243,10 @@
 			clock-frequency = <3686400>;
 		};
 	};
+};
+
+&snvs_pwrkey {
+	status = "okay";
 };
 
 &reg_usdhc2_vmmc {
@@ -529,7 +547,7 @@
 };
 
 &usb3_phy1 {
-	vbus-supply = <&reg_usbhub>;
+	vbus-supply = <&reg_usb_hub_vbus_det>;
 
 	fsl,phy-tx-preemp-amp-tune = <3>;
 	fsl,phy-tx-vref-tune = <0xb>;
