@@ -26,9 +26,7 @@ do_compile[noexec] = "1"
 
 FILES_${PN} += "${nonarch_base_libdir}/*"
 
-INSANE_SKIP_${PN} = "ldflags"
-INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
-INHIBIT_PACKAGE_STRIP = "1"
+INSANE_SKIP_${PN} = "ldflags already-stripped"
 
 ALLOW_EMPTY_${PN}-dev = "0"
 ALLOW_EMPTY_${PN}-dbg = "0"

@@ -17,9 +17,7 @@ S = "${WORKDIR}/git"
 
 EXTRA_OEMAKE = "'LINKOPT=${LDFLAGS}'"
 
-INSANE_SKIP_${PN} = "ldflags"
-INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
-INHIBIT_PACKAGE_STRIP = "1"
+INSANE_SKIP_${PN} = "ldflags already-stripped"
 
 do_compile () {
 	oe_runmake -C lrt
