@@ -150,11 +150,6 @@
 	status = "okay";
 };
 
-// Remove when enable OPTEE
-&sec_jr0 {
-	status = "okay";
-};
-
 &uart2 {
 	/* console */
 	pinctrl-names = "default";
