@@ -155,6 +155,7 @@ hook_in_layer meta-openembedded/meta-networking
 hook_in_layer meta-openembedded/meta-filesystems
 
 hook_in_layer meta-qt5
+hook_in_layer meta-python2
 
 hook_in_layer meta-swupdate
 hook_in_layer meta-timesys
