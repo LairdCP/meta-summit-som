@@ -34,9 +34,11 @@ exit_message ()
 usage()
 {
     echo -e "\nUsage: source $0
-    Optional parameters: [-b build-dir] [-h]"
+    Optional parameters: [-b build-dir] [-i] [-r] [-h]"
 echo "
     * [-b build-dir]: Build directory, if unspecified script uses 'build' as output directory
+    * [-i]: Laird Connectivity internal build (equivalent of MSD_BINARIES_SOURCE_LOCATION)
+    * [-r]: Add meta-laird-cp to install if standalone radio development desired
     * [-h]: help
 "
 }
@@ -45,6 +47,7 @@ clean_up()
 {
     unset CWD BUILD_DIR FSLDISTRO
     unset fsl_setup_help fsl_setup_error fsl_setup_flag
+    unset fsl_setup_lrd fsl_setup_radio
     unset usage clean_up
     unset ARM_DIR META_FSL_BSP_RELEASE
     exit_message clean_up
@@ -54,15 +57,19 @@ clean_up()
 OLD_OPTIND=$OPTIND
 unset FSLDISTRO
 
-while getopts "k:r:t:b:e:gh" fsl_setup_flag
+while getopts ":birh" fsl_setup_flag
 do
     case $fsl_setup_flag in
         b) BUILD_DIR="$OPTARG";
            echo -e "\n Build directory is " $BUILD_DIR
            ;;
-        h) fsl_setup_help='true';
+        i) fsl_setup_lrd=true
            ;;
-        \?) fsl_setup_error='true';
+        r) fsl_setup_radio=true
+           ;;
+        h) fsl_setup_help=true
+           ;;
+        *) fsl_setup_error=true
            ;;
     esac
 done
@@ -115,9 +122,9 @@ FSL_EULA_FILE=$CWD/sources/meta-imx/EULA.txt
 
 # Set up the basic yocto environment
 if [ -z "$DISTRO" ]; then
-   DISTRO=$FSLDISTRO MACHINE=$MACHINE SDKMACHINE=$SDKMACHINE PACKAGE_CLASSES=package_deb . ./$PROGNAME $BUILD_DIR
+   DISTRO=$FSLDISTRO MACHINE=$MACHINE SDKMACHINE=$SDKMACHINE PACKAGE_CLASSES=package_ipk . ./$PROGNAME $BUILD_DIR
 else
-   MACHINE=$MACHINE SDKMACHINE=$SDKMACHINE PACKAGE_CLASSES=package_deb . ./$PROGNAME $BUILD_DIR
+   MACHINE=$MACHINE SDKMACHINE=$SDKMACHINE PACKAGE_CLASSES=package_ipk . ./$PROGNAME $BUILD_DIR
 fi
 
 # Point to the current directory since the last command changed the directory to $BUILD_DIR
@@ -138,6 +145,11 @@ else
 fi
 
 echo >> conf/local.conf
+
+if test $fsl_setup_lrd; then
+    echo 'OVERRIDES .= ":laird-internal"' >> conf/local.conf
+    echo >> conf/local.conf
+fi
 
 if [ ! -e $BUILD_DIR/conf/bblayers.conf.org ]; then
     cp $BUILD_DIR/conf/bblayers.conf $BUILD_DIR/conf/bblayers.conf.org
@@ -162,6 +174,8 @@ hook_in_layer meta-timesys
 
 hook_in_layer meta-lrd-summitsom
 hook_in_layer meta-lrd-radio-mfg
+
+test $fsl_setup_radio && hook_in_layer meta-laird-cp
 
 echo BSPDIR=$BSPDIR
 echo BUILD_DIR=$BUILD_DIR
