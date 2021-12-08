@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # i.MX Yocto Project Build Environment Setup Script
 #
@@ -33,7 +33,8 @@ exit_message ()
 
 usage()
 {
-    echo -e "\nUsage: source $0
+    echo
+    echo "Usage: source $0
     Optional parameters: [-b build-dir] [-i] [-r] [-h]"
 echo "
     * [-b build-dir]: Build directory, if unspecified script uses 'build' as output directory
@@ -61,7 +62,8 @@ while getopts ":birh" fsl_setup_flag
 do
     case $fsl_setup_flag in
         b) BUILD_DIR="$OPTARG";
-           echo -e "\n Build directory is " $BUILD_DIR
+           echo
+           echo " Build directory is " $BUILD_DIR
            ;;
         i) fsl_setup_lrd=true
            ;;
@@ -76,7 +78,7 @@ done
 shift $((OPTIND-1))
 if [ $# -ne 0 ]; then
     fsl_setup_error=true
-    echo -e "Invalid command line ending: '$@'"
+    echo "Invalid command line ending: '$@'"
 fi
 
 OPTIND=$OLD_OPTIND
@@ -131,8 +133,9 @@ fi
 BUILD_DIR=.
 
 if [ ! -e $BUILD_DIR/conf/local.conf ]; then
-    echo -e "\n ERROR - No build directory is set yet. Run the 'setup-environment' script before running this script to create " $BUILD_DIR
-    echo -e "\n"
+    echo
+    echo " ERROR - No build directory is set yet. Run the 'setup-environment' script before running this script to create " $BUILD_DIR
+    echo
     return 1
 fi
 
@@ -150,6 +153,13 @@ if test $fsl_setup_lrd; then
     echo 'OVERRIDES .= ":laird-internal"' >> conf/local.conf
     echo >> conf/local.conf
 fi
+
+test $fsl_setup_radio && \
+echo 'BBMASK += " \
+    meta-laird-cp/recipes-packages/openssl \
+    meta-laird-cp/recipes-packages/.*/.*openssl10.* \
+"
+' >> conf/local.conf
 
 if [ ! -e $BUILD_DIR/conf/bblayers.conf.org ]; then
     cp $BUILD_DIR/conf/bblayers.conf $BUILD_DIR/conf/bblayers.conf.org

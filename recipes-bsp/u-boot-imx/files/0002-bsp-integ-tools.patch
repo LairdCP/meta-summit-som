@@ -1,34 +1,32 @@
 --- a/arch/arm/dts/Makefile	2021-02-15 20:22:38.000000000 
 +++ b/arch/arm/dts/Makefile	2021-02-15 20:34:33.000000000 
-@@ -875,7 +875,8 @@
- 	imx8mm-ddr4-ab2.dtb \
- 	imx8mm-ab2.dtb \
- 	imx8mn-ddr4-ab2.dtb \
--	imx8mn-ab2.dtb
-+	imx8mn-ab2.dtb \
-+	imx8mp-summitsom-dvk.dtb
+@@ -875,6 +875,7 @@ dtb-$(CONFIG_ARCH_IMX8M) += \
+ 	imx8mp-ddr4-evk.dtb \
+ 	imx8mp-evk.dtb \
+ 	imx8mp-phyboard-pollux-rdk.dtb \
++	imx8mp-summitsom-dvk.dtb \
+ 	imx8mq-pico-pi.dtb
  
- dtb-$(CONFIG_ARCH_IMXRT) += imxrt1050-evk.dtb
- 
---- a/arch/arm/mach-imx/imx8m/Kconfig	2021-02-01 15:32:11.000000000
-+++ b/arch/arm/mach-imx/imx8m/Kconfig	2021-02-10 09:47:43.000000000
-@@ -154,6 +154,12 @@
-        select SUPPORT_SPL
-        select IMX8M_LPDDR4
-
-+config TARGET_IMX8MP_SUMMITSOM
-+	bool "Laird Connectivity i.MX8M Plus Summit SOM"
-+	select IMX8MP
-+	select SUPPORT_SPL
-+	select IMX8M_LPDDR4
+ dtb-$(CONFIG_ARCH_IMXRT) += imxrt1050-evk.dtb \
+--- a/arch/arm/mach-imx/imx8m/Kconfig
++++ b/arch/arm/mach-imx/imx8m/Kconfig
+@@ -201,6 +201,12 @@ config TARGET_PHYCORE_IMX8MP
+ 	select IMX8MP
+         select SUPPORT_SPL
+ 	select IMX8M_LPDDR4
 +
++config TARGET_IMX8MP_SUMMITSOM
++       bool "Laird Connectivity i.MX8M Plus Summit SOM"
++       select IMX8MP
++       select SUPPORT_SPL
++       select IMX8M_LPDDR4
  endchoice
-
+ 
  source "board/freescale/imx8mq_evk/Kconfig"
-@@ -164,5 +170,6 @@
- source "board/freescale/imx8mn_evk/Kconfig"
- source "board/freescale/imx8mp_evk/Kconfig"
- source "board/toradex/verdin-imx8mm/Kconfig"
+@@ -217,5 +224,6 @@ source "board/beacon/imx8mm/Kconfig"
+ source "board/beacon/imx8mn/Kconfig"
+ source "board/phytec/phycore_imx8mm/Kconfig"
+ source "board/phytec/phycore_imx8mp/Kconfig"
 +source "board/laird/imx8mp_summitsom/Kconfig"
-
+ 
  endif
