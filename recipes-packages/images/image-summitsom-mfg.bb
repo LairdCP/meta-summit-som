@@ -44,6 +44,7 @@ IMAGE_INSTALL += "\
 	picocom \
 	can-utils \
 	stress-ng \
+	echotest \
 	"
 
 # Radio manufacturing components
