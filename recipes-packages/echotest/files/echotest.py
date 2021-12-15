@@ -6,12 +6,18 @@ import sys
 import os
 import platform
 import argparse
+import signal
 import serial
 import serial.rs485
 
-def open_port(port, baudrate, mode, pkt_timeout):
+def open_port(port, baudrate, mode, pkt_timeout, rtscts):
     print('Opening serial port {} @ {} bps, timeout = {}'.format(port, baudrate, pkt_timeout))
-    s = serial.Serial(port, baudrate, timeout=pkt_timeout)
+
+    if pkt_timeout < 0:
+        s = serial.Serial(port, baudrate, rtscts=rtscts and mode == 0)
+    else:
+        s = serial.Serial(port, baudrate, timeout=pkt_timeout, rtscts=rtscts and mode == 0)
+
     # Workaround for a bug in pySerial linux, always clear RS485 settings
     if platform.machine().lower().startswith('arm'):
         s._set_rs485_mode(None)
@@ -34,9 +40,9 @@ def open_port(port, baudrate, mode, pkt_timeout):
         s.rts = False
     return s
 
-def test_echo(port, baudrate, mode, pkt_timeout, pkt_len):
-    s = open_port(port, baudrate, mode, pkt_timeout)
-    print('Echo mode: Awaiting packets (len={})...'.format(pkt_len))
+def test_echo(port, baudrate, mode, pkt_timeout, pkt_len, rtscts):
+    s = open_port(port, baudrate, mode, pkt_timeout, rtscts)
+    print('Echo/Loopback mode: Awaiting packets (len={})...'.format(pkt_len))
     npkt = 0
     do_more = True
     while do_more:
@@ -49,10 +55,11 @@ def test_echo(port, baudrate, mode, pkt_timeout, pkt_len):
         else:
             print('Failed to read packet.')
             do_more = False
+    s.close()
     print('Test complete, echo sent {} packets.'.format(npkt))
 
-def test_send(port, baudrate, mode, pkt_timeout, pkt_len, pkt_count):
-    s = open_port(port, baudrate, mode, pkt_timeout)
+def test_send(port, baudrate, mode, pkt_timeout, pkt_len, pkt_count, rtscts):
+    s = open_port(port, baudrate, mode, pkt_timeout, rtscts)
     print('Transmit mode: Sending {} packets (len={})...'.format(pkt_count, pkt_len))
     npkt = 0
     while pkt_count == 0 or npkt < pkt_count:
@@ -66,33 +73,49 @@ def test_send(port, baudrate, mode, pkt_timeout, pkt_len, pkt_count):
                     print('Sent {} packets...'.format(npkt))
             else:
                 print('Received packet mismatch, TEST FAILED.')
+                s.close()
                 return
         elif pkt_timeout > 0:
             print('Failed to read complete packet, TEST FAILED.')
+            s.close()
             return
         else:
             npkt = npkt + 1
             if npkt % 100 == 0:
                 print('Sent {} packets...'.format(npkt))
+    s.close()
     print('Successfully sent & received {} packets, TEST PASSED.'.format(npkt))
 
+def sigterm_handler(_signo, _stack_frame):
+    print('Test aborted')
+    # Raises SystemExit(0):
+    sys.exit(0)
+
 def main():
+    signal.signal(signal.SIGTERM, sigterm_handler)
+    signal.signal(signal.SIGINT, sigterm_handler)
+
     parser = argparse.ArgumentParser()
     parser.add_argument('port', help='Port (e.g., /dev/ttyS2)')
     parser.add_argument('baudrate', help='Baud rate (e.g., 115200)')
     parser.add_argument('mode', type=int, help='Serial mode, 0 = RS-232, 1 = RS-485 half duplex, 2 = RS-485 full duplex')
-    parser.add_argument('--echo', action='store_true', help='Echo mode (otherwise transmit mode)')
+    parser.add_argument('--rtscts', action='store_true', help='RTS/CTS handshake, only for mode 0')
+    parser.add_argument('--echo', action='store_true', help='Echo/Loopback mode (send back any packet received)')
     parser.add_argument('--noecho', action='store_true', help='No echo mode (send only, ignore responses)')
-    parser.add_argument('--length', type=int, default=16, help='Packet length')
-    parser.add_argument('--count', type=int, default=100, help='Message count (for transmit mode)')
-    parser.add_argument('--timeout', type=int, default=30, help='Message timeout')
+    parser.add_argument('--length', type=int, default=16, help='Packet length, must be the same on both sides of the link')
+    parser.add_argument('--count', type=int, default=100, help='Message count (used only when --echo or --noecho not set)')
+    parser.add_argument('--timeout', type=int, default=30, help='Message timeout in seconds, -1 - Infinite wait, 0 - No wait')
     args = parser.parse_args()
-    if args.echo:
-        test_echo(args.port, args.baudrate, args.mode, args.timeout, args.length)
-    elif args.noecho:
-        test_send(args.port, args.baudrate, args.mode, 0, args.length, 0)
-    else:
-        test_send(args.port, args.baudrate, args.mode, args.timeout, args.length, args.count)
+
+    try:
+        if args.echo:
+            test_echo(args.port, args.baudrate, args.mode, args.timeout, args.length, args.rtscts)
+        elif args.noecho:
+            test_send(args.port, args.baudrate, args.mode, 0, args.length, 0, args.rtscts)
+        else:
+            test_send(args.port, args.baudrate, args.mode, args.timeout, args.length, args.count, args.rtscts)
+    except serial.SerialException as e:
+        print(e.strerror)
 
 if __name__ == "__main__":
     main()
