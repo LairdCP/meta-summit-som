@@ -90,7 +90,7 @@ fi
 
 if [ -z "$DISTRO" ]; then
     if [ -z "$FSLDISTRO" ]; then
-        FSLDISTRO='imx8mp-summitsom-cmd'
+        FSLDISTRO='summitsom-cmd'
     fi
 else
     FSLDISTRO="$DISTRO"
