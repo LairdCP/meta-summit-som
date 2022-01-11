@@ -43,7 +43,6 @@ AWM_PARAMS = ""
 
 do_install () {
 	install -D -t ${D}${bindir} -m 755 ${S}/usr/bin/adaptive_ww
-	install -D -t ${D}${base_libdir}/firmware/lrdmwl -m 644 ${S}/lib/firmware/lrdmwl/regpwr.db
 
 	install -d ${D}${sysconfdir}/default
 	echo "AWM_ARGS=${AWM_PARAMS}" > ${D}${sysconfdir}/default/adaptive_ww

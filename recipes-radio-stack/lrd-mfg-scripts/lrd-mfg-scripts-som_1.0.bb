@@ -10,6 +10,7 @@ SRC_URI = " \
     file://unload-lrdmwl.sh \
     file://bttest.sh \
     file://wifi-lrd-blacklist.conf \
+    file://lrdmwl_2040.conf \
     "
 
 S = "${WORKDIR}"
@@ -20,4 +21,5 @@ do_install() {
     install -D -m 775 -t ${D}/home/root/ ${S}/*lrdmwl.sh
     install -D -m 775 ${S}/bttest.sh ${D}${bindir}/bttest.sh
     install -D -m 644 ${S}/wifi-lrd-blacklist.conf ${D}${sysconfdir}/modprobe.d/wifi-lrd-blacklist.conf
+    install -D -m 0644 ${S}/lrdmwl_2040.conf ${D}${sysconfdir}/modprobe.d/lrdmwl_2040.conf
 }
