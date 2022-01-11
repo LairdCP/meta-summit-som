@@ -46,6 +46,8 @@
 
 	non-removable;
 	keep-power-in-suspend;
+
+	fsl,sdio-interrupt-enabled;
 };
 
 &wifi_wake {
