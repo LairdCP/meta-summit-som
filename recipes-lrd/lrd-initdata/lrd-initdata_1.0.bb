@@ -11,6 +11,7 @@ SRC_URI = " \
     file://modem \
     file://set-radio-mode \
     file://lrd.conf \
+    file://lrdmwl.conf \
      "
 
 S = "${WORKDIR}"
@@ -23,4 +24,5 @@ do_install() {
     install -D -m 0644 ${S}/lrd.conf ${D}${sysconfdir}/tmpfiles.d/lrd.conf
     install -D -m 0755 ${S}/modem ${D}${bindir}/modem
     install -D -m 0755 ${S}/set-radio-mode ${D}${bindir}/set-radio-mode
+    install -D -m 0644 ${S}/lrdmwl.conf ${D}${sysconfdir}/modprobe.d/lrdmwl.conf
 }

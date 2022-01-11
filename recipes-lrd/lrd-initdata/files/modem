@@ -11,4 +11,7 @@ case "${1}" in
     off)
         echo 0 > /sys/devices/platform/gpio/lte_power/value
         ;;
+    *)
+        echo "Usage: $0 [on | off]"
+        ;;
 esac

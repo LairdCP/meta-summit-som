@@ -1,4 +1,4 @@
-DESCRIPTION = "Summit SOM Command Line Image"
+DESCRIPTION = "Summit SOM Radio Manufacturing Image"
 LICENSE = "MIT"
 
 inherit core-image
@@ -29,6 +29,7 @@ IMAGE_INSTALL += "\
 	lrd-initdata \
 	lrd-usbgadget \
 	u-boot-fw-utils \
+	swupdate \
 	mpg123 \
 	"
 
@@ -44,4 +45,13 @@ IMAGE_INSTALL += "\
 	picocom \
 	can-utils \
 	stress-ng \
+	echotest \
+	"
+
+# Radio manufacturing components
+IMAGE_INSTALL += "\
+	packagegroup-radio-stack-mfg \
+	packagegroup-radio-stack-mfgbridge-8997 \
+	mfg60n-lrt-som \
+	sterling60-firmware-som \
 	"
