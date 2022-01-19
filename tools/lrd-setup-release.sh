@@ -90,7 +90,7 @@ fi
 
 if [ -z "$DISTRO" ]; then
     if [ -z "$FSLDISTRO" ]; then
-        FSLDISTRO='summitsom-cmd'
+        FSLDISTRO='summitsom-wayland'
     fi
 else
     FSLDISTRO="$DISTRO"

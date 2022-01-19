@@ -22,6 +22,7 @@ IMAGE_INSTALL += "\
 	tzdata \
 	ethtool \
 	iproute2 \
+	linuxptp \
 	chrony \
 	chronyc \
 	packagegroup-fsl-tools-audio \
@@ -31,6 +32,12 @@ IMAGE_INSTALL += "\
 	u-boot-fw-utils \
 	swupdate \
 	mpg123 \
+	read-edid \
+	fbida \
+	keyctl-caam \
+	crypto-af-alg \
+	keyutils \
+	lvm2 \
 	"
 
 # Diagnostic tools
