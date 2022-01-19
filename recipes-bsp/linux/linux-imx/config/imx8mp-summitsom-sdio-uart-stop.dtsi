@@ -1,21 +1,9 @@
 // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 /*
- * Copyright 2021 Laird Connectivity
+ * Copyright 2022 Laird Connectivity
  */
 
 / {
-
-	wifi_pwrseq: wifipwrseqgrp {
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_wifi_pmu>, <&pinctrl_wifibs>;
-
-		compatible = "mmc-pwrseq-simple";
-		reset-gpios = <&gpio2 10 GPIO_ACTIVE_LOW>;
-
-		power-off-delay-us = <100000>;
-		post-power-on-delay-ms = <1>;
-	};
-
 	reg_pcie_gpio: regulator-pcie-gpio {
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_pcie_gpio>;
@@ -38,26 +26,33 @@
 };
 
 &usdhc1 {
+	pinctrl-0 = <&pinctrl_usdhc1>, <&pinctrl_wifi_pmu>, <&pinctrl_wifibs>;
+	pinctrl-1 = <&pinctrl_usdhc1_100mhz>, <&pinctrl_wifi_pmu>, <&pinctrl_wifibs>;
+	pinctrl-2 = <&pinctrl_usdhc1_200mhz>, <&pinctrl_wifi_pmu>, <&pinctrl_wifibs>;
+
 	status = "okay";
 
 	assigned-clocks = <&clk IMX8MP_CLK_USDHC1>;
 	assigned-clock-rates = <400000000>;
 
-	mmc-pwrseq = <&wifi_pwrseq>;
-
 	fsl,sdio-interrupt-enabled;
 
 	non-removable;
-	keep-power-in-suspend;
 
 	wifi: wifi {
 		compatible = "marvell,sd8997";
 		//interrupts-extended = <&gpio3 14 GPIO_ACTIVE_LOW>;
-		//reset-gpios = <&gpio2 10 GPIO_ACTIVE_HIGH>;
-		//remove-power-on-link-down;
+		reset-gpios = <&gpio2 10 GPIO_ACTIVE_HIGH>;
+		remove-power-on-link-down;
 	};
 };
 
 &wifi_wake {
 	gpios = <&gpio3 14 GPIO_ACTIVE_LOW>;
+};
+
+&pinctrl_wifi_pmu {
+	fsl,pins = <
+		MX8MP_IOMUXC_SD1_RESET_B__GPIO2_IO10       0x00000140
+	>;
 };

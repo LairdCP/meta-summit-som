@@ -20,7 +20,7 @@
 		states = <1800000 7>, <0 0>;
 		enable-active-high;
 
-		startup-delay-us = <10000>;
+		startup-delay-us = <1000>;
 		off-on-delay-us = <100000>;
 	};
 };

@@ -1,30 +1,22 @@
 #! /bin/sh
 
-FDT_FILE=$(fw_printenv -n fdtfile)
-
 case "${1}" in
-  pcie-uart)
-    FDT_FILEN=${FDT_FILE/sdio-uart/pcie-uart}
-    FDT_FILEN=${FDT_FILEN/sdio-sdio/pcie-uart}
-    ;;
-
-  sdio-uart)
-    FDT_FILEN=${FDT_FILE/pcie-uart/sdio-uart}
-    FDT_FILEN=${FDT_FILEN/sdio-sdio/sdio-uart}
-    ;;
-
-  sdio-sdio)
-    FDT_FILEN=${FDT_FILE/pcie-uart/sdio-sdio}
-    FDT_FILEN=${FDT_FILEN/sdio-uart/sdio-sdio}
+  pcie-uart|sdio-uart|sdio-sdio|sdio-uart-stop|sdio-uart-susp)
     ;;
 
   *)
-    echo "usage: set-radio-mode [sdio-uart | sdio-sdio | pcie-uart ]"
+    echo "usage: set-radio-mode [sdio-uart | sdio-sdio | pcie-uart | sdio-uart-stop | sdio-uart-susp ]"
     exit 1
     ;;
 esac
 
-[ "${FDT_FILE}" == "${FDT_FILEN}" ] && exit
+FDT_FILE=$(fw_printenv -n fdtfile)
+
+prefix=$(echo "${FDT_FILE}" | sed -n 's,\(.*\)\-\(pcie\|sdio\).*,\1,p')
+
+FDT_FILEN="${prefix}-${1}.dtb"
+
+[ -n "${prefix}" ] && [ "${FDT_FILE}" != "${FDT_FILEN}" ] || exit
 
 fw_setenv fdtfile ${FDT_FILEN}
 

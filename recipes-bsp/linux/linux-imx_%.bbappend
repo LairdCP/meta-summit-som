@@ -2,23 +2,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 SRC_URI += " \
 	file://config/summitsom_defconfig \
-	file://config/imx8mp-summitsom.dtsi \
-	file://config/imx8mp-summitsom-pcie-uart.dtsi \
-	file://config/imx8mp-summitsom-sdio-sdio.dtsi \
-	file://config/imx8mp-summitsom-sdio-uart.dtsi \
-	file://config/imx8mp-summitsom-media-dvk.dtsi \
-	file://config/imx8mp-summitsom-gpu.dtsi \
-	file://config/imx8mp-summitsom-mipi-dvk.dtsi \
-	file://config/imx8mp-summitsom-hdmi-dvk.dtsi \
-	file://config/imx8mp-summitsom-lvds-bridge-dvk.dtsi \
-	file://config/imx8mp-summitsom-dvk.dtsi \
-	file://config/imx8mp-summitsom-dvk-sdio-uart.dts \
-	file://config/imx8mp-summitsom-dvk-sdio-sdio.dts \
-	file://config/imx8mp-summitsom-dvk-pcie-uart.dts \
-	file://config/imx8mp-summitsom-wbx.dtsi \
-	file://config/imx8mp-summitsom-wbx-sdio-uart.dts \
-	file://config/imx8mp-summitsom-wbx-sdio-sdio.dts \
-	file://config/imx8mp-summitsom-wbx-pcie-uart.dts \
+	file://config/ \
 	\
 	file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch \
 	file://0002-gpio-add-gpio_of_helper.patch \

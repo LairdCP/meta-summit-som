@@ -1,0 +1,10 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2022 Laird Connectivity
+ */
+#include "imx8mp-summitsom-sdio-uart.dtsi"
+
+&usdhc1 {
+	/delete-property/ keep-power-in-suspend;
+};
+

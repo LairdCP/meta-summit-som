@@ -14,7 +14,7 @@
 			<&gpio2 10 GPIO_ACTIVE_LOW>;
 
 		power-off-delay-us = <100000>;
-		post-power-on-delay-ms = <10>;
+		post-power-on-delay-ms = <1>;
 	};
 };
 
@@ -30,6 +30,12 @@
 	keep-power-in-suspend;
 
 	fsl,sdio-interrupt-enabled;
+
+	wifi: wifi {
+		compatible = "marvell,sd8997";
+		//interrupts-extended = <&gpio3 14 GPIO_ACTIVE_LOW>;
+		//reset-gpios = <&gpio2 10 GPIO_ACTIVE_HIGH>;
+	};
 };
 
 &wifi_wake {

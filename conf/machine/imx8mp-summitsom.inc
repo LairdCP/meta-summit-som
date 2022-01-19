@@ -14,9 +14,13 @@ MACHINE_FEATURES += "pci usbhost alsa rtc"
 KERNEL_DEVICETREE = " \
     freescale/imx8mp-summitsom-dvk-pcie-uart.dtb \
     freescale/imx8mp-summitsom-dvk-sdio-uart.dtb \
+    freescale/imx8mp-summitsom-dvk-sdio-uart-stop.dtb \
+    freescale/imx8mp-summitsom-dvk-sdio-uart-susp.dtb \
     freescale/imx8mp-summitsom-dvk-sdio-sdio.dtb \
     freescale/imx8mp-summitsom-wbx-pcie-uart.dtb \
     freescale/imx8mp-summitsom-wbx-sdio-uart.dtb \
+    freescale/imx8mp-summitsom-wbx-sdio-uart-stop.dtb \
+    freescale/imx8mp-summitsom-wbx-sdio-uart-susp.dtb \
     freescale/imx8mp-summitsom-wbx-sdio-sdio.dtb \
     "
 
