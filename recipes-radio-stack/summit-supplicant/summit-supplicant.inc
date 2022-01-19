@@ -18,7 +18,7 @@ SUPP_ARCH_powerpc64 = "-powerpc64-e5500"
 SUPP_ARCH_arm = "-arm-${HFP}"
 SUPP_ARCH_aarch64 = "-aarch64"
 
-SRC_URI = "\
+SRC_URI += "\
 	${LRD_URI}/summit_supplicant${OPENSSLVER}${SUPP_ARCH}-${PV}.tar.bz2;subdir=src;name=summit-supplicant${OPENSSLVER}${SUPP_ARCH} \
 	file://COPYING \
 	"
