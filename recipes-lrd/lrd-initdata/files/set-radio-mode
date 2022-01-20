@@ -12,7 +12,7 @@ esac
 
 FDT_FILE=$(fw_printenv -n fdtfile)
 
-prefix=$(echo "${FDT_FILE}" | sed -n 's,\(.*\)\-\(pcie\|sdio\).*,\1,p')
+prefix=$(echo "${FDT_FILE}" | sed -n 's,\([^-]\+\-[^-]\+\-[^-]\+\).*,\1,p'
 
 FDT_FILEN="${prefix}-${1}.dtb"
 
