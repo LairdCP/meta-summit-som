@@ -31,6 +31,8 @@ IMAGE_INSTALL += "\
 	u-boot-fw-utils \
 	swupdate \
 	mpg123 \
+	read-edid \
+	fbida \
 	"
 
 # Diagnostic tools
