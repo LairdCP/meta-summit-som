@@ -12,12 +12,27 @@ esac
 
 FDT_FILE=$(fw_printenv -n fdtfile)
 
-prefix=$(echo "${FDT_FILE}" | sed -n 's,\([^-]\+\-[^-]\+\-[^-]\+\).*,\1,p'
+prefix=$(echo "${FDT_FILE}" | sed -n 's,\([^-]\+\-[^-]\+\-[^-]\+\).*,\1,p')
 
 FDT_FILEN="${prefix}-${1}.dtb"
 
 [ -n "${prefix}" ] && [ "${FDT_FILE}" != "${FDT_FILEN}" ] || exit
 
 fw_setenv fdtfile ${FDT_FILEN}
+
+pwd=${PWD}
+cd /lib/firmware/lrdmwl/
+
+case "${1}" in
+ sdio-sdio)
+   ln -sf 88W8997_SU_sdio_sdio_* 88W8997_sdio.bin
+   ;;
+
+ sdio-uart*)
+   ln -sf 88W8997_SU_sdio_uart_* 88W8997_sdio.bin
+   ;;
+esac
+
+cd ${pwd}
 
 systemctl reboot
