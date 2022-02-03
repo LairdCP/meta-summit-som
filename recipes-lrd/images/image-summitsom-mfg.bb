@@ -7,7 +7,7 @@ EXTRA_USERS_PARAMS = "usermod -P summit root;"
 
 export IMAGE_BASENAME = "${PN}"
 
-ROOTFS_POSTPROCESS_COMMAND += "clean_boot_dir; "
+ROOTFS_POSTPROCESS_COMMAND += "clean_boot_dir;"
 
 clean_boot_dir() {
     rm -rf ${IMAGE_ROOTFS}/boot/*
