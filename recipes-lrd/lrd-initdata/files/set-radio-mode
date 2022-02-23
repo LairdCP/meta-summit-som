@@ -10,15 +10,15 @@ case "${1}" in
     ;;
 esac
 
-FDT_FILE=$(fw_printenv -n fdtfile)
+FDT_FILE=$(fw_printenv -n conf)
 
-prefix=$(echo "${FDT_FILE}" | sed -n 's,\([^-]\+\-[^-]\+\-[^-]\+\).*,\1,p')
+prefix=$(echo "${FDT_FILE}" | sed -n 's,\([^-]\+\-[^-]\+\-[^-]\+\-[^-]\+\).*,\1,p')
 
 FDT_FILEN="${prefix}-${1}.dtb"
 
 [ -n "${prefix}" ] && [ "${FDT_FILE}" != "${FDT_FILEN}" ] || exit
 
-fw_setenv fdtfile ${FDT_FILEN}
+fw_setenv conf ${FDT_FILEN}
 
 pwd=${PWD}
 cd /lib/firmware/lrdmwl/

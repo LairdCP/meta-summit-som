@@ -29,3 +29,6 @@ do_copy_defconfig () {
 	install -d ${B}
 	cp ${WORKDIR}/config/*.dts* ${S}/arch/arm64/boot/dts/freescale/
 }
+
+
+RDEPENDS_${KERNEL_PACKAGE_NAME}-base_remove = "${KERNEL_PACKAGE_NAME}-image"

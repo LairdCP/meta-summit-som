@@ -1,0 +1,74 @@
+#! /bin/sh
+
+die() {
+    echo "${1}" >&2
+    exit 2
+}
+
+usage() {
+    echo "Usage: $0: [-m <method>] [-s <side>] [-x value] [-q] [-v] <url>"
+    exit 1
+}
+
+[ $# -ge 1 ] || usage
+
+o_method=full
+o_quiet=false
+o_restart=true
+o_side=
+
+update_ok=false
+
+while getopts m:s:x:qv name; do
+    case ${name} in
+    m)  o_method=${OPTARG} ;;
+    s)  o_side=${OPTARG} ;;
+    x)  case "${OPTARG}" in
+            *r*) o_restart=false ;;
+        esac ;;
+    q)  o_quiet=true ;;
+    v)  o_verbose="-v" ;;
+    ?)  usage ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+url="${1}"
+
+# determine update side
+set -- $(sed -nr 's,.*/dev/(mmcblk[0-9]+)p([0-9]+).*,\1 \2,p' /proc/cmdline)
+mmc="${1}"
+part="${2}"
+
+read -r mmctype < /sys/block/${mmc}/device/type                             
+[ "${mmctype}" = "SD" ] && run_on_sd=true || run_on_sd=false                
+
+if [ -z "${o_side}" ]; then
+    [ "${part}" -ge 4 ] && o_side=a || o_side=b
+fi
+
+[ "${o_method}" = complete ] && o_complete=true || o_complete=false
+
+${o_complete} && p_method=${o_method} || p_method=${o_method}-${o_side}
+
+${o_complete} && ! ${run_on_sd} && \
+    die "complete method not supported when booting from flash"
+
+${o_quiet} && exec >/dev/null
+
+case "${url}" in
+*://*)
+    swupdate -e stable,${p_method} ${o_verbose} -d "-u ${url}" | tee /tmp/swup
+    ;;
+
+*)
+    swupdate -e stable,${p_method} ${o_verbose} -i "${url}" | tee /tmp/swup
+    ;;
+esac
+
+grep -q "SWUPDATE successful" /tmp/swup && update_ok=true || update_ok=false
+rm -f /tmp/swup
+
+if ${update_ok} && ${o_restart} && ! ${run_on_sd}; then
+   reboot
+fi

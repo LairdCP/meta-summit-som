@@ -16,7 +16,7 @@ mfg)
    ;;
 esac
 
-dtb=$(fw_printenv -n fdtfile)
+dtb=$(fw_printenv -n conf)
 
 pwd=${PWD}
 cd /lib/firmware/lrdmwl/

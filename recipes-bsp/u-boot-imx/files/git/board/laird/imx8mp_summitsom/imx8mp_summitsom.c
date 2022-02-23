@@ -12,6 +12,7 @@
 #include <asm-generic/gpio.h>
 #include <asm/arch/imx8mp_pins.h>
 #include <asm/arch/clock.h>
+#include <asm/mach-imx/boot_mode.h>
 #include <asm/arch/sys_proto.h>
 #include <asm/mach-imx/gpio.h>
 #include <asm/mach-imx/mxc_i2c.h>
@@ -457,7 +458,7 @@ static void update_dts(const char* oldn, const char *newn)
 {
 	char buf[64], *dvk;
 
-	char *dtb = env_get("fdtfile");
+	char *dtb = env_get("conf");
 	if (!strstr(dtb, oldn))
 		return;
 
@@ -469,15 +470,63 @@ static void update_dts(const char* oldn, const char *newn)
 
 	memcpy(dvk, newn, 3);
 
-	env_set("fdtfile", buf);
+	env_set("conf", buf);
 	env_save();
+}
+
+static int get_boot_side(int dev)
+{
+	struct mmc *mmc;
+
+	mmc = find_mmc_device(dev);
+	if (!mmc)
+		return 0;
+
+	if (!mmc_getcd(mmc))
+		mmc->has_init = 0;
+
+	if (mmc_init(mmc))
+		return 0;
+
+#ifdef CONFIG_BLOCK_CACHE
+	struct blk_desc *bd = mmc_get_blk_desc(mmc);
+	blkcache_invalidate(bd->if_type, bd->devnum);
+#endif
+
+	if (IS_SD(mmc))
+		return 0;
+
+	return EXT_CSD_EXTRACT_BOOT_PART(mmc->part_config);
+}
+
+uint mmc_get_env_part(struct mmc *mmc)
+{
+	switch (get_boot_device()) {
+	case MMC3_BOOT:
+		return get_boot_side(2);
+	default:
+		return CONFIG_SYS_MMC_ENV_PART;
+	}
 }
 
 int board_late_init(void)
 {
-#ifdef CONFIG_ENV_IS_IN_MMC
-	board_late_mmc_env_init();
-#endif
+	const char* side;
+
+	switch (get_boot_device()) {
+	case SD2_BOOT:
+		env_set_ulong("mmcdev", 1);
+		printf("Booting from SD, side a\n");
+		break;
+	case MMC3_BOOT:
+		env_set_ulong("mmcdev", 2);
+		side = get_boot_side(2) == 2 ? "b" : "a";
+		env_set("bootside", side);
+		printf("Booting from eMMC, side %s\n", side);
+		break;
+	default:
+		break;
+	}
 
 #ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
 	env_set("board_name", "Summit SOM");

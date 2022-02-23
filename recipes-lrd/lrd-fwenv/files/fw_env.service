@@ -1,0 +1,12 @@
+[Unit]
+Description=Generate fw_env.config
+Requires=local-fs.target
+After=local-fs.target
+Before=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/gen_fw_env.sh
+
+[Install]
+WantedBy=default.target

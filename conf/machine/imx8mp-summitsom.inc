@@ -11,6 +11,19 @@ require conf/machine/include/tune-cortexa53.inc
 
 MACHINE_FEATURES += "pci usbhost alsa rtc"
 
+KERNEL_CLASSES  = "kernel-fitimage"
+KERNEL_IMAGETYPES = "fitImage"
+
+KERNEL_IMAGETYPE_summitsom = "fitImage"
+IMAGE_BOOT_FILES = "${KERNEL_IMAGETYPE}"
+
+IMAGE_CLASSES = "squashfs-zstd dm-verity"
+
+UBOOT_DTB_LOADADDRESS = "0x43000000"
+UBOOT_ENTRYPOINT_mx8m   = "0x40400000"
+
+WKS_FILES ?= "lrd-imx-uboot-spl-bootpart.wks.in"
+
 KERNEL_DEVICETREE = " \
     freescale/imx8mp-summitsom-dvk-pcie-uart.dtb \
     freescale/imx8mp-summitsom-dvk-sdio-uart.dtb \

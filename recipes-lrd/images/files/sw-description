@@ -1,0 +1,236 @@
+software =
+{
+	version = "0.1.0";
+	bootloader_transaction_marker = false;
+	bootloader_state_marker = false;
+
+	stable = {
+		full-a: {
+			partitions: (
+				{
+					type = "diskformat";
+					device = "/dev/mmcblk2p1";
+
+					properties: {
+						fstype = "vfat";
+						force = "true";
+					}
+				},
+				{
+					type = "diskformat";
+					device = "/dev/mmcblk2p3";
+
+					properties: {
+						fstype = "ext4";
+						force = "true";
+					}
+				}
+			);
+
+			images: (
+				{
+					filename = "imx-boot";
+					device = "/dev/mmcblk2boot0";
+					type = "raw";
+					installed-directly = true;
+					sha256 = "@imx-boot";
+				},
+				{
+					filename = "fitImage";
+					path = "fitImage"
+					device = "/dev/mmcblk2p1"
+					type = "rawfile";
+					filesystem = "vfat"
+					installed-directly = true;
+					sha256 = "@fitImage";
+				},
+				{
+					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
+					device = "/dev/mmcblk2p2"
+					type = "raw";
+					installed-directly = true;
+					sha256 = "@@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
+				},
+			);
+
+			scripts: (
+				{
+					filename = "update_support.sh";
+					type = "postinstall";
+					data = "a";
+				}
+			);
+		}
+
+		full-b: {
+			partitions: (
+				{
+					type = "diskformat";
+					device = "/dev/mmcblk2p4";
+
+					properties: {
+						fstype = "vfat";
+						force = "true";
+					}
+				},
+				{
+					type = "diskformat";
+					device = "/dev/mmcblk2p6";
+
+					properties: {
+						fstype = "ext4";
+						force = "true";
+					}
+				}
+			);
+
+			images: (
+				{
+					filename = "imx-boot";
+					device = "/dev/mmcblk2boot1";
+					type = "raw";
+					installed-directly = true;
+					sha256 = "@imx-boot";
+				},
+				{
+					filename = "fitImage";
+					path = "fitImage"
+					device = "/dev/mmcblk2p4"
+					type = "rawfile";
+					filesystem = "vfat"
+					installed-directly = true;
+					sha256 = "@fitImage";
+				},
+				{
+					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
+					device = "/dev/mmcblk2p5"
+					type = "raw";
+					installed-directly = true;
+					sha256 = "@@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
+				},
+			);
+
+			scripts: (
+				{
+					filename = "update_support.sh";
+					type = "postinstall";
+					data = "b";
+				}
+			);
+		}
+
+		complete: {
+			partitions: (
+				{
+					type = "diskpart";
+					device = "/dev/mmcblk2";
+
+					properties: {
+						labeltype = "gpt";
+						partition-1 = ["size=16M",  "name=kernel_a",      "type=BC13C2FF-59E6-4262-A352-B275FD6F7172"];
+						partition-2 = ["size=512M", "name=rootfs_a",      "type=B921B045-1DF0-41C3-AF44-4C6F280D3FAE"];
+						partition-3 = ["size=256M", "name=rootfs_data_a", "type=0FC63DAF-8483-4772-8E79-3D69D8477DE4"];
+						partition-4 = ["size=16M",  "name=kernel_b",      "type=BC13C2FF-59E6-4262-A352-B275FD6F7172"];
+						partition-5 = ["size=512M", "name=rootfs_b",      "type=B921B045-1DF0-41C3-AF44-4C6F280D3FAE"];
+						partition-6 = ["size=256M", "name=rootfs_data_b", "type=0FC63DAF-8483-4772-8E79-3D69D8477DE4"];
+						partition-7 = ["size=6G",   "name=perm",          "type=0FC63DAF-8483-4772-8E79-3D69D8477DE4"];
+					}
+				},
+				{
+					type = "diskformat";
+					device = "/dev/mmcblk2p1";
+
+					properties: {
+						fstype = "vfat";
+						force = "true";
+					}
+				},
+				{
+					type = "diskformat";
+					device = "/dev/mmcblk2p3";
+
+					properties: {
+						fstype = "ext4";
+						force = "true";
+					}
+				},
+				{
+					type = "diskformat";
+					device = "/dev/mmcblk2p4";
+
+					properties: {
+						fstype = "vfat";
+						force = "true";
+					}
+				},
+				{
+					type = "diskformat";
+					device = "/dev/mmcblk2p6";
+
+					properties: {
+						fstype = "ext4";
+						force = "true";
+					}
+				},
+				{
+					type = "diskformat";
+					device = "/dev/mmcblk2p7";
+
+					properties: {
+						fstype = "ext4";
+						force = "true";
+					}
+				}
+			);
+			images: (
+				{
+					filename = "imx-boot";
+					device = "/dev/mmcblk2boot0";
+					type = "raw";
+					sha256 = "@imx-boot";
+				},
+				{
+					filename = "imx-boot";
+					device = "/dev/mmcblk2boot1"
+					type = "raw";
+					sha256 = "@imx-boot";
+				},
+				{
+					filename = "fitImage";
+					path = "fitImage"
+					device = "/dev/mmcblk2p1"
+					type = "rawfile";
+					filesystem = "vfat"
+					sha256 = "@fitImage";
+				},
+				{
+					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
+					device = "/dev/mmcblk2p2"
+					type = "raw";
+					sha256 = "@@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
+				},
+				{
+					filename = "fitImage";
+					path = "fitImage"
+					device = "/dev/mmcblk2p4"
+					type = "rawfile";
+					filesystem = "vfat"
+					sha256 = "@fitImage";
+				},
+				{
+					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
+					device = "/dev/mmcblk2p5";
+					type = "raw";
+					sha256 = "@@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
+				}
+			);
+			scripts: (
+				{
+					filename = "update_support.sh";
+					type = "postinstall";
+					data = "a";
+				}
+			);
+		}
+	}
+}

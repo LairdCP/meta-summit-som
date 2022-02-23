@@ -455,75 +455,70 @@ static int pac193x_i2c_read(struct i2c_client *client, u8 reg_addr,
 				void *databuf, u8 len)
 {
 	int ret;
-	struct i2c_msg msgs[2] = {
-		{ .addr = client->addr, .len = 1,
-			.buf = (u8 *) &reg_addr, .flags = 0 },
-		{ .addr = client->addr, .len = len,
-			.buf = databuf, .flags = I2C_M_RD } };
+	struct i2c_msg msgs[] =
+	{
+		{ 
+			.addr = client->addr,
+			.len = 1,
+			.buf = &reg_addr,
+			.flags = 0
+		},
+		{
+			.addr = client->addr,
+			.len = len,
+			.buf = databuf,
+			.flags = I2C_M_RD
+		}
+	};
 
 	ret = i2c_transfer(client->adapter, msgs, ARRAY_SIZE(msgs));
 	if (ret < 0) {
 		dev_err(&client->dev, "failed reading data from register 0x%02X\n", reg_addr);
 		return ret;
 	}
-	return 0;
-}
 
-static int pac193x_i2c_write_byte(struct i2c_client *client,
-					u8 reg_addr, u8 val)
-{
-	int ret;
-	u8 buf[2];
-	struct i2c_msg msgs[1] = {
-		{ .addr = client->addr, .len = sizeof(buf),
-			.buf = (u8 *) &buf, .flags = 0 } };
-	buf[0] = reg_addr;
-	buf[1] = val;
-
-	ret = i2c_transfer(client->adapter, msgs, ARRAY_SIZE(msgs));
-	if (ret < 0) {
-		dev_err(&client->dev, "failed writing register 0x%02X\n", reg_addr);
-		return ret;
-	}
-	return 0;
-}
-
-static int pac193x_i2c_send_byte(struct i2c_client *client, u8 reg_addr)
-{
-	int ret;
-	u8 buf;
-	struct i2c_msg msgs[1] = {
-		{ .addr = client->addr, .len = sizeof(buf),
-			.buf = (u8 *) &buf, .flags = 0 } };
-	buf = reg_addr;
-
-	ret = i2c_transfer(client->adapter, msgs, ARRAY_SIZE(msgs));
-	if (ret < 0) {
-		dev_err(&client->dev, "failed sending byte to register 0x%02X\n", reg_addr);
-		return ret;
-	}
 	return 0;
 }
 
 static int pac193x_i2c_write(struct i2c_client *client, u8 reg_addr,
-				int len, u8 *data)
+			     int len, u8 *data)
 {
 	int ret;
-	u8 send[len + 1];
-	struct i2c_msg msg = { .addr = client->addr,
-				.len = len + 1, .flags = 0 };
+	u8 buf[16];
 
-	send[0] = reg_addr;
-	memcpy(&send[1], data, len * sizeof(u8));
-	msg.buf = send;
+	struct i2c_msg msg =
+	{
+		.addr = client->addr,
+		.len = len + 1,
+		.buf = buf,
+		.flags = 0,
+	};
+
+	if (len >= sizeof(buf))
+		return -ENOMEM;
+
+	buf[0] = reg_addr;
+	memcpy(buf + 1, data, len);
 
 	ret = i2c_transfer(client->adapter, &msg, 1);
 	if (ret < 0) {
-		dev_err(&client->dev, "failed writing data from register 0x%02X\n",
+		dev_err(&client->dev, "failed writing data to register 0x%02X\n",
 			reg_addr);
 		return ret;
 	}
+
 	return 0;
+}
+
+inline int pac193x_i2c_write_byte(struct i2c_client *client,
+				  u8 reg_addr, u8 val)
+{
+	return pac193x_i2c_write(client, reg_addr, 1, &val);
+}
+
+inline int pac193x_i2c_send_byte(struct i2c_client *client, u8 reg_addr)
+{
+	return pac193x_i2c_write(client, reg_addr, 0, NULL);
 }
 
 static int pac193x_match_samp_rate(struct pac193x_chip_info *chip_info,
@@ -1309,8 +1304,8 @@ static int pac193x_chip_configure(struct pac193x_chip_info *chip_info)
 				3, (u8 *)regs);
 	if (ret < 0) {
 		dev_err(&client->dev,
-				"%s - cannot write PAC193x regs from 0x%02X\n",
-				__func__, PAC193X_CHANNEL_DIS_REG_OFF);
+				"%s - cannot write PAC193x regs to 0x%02X\n",
+				__func__, PAC193X_CTRL_STAT_REGS_ADDR);
 		goto chip_configure_err;
 	}
 	/* enable the ALERT pin functionality */

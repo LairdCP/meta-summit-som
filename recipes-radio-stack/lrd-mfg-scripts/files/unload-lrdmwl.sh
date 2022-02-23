@@ -1,6 +1,6 @@
 echo "Unloading lrdmwl Drivers"
 
-dtb=$(fw_printenv -n fdtfile)
+dtb=$(fw_printenv -n conf)
 
 killall btattach 2> /dev/null
 

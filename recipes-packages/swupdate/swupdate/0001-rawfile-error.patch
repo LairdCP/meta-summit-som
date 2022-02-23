@@ -1,0 +1,64 @@
+diff --git a/handlers/raw_handler.c b/handlers/raw_handler.c
+index 619a2f4..68cbff6 100644
+--- a/handlers/raw_handler.c
++++ b/handlers/raw_handler.c
+@@ -218,18 +218,18 @@ static int install_raw_file(struct img_type *img,
+ 	}
+ 
+ 	if (use_mount) {
++		if (snprintf(path, sizeof(path), "%s%s",
++					 DATADST_DIR, img->path) >= (int)sizeof(path)) {
++			ERROR("Path too long: %s%s", DATADST_DIR, img->path);
++			return -1;
++		}
++
+ 		ret = swupdate_mount(img->device, DATADST_DIR, img->filesystem);
+ 		if (ret) {
+ 			ERROR("Device %s with filesystem %s cannot be mounted: %s",
+ 				img->device, img->filesystem, strerror(errno));
+ 			return -1;
+ 		}
+-
+-		if (snprintf(path, sizeof(path), "%s%s",
+-					 DATADST_DIR, img->path) >= (int)sizeof(path)) {
+-			ERROR("Path too long: %s%s", DATADST_DIR, img->path);
+-			return -1;
+-		}
+ 	} else {
+ 		if (snprintf(path, sizeof(path), "%s", img->path) >= (int)sizeof(path)) {
+ 			ERROR("Path too long: %s", img->path);
+@@ -245,23 +245,29 @@ static int install_raw_file(struct img_type *img,
+ 		fdout = mkpath(dirname(strdupa(path)), 0755);
+ 		if (fdout < 0) {
+ 			ERROR("I cannot create path %s: %s", path, strerror(errno));
+-			return -1;
++			ret = -1;
++			goto install_raw_file_out;
+ 		}
+ 	}
+ 
+ 	fdout = openfileoutput(path);
+-	if (fdout < 0)
+-		return fdout;
++	if (fdout < 0) {
++		ret = fdout;
++		goto install_raw_file_out;
++	}
+ 	if (!img_check_free_space(img, fdout)) {
+-		return -ENOSPC;
++		close(fdout);
++		ret = -ENOSPC;
++		goto install_raw_file_out;
+ 	}
+ 
+ 	ret = copyimage(&fdout, img, NULL);
+-	if (ret< 0) {
++	if (ret < 0) {
+ 		ERROR("Error copying extracted file");
+ 	}
+ 	close(fdout);
+ 
++install_raw_file_out:
+ 	if (use_mount) {
+ 		swupdate_umount(DATADST_DIR);
+ 	}

@@ -14,3 +14,5 @@ SRC_URI = " \
         "
 
 S = "${WORKDIR}"
+
+export PSEUDO_DEBUG = "nfoPcvdDyerpswikVx"

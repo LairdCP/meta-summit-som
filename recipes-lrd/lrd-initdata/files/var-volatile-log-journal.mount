@@ -1,0 +1,16 @@
+[Unit]
+Description=Persistent Journal Storage Bind
+Before=local-fs.target
+RequiresMountsFor=/perm
+ConditionPathIsReadWrite=/perm
+Requires=perm-mount.service
+After=perm-mount.service
+
+[Mount]
+What=/perm/journal
+Where=/var/volatile/log/journal
+Type=none
+Options=bind
+
+[Install]
+WantedBy=local-fs.target

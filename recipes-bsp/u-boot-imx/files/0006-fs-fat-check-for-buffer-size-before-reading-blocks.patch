@@ -1,0 +1,58 @@
+From 41130eb8937e43b2307fb67ebb60f0190fc01438 Mon Sep 17 00:00:00 2001
+From: Ricardo Salveti <ricardo@foundries.io>
+Date: Sun, 26 Sep 2021 21:36:04 +0300
+Subject: [PATCH] fs: fat: check for buffer size before reading blocks
+
+This patch optimizes the commit mentioned below by avoiding running
+a set of commands which are useless in the case when
+size < mydata->sect_size and sect_count would be 0.
+
+Fixes: 5b3ddb17ba ("fs/fat/fat.c: Do not perform zero block reads if there are no blocks left")
+
+Signed-off-by: Ricardo Salveti <ricardo@foundries.io>
+Co-developed-by: Oleksandr Suvorov <oleksandr.suvorov@foundries.io>
+Signed-off-by: Oleksandr Suvorov <oleksandr.suvorov@foundries.io>
+---
+ fs/fat/fat.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
+
+diff --git a/fs/fat/fat.c b/fs/fat/fat.c
+index 7021138b98..65f77c4f75 100644
+--- a/fs/fat/fat.c
++++ b/fs/fat/fat.c
+@@ -275,22 +275,19 @@ get_cluster(fsdata *mydata, __u32 clustnum, __u8 *buffer, unsigned long size)
+ 			buffer += mydata->sect_size;
+ 			size -= mydata->sect_size;
+ 		}
+-	} else {
+-		__u32 idx;
+-
+-		idx = size / mydata->sect_size;
+-		if (idx == 0)
+-			ret = 0;
+-		else
+-			ret = disk_read(startsect, idx, buffer);
+-		if (ret != idx) {
++	} else if (size >= mydata->sect_size) {
++		__u32 bytes_read;
++		__u32 sect_count = size / mydata->sect_size;
++
++		ret = disk_read(startsect, sect_count, buffer);
++		if (ret != sect_count) {
+ 			debug("Error reading data (got %d)\n", ret);
+ 			return -1;
+ 		}
+-		startsect += idx;
+-		idx *= mydata->sect_size;
+-		buffer += idx;
+-		size -= idx;
++		bytes_read = sect_count * mydata->sect_size;
++		startsect += sect_count;
++		buffer += bytes_read;
++		size -= bytes_read;
+ 	}
+ 	if (size) {
+ 		ALLOC_CACHE_ALIGN_BUFFER(__u8, tmpbuf, mydata->sect_size);
+-- 
+2.35.1
+
