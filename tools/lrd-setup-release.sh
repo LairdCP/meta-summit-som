@@ -58,7 +58,7 @@ clean_up()
 OLD_OPTIND=$OPTIND
 unset FSLDISTRO
 
-while getopts ":birh" fsl_setup_flag
+while getopts "b:irh" fsl_setup_flag
 do
     case $fsl_setup_flag in
         b) BUILD_DIR="$OPTARG";
@@ -75,13 +75,14 @@ do
            ;;
     esac
 done
+
 shift $((OPTIND-1))
 if [ $# -ne 0 ]; then
     fsl_setup_error=true
     echo "Invalid command line ending: '$@'"
 fi
-
 OPTIND=$OLD_OPTIND
+
 if test $fsl_setup_help; then
     usage && clean_up && return 1
 elif test $fsl_setup_error; then
