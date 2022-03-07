@@ -12,7 +12,7 @@ require conf/machine/include/tune-cortexa53.inc
 MACHINE_FEATURES += "pci usbhost alsa rtc"
 
 FIT_KERNEL_COMP_ALG = "zstd"
-FIT_KERNEL_COMP_ALG_EXTENSION ?= ".zstd"
+FIT_KERNEL_COMP_ALG_EXTENSION = ".zstd"
 
 KERNEL_CLASSES  = "kernel-fitimage"
 KERNEL_IMAGETYPES = "fitImage"
