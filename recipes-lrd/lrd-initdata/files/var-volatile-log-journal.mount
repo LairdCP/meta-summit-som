@@ -3,8 +3,6 @@ Description=Persistent Journal Storage Bind
 Before=local-fs.target
 RequiresMountsFor=/perm
 ConditionPathIsReadWrite=/perm
-Requires=perm-mount.service
-After=perm-mount.service
 
 [Mount]
 What=/perm/journal
