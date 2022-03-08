@@ -9,7 +9,7 @@ MACHINEOVERRIDES =. "mx8:mx8m:mx8mp:summitsom:"
 require conf/machine/include/imx-base.inc
 require conf/machine/include/tune-cortexa53.inc
 
-MACHINE_FEATURES += "pci usbhost alsa rtc"
+MACHINE_FEATURES += "pci usbhost alsa rtc optee"
 
 FIT_KERNEL_COMP_ALG = "zstd"
 FIT_KERNEL_COMP_ALG_EXTENSION = ".zstd"
