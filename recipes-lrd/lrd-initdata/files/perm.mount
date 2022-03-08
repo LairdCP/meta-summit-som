@@ -1,18 +1,13 @@
 [Unit]
 Description=Mount /perm 
-DefaultDependencies=false
 Before=local-fs.target
 BindsTo=dev-mmcblk2p7.device
 Requires=systemd-fsck@dev-mmcblk2p7.service
 After=systemd-fsck@dev-mmcblk2p7.service
 ConditionPathExists=/perm
 
-[Service]
-Type=oneshot
-RemainAfterExit=Yes
-TimeoutSec=0
-ExecStart=/bin/perm-mount
-ExwcStop=umount /perm
 
-[Install]
-WantedBy=local-fs.target
+[Mount]
+What=/dev/mmcblk2p7
+Where=/perm
+Type=none

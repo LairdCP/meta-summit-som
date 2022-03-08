@@ -11,6 +11,3 @@ What=/perm/journal
 Where=/var/volatile/log/journal
 Type=none
 Options=bind
-
-[Install]
-WantedBy=local-fs.target

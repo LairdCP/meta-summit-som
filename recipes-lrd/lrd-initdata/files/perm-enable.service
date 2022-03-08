@@ -1,0 +1,13 @@
+[Unit]
+Description=Enable /perm mount
+DefaultDependencies=false
+Before=local-fs.target
+ConditionPathExists=/perm
+
+[Service]
+Type=oneshot
+TimeoutSec=0
+ExecStart=/bin/perm-enable
+
+[Install]
+WantedBy=local-fs.target

@@ -6,4 +6,4 @@ part="${2}"
 
 read -r mmctype < /sys/block/${mmc}/device/type                             
 [ "${mmctype}" != "MMC" ] || \
-        /usr/bin/mount -o nosuid,nodev,noatime,noexec /dev/mmcblk2p7 /perm
+        systemctl start perm.mount

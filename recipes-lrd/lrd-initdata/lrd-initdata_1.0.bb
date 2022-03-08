@@ -15,15 +15,16 @@ SRC_URI = " \
     file://overlayRoot.sh \
     file://fw_update \
     file://var-volatile-log-journal.mount \
-    file://perm-mount \
-    file://perm-mount.service \
+    file://perm-enable \
+    file://perm-enable.service \
+    file://perm.mount \
     "
 
 S = "${WORKDIR}"
 
 FILES_${PN} += "${systemd_unitdir}/system ${sysconfdir} /perm /data"
 
-SYSTEMD_SERVICE_${PN} = "perm-mount.service"
+SYSTEMD_SERVICE_${PN} = "perm-enable.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
 SYSTEMD_SERVICE_${PN}_append_lrdsecure = " var-volatile-log-journal.mount"
@@ -38,8 +39,9 @@ do_install () {
     install -D -m 0755 ${S}/overlayRoot.sh ${D}${sbindir}/overlayRoot.sh
     install -D -m 0755 ${S}/fw_update ${D}${sbindir}/fw_update
     install -d ${D}/perm
-    install -D -m 0644 ${S}/perm-mount.service ${D}${systemd_unitdir}/system/perm-mount.service
-    install -D -m 0755 ${S}/perm-mount ${D}${bindir}/perm-mount
+    install -D -m 0644 ${S}/perm-enable.service ${D}${systemd_unitdir}/system/perm-enable.service
+    install -D -m 0755 ${S}/perm-enable ${D}${bindir}/perm-enable
+    install -D -m 0644 ${S}/perm.mount ${D}${systemd_unitdir}/system/perm.mount
 }
 
 do_install_append_lrdsecure () {
