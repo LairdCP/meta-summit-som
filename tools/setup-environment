@@ -124,7 +124,7 @@ if [ -e $PWD/sources/oe-core ]; then
     OEROOT=$PWD/sources/oe-core
 fi
 
-[ -n "${BR2_DL_DIR}" ] && DL_DIR="${BR2_DL_DIR}" || DL_DIR="$(HOME)/.br2_dl_dir"
+[ -n "${BR2_DL_DIR}" ] && DL_DIR="${BR2_DL_DIR}" || DL_DIR="${HOME}/.br2_dl_dir"
 export DL_DIR
 
 BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR"
