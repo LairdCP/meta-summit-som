@@ -14,4 +14,6 @@ IMAGE_INSTALL += "\
 	fbida \
 	python3 \
 	systemd-analyze \
+	bluez5-testtools \
+	python-dbus \
 	"
