@@ -144,6 +144,9 @@ if ${build_dir_setup_enabled}; then
     meta-laird-cp/recipes-packages/.*/.*openssl10.* \
 "
 ' >> conf/local.conf
+
+${setup_radio} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-laird-cp"' >> conf/bblayers.conf
+
 fi
 
 # Handle EULA setting

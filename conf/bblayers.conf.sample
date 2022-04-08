@@ -34,4 +34,3 @@ BBLAYERS = " \
   ${BSPDIR}/sources/meta-timesys \
 "
 
-BBLAYERS += "${BSPDIR}/sources/meta-laird-cp"
