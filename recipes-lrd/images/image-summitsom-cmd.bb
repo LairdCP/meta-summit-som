@@ -16,4 +16,5 @@ IMAGE_INSTALL += "\
 	systemd-analyze \
 	bluez5-testtools \
 	python-dbus \
+	mc-mint \
 	"
