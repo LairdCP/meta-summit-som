@@ -2,6 +2,9 @@
 
 case "${1}" in
     on)
+        read -r power /sys/devices/platform/gpio/lte_power/value 
+        [ "${power}" != 1 ] || return
+
         echo 1 > /sys/devices/platform/gpio/lte_power/value
         sleep 1
         echo 1 > /sys/devices/platform/gpio/lte_on/value
