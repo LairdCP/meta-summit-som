@@ -27,6 +27,7 @@ EXTRA_OEMAKE = "\
 
 do_compile_prepend() {
 	rm -f ${S}/.kernel_config_md5
+	unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
 	oe_runmake CC=${BUILD_CC} ${BACKPORTS_CONFIG}
 }
 
