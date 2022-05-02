@@ -1,4 +1,4 @@
-MACHINE ??= 'imx8mp-summitsom_512m'
+MACHINE ??= 'imx8mp-summitsom'
 DISTRO ?= 'summitsom-wayland'
 
 BB_DISKMON_DIRS ??= "\

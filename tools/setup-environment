@@ -55,7 +55,7 @@ Supported Laird Connectivity's distros: `echo; ls sources/meta-lrd-summitsom/con
 Examples:
 
 - To create a new Yocto build directory:
-  $ MACHINE=imx8mp-summitsom_512m DISTRO=summitsom-wayland . $PROGNAME build
+  $ MACHINE=imx8mp-summitsom DISTRO=summitsom-wayland . $PROGNAME build
 
 - To use an existing Yocto build directory:
   $ . $PROGNAME build
