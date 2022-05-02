@@ -11,22 +11,4 @@ config SYS_CONFIG_NAME
 
 source "board/freescale/common/Kconfig"
 
-choice
-	prompt "Summit SOM RAM size "
-	default SYS_SUMMITSOM_2G
-	help
-	  Summit SOM RAM size
-
-	config SYS_SUMMITSOM_2G
-		bool "2 GB"
-
-	config SYS_SUMMITSOM_1G
-		bool "1 GB"
-
-	config SYS_SUMMITSOM_512M
-		bool "512 MB"
-
-endchoice
-
-
 endif

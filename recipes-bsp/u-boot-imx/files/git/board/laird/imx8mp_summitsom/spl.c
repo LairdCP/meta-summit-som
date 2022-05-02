@@ -33,6 +33,11 @@
 #include <fsl_esdhc_imx.h>
 #include <mmc.h>
 #include <asm/arch/ddr.h>
+#include <fuse.h>
+
+extern struct dram_timing_info dram_timing_2g;
+extern struct dram_timing_info dram_timing_1g;
+extern struct dram_timing_info dram_timing_512m;
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -64,7 +69,21 @@ int spl_board_boot_device(enum boot_device boot_dev_spl)
 
 void spl_dram_init(void)
 {
-	ddr_init(&dram_timing);
+	u32 gp1 = 0;
+
+	fuse_read(14, 0, &gp1);
+
+	switch(gp1 & 0xff) {
+	case 1:
+		ddr_init(&dram_timing_1g);
+		break;
+	case 2:
+		ddr_init(&dram_timing_2g);
+		break;
+	default:
+		ddr_init(&dram_timing_512m);
+		break;
+	}
 }
 
 #if CONFIG_IS_ENABLED(DM_PMIC_PCA9450)

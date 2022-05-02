@@ -14,6 +14,7 @@
 #include <linux/kernel.h>
 #include <asm/arch/ddr.h>
 
+static
 struct dram_cfg_param ddr_ddrc_cfg[] = {
 	/** Initialize DDRC registers **/
 	{ 0x3d400304, 0x1 },
@@ -128,6 +129,7 @@ struct dram_cfg_param ddr_ddrc_cfg[] = {
 };
 
 /* PHY Initialize Configuration */
+static
 struct dram_cfg_param ddr_ddrphy_cfg[] = {
 	{ 0x100a0, 0x0 },
 	{ 0x100a1, 0x1 },
@@ -337,6 +339,7 @@ struct dram_cfg_param ddr_ddrphy_cfg[] = {
 };
 
 /* ddr phy trained csr */
+static
 struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
 	{ 0x200b2, 0x0 },
 	{ 0x1200b2, 0x0 },
@@ -1058,7 +1061,9 @@ struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
 	{ 0x13730, 0x0 },
 	{ 0x13830, 0x0 },
 };
+
 /* P0 message block paremeter for training firmware */
+static
 struct dram_cfg_param ddr_fsp0_cfg[] = {
 	{ 0xd0000, 0x0 },
 	{ 0x54003, 0xfa0 },
@@ -1099,6 +1104,7 @@ struct dram_cfg_param ddr_fsp0_cfg[] = {
 
 
 /* P1 message block paremeter for training firmware */
+static
 struct dram_cfg_param ddr_fsp1_cfg[] = {
 	{ 0xd0000, 0x0 },
 	{ 0x54002, 0x101 },
@@ -1140,6 +1146,7 @@ struct dram_cfg_param ddr_fsp1_cfg[] = {
 
 
 /* P2 message block paremeter for training firmware */
+static
 struct dram_cfg_param ddr_fsp2_cfg[] = {
 	{ 0xd0000, 0x0 },
 	{ 0x54002, 0x102 },
@@ -1181,6 +1188,7 @@ struct dram_cfg_param ddr_fsp2_cfg[] = {
 
 
 /* P0 2D message block paremeter for training firmware */
+static
 struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
 	{ 0xd0000, 0x0 },
 	{ 0x54003, 0xfa0 },
@@ -1221,6 +1229,7 @@ struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
 };
 
 /* DRAM PHY init engine image */
+static
 struct dram_cfg_param ddr_phy_pie[] = {
 	{ 0xd0000, 0x0 },
 	{ 0x90000, 0x10 },
@@ -1805,6 +1814,7 @@ struct dram_cfg_param ddr_phy_pie[] = {
 	{ 0xd0000, 0x1 }
 };
 
+static
 struct dram_fsp_msg ddr_dram_fsp_msg[] = {
 	{
 		/* P0 4000mts 1D */
@@ -1837,7 +1847,7 @@ struct dram_fsp_msg ddr_dram_fsp_msg[] = {
 };
 
 /* ddr timing config params */
-struct dram_timing_info dram_timing = {
+struct dram_timing_info dram_timing_1g = {
 	.ddrc_cfg = ddr_ddrc_cfg,
 	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg),
 	.ddrphy_cfg = ddr_ddrphy_cfg,
@@ -1850,4 +1860,3 @@ struct dram_timing_info dram_timing = {
 	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
 	.fsp_table = { 4000, 400, 100, },
 };
-

@@ -25,6 +25,7 @@
 #include <imx_sip.h>
 #include <linux/arm-smccc.h>
 #include <mmc.h>
+#include <fuse.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -51,6 +52,27 @@ int board_early_init_f(void)
 	imx_iomux_v3_setup_multiple_pads(uart_pads, ARRAY_SIZE(uart_pads));
 
 	init_uart_clk(1);
+
+	return 0;
+}
+
+int board_phys_sdram_size(phys_size_t *memsize)
+{
+	u32 gp1 = 0;
+
+	fuse_read(14, 0, &gp1);
+
+	switch(gp1 & 0xff) {
+	case 1:
+		*memsize = 0x40000000;
+		break;
+	case 2:
+		*memsize = 0x80000000;
+		break;
+	default:
+		*memsize = 0x20000000;
+		break;
+	}
 
 	return 0;
 }
