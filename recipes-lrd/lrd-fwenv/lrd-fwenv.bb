@@ -19,7 +19,7 @@ FILES_${PN} += "${systemd_unitdir}/system ${sysconfdir}"
 
 do_install() {
     install -d ${D}${sysconfdir}/
-    ln -sf /tmp/fw_env.config ${D}${sysconfdir}/fw_env.config
+    ln -sf /run/fw_env.config ${D}${sysconfdir}/fw_env.config
     install -D -m 0755 ${S}/gen_fw_env.sh ${D}${bindir}/gen_fw_env.sh
 
     if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then

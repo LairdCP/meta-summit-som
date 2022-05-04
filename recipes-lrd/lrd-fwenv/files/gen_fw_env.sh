@@ -14,4 +14,4 @@ else
         mmcenv=
 fi
 
-echo "/dev/${mmc}${mmcenv} 0x3f0000 0x4000" > /tmp/fw_env.config
+echo "/dev/${mmc}${mmcenv} 0x3f0000 0x4000" > /run/fw_env.config
