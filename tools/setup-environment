@@ -127,8 +127,11 @@ fi
 [ -n "${BR2_DL_DIR}" ] && export DL_DIR="${BR2_DL_DIR}" || export DL_DIR="${HOME}/.br2_dl_dir"
 BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR"
 
-[ -z "${VERSION}" ] || \
-    { export IMAGE_VERSION_SUFFIX="-${VERSION}"; BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} IMAGE_VERSION_SUFFIX"; }
+if [ -n "${VERSION}" ]; then
+    export IMAGE_VERSION_SUFFIX="-${VERSION}"
+    export LRD_VERSION="${VERSION}"
+    BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} IMAGE_VERSION_SUFFIX LRD_VERSION LAIRD_RELEASE_STRING"
+fi
 
 TEMPLATECONF=${TEMPLATECONF:-$CWD/sources/meta-lrd-summitsom/conf} . $OEROOT/oe-init-build-env $CWD/$1
 
