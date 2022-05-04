@@ -47,7 +47,7 @@ if [ -z "${o_side}" ]; then
     [ "${part}" -ge 4 ] && o_side=a || o_side=b
 fi
 
-if run_on_sd && [ -z "${o_method}" ]; then
+if ${run_on_sd} && [ -z "${o_method}" ]; then
     o_method=complete
 fi
 

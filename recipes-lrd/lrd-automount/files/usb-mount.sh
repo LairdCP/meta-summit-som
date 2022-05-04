@@ -84,12 +84,12 @@ do_mount()
     mkdir -p "${MOUNT_POINT}"
 
     # Global mount options
-    OPTS="rw,noatime,noexec,nosuid,nodev,flush"
+    OPTS="rw,noatime,noexec,nosuid,nodev"
 
     # File system type specific mount options
     case "${ID_FS_TYPE}" in
     vfat)
-        OPTS="${OPTS},users,utf8=1"
+        OPTS="${OPTS},users,utf8=1,flush"
         if [ -n "${MOUNT_USER}" ]; then
             OPTS="${OPTS},uid=$(id -u ${MOUNT_USER}),gid=$(id -g ${MOUNT_USER})"
         else

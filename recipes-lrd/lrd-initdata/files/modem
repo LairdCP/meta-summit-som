@@ -1,19 +1,37 @@
 #! /bin/sh
 
-case "${1}" in
-    on)
-        read -r power /sys/devices/platform/gpio/lte_power/value 
-        [ "${power}" != 1 ] || return
-
-        echo 1 > /sys/devices/platform/gpio/lte_power/value
-        sleep 1
+press_on_off() {
         echo 1 > /sys/devices/platform/gpio/lte_on/value
         sleep 1
         echo 0 > /sys/devices/platform/gpio/lte_on/value
+}
+
+is_on() {
+    [ "$(cat /sys/devices/platform/gpio/lte_power/value)" == 0 ] \
+        && return false || return true
+}
+
+power() {
+    echo ${1} > /sys/devices/platform/gpio/lte_power/value
+}
+
+case "${1}" in
+    on)
+        ! is_on || return
+
+        power 1
+        sleep 1
+        press_on_off
         ;;
+
     off)
-        echo 0 > /sys/devices/platform/gpio/lte_power/value
+        is_on || return
+
+        press_on_off
+        sleep 2
+        power 0
         ;;
+
     *)
         echo "Usage: $0 [on | off]"
         ;;
