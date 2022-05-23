@@ -17,4 +17,9 @@ IMAGE_INSTALL += "\
 	bluez5-testtools \
 	python-dbus \
 	mc-mint \
+	lrd-m7-demos \
+	"
+
+IMAGE_BOOT_FILES += "\
+	lrd-m7-*.bin \
 	"

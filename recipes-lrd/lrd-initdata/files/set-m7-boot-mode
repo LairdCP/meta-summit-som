@@ -1,0 +1,27 @@
+#! /bin/sh
+
+case "${1}" in
+  enable|disable)
+    ;;
+
+  *)
+    echo "usage: set-m7-boot-mode [enable | disable]"
+    exit 1
+    ;;
+esac
+
+FDT_FILE=$(fw_printenv -n conf)
+
+case "${1}" in
+ enable)
+   FDT_FILEN=$(echo "${FDT_FILE}" | sed -r 's/(-m7-rpmsg)?\.dtb/-m7-rpmsg.dtb/')
+   ;;
+
+ disable)
+   FDT_FILEN=$(echo "${FDT_FILE}" | sed -r 's/-m7-rpmsg//')
+   ;;
+esac
+
+fw_setenv conf ${FDT_FILEN}
+
+systemctl reboot

@@ -14,7 +14,16 @@ FDT_FILE=$(fw_printenv -n conf)
 
 prefix=$(echo "${FDT_FILE}" | sed -n 's,\([^-]\+\-[^-]\+\-[^-]\+\-[^-]\+\).*,\1,p')
 
-FDT_FILEN="${prefix}-${1}.dtb"
+case "$FDT_FILE" in
+  *m7-rpmsg*)
+    suffix="-m7-rpmsg"
+    ;;
+  *)
+    suffix=""
+    ;;
+esac
+
+FDT_FILEN="${prefix}-${1}${suffix}.dtb"
 
 [ -n "${prefix}" ] && [ "${FDT_FILE}" != "${FDT_FILEN}" ] || exit
 

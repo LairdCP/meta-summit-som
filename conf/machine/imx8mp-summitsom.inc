@@ -33,6 +33,11 @@ KERNEL_DEVICETREE = " \
     freescale/imx8mp-summitsom-dvk-sdio-uart-stop.dtb \
     freescale/imx8mp-summitsom-dvk-sdio-uart-susp.dtb \
     freescale/imx8mp-summitsom-dvk-sdio-sdio.dtb \
+    freescale/imx8mp-summitsom-dvk-pcie-uart-m7-rpmsg.dtb \
+    freescale/imx8mp-summitsom-dvk-sdio-uart-m7-rpmsg.dtb \
+    freescale/imx8mp-summitsom-dvk-sdio-uart-stop-m7-rpmsg.dtb \
+    freescale/imx8mp-summitsom-dvk-sdio-uart-susp-m7-rpmsg.dtb \
+    freescale/imx8mp-summitsom-dvk-sdio-sdio-m7-rpmsg.dtb \
     freescale/imx8mp-summitsom-wbx-pcie-uart.dtb \
     freescale/imx8mp-summitsom-wbx-sdio-uart.dtb \
     freescale/imx8mp-summitsom-wbx-sdio-uart-stop.dtb \

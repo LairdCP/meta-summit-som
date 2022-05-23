@@ -9,6 +9,7 @@ SRC_URI = " \
     file://file-cache.conf \
     file://modem \
     file://set-radio-mode \
+    file://set-m7-boot-mode \
     file://lrd.conf \
     file://lrdmwl.conf \
     file://lrd-profile.sh \
@@ -34,6 +35,7 @@ do_install () {
     install -D -m 0644 ${S}/lrd.conf ${D}${sysconfdir}/tmpfiles.d/lrd.conf
     install -D -m 0755 ${S}/modem ${D}${bindir}/modem
     install -D -m 0755 ${S}/set-radio-mode ${D}${bindir}/set-radio-mode
+    install -D -m 0755 ${S}/set-m7-boot-mode ${D}${bindir}/set-m7-boot-mode
     install -D -m 0644 ${S}/lrdmwl.conf ${D}${sysconfdir}/modprobe.d/lrdmwl.conf
     install -D -m 0755 ${S}/lrd-profile.sh ${D}${sysconfdir}/profile.d/lrd-profile.sh
     install -D -m 0755 ${S}/overlayRoot.sh ${D}${sbindir}/overlayRoot.sh

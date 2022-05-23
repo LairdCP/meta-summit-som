@@ -21,6 +21,7 @@ SRC_URI += " \
 	file://0015-imx8mp-hdmi-pavi.patch \
 	file://0016-gpio-regulator-off-delay.patch \
 	file://0017-fix-88w8997-pcie-enum.patch \
+	file://0018-i2c-rpmsg-imx-increase-max-buf-size.patch \
 	"
 
 KBUILD_DEFCONFIG_remove = "${IMX_KERNEL_CONFIG_AARCH64}"
