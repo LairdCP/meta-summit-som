@@ -6,4 +6,4 @@ MIRRORS_laird-internal = ""
 LRD_URI_LOCAL = "file://${TOPDIR}/../release"
 LRD_URI_BASE = "${LRD_URI_LOCAL}"
 
-PV = "9.0.0.49"
+PV = "10.4.0.13"

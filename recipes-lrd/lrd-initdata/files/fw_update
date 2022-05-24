@@ -12,10 +12,10 @@ usage() {
 
 [ $# -ge 1 ] || usage
 
-o_method=full
-o_quiet=false
+unset o_method
+unset o_side
+o_quiet=true
 o_restart=true
-o_side=
 
 update_ok=false
 
@@ -26,8 +26,7 @@ while getopts m:s:x:qv name; do
     x)  case "${OPTARG}" in
             *r*) o_restart=false ;;
         esac ;;
-    q)  o_quiet=true ;;
-    v)  o_verbose="-v" ;;
+    v)  o_verbose="-v"; o_quiet=false ;;
     ?)  usage ;;
     esac
 done
@@ -47,8 +46,8 @@ if [ -z "${o_side}" ]; then
     [ "${part}" -ge 4 ] && o_side=a || o_side=b
 fi
 
-if ${run_on_sd} && [ -z "${o_method}" ]; then
-    o_method=complete
+if [ -z "${o_method}" ]; then
+    ${run_on_sd} && o_method=complete || o_method=full
 fi
 
 [ "${o_method}" = complete ] && o_complete=true || o_complete=false

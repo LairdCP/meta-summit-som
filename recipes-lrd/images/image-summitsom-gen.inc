@@ -25,7 +25,6 @@ IMAGE_FEATURES_append_lrdsecure += "\
 	read-only-rootfs \
 	"
 
-
 IMAGE_INSTALL_BASIC = "\
 	kernel-module-pac193x \
 	packagegroup-radio-stack \
