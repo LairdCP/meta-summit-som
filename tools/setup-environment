@@ -149,6 +149,7 @@ if ${build_dir_setup_enabled}; then
 "
 ' >> conf/local.conf
 
+${setup_lrd} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-lrd-radio-mfg"'  >> conf/bblayers.conf
 ${setup_radio} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-laird-cp"' >> conf/bblayers.conf
 
 fi
