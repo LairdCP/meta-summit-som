@@ -2,7 +2,7 @@
 
 # This script is called from our systemd unit file to mount or unmount
 # a USB drive.
-set  -x
+
 usage()
 {
     echo "Usage: $0 {add|remove} device_name (e.g. /dev/sdb1) [mount_user]"
@@ -50,7 +50,6 @@ do_mount()
             grep -q ${MOUNT_FILTER} /proc/cmdline && exit 0
             ;;
         *)
-            exit 0
             ;;
     esac
 
