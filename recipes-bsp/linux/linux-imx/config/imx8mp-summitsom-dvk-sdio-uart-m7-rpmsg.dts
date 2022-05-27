@@ -10,6 +10,6 @@
 #include "imx8mp-summitsom-dvk.dtsi"
 #include "imx8mp-summitsom-media-dvk.dtsi"
 #include "imx8mp-summitsom-gpu.dtsi"
-#include "imx8mp-summitsom-mipi-dvk.dtsi"
+#include "imx8mp-summitsom-mipi-bridge-dvk.dtsi"
 #include "imx8mp-summitsom-hdmi-dvk.dtsi"
 #include "imx8mp-summitsom-m7-rpmsg.dtsi"

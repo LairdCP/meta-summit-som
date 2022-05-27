@@ -9,6 +9,6 @@
 #include "imx8mp-summitsom-sdio-sdio.dtsi"
 #include "imx8mp-summitsom-wbx.dtsi"
 #include "imx8mp-summitsom-gpu.dtsi"
-#include "imx8mp-summitsom-mipi-dvk.dtsi"
+#include "imx8mp-summitsom-mipi-bridge-dvk.dtsi"
 #include "imx8mp-summitsom-hdmi-dvk.dtsi"
 #include "imx8mp-summitsom-lvds-bridge-dvk.dtsi"

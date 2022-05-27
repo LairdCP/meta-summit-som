@@ -3,6 +3,8 @@
  * Copyright 2021 Laird Connectivity
  */
 
+/* For MX8_DSI_OLED1A display */
+
 &lcdif1 {
 	status = "okay";
 };
@@ -11,7 +13,7 @@
 	status = "okay";
 
 	panel@0 {
-		compatible = "raydium,rm67191";
+		compatible = "raydium,rm67199";
 		reg = <0>;
 		pinctrl-0 = <&pinctrl_mipi_dsi_en>;
 		reset-gpio = <&gpio1 1 GPIO_ACTIVE_LOW>;
@@ -27,15 +29,17 @@
 };
 
 &i2c2 {
-	synaptics_dsx_ts@20 {
-		compatible = "synaptics_dsx";
-		reg = <0x20>;
+	touchscreen@14 {
+		compatible = "goodix,gt1151";
+		reg = <0x14>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_i2c2_synaptics_dsx_io>;
 		interrupt-parent = <&gpio1>;
-		interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
-		synaptics,diagonal-rotation;
-		status = "okay";
+		interrupts = <9 IRQ_TYPE_EDGE_FALLING>;
+		irq-gpios = <&gpio1 9 GPIO_ACTIVE_HIGH>;
+		edge-failling-trigger;
+		touchscreen-size-x = <1080>;
+		touchscreen-size-y = <1920>;
 	};
 };
 
