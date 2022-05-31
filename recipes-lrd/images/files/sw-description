@@ -45,6 +45,15 @@ software =
 					sha256 = "@fitImage";
 				},
 				{
+					filename = "lrd-m7-low-power-wakeup-demo-itcm.bin";
+					path = "lrd-m7-low-power-wakeup-demo-itcm.bin"
+					device = "/dev/mmcblk2p1"
+					type = "rawfile";
+					filesystem = "vfat"
+					installed-directly = true;
+					sha256 = "@lrd-m7-low-power-wakeup-demo-itcm.bin";
+				},
+				{
 					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
 					device = "/dev/mmcblk2p2"
 					type = "raw";
@@ -100,6 +109,15 @@ software =
 					filesystem = "vfat"
 					installed-directly = true;
 					sha256 = "@fitImage";
+				},
+				{
+					filename = "lrd-m7-low-power-wakeup-demo-itcm.bin";
+					path = "lrd-m7-low-power-wakeup-demo-itcm.bin"
+					device = "/dev/mmcblk2p4"
+					type = "rawfile";
+					filesystem = "vfat"
+					installed-directly = true;
+					sha256 = "@lrd-m7-low-power-wakeup-demo-itcm.bin";
 				},
 				{
 					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
@@ -204,6 +222,14 @@ software =
 					sha256 = "@fitImage";
 				},
 				{
+					filename = "lrd-m7-low-power-wakeup-demo-itcm.bin";
+					path = "lrd-m7-low-power-wakeup-demo-itcm.bin"
+					device = "/dev/mmcblk2p1"
+					type = "rawfile";
+					filesystem = "vfat"
+					sha256 = "@lrd-m7-low-power-wakeup-demo-itcm.bin";
+				},
+				{
 					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
 					device = "/dev/mmcblk2p2"
 					type = "raw";
@@ -216,6 +242,14 @@ software =
 					type = "rawfile";
 					filesystem = "vfat"
 					sha256 = "@fitImage";
+				},
+				{
+					filename = "lrd-m7-low-power-wakeup-demo-itcm.bin";
+					path = "lrd-m7-low-power-wakeup-demo-itcm.bin"
+					device = "/dev/mmcblk2p4"
+					type = "rawfile";
+					filesystem = "vfat"
+					sha256 = "@lrd-m7-low-power-wakeup-demo-itcm.bin";
 				},
 				{
 					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";

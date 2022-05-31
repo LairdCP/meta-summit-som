@@ -95,8 +95,8 @@
 	"m7_bootaddr_qspi=0x08000000\0"			\
 	"m7_image=lrd-m7-low-power-wakeup-demo-itcm.bin\0" \
 	"m7_ddr_temp=0x48000000\0"			\
-	"bootm7_itcm=load mmc 1:1 ${m7_ddr_temp} ${m7_image}; cp.b ${m7_ddr_temp} ${m7_bootaddr_itcm} 20000; bootaux ${m7_bootaddr_itcm}\0" \
-	"bootm7_ddr=load mmc 1:1 ${m7_bootaddr_ddr} ${m7_image}; dcache flush; bootaux ${m7_bootaddr_ddr}\0" \
+	"bootm7_itcm=load mmc ${mmcdev}:${bootvol} ${m7_ddr_temp} ${m7_image}; cp.b ${m7_ddr_temp} ${m7_bootaddr_itcm} 20000; bootaux ${m7_bootaddr_itcm}\0" \
+	"bootm7_ddr=load mmc ${mmcdev}:${bootvol} ${m7_bootaddr_ddr} ${m7_image}; dcache flush; bootaux ${m7_bootaddr_ddr}\0" \
 	"bootm7_qspi=sf probe; sf read ${m7_ddr_temp} 0 0x100000; bootaux ${m7_bootaddr_qspi}\0" \
 	"splashimage=0x50000000\0"			\
 	"conf=conf-freescale_imx8mp-summitsom-dvk-pcie-uart.dtb\0" \
@@ -115,11 +115,11 @@
 		"fi; "					\
 		"setexpr rootvol ${bootvol} + 1;\0"	\
 	"bootcmd="					\
+		"run mmcside; "				\
 		"setexpr bootm7 sub \"m7-rpmsg\" \"\" $conf; "\
 		"if test -n \"${bootm7}\"; then "	\
 			"run bootm7_itcm; "		\
 		"fi; "					\
-		"run mmcside; "				\
 		"if run loadimage; then " 		\
 			"run mmcargs; "			\
 			"bootm ${loadaddr}#${conf}; "	\

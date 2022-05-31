@@ -20,6 +20,5 @@ IMAGE_INSTALL += "\
 	lrd-m7-demos \
 	"
 
-IMAGE_BOOT_FILES += "\
-	lrd-m7-*.bin \
-	"
+IMAGE_BOOT_FILES_append = " lrd-m7-low-power-wakeup-demo-itcm.bin"
+SWUPDATE_IMAGES_append = " lrd-m7-low-power-wakeup-demo-itcm.bin"
