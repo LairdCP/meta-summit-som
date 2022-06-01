@@ -30,7 +30,6 @@ do_install() {
 		${S}/90-usbmount.rules ${S}/91-mmcmount.rules
 
 	install -d ${D}${sysconfdir}/default
-	echo "MOUNT_FILTER=/dev/mmcblk2"   >${D}${sysconfdir}/default/usb-mount
 	echo "MOUNT_USER_MMC=${MMC_USER}" >>${D}${sysconfdir}/default/usb-mount
 	echo "MOUNT_USER_USB=${USB_USER}" >>${D}${sysconfdir}/default/usb-mount
 }

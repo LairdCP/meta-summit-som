@@ -46,8 +46,11 @@ fi
 do_mount()
 {
     case "${DEVICE}" in
-        ${MOUNT_FILTER}*) 
-            grep -q ${MOUNT_FILTER} /proc/cmdline && exit 0
+        /dev/mmcblk1*)
+            grep -q  /dev/mmcblk1 /proc/cmdline && exit 0
+            ;;
+        /dev/mmcblk2*)
+            exit 0
             ;;
         *)
             ;;
