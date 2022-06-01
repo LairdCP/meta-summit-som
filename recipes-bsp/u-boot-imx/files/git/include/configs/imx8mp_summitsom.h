@@ -120,10 +120,10 @@
 		"if test -n \"${bootm7}\"; then "	\
 			"run bootm7_itcm; "		\
 		"fi; "					\
-		"if run loadimage; then " 		\
+		"if run loadimage; then "		\
 			"run mmcargs; "			\
 			"bootm ${loadaddr}#${conf}; "	\
-	   	"fi; "
+		"fi; "
 
 /* Link Definitions */
 #define CONFIG_LOADADDR			0x44000000

@@ -11,4 +11,4 @@ modules_install:
 	$(MAKE) -C $(KERNEL_SRC) M=$(CURDIR) modules_install
 
 clean:
-	$(MAKE) -C $(KERNEL_SRC) M=$(CURDIR) clean
+	@rm -f modules.order Module.symvers *.o *.ko *.mod*
