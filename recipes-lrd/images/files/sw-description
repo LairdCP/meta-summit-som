@@ -14,7 +14,7 @@ software =
 					properties: {
 						fstype = "vfat";
 						force = "true";
-					}
+					};
 				},
 				{
 					type = "diskformat";
@@ -23,7 +23,7 @@ software =
 					properties: {
 						fstype = "ext4";
 						force = "true";
-					}
+					};
 				}
 			);
 
@@ -37,25 +37,25 @@ software =
 				},
 				{
 					filename = "fitImage";
-					path = "fitImage"
-					device = "/dev/mmcblk2p1"
+					path = "fitImage";
+					device = "/dev/mmcblk2p1";
 					type = "rawfile";
-					filesystem = "vfat"
+					filesystem = "vfat";
 					installed-directly = true;
 					sha256 = "@fitImage";
 				},
 				{
 					filename = "lrd-m7-low-power-wakeup-demo-itcm.bin";
-					path = "lrd-m7-low-power-wakeup-demo-itcm.bin"
-					device = "/dev/mmcblk2p1"
+					path = "lrd-m7-low-power-wakeup-demo-itcm.bin";
+					device = "/dev/mmcblk2p1";
 					type = "rawfile";
-					filesystem = "vfat"
+					filesystem = "vfat";
 					installed-directly = true;
 					sha256 = "@lrd-m7-low-power-wakeup-demo-itcm.bin";
 				},
 				{
 					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
-					device = "/dev/mmcblk2p2"
+					device = "/dev/mmcblk2p2";
 					type = "raw";
 					installed-directly = true;
 					sha256 = "@@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
@@ -69,7 +69,7 @@ software =
 					data = "a";
 				}
 			);
-		}
+		};
 
 		full-b: {
 			partitions: (
@@ -80,7 +80,7 @@ software =
 					properties: {
 						fstype = "vfat";
 						force = "true";
-					}
+					};
 				},
 				{
 					type = "diskformat";
@@ -89,7 +89,7 @@ software =
 					properties: {
 						fstype = "ext4";
 						force = "true";
-					}
+					};
 				}
 			);
 
@@ -103,25 +103,25 @@ software =
 				},
 				{
 					filename = "fitImage";
-					path = "fitImage"
-					device = "/dev/mmcblk2p4"
+					path = "fitImage";
+					device = "/dev/mmcblk2p4";
 					type = "rawfile";
-					filesystem = "vfat"
+					filesystem = "vfat";
 					installed-directly = true;
 					sha256 = "@fitImage";
 				},
 				{
 					filename = "lrd-m7-low-power-wakeup-demo-itcm.bin";
-					path = "lrd-m7-low-power-wakeup-demo-itcm.bin"
-					device = "/dev/mmcblk2p4"
+					path = "lrd-m7-low-power-wakeup-demo-itcm.bin";
+					device = "/dev/mmcblk2p4";
 					type = "rawfile";
-					filesystem = "vfat"
+					filesystem = "vfat";
 					installed-directly = true;
 					sha256 = "@lrd-m7-low-power-wakeup-demo-itcm.bin";
 				},
 				{
 					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
-					device = "/dev/mmcblk2p5"
+					device = "/dev/mmcblk2p5";
 					type = "raw";
 					installed-directly = true;
 					sha256 = "@@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
@@ -135,7 +135,7 @@ software =
 					data = "b";
 				}
 			);
-		}
+		};
 
 		complete: {
 			partitions: (
@@ -152,7 +152,7 @@ software =
 						partition-5 = ["size=512M", "name=rootfs_b",      "type=B921B045-1DF0-41C3-AF44-4C6F280D3FAE"];
 						partition-6 = ["size=256M", "name=rootfs_data_b", "type=0FC63DAF-8483-4772-8E79-3D69D8477DE4"];
 						partition-7 = ["size=6G",   "name=perm",          "type=0FC63DAF-8483-4772-8E79-3D69D8477DE4"];
-					}
+					};
 				},
 				{
 					type = "diskformat";
@@ -161,7 +161,7 @@ software =
 					properties: {
 						fstype = "vfat";
 						force = "true";
-					}
+					};
 				},
 				{
 					type = "diskformat";
@@ -170,7 +170,7 @@ software =
 					properties: {
 						fstype = "ext4";
 						force = "true";
-					}
+					};
 				},
 				{
 					type = "diskformat";
@@ -179,7 +179,7 @@ software =
 					properties: {
 						fstype = "vfat";
 						force = "true";
-					}
+					};
 				},
 				{
 					type = "diskformat";
@@ -188,7 +188,7 @@ software =
 					properties: {
 						fstype = "ext4";
 						force = "true";
-					}
+					};
 				},
 				{
 					type = "diskformat";
@@ -200,6 +200,7 @@ software =
 					}
 				}
 			);
+
 			images: (
 				{
 					filename = "imx-boot";
@@ -209,46 +210,46 @@ software =
 				},
 				{
 					filename = "imx-boot";
-					device = "/dev/mmcblk2boot1"
+					device = "/dev/mmcblk2boot1";
 					type = "raw";
 					sha256 = "@imx-boot";
 				},
 				{
 					filename = "fitImage";
-					path = "fitImage"
-					device = "/dev/mmcblk2p1"
+					path = "fitImage";
+					device = "/dev/mmcblk2p1";
 					type = "rawfile";
-					filesystem = "vfat"
+					filesystem = "vfat";
 					sha256 = "@fitImage";
 				},
 				{
 					filename = "lrd-m7-low-power-wakeup-demo-itcm.bin";
-					path = "lrd-m7-low-power-wakeup-demo-itcm.bin"
-					device = "/dev/mmcblk2p1"
+					path = "lrd-m7-low-power-wakeup-demo-itcm.bin";
+					device = "/dev/mmcblk2p1";
 					type = "rawfile";
-					filesystem = "vfat"
+					filesystem = "vfat";
 					sha256 = "@lrd-m7-low-power-wakeup-demo-itcm.bin";
 				},
 				{
 					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
-					device = "/dev/mmcblk2p2"
+					device = "/dev/mmcblk2p2";
 					type = "raw";
 					sha256 = "@@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
 				},
 				{
 					filename = "fitImage";
-					path = "fitImage"
-					device = "/dev/mmcblk2p4"
+					path = "fitImage";
+					device = "/dev/mmcblk2p4";
 					type = "rawfile";
-					filesystem = "vfat"
+					filesystem = "vfat";
 					sha256 = "@fitImage";
 				},
 				{
 					filename = "lrd-m7-low-power-wakeup-demo-itcm.bin";
-					path = "lrd-m7-low-power-wakeup-demo-itcm.bin"
-					device = "/dev/mmcblk2p4"
+					path = "lrd-m7-low-power-wakeup-demo-itcm.bin";
+					device = "/dev/mmcblk2p4";
 					type = "rawfile";
-					filesystem = "vfat"
+					filesystem = "vfat";
 					sha256 = "@lrd-m7-low-power-wakeup-demo-itcm.bin";
 				},
 				{
@@ -258,6 +259,7 @@ software =
 					sha256 = "@@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
 				}
 			);
+
 			scripts: (
 				{
 					filename = "update_support.sh";
