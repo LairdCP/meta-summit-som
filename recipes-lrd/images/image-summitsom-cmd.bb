@@ -9,6 +9,7 @@ IMAGE_INSTALL += "\
 	${IMAGE_INSTALL_DIAG} \
 	linuxptp \
 	packagegroup-fsl-tools-audio \
+	packagegroup-imx-isp \
 	mpg123 \
 	read-edid \
 	fbida \
@@ -20,5 +21,5 @@ IMAGE_INSTALL += "\
 	lrd-m7-demos \
 	"
 
-IMAGE_BOOT_FILES_append = " lrd-m7-low-power-wakeup-demo-itcm.bin"
-SWUPDATE_IMAGES_append = " lrd-m7-low-power-wakeup-demo-itcm.bin"
+IMAGE_BOOT_FILES += "lrd-m7-low-power-wakeup-demo-itcm.bin"
+SWUPDATE_IMAGES += "lrd-m7-low-power-wakeup-demo-itcm.bin"
