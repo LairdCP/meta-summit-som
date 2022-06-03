@@ -88,7 +88,7 @@ MACHINE_EXTRA_RDEPENDS += "${MACHINE_FIRMWARE} kernel-modules"
 
 IMXBOOT_TARGETS_BASENAME = "flash_evk"
 
-PREFERRED_RPROVIDER_wireless-regdb-static = "summit60-firmware-som"
+PREFERRED_RPROVIDER_wireless-regdb-static = "som8mp-radio-firmware"
 PREFERRED_RPROVIDER_wpa-supplicant = "summit-supplicant-som"
 PREFERRED_RPROVIDER_wpa-supplicant-cli = "summit-supplicant-som"
 PREFERRED_RPROVIDER_wpa-supplicant-passphrase = "summit-supplicant-som"

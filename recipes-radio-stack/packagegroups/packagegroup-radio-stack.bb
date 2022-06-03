@@ -9,7 +9,7 @@ inherit packagegroup
 
 RDEPENDS_${PN} = " \
 	kernel-module-som-backports-laird \
-	summit60-firmware-som \
+	som8mp-radio-firmware \
 	${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'adaptive-bt-som lrd-bt-uart-scripts-som', '', d)} \
 	summit-supplicant-som \
 	summit-supplicant-som-cli \
