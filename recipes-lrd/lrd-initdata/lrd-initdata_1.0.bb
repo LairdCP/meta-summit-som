@@ -14,7 +14,6 @@ SRC_URI = " \
     file://lrdmwl.conf \
     file://lrd-profile.sh \
     file://overlayRoot.sh \
-    file://fw_update \
     file://var-volatile-log-journal.mount \
     file://perm-enable \
     file://perm-enable.service \
@@ -39,7 +38,6 @@ do_install () {
     install -D -m 0644 ${S}/lrdmwl.conf ${D}${sysconfdir}/modprobe.d/lrdmwl.conf
     install -D -m 0755 ${S}/lrd-profile.sh ${D}${sysconfdir}/profile.d/lrd-profile.sh
     install -D -m 0755 ${S}/overlayRoot.sh ${D}${sbindir}/overlayRoot.sh
-    install -D -m 0755 ${S}/fw_update ${D}${sbindir}/fw_update
     install -d ${D}/perm
     install -D -m 0644 ${S}/perm-enable.service ${D}${systemd_unitdir}/system/perm-enable.service
     install -D -m 0755 ${S}/perm-enable ${D}${bindir}/perm-enable

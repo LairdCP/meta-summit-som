@@ -35,10 +35,12 @@ IMAGE_INSTALL_BASIC = "\
 	chronyc \
 	lrd-automount \
 	lrd-initdata \
+	lrd-update \
 	lrd-fwenv \
 	lrd-usbgadget \
 	u-boot-fw-utils \
 	swupdate \
+	swupdate-client \
 	keyctl-caam \
 	crypto-af-alg \
 	keyutils \
