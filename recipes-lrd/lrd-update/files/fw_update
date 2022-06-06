@@ -66,7 +66,7 @@ case "${url}" in
     elif [ -x /usr/bin/wget ]; then
         download_cmd="/usr/bin/wget -qO - ${url}"
     else
-        die("Download utility not found (need curl or wget)")
+        die "Download utility not found (need curl or wget)"
     fi
 
     if  ${o_complete}; then
