@@ -69,9 +69,6 @@ case "${url}" in
         die "Download utility not found (need curl or wget)"
     fi
 
-    if  ${o_complete}; then
-        . erase_som_nand
-    fi
     ${download_cmd} | swupdate-client -e stable,${p_method} ${o_verbose} - | tee /tmp/swup
     ;;
 
