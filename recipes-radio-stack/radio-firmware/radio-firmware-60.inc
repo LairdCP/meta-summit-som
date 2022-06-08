@@ -6,7 +6,3 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/MIT;md5=0835ad
 RPROVIDES_${PN}  += "wireless-regdb-static"
 RREPLACES_${PN}  += "wireless-regdb-static"
 RCONFLICTS_${PN} += "wireless-regdb-static"
-
-do_install_append() {
-	install -D -t ${D}${nonarch_base_libdir}/firmware/lrdmwl -m 644 ${S}/lib/firmware/lrdmwl/regpwr.db
-}
