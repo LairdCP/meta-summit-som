@@ -105,6 +105,7 @@
 		"setenv bootargs console=${console} "	\
 		"root=/dev/mmcblk${mmcdev}p${rootvol} " \
 		"rootfstype=squashfs rootwait ro quiet "\
+		"clk_ignore_unused "			\
 		"bootside=${bootside} "			\
 		"init=/usr/sbin/overlayRoot.sh\0"	\
 	"mmcside="					\
