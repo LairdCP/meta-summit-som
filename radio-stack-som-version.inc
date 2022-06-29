@@ -4,6 +4,6 @@ PREMIRRORS_laird-internal = ""
 MIRRORS_laird-internal = ""
 
 LRD_URI_LOCAL = "file://${TOPDIR}/../release"
-LRD_URI_BASE = "${LRD_URI_LOCAL}"
+LRD_URI_BASE = "https://github.com/LairdCP/wb-package-archive/releases/download/LRD-REL-${PV}"
 
-PV = "10.4.0.18"
+require radio-stack-som8mp-hashes.inc
