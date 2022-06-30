@@ -24,7 +24,7 @@ LRD_URI ?= "${LRD_URI_BASE}"
 LRD_URI_laird-internal = "https://files.devops.rfpros.com/builds/linux/lrd-network-manager/src/${PV}"
 
 SRC_URI = " \
-    ${LRD_URI}/lrd-network-manager-src-${PV}.tar.xz;name=network-manager \
+    ${LRD_URI}/lrd-network-manager-src-${PV}.tar.xz;name=lrd-network-manager \
     file://networkmanager.initd \
     file://NetworkManager.conf \
     file://0001-Fixed-configure.ac-Fix-pkgconfig-sysroot-locations.patch \

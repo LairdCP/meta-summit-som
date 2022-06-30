@@ -12,7 +12,7 @@ BB_STRICT_CHECKSUM_laird-internal = "ignore"
 PREMIRRORS_laird-internal = ""
 MIRRORS_laird-internal = ""
 
-LRD_URI ?= "https://github.com/LairdCP/SOM8MP-Zephyr-Release-Packages/releases/download/${PV}"
+LRD_URI ?= "https://github.com/LairdCP/SOM8MP-Zephyr-Release-Packages/releases/download/SUMMIT-ZEPHYR-${PV}"
 LRD_URI_laird-internal = "https://files.devops.rfpros.com/builds/zephyr/som8mp/laird/${PV}"
 
 SRC_URI = "${LRD_URI}/lrd-m7-demos-${PV}.tar.bz2"
