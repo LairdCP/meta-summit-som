@@ -9,12 +9,21 @@ PYPI_PACKAGE = "CherryPy"
 
 inherit pypi setuptools3
 
+SRC_URI += "\
+    file://0001-disable-packages-to-save-memory.patch \
+    file://0002-For-now-inline-the-implementation.patch \
+"
+
+DEPENDS += "\
+    python3-setuptools-scm-native \
+"
+
 RDEPENDS_${PN} += " \
     python3-io \
     python3-email \
     python3-threading \
     python3-cheroot \
     python3-portend \
-    python3-more_itertools \
+    python3-more-itertools \
     python3-zc-lockfile \
     "

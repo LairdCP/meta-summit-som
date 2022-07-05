@@ -92,6 +92,8 @@ PREFERRED_RPROVIDER_wireless-regdb-static = "som8mp-radio-firmware"
 PREFERRED_RPROVIDER_wpa-supplicant = "summit-supplicant-som"
 PREFERRED_RPROVIDER_wpa-supplicant-cli = "summit-supplicant-som"
 PREFERRED_RPROVIDER_wpa-supplicant-passphrase = "summit-supplicant-som"
+PREFERRED_RPROVIDER_networkmanager = "lrd-networkmanager-som"
+PREFERRED_RPROVIDER_networkmanager = "lrd-networkmanager-som-nmcli"
 
 MACHINE_FEATURES_remove = "nxp8987 nxp8997"
 MACHINE_FIRMWARE_remove = "linux-firmware-ath10k"

@@ -196,3 +196,23 @@ do_install_append() {
         install -Dm 0755 ${WORKDIR}/networkmanager.initd ${D}${sysconfdir}/init.d/network-manager
     fi
 }
+
+RPROVIDES_${PN} += "networkmanager"
+RREPLACES_${PN} += "networkmanager"
+RCONFLICTS_${PN} += "networkmanager"
+
+RPROVIDES_${PN}-nmcli += "networkmanager-nmcli"
+RREPLACES_${PN}-nmcli += "networkmanager-nmcli"
+RCONFLICTS_${PN}-nmcli += "networkmanager-nmcli"
+
+RPROVIDES_${PN}-nmcli-doc += "networkmanager-nmcli-doc"
+RREPLACES_${PN}-nmcli-doc += "networkmanager-nmcli-doc"
+RCONFLICTS_${PN}-nmcli-doc += "networkmanager-nmcli-doc"
+
+RPROVIDES_${PN}-nmtui += "networkmanager-nmtui"
+RREPLACES_${PN}-nmtui += "networkmanager-nmtui"
+RCONFLICTS_${PN}-nmtui += "networkmanager-nmtui"
+
+RPROVIDES_${PN}-nmtui-doc += "networkmanager-nmtui-doc"
+RREPLACES_${PN}-nmtui-doc += "networkmanager-nmtui-doc"
+RCONFLICTS_${PN}-nmtui-doc += "networkmanager-nmtui-doc"

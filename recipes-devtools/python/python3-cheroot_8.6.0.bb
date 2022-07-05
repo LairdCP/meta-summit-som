@@ -17,6 +17,11 @@ PYPI_PACKAGE = "cheroot"
 
 inherit pypi setuptools3
 
+DEPENDS += "\
+        python3-setuptools-scm-native \
+        python3-setuptools-scm-git-archive-native \
+"
+
 RDEPENDS_${PN} = "\
         python3-io \
         python3-six \
