@@ -13,3 +13,5 @@ PYPI_PACKAGE = "jaraco.functools"
 inherit pypi setuptools3
 
 RDEPENDS_${PN} = "python3-more-itertools"
+
+BBCLASSEXTEND = "native nativesdk"

@@ -11,3 +11,5 @@ SRC_URI[sha256sum] = "307ad78227e48be260e64896ec8886edc7eae22d8ec53e4d528ab5537a
 PYPI_PACKAGE = "zc.lockfile"
 
 inherit pypi setuptools3
+
+BBCLASSEXTEND = "native nativesdk"

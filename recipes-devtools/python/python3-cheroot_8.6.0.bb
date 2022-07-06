@@ -13,8 +13,6 @@ SRC_URI += "\
 SRC_URI[md5sum] = "70247d0948899f453b50e6181cddd0d7"
 SRC_URI[sha256sum] = "366adf6e7cac9555486c2d1be6297993022eff6f8c4655c1443268cca3f08e25"
 
-PYPI_PACKAGE = "cheroot"
-
 inherit pypi setuptools3
 
 DEPENDS += "\

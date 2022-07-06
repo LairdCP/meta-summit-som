@@ -18,3 +18,5 @@ RDEPENDS_${PN} += " \
     python3-io \
     python3-datetime \
 "
+
+BBCLASSEXTEND = "native nativesdk"
