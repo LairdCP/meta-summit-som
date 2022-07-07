@@ -9,15 +9,17 @@ IMAGE_INSTALL += "\
 	${IMAGE_INSTALL_DIAG} \
 	linuxptp \
 	packagegroup-fsl-tools-audio \
+	packagegroup-imx-isp \
 	mpg123 \
 	read-edid \
 	fbida \
 	python3 \
+	python3-dbus \
 	systemd-analyze \
 	bluez5-testtools \
-	python-dbus \
 	mc-mint \
 	lrd-m7-demos \
+	weblcm-python \
 	"
 
 IMAGE_BOOT_FILES += "lrd-m7-low-power-wakeup-demo-itcm.bin"
