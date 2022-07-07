@@ -9,7 +9,6 @@ IMAGE_INSTALL += "\
 	${IMAGE_INSTALL_DIAG} \
 	linuxptp \
 	packagegroup-fsl-tools-audio \
-	packagegroup-imx-isp \
 	mpg123 \
 	read-edid \
 	fbida \

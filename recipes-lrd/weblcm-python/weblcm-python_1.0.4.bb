@@ -18,10 +18,12 @@ SYSTEMD_AUTO_ENABLE = "enable"
 USERNAME_${PN} ?= "root"
 PASSWORD_${PN} ?= "summit"
 
-KEY_LOCATION_VALUE_${PN} ?= "/data/secret/swupdate/dev.crt"
+KEY_LOCATION_VALUE_${PN} ?= "/etc/swupdate/dev.crt"
 
 MANAGED_SOFTWARE_DEVICES_${PN} ?= ""
 UNMANAGED_HARDWARE_DEVICES_${PN} ?= ""
+
+ADAPTIVE_WW_CFG_FILE_${PN} ?= ""
 
 PACKAGECONFIG[awm] = "weblcm/awm,,,python3-libconf"
 PACKAGECONFIG[modem] = "weblcm/modem"
@@ -33,13 +35,25 @@ PACKAGECONFIG[ws4] = ",,,,python3-ws4py"
 PACKAGECONFIG ?= "awm ${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'bluetooth', '', d)}"
 
 RDEPENDS_${PN} = "\
-        python3 \
-        python3-core \
-        python3-io \
-        python3-pygobject \
-        python3-systemd \
-        python3-networkmanager \
-        python3-cherrypy \
+	python3 \
+	python3-core \
+	python3-crypt \
+	python3-datetime \
+	python3-io \
+	python3-json \
+	python3-syslog \
+	python3-threading \
+	python3-dbus \
+	python3-pygobject \
+	python3-systemd \
+	python3-networkmanager \
+	python3-cherrypy \
+	zip \
+	unzip \
+	swupdate \
+	swupdate-client \
+	swclient \
+	lrd-update \
         "
 
 do_compile_prepend() {
@@ -58,9 +72,8 @@ do_install_append() {
 
 	install -D -t ${D}${sysconfdir}/weblcm-python/scripts -m 755 ${S}/*.sh
 	install -D -t ${D}${sysconfdir}/weblcm-python -m 644 ${S}/*.ini
-	install -D -t ${D}${sysconfdir}/weblcm-python/ssl -m 644 ${S}/ssl/server.key
-	install -D -t ${D}${sysconfdir}/weblcm-python/ssl -m 644 ${S}/ssl/server.crt
-	install -D -t ${D}${sysconfdir}/weblcm-python/ssl -m 644 ${S}/ssl/ca.crt
+	install -D -t ${D}${sysconfdir}/weblcm-python/ssl -m 644 \
+		${S}/ssl/server.key ${S}/ssl/server.crt ${S}/ssl/ca.crt
 
 	install -d ${D}${sysconfdir}/swupdate/conf.d
 	echo 'SWUPDATE_ARGS=${SWUPDATE_ARGS} -k ${KEY_LOCATION_VALUE_${PN}} --cert-purpose codeSigning' > ${D}${sysconfdir}/swupdate/conf.d/99-weblcm-python.conf
@@ -77,6 +90,8 @@ do_install_append() {
 
 	sed -i -e '/^awm_cfg/d' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
 	sed -i -e '/\[weblcm\]/a awm_cfg:${ADAPTIVE_WW_CFG_FILE_${PN}}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
+
+	sed -i -e 's,/data/secret,/etc,g' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
 
 	if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
 		install -D -m 644 ${S}/weblcm-python.service \
