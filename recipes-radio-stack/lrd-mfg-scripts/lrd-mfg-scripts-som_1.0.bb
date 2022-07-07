@@ -13,6 +13,10 @@ SRC_URI = " \
     file://lrdmwl_2040.conf \
     "
 
+RDEPENDS_${PN} = "\
+	libubootenv \
+"
+
 S = "${WORKDIR}"
 
 FILES_${PN} += "/home/root"

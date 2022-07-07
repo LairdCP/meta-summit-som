@@ -10,6 +10,11 @@ SRC_URI = " \
     file://fw_update \
     "
 
+RDEPENDS_${PN} = "\
+	swupdate \
+	swupdate-client \
+"
+
 S = "${WORKDIR}"
 
 do_install () {

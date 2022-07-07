@@ -29,6 +29,10 @@ SYSTEMD_AUTO_ENABLE = "enable"
 
 SYSTEMD_SERVICE_${PN}_append_lrdsecure = " var-volatile-log-journal.mount"
 
+RDEPENDS_${PN} = "\
+	libubootenv \
+"
+
 do_install () {
     install -D -m 0644 ${S}/file-cache.conf ${D}${sysconfdir}/sysctl.d/file-cache.conf
     install -D -m 0644 ${S}/lrd.conf ${D}${sysconfdir}/tmpfiles.d/lrd.conf
