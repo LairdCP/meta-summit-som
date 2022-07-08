@@ -29,8 +29,8 @@
 
 DECLARE_GLOBAL_DATA_PTR;
 
-#define UART_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_FSEL1)
-#define WDOG_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_ODE | PAD_CTL_PUE | PAD_CTL_PE)
+#define UART_PAD_CTRL   (PAD_CTL_DSE6 | PAD_CTL_FSEL1)
+#define WDOG_PAD_CTRL   (PAD_CTL_DSE6 | PAD_CTL_ODE | PAD_CTL_PUE | PAD_CTL_PE)
 
 static iomux_v3_cfg_t const uart_pads[] = {
 	MX8MP_PAD_UART2_RXD__UART2_DCE_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
@@ -38,7 +38,7 @@ static iomux_v3_cfg_t const uart_pads[] = {
 };
 
 static iomux_v3_cfg_t const wdog_pads[] = {
-	MX8MP_PAD_GPIO1_IO02__WDOG1_WDOG_B  | MUX_PAD_CTRL(WDOG_PAD_CTRL),
+	MX8MP_PAD_GPIO1_IO02__WDOG1_WDOG_B | MUX_PAD_CTRL(WDOG_PAD_CTRL),
 };
 
 int board_early_init_f(void)
@@ -62,7 +62,7 @@ int board_phys_sdram_size(phys_size_t *memsize)
 
 	fuse_read(14, 0, &gp1);
 
-	switch(gp1 & 0xff) {
+	switch (gp1 & 0xff) {
 	case 1:
 		*memsize = 0x40000000;
 		break;
@@ -126,7 +126,7 @@ static int setup_charger(uint8_t i2c_bus, uint8_t addr)
 	ret = dm_i2c_probe(bus, addr, 0, &i2c_dev);
 	if (ret) {
 		printf("%s: Can't find device id=0x%x\n",
-			__func__, addr);
+		       __func__, addr);
 		return -ENODEV;
 	}
 
@@ -175,8 +175,7 @@ static int setup_pd_switch(uint8_t i2c_bus, uint8_t addr)
 
 	ret = dm_i2c_probe(bus, addr, 0, &i2c_dev);
 	if (ret) {
-		printf("%s: Can't find device id=0x%x\n",
-			__func__, addr);
+		printf("%s: Can't find device id=0x%x\n", __func__, addr);
 		return -ENODEV;
 	}
 
@@ -209,15 +208,15 @@ int pd_switch_snk_enable(struct tcpc_port *port)
 }
 
 struct tcpc_port_config port1_config = {
-	.i2c_bus = 1, /*i2c2*/
-	.addr = 0x50,
-	.port_type = TYPEC_PORT_UFP,
-	.max_snk_mv = 20000,
-	.max_snk_ma = 3000,
-	.max_snk_mw = 45000,
-	.op_snk_mv = 15000,
-	.switch_setup_func = &pd_switch_snk_enable,
-	.disable_pd = true,
+	.i2c_bus		= 1, /*i2c2*/
+	.addr			= 0x50,
+	.port_type		= TYPEC_PORT_UFP,
+	.max_snk_mv		= 20000,
+	.max_snk_ma		= 3000,
+	.max_snk_mw		= 45000,
+	.op_snk_mv		= 15000,
+	.switch_setup_func	= &pd_switch_snk_enable,
+	.disable_pd		= true,
 };
 
 #define USB_TYPEC_SEL IMX_GPIO_NR(4, 20)
@@ -260,20 +259,20 @@ static int setup_typec(void)
 
 #ifdef CONFIG_USB_DWC3
 
-#define USB_PHY_CTRL0			0xF0040
-#define USB_PHY_CTRL0_REF_SSP_EN	BIT(2)
+#define USB_PHY_CTRL0                   0xF0040
+#define USB_PHY_CTRL0_REF_SSP_EN        BIT(2)
 
-#define USB_PHY_CTRL1			0xF0044
-#define USB_PHY_CTRL1_RESET		BIT(0)
-#define USB_PHY_CTRL1_COMMONONN		BIT(1)
-#define USB_PHY_CTRL1_ATERESET		BIT(3)
-#define USB_PHY_CTRL1_VDATSRCENB0	BIT(19)
-#define USB_PHY_CTRL1_VDATDETENB0	BIT(20)
+#define USB_PHY_CTRL1                   0xF0044
+#define USB_PHY_CTRL1_RESET             BIT(0)
+#define USB_PHY_CTRL1_COMMONONN         BIT(1)
+#define USB_PHY_CTRL1_ATERESET          BIT(3)
+#define USB_PHY_CTRL1_VDATSRCENB0       BIT(19)
+#define USB_PHY_CTRL1_VDATDETENB0       BIT(20)
 
-#define USB_PHY_CTRL2			0xF0048
-#define USB_PHY_CTRL2_TXENABLEN0	BIT(8)
+#define USB_PHY_CTRL2                   0xF0048
+#define USB_PHY_CTRL2_TXENABLEN0        BIT(8)
 
-#define USB_PHY_CTRL6			0xF0058
+#define USB_PHY_CTRL6                   0xF0058
 
 #define HSIO_GPR_BASE                               (0x32F10000U)
 #define HSIO_GPR_REG_0                              (HSIO_GPR_BASE)
@@ -283,14 +282,14 @@ static int setup_typec(void)
 
 static struct dwc3_device dwc3_device_data = {
 #ifdef CONFIG_SPL_BUILD
-	.maximum_speed = USB_SPEED_HIGH,
+	.maximum_speed		= USB_SPEED_HIGH,
 #else
-	.maximum_speed = USB_SPEED_SUPER,
+	.maximum_speed		= USB_SPEED_SUPER,
 #endif
-	.base = USB1_BASE_ADDR,
-	.dr_mode = USB_DR_MODE_PERIPHERAL,
-	.index = 0,
-	.power_down_scale = 2,
+	.base			= USB1_BASE_ADDR,
+	.dr_mode		= USB_DR_MODE_PERIPHERAL,
+	.index			= 0,
+	.power_down_scale	= 2,
 };
 
 int usb_gadget_handle_interrupts(int index)
@@ -310,16 +309,16 @@ static void dwc3_nxp_usb_phy_init(struct dwc3_device *dwc3)
 
 	/* USB3.0 PHY signal fsel for 100M ref */
 	RegData = readl(dwc3->base + USB_PHY_CTRL0);
-	RegData = (RegData & 0xfffff81f) | (0x2a<<5);
+	RegData = (RegData & 0xfffff81f) | (0x2a << 5);
 	writel(RegData, dwc3->base + USB_PHY_CTRL0);
 
 	RegData = readl(dwc3->base + USB_PHY_CTRL6);
-	RegData &=~0x1;
+	RegData &= ~0x1;
 	writel(RegData, dwc3->base + USB_PHY_CTRL6);
 
 	RegData = readl(dwc3->base + USB_PHY_CTRL1);
 	RegData &= ~(USB_PHY_CTRL1_VDATSRCENB0 | USB_PHY_CTRL1_VDATDETENB0 |
-			USB_PHY_CTRL1_COMMONONN);
+		     USB_PHY_CTRL1_COMMONONN);
 	RegData |= USB_PHY_CTRL1_RESET | USB_PHY_CTRL1_ATERESET;
 	writel(RegData, dwc3->base + USB_PHY_CTRL1);
 
@@ -341,6 +340,7 @@ static void dwc3_nxp_usb_phy_init(struct dwc3_device *dwc3)
 int board_usb_init(int index, enum usb_init_type init)
 {
 	int ret = 0;
+
 	imx8m_usb_power(index, true);
 
 	if (index == 0 && init == USB_INIT_DEVICE) {
@@ -364,6 +364,7 @@ int board_usb_init(int index, enum usb_init_type init)
 int board_usb_cleanup(int index, enum usb_init_type init)
 {
 	int ret = 0;
+
 	if (index == 0 && init == USB_INIT_DEVICE) {
 		dwc3_uboot_exit(index);
 	} else if (index == 0 && init == USB_INIT_HOST) {
@@ -437,8 +438,8 @@ int board_phy_config(struct phy_device *phydev)
 }
 #endif
 
-#define DISPMIX				13
-#define MIPI				15
+#define DISPMIX                         13
+#define MIPI                            15
 
 static bool wbx3;
 
@@ -476,11 +477,12 @@ int board_init(void)
 	return 0;
 }
 
-static void update_dts(const char* oldn, const char *newn)
+static void update_dts(const char *oldn, const char *newn)
 {
 	char buf[64], *dvk;
 
 	char *dtb = env_get("conf");
+
 	if (!strstr(dtb, oldn))
 		return;
 
@@ -533,7 +535,7 @@ uint mmc_get_env_part(struct mmc *mmc)
 
 int board_late_init(void)
 {
-	const char* side;
+	const char *side;
 
 	switch (get_boot_device()) {
 	case SD2_BOOT:
@@ -569,7 +571,8 @@ int board_late_init(void)
 }
 
 #ifdef CONFIG_ANDROID_SUPPORT
-bool is_power_key_pressed(void) {
+bool is_power_key_pressed(void)
+{
 	return (bool)(!!(readl(SNVS_HPSR) & (0x1 << 6)));
 }
 #endif
@@ -579,11 +582,12 @@ bool is_power_key_pressed(void) {
 unsigned long spl_mmc_get_uboot_raw_sector(struct mmc *mmc)
 {
 	u32 boot_dev = spl_boot_device();
+
 	switch (boot_dev) {
-		case BOOT_DEVICE_MMC2:
-			return CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR - UBOOT_RAW_SECTOR_OFFSET;
-		default:
-			return CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR;
+	case BOOT_DEVICE_MMC2:
+		return CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR - UBOOT_RAW_SECTOR_OFFSET;
+	default:
+		return CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR;
 	}
 }
 #endif

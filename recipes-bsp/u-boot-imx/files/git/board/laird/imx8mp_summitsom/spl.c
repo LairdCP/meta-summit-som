@@ -73,7 +73,7 @@ void spl_dram_init(void)
 
 	fuse_read(14, 0, &gp1);
 
-	switch(gp1 & 0xff) {
+	switch (gp1 & 0xff) {
 	case 1:
 		ddr_init(&dram_timing_1g);
 		break;
@@ -140,12 +140,12 @@ int power_init_board(void)
 void spl_board_init(void)
 {
 	struct udevice *dev;
+
 	uclass_find_first_device(UCLASS_MISC, &dev);
 
-	for (; dev; uclass_find_next_device(&dev)) {
+	for (; dev; uclass_find_next_device(&dev))
 		if (device_probe(dev))
 			continue;
-	}
 
 	/* Set GIC clock to 500Mhz for OD VDD_SOC. Kernel driver does not allow to change it.
 	 * Should set the clock after PMIC setting done.

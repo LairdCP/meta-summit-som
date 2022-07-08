@@ -33,161 +33,161 @@
 #include <linux/iio/iio.h>
 #include <linux/iio/sysfs.h>
 
-#define PAC193X_MAX_RFSH_LIMIT						60000
+#define PAC193X_MAX_RFSH_LIMIT                                          60000
 /*(17 * 60 * 1000) //around 17 minutes@1024 sps */
-#define PAC193X_MIN_POLLING_TIME					50
+#define PAC193X_MIN_POLLING_TIME                                        50
 /* 50msec is the timeout for validity of the cached registers */
 
-#define SHUNT_UOHMS_DEFAULT						100000
+#define SHUNT_UOHMS_DEFAULT                                             100000
 
-#define PAC193X_VOLTAGE_MILLIVOLTS_MAX					32000
+#define PAC193X_VOLTAGE_MILLIVOLTS_MAX                                  32000
 /* 32000mV */
-#define PAC193X_VOLTAGE_U_RES						16
+#define PAC193X_VOLTAGE_U_RES                                           16
 /* voltage bits resolution when set for unsigned values */
-#define PAC193X_VOLTAGE_S_RES						15
+#define PAC193X_VOLTAGE_S_RES                                           15
 /* voltage bits resolution when set for signed values */
 
-#define PAC193X_VSENSE_MILLIVOLTS_MAX					100
+#define PAC193X_VSENSE_MILLIVOLTS_MAX                                   100
 /* 100mV maximum for current shunts */
-#define PAC193X_CURRENT_U_RES						16
+#define PAC193X_CURRENT_U_RES                                           16
 /* voltage bits resolution when set for unsigned values */
-#define PAC193X_CURRENT_S_RES						15
+#define PAC193X_CURRENT_S_RES                                           15
 /* voltage bits resolution when set for signed values */
 
-#define PAC193X_POWER_U_RES						28
+#define PAC193X_POWER_U_RES                                             28
 /* power resolution is 28 bits when unsigned */
-#define PAC193X_POWER_S_RES						27
+#define PAC193X_POWER_S_RES                                             27
 /* power resolution is 27 bits when signed */
 
-#define PAC193X_ENERGY_U_RES						48
+#define PAC193X_ENERGY_U_RES                                            48
 /* energy accumulation is 48 bits long */
-#define PAC193X_ENERGY_S_RES						47
-#define PAC193X_ENERGY_SHIFT_MAIN_VAL					32
+#define PAC193X_ENERGY_S_RES                                            47
+#define PAC193X_ENERGY_SHIFT_MAIN_VAL                                   32
 
-#define PAC193X_MAX_NUM_CHANNELS					4
-#define PAC193X_MEAS_REG_SNAPSHOT_LEN					76
-#define PAC193X_CTRL_REG_SNAPSHOT_LEN					12
+#define PAC193X_MAX_NUM_CHANNELS                                        4
+#define PAC193X_MEAS_REG_SNAPSHOT_LEN                                   76
+#define PAC193X_CTRL_REG_SNAPSHOT_LEN                                   12
 
-#define PAC193x_CHIP_AVG_NUMBER						8
+#define PAC193x_CHIP_AVG_NUMBER                                         8
 
-#define PAC193x_MIN_UPDATE_WAIT_TIME					1000
+#define PAC193x_MIN_UPDATE_WAIT_TIME                                    1000
 /* 1000usec is the minimum wait time for normal conversions when sample
  * rate doesn't change
  */
-#define PAC193x_DEFAULT_CHIP_SAMP_SPEED					1024
-#define PAC193x_SAMP_1024SPS						0
+#define PAC193x_DEFAULT_CHIP_SAMP_SPEED                                 1024
+#define PAC193x_SAMP_1024SPS                                            0
 /* this sampling speed is represented as a 0b00 value */
-#define PAC193x_SAMP_256SPS						1
-#define PAC193x_SAMP_64SPS						2
-#define PAC193x_SAMP_8SPS						3
+#define PAC193x_SAMP_256SPS                                             1
+#define PAC193x_SAMP_64SPS                                              2
+#define PAC193x_SAMP_8SPS                                               3
 
 /* I2C address map */
-#define PAC193X_REFRESH_REG						0x00
-#define PAC193X_CTRL_REG						0x01
-#define PAC193X_REFRESH_V_REG						0x1F
-#define PAC193X_ACC_COUNT_REG						0x02
-#define PAC193X_CTRL_STAT_REGS_ADDR					0x1C
-#define PAC193X_PID_REG_ADDR						0xFD
+#define PAC193X_REFRESH_REG                                             0x00
+#define PAC193X_CTRL_REG                                                0x01
+#define PAC193X_REFRESH_V_REG                                           0x1F
+#define PAC193X_ACC_COUNT_REG                                           0x02
+#define PAC193X_CTRL_STAT_REGS_ADDR                                     0x1C
+#define PAC193X_PID_REG_ADDR                                            0xFD
 
-#define PAC193X_VPOWER_ACC_0_ADDR					0x03
-#define PAC193X_VPOWER_ACC_1_ADDR	(PAC193X_VPOWER_ACC_0_ADDR + 1)
-#define PAC193X_VPOWER_ACC_2_ADDR					0x05
-#define PAC193X_VPOWER_ACC_3_ADDR					0x06
-#define PAC193X_VBUS_0_ADDR						0x07
-#define PAC193X_VBUS_1_ADDR						0x08
-#define PAC193X_VBUS_2_ADDR						0x09
-#define PAC193X_VBUS_3_ADDR						0x0A
-#define PAC193X_VSENSE_0_ADDR						0x0B
-#define PAC193X_VSENSE_1_ADDR						0x0C
-#define PAC193X_VSENSE_2_ADDR						0x0D
-#define PAC193X_VSENSE_3_ADDR						0x0E
-#define PAC193X_VBUS_AVG_0_ADDR						0x0F
-#define PAC193X_VBUS_AVG_1_ADDR						0x10
-#define PAC193X_VBUS_AVG_2_ADDR						0x11
-#define PAC193X_VBUS_AVG_3_ADDR						0x12
-#define PAC193X_VSENSE_AVG_0_ADDR					0x13
-#define PAC193X_VSENSE_AVG_1_ADDR					0x14
-#define PAC193X_VSENSE_AVG_2_ADDR					0x15
-#define PAC193X_VSENSE_AVG_3_ADDR					0x16
-#define PAC193X_VPOWER_0_ADDR						0x17
-#define PAC193X_VPOWER_1_ADDR						0x18
-#define PAC193X_VPOWER_2_ADDR						0x19
-#define PAC193X_VPOWER_3_ADDR						0x1A
+#define PAC193X_VPOWER_ACC_0_ADDR                                       0x03
+#define PAC193X_VPOWER_ACC_1_ADDR       (PAC193X_VPOWER_ACC_0_ADDR + 1)
+#define PAC193X_VPOWER_ACC_2_ADDR                                       0x05
+#define PAC193X_VPOWER_ACC_3_ADDR                                       0x06
+#define PAC193X_VBUS_0_ADDR                                             0x07
+#define PAC193X_VBUS_1_ADDR                                             0x08
+#define PAC193X_VBUS_2_ADDR                                             0x09
+#define PAC193X_VBUS_3_ADDR                                             0x0A
+#define PAC193X_VSENSE_0_ADDR                                           0x0B
+#define PAC193X_VSENSE_1_ADDR                                           0x0C
+#define PAC193X_VSENSE_2_ADDR                                           0x0D
+#define PAC193X_VSENSE_3_ADDR                                           0x0E
+#define PAC193X_VBUS_AVG_0_ADDR                                         0x0F
+#define PAC193X_VBUS_AVG_1_ADDR                                         0x10
+#define PAC193X_VBUS_AVG_2_ADDR                                         0x11
+#define PAC193X_VBUS_AVG_3_ADDR                                         0x12
+#define PAC193X_VSENSE_AVG_0_ADDR                                       0x13
+#define PAC193X_VSENSE_AVG_1_ADDR                                       0x14
+#define PAC193X_VSENSE_AVG_2_ADDR                                       0x15
+#define PAC193X_VSENSE_AVG_3_ADDR                                       0x16
+#define PAC193X_VPOWER_0_ADDR                                           0x17
+#define PAC193X_VPOWER_1_ADDR                                           0x18
+#define PAC193X_VPOWER_2_ADDR                                           0x19
+#define PAC193X_VPOWER_3_ADDR                                           0x1A
 
 /* these indexes are exactly describing the element order within a single
  * PAC193x phys channel IIO channel descriptor; see the static const struct
  * iio_chan_spec pac193x_single_channel[] declaration
  */
-#define IIO_EN								0
-#define IIO_POW								1
-#define IIO_VOLT							2
-#define IIO_CRT								3
-#define IIO_VOLTAVG							4
-#define IIO_CRTAVG							5
+#define IIO_EN                                                          0
+#define IIO_POW                                                         1
+#define IIO_VOLT                                                        2
+#define IIO_CRT                                                         3
+#define IIO_VOLTAVG                                                     4
+#define IIO_CRTAVG                                                      5
 
-#define PAC193X_ACC_REG_LEN						3
-#define PAC193X_VPOWER_ACC_REG_LEN					6
-#define PAC193X_VBUS_SENSE_REG_LEN					2
-#define PAC193X_VPOWER_REG_LEN						4
+#define PAC193X_ACC_REG_LEN                                             3
+#define PAC193X_VPOWER_ACC_REG_LEN                                      6
+#define PAC193X_VBUS_SENSE_REG_LEN                                      2
+#define PAC193X_VPOWER_REG_LEN                                          4
 
 /* relative offsets when using multi-byte reads/writes even though these
  * bytes are read one after the other, they are not at adjacent memory
  * locations within the I2C memory map. The chip can skip some addresses
  */
-#define PAC193X_CHANNEL_DIS_REG_OFF					0
-#define PAC193X_NEG_PWR_REG_OFF						1
+#define PAC193X_CHANNEL_DIS_REG_OFF                                     0
+#define PAC193X_NEG_PWR_REG_OFF                                         1
 /* when reading/writing multiple bytes from offset PAC193X_CHANNEL_DIS_REG_OFF,
  * the chip jumps over the 0x1E (REFRESH_G) and 0x1F (REFRESH_V) offsets
  */
-#define PAC193X_SLOW_REG_OFF						2
-#define PAC193X_CTRL_ACT_REG_OFF					3
-#define PAC193X_CHANNEL_DIS_ACT_REG_OFF					4
-#define PAC193X_NEG_PWR_ACT_REG_OFF					5
-#define PAC193X_CTRL_LAT_REG_OFF					6
-#define PAC193X_CHANNEL_DIS_LAT_REG_OFF					7
-#define PAC193X_NEG_PWR_LAT_REG_OFF					8
-#define PAC193X_PID_REG_OFF						9
-#define PAC193X_MID_REG_OFF						10
-#define PAC193X_REV_REG_OFF						11
+#define PAC193X_SLOW_REG_OFF                                            2
+#define PAC193X_CTRL_ACT_REG_OFF                                        3
+#define PAC193X_CHANNEL_DIS_ACT_REG_OFF                                 4
+#define PAC193X_NEG_PWR_ACT_REG_OFF                                     5
+#define PAC193X_CTRL_LAT_REG_OFF                                        6
+#define PAC193X_CHANNEL_DIS_LAT_REG_OFF                                 7
+#define PAC193X_NEG_PWR_LAT_REG_OFF                                     8
+#define PAC193X_PID_REG_OFF                                             9
+#define PAC193X_MID_REG_OFF                                             10
+#define PAC193X_REV_REG_OFF                                             11
 
-#define PAC193X_CTRL_STATUS_INFO_LEN		(PAC193X_REV_REG_OFF + 1)
+#define PAC193X_CTRL_STATUS_INFO_LEN            (PAC193X_REV_REG_OFF + 1)
 
-#define PAC193X_CH_DIS_NOSKIP_VAL					0x02
+#define PAC193X_CH_DIS_NOSKIP_VAL                                       0x02
 
-#define PAC193X_MID							0x5D
-#define PAC1934_PID							0x5B
-#define PAC1933_PID							0x5A
-#define PAC1932_PID							0x59
-#define PAC1931_PID							0x58
+#define PAC193X_MID                                                     0x5D
+#define PAC1934_PID                                                     0x5B
+#define PAC1933_PID                                                     0x5A
+#define PAC1932_PID                                                     0x59
+#define PAC1931_PID                                                     0x58
 
 #define CTRL_REG(samp, sleep, sing, al_p, al_cc, ovf_al) \
-						((((u8)samp & 0x03) << 6) |\
-						(((u8)sleep & 0x01) << 5) |\
-						(((u8)sing & 0x01) << 4) |\
-						(((u8)al_p & 0x01) << 3) |\
-						(((u8)al_cc & 0x01) << 2) |\
-						(((u8)ovf_al & 0x01) << 1))
+	((((u8)samp & 0x03) << 6) | \
+	 (((u8)sleep & 0x01) << 5) | \
+	 (((u8)sing & 0x01) << 4) | \
+	 (((u8)al_p & 0x01) << 3) | \
+	 (((u8)al_cc & 0x01) << 2) | \
+	 (((u8)ovf_al & 0x01) << 1))
 
 #define CHANNEL_DIS_REG(ch1_on, ch2_on, ch3_on, ch4_on, \
-			smb_tout, bycount, skip)\
-						((ch1_on ? 0 : 0x80) | \
-						(ch2_on ? 0 : 0x40) | \
-						(ch3_on ? 0 : 0x20) | \
-						(ch4_on ? 0 : 0x10) | \
-					(((u8)smb_tout & 0x01) << 3) | \
-					(((u8)bycount & 0x01) << 2) | \
-						(skip ? 0 : 0x02))
+			smb_tout, bycount, skip) \
+	((ch1_on ? 0 : 0x80) | \
+	 (ch2_on ? 0 : 0x40) | \
+	 (ch3_on ? 0 : 0x20) | \
+	 (ch4_on ? 0 : 0x10) | \
+	 (((u8)smb_tout & 0x01) << 3) | \
+	 (((u8)bycount & 0x01) << 2) | \
+	 (skip ? 0 : 0x02))
 
 #define NEG_PWR_REG(ch1_bidi, ch2_bidi, ch3_bidi, ch4_bidi, \
-			ch1_bidv, ch2_bidv, ch3_bidv, ch4_bidv)\
-						((ch1_bidi ? 0x80 : 0) | \
-						(ch2_bidi ? 0x40 : 0) | \
-						(ch3_bidi ? 0x20 : 0) | \
-						(ch4_bidi ? 0x10 : 0) | \
-						(ch1_bidv ? 0x08 : 0) | \
-						(ch2_bidv ? 0x04 : 0) | \
-						(ch3_bidv ? 0x02 : 0) | \
-						(ch4_bidv ? 0x01 : 0))
+		    ch1_bidv, ch2_bidv, ch3_bidv, ch4_bidv) \
+	((ch1_bidi ? 0x80 : 0) | \
+	 (ch2_bidi ? 0x40 : 0) | \
+	 (ch3_bidi ? 0x20 : 0) | \
+	 (ch4_bidi ? 0x10 : 0) | \
+	 (ch1_bidv ? 0x08 : 0) | \
+	 (ch2_bidv ? 0x04 : 0) | \
+	 (ch3_bidv ? 0x02 : 0) | \
+	 (ch4_bidv ? 0x01 : 0))
 
 enum pac193x_ids {
 	pac1934,
@@ -197,13 +197,13 @@ enum pac193x_ids {
 };
 
 struct pac193x_features {
-	u8 phys_channels;/*number of physical channels supported by the chip */
-	u8 prod_id; /*product ID*/
+	u8	phys_channels;  /*number of physical channels supported by the chip */
+	u8	prod_id;        /*product ID*/
 };
 
 struct samp_rate_mapping {
-	u16 samp_rate;
-	u8 shift2value;
+	u16	samp_rate;
+	u8	shift2value;
 };
 
 static const u16 samp_rate_map_tbl[] = {
@@ -215,52 +215,52 @@ static const u16 samp_rate_map_tbl[] = {
 
 static const struct pac193x_features pac193x_chip_config[] = {
 	[pac1934] = {
-		.phys_channels = PAC193X_MAX_NUM_CHANNELS,
-		.prod_id = PAC1934_PID,
+		.phys_channels	= PAC193X_MAX_NUM_CHANNELS,
+		.prod_id	= PAC1934_PID,
 	},
 	[pac1933] = {
-		.phys_channels = PAC193X_MAX_NUM_CHANNELS - 1,
-		.prod_id = PAC1933_PID,
+		.phys_channels	= PAC193X_MAX_NUM_CHANNELS - 1,
+		.prod_id	= PAC1933_PID,
 	},
 	[pac1932] = {
-		.phys_channels = PAC193X_MAX_NUM_CHANNELS >> 1,
-		.prod_id = PAC1932_PID,
+		.phys_channels	= PAC193X_MAX_NUM_CHANNELS >> 1,
+		.prod_id	= PAC1932_PID,
 	},
 	[pac1931] = {
-		.phys_channels = PAC193X_MAX_NUM_CHANNELS >> 2,
-		.prod_id = PAC1931_PID,
+		.phys_channels	= PAC193X_MAX_NUM_CHANNELS >> 2,
+		.prod_id	= PAC1931_PID,
 	},
 };
 
 struct reg_data {
 	/* these fields keep track of chip's runtime configuration */
-	bool	active_channels[PAC193X_MAX_NUM_CHANNELS];
-	bool	bi_dir[PAC193X_MAX_NUM_CHANNELS];
+	bool		active_channels[PAC193X_MAX_NUM_CHANNELS];
+	bool		bi_dir[PAC193X_MAX_NUM_CHANNELS];
 
 	/* these variables keep the chip values as read from it - snapshot */
-	u8	meas_regs[PAC193X_MEAS_REG_SNAPSHOT_LEN];
-	u8	ctrl_regs[PAC193X_CTRL_REG_SNAPSHOT_LEN];
-	u32	acc_count;
-	s64	energy_sec_acc[PAC193X_MAX_NUM_CHANNELS];
-	s64	vpower_acc[PAC193X_MAX_NUM_CHANNELS];
-	s32	vpower[PAC193X_MAX_NUM_CHANNELS];
-	s32	vbus[PAC193X_MAX_NUM_CHANNELS];
-	s32	vbus_avg[PAC193X_MAX_NUM_CHANNELS];
-	s32	vsense[PAC193X_MAX_NUM_CHANNELS];
-	s32	vsense_avg[PAC193X_MAX_NUM_CHANNELS];
-	unsigned long jiffies_tstamp;
+	u8		meas_regs[PAC193X_MEAS_REG_SNAPSHOT_LEN];
+	u8		ctrl_regs[PAC193X_CTRL_REG_SNAPSHOT_LEN];
+	u32		acc_count;
+	s64		energy_sec_acc[PAC193X_MAX_NUM_CHANNELS];
+	s64		vpower_acc[PAC193X_MAX_NUM_CHANNELS];
+	s32		vpower[PAC193X_MAX_NUM_CHANNELS];
+	s32		vbus[PAC193X_MAX_NUM_CHANNELS];
+	s32		vbus_avg[PAC193X_MAX_NUM_CHANNELS];
+	s32		vsense[PAC193X_MAX_NUM_CHANNELS];
+	s32		vsense_avg[PAC193X_MAX_NUM_CHANNELS];
+	unsigned long	jiffies_tstamp;
 	/* this variable stores the current sampling speed */
-	u8	crt_samp_speed_bitfield;
+	u8		crt_samp_speed_bitfield;
 	/* this variable keeps the count of how many chip
 	 * channels are currently enabled
 	 */
-	u8	num_enabled_channels;
+	u8		num_enabled_channels;
 };
 
 struct pac193x_chip_info {
-	const struct iio_chan_spec	*channels;
-	const struct iio_info		*indio_info;
-	struct i2c_client		*client;
+	const struct iio_chan_spec *	channels;
+	const struct iio_info *		indio_info;
+	struct i2c_client *		client;
 	struct mutex			lock;
 
 	struct timer_list		tmr_forced_update;
@@ -282,168 +282,165 @@ struct pac193x_chip_info {
 };
 
 #define to_pac193x_chip_info(d) container_of(d, struct pac193x_chip_info, \
-						work_chip_rfsh)
+					     work_chip_rfsh)
 /* macros to extract the parameters */
-#define mACC_COUNT(addr)		(((u32)(*(u8 *)(addr + 0)) << 16) | \
-					((u32)(*(u8 *)(addr + 1)) << 8) | \
-					((u32)(*(u8 *)(addr + 2)) << 0))
+#define mACC_COUNT(addr)                (((u32)(*(u8 *)(addr + 0)) << 16) | \
+					 ((u32)(*(u8 *)(addr + 1)) << 8) | \
+					 ((u32)(*(u8 *)(addr + 2)) << 0))
 
-#define mVPOWER_ACCu(addr)		(((u64)(*(u8 *)(addr + 0)) << 40) | \
-					((u64)(*(u8 *)(addr + 1)) << 32) | \
-					((u64)(*(u8 *)(addr + 2)) << 24) | \
-					((u64)(*(u8 *)(addr + 3)) << 16) | \
-					((u64)(*(u8 *)(addr + 4)) << 8) | \
-					((u64)(*(u8 *)(addr + 5)) << 0))
+#define mVPOWER_ACCu(addr)              (((u64)(*(u8 *)(addr + 0)) << 40) | \
+					 ((u64)(*(u8 *)(addr + 1)) << 32) | \
+					 ((u64)(*(u8 *)(addr + 2)) << 24) | \
+					 ((u64)(*(u8 *)(addr + 3)) << 16) | \
+					 ((u64)(*(u8 *)(addr + 4)) << 8) | \
+					 ((u64)(*(u8 *)(addr + 5)) << 0))
 
-#define mVPOWER_ACCs(addr)		sign_extend64(mVPOWER_ACCu(addr), 47)
+#define mVPOWER_ACCs(addr)              sign_extend64(mVPOWER_ACCu(addr), 47)
 
-#define mVPOWERu(addr)			(((u32)(*(u8 *)(addr + 0)) << 20) | \
-					((u32)(*(u8 *)(addr + 1)) << 12) | \
-					((u32)(*(u8 *)(addr + 2)) << 4) | \
-					((u32)(*(u8 *)(addr + 3)) >> 4))
+#define mVPOWERu(addr)                  (((u32)(*(u8 *)(addr + 0)) << 20) | \
+					 ((u32)(*(u8 *)(addr + 1)) << 12) | \
+					 ((u32)(*(u8 *)(addr + 2)) << 4) | \
+					 ((u32)(*(u8 *)(addr + 3)) >> 4))
 
-#define mVPOWERs(addr)			sign_extend32(mVPOWERu(addr), 3)
+#define mVPOWERs(addr)                  sign_extend32(mVPOWERu(addr), 3)
 
-#define mVBUS_SENSEu(addr)		(((u16)(*(u8 *)(addr + 0)) << 8) | \
-					((u16)(*(u8 *)(addr + 1)) << 0))
+#define mVBUS_SENSEu(addr)              (((u16)(*(u8 *)(addr + 0)) << 8) | \
+					 ((u16)(*(u8 *)(addr + 1)) << 0))
 
-#define mVBUS_SENSEs(addr)		((__s16)mVBUS_SENSEu(addr))
+#define mVBUS_SENSEs(addr)              ((__s16)mVBUS_SENSEu(addr))
 
-static int pac193x_retrieve_data(struct pac193x_chip_info *chip_info,
-					u32 wait_time);
-static int pac193x_send_rfsh(struct pac193x_chip_info *chip_info,
-				bool refresh_v, u32 wait_time);
-static int pac193x_reg_snapshot(struct pac193x_chip_info *chip_info,
-				bool do_rfsh, bool refresh_v, u32 wait_time);
+static int pac193x_retrieve_data(struct pac193x_chip_info *chip_info, u32 wait_time);
+static int pac193x_send_rfsh(struct pac193x_chip_info *chip_info, bool refresh_v, u32 wait_time);
+static int pac193x_reg_snapshot(struct pac193x_chip_info *chip_info, bool do_rfsh, bool refresh_v, u32 wait_time);
 static int pac193x_remove(struct i2c_client *client);
 static const char *pac193x_get_of_match_entry(struct i2c_client *client);
 
-#define PAC193x_VPOWER_ACC_CHANNEL(_index, _address) {			\
-	.type = IIO_ENERGY,						\
-	.address = (_address),						\
-	.indexed = 1,							\
-	.channel = (_index),						\
-	.info_mask_separate = BIT(IIO_CHAN_INFO_AVERAGE_RAW) |		\
-				BIT(IIO_CHAN_INFO_SCALE),		\
-	.info_mask_shared_by_dir = BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
-	.scan_index = (_index),						\
-	.scan_type = {							\
-		.sign = 'u',						\
-		.realbits = PAC193X_ENERGY_U_RES,			\
-		.storagebits = PAC193X_ENERGY_U_RES,			\
-		.shift = 0,						\
-		.endianness = IIO_CPU,					\
-	}								\
+#define PAC193x_VPOWER_ACC_CHANNEL(_index, _address) {                  \
+		.type = IIO_ENERGY,                                             \
+		.address = (_address),                                          \
+		.indexed = 1,                                                   \
+		.channel = (_index),                                            \
+		.info_mask_separate = BIT(IIO_CHAN_INFO_AVERAGE_RAW) |          \
+				      BIT(IIO_CHAN_INFO_SCALE),               \
+		.info_mask_shared_by_dir = BIT(IIO_CHAN_INFO_SAMP_FREQ),        \
+		.scan_index = (_index),                                         \
+		.scan_type = {                                                  \
+			.sign		= 'u',                                            \
+			.realbits	= PAC193X_ENERGY_U_RES,                       \
+			.storagebits	= PAC193X_ENERGY_U_RES,                    \
+			.shift		= 0,                                             \
+			.endianness	= IIO_CPU,                                  \
+		}                                                               \
 }
 
-#define PAC193x_VBUS_CHANNEL(_index, _address) {			\
-	.type = IIO_VOLTAGE,						\
-	.address = (_address),						\
-	.indexed = 1,							\
-	.channel = (_index),						\
-	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_PROCESSED), \
-	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),		\
-	.info_mask_shared_by_dir = BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
-	.scan_index = (_index),						\
-	.scan_type = {							\
-		.sign = 'u',						\
-		.realbits = PAC193X_VOLTAGE_U_RES,			\
-		.storagebits = PAC193X_VOLTAGE_U_RES,			\
-		.shift = 0,						\
-		.endianness = IIO_CPU,					\
-	}								\
+#define PAC193x_VBUS_CHANNEL(_index, _address) {                        \
+		.type = IIO_VOLTAGE,                                            \
+		.address = (_address),                                          \
+		.indexed = 1,                                                   \
+		.channel = (_index),                                            \
+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_PROCESSED), \
+		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),           \
+		.info_mask_shared_by_dir = BIT(IIO_CHAN_INFO_SAMP_FREQ),        \
+		.scan_index = (_index),                                         \
+		.scan_type = {                                                  \
+			.sign		= 'u',                                            \
+			.realbits	= PAC193X_VOLTAGE_U_RES,                      \
+			.storagebits	= PAC193X_VOLTAGE_U_RES,                   \
+			.shift		= 0,                                             \
+			.endianness	= IIO_CPU,                                  \
+		}                                                               \
 }
 
-#define PAC193x_VBUS_AVG_CHANNEL(_index, _address) {			\
-	.type = IIO_VOLTAGE,						\
-	.address = (_address),						\
-	.indexed = 1,							\
-	.channel = (_index),						\
-	.info_mask_separate = BIT(IIO_CHAN_INFO_AVERAGE_RAW),		\
-	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
-				BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
-	.info_mask_shared_by_dir = BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
-	.scan_index = (_index),						\
-	.scan_type = {							\
-		.sign = 'u',						\
-		.realbits = PAC193X_VOLTAGE_U_RES,			\
-		.storagebits = PAC193X_VOLTAGE_U_RES,			\
-		.shift = 0,						\
-		.endianness = IIO_CPU,					\
-	}								\
+#define PAC193x_VBUS_AVG_CHANNEL(_index, _address) {                    \
+		.type = IIO_VOLTAGE,                                            \
+		.address = (_address),                                          \
+		.indexed = 1,                                                   \
+		.channel = (_index),                                            \
+		.info_mask_separate = BIT(IIO_CHAN_INFO_AVERAGE_RAW),           \
+		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |          \
+					    BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),  \
+		.info_mask_shared_by_dir = BIT(IIO_CHAN_INFO_SAMP_FREQ),        \
+		.scan_index = (_index),                                         \
+		.scan_type = {                                                  \
+			.sign		= 'u',                                            \
+			.realbits	= PAC193X_VOLTAGE_U_RES,                      \
+			.storagebits	= PAC193X_VOLTAGE_U_RES,                   \
+			.shift		= 0,                                             \
+			.endianness	= IIO_CPU,                                  \
+		}                                                               \
 }
 
-#define PAC193x_VSENSE_CHANNEL(_index, _address) {			\
-	.type = IIO_CURRENT,						\
-	.address = (_address),						\
-	.indexed = 1,							\
-	.channel = (_index),						\
-	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_PROCESSED),	\
-	.info_mask_shared_by_dir = BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
-	.scan_index = (_index),						\
-	.scan_type = {							\
-		.sign = 'u',						\
-		.realbits = PAC193X_CURRENT_U_RES,			\
-		.storagebits = PAC193X_CURRENT_U_RES,			\
-		.shift = 0,						\
-		.endianness = IIO_CPU,					\
-	}								\
+#define PAC193x_VSENSE_CHANNEL(_index, _address) {                      \
+		.type = IIO_CURRENT,                                            \
+		.address = (_address),                                          \
+		.indexed = 1,                                                   \
+		.channel = (_index),                                            \
+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_PROCESSED),    \
+		.info_mask_shared_by_dir = BIT(IIO_CHAN_INFO_SAMP_FREQ),        \
+		.scan_index = (_index),                                         \
+		.scan_type = {                                                  \
+			.sign		= 'u',                                            \
+			.realbits	= PAC193X_CURRENT_U_RES,                      \
+			.storagebits	= PAC193X_CURRENT_U_RES,                   \
+			.shift		= 0,                                             \
+			.endianness	= IIO_CPU,                                  \
+		}                                                               \
 }
 
-#define PAC193x_VSENSE_AVG_CHANNEL(_index, _address) {			\
-	.type = IIO_CURRENT,						\
-	.address = (_address),						\
-	.indexed = 1,							\
-	.channel = (_index),						\
-	.info_mask_separate = BIT(IIO_CHAN_INFO_AVERAGE_RAW) |		\
-			BIT(IIO_CHAN_INFO_SCALE),			\
-	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),\
-	.info_mask_shared_by_dir = BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
-	.scan_index = (_index),						\
-	.scan_type = {							\
-		.sign = 'u',						\
-		.realbits = PAC193X_CURRENT_U_RES,			\
-		.storagebits = PAC193X_CURRENT_U_RES,			\
-		.shift = 0,						\
-		.endianness = IIO_CPU,					\
-	}								\
+#define PAC193x_VSENSE_AVG_CHANNEL(_index, _address) {                  \
+		.type = IIO_CURRENT,                                            \
+		.address = (_address),                                          \
+		.indexed = 1,                                                   \
+		.channel = (_index),                                            \
+		.info_mask_separate = BIT(IIO_CHAN_INFO_AVERAGE_RAW) |          \
+				      BIT(IIO_CHAN_INFO_SCALE),                       \
+		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO), \
+		.info_mask_shared_by_dir = BIT(IIO_CHAN_INFO_SAMP_FREQ),        \
+		.scan_index = (_index),                                         \
+		.scan_type = {                                                  \
+			.sign		= 'u',                                            \
+			.realbits	= PAC193X_CURRENT_U_RES,                      \
+			.storagebits	= PAC193X_CURRENT_U_RES,                   \
+			.shift		= 0,                                             \
+			.endianness	= IIO_CPU,                                  \
+		}                                                               \
 }
 
-#define PAC193x_VPOWER_CHANNEL(_index, _address) {			\
-	.type = IIO_POWER,						\
-	.address = (_address),						\
-	.indexed = 1,							\
-	.channel = (_index),						\
-	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
-			BIT(IIO_CHAN_INFO_SCALE),			\
-	.info_mask_shared_by_dir = BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
-	.scan_index = (_index),						\
-	.scan_type = {							\
-		.sign = 'u',						\
-		.realbits = PAC193X_POWER_U_RES,			\
-		.storagebits = 32,					\
-		.shift = 4,						\
-		.endianness = IIO_CPU,					\
-	}								\
+#define PAC193x_VPOWER_CHANNEL(_index, _address) {                      \
+		.type = IIO_POWER,                                              \
+		.address = (_address),                                          \
+		.indexed = 1,                                                   \
+		.channel = (_index),                                            \
+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |                  \
+				      BIT(IIO_CHAN_INFO_SCALE),                       \
+		.info_mask_shared_by_dir = BIT(IIO_CHAN_INFO_SAMP_FREQ),        \
+		.scan_index = (_index),                                         \
+		.scan_type = {                                                  \
+			.sign		= 'u',                                            \
+			.realbits	= PAC193X_POWER_U_RES,                        \
+			.storagebits	= 32,                                      \
+			.shift		= 4,                                             \
+			.endianness	= IIO_CPU,                                  \
+		}                                                               \
 }
 
-#define PAC193x_SOFT_TIMESTAMP(_index) {				\
-	.type = IIO_TIMESTAMP,						\
-	.channel = -1,							\
-	.scan_index = (_index),						\
-	.scan_type = {							\
-		.sign = 's',						\
-		.realbits = 64,						\
-		.storagebits = 64,					\
-		}							\
+#define PAC193x_SOFT_TIMESTAMP(_index) {                                \
+		.type = IIO_TIMESTAMP,                                          \
+		.channel = -1,                                                  \
+		.scan_index = (_index),                                         \
+		.scan_type = {                                                  \
+			.sign		= 's',                                            \
+			.realbits	= 64,                                         \
+			.storagebits	= 64,                                      \
+		}                                                       \
 }
 
 static const struct iio_chan_spec pac193x_single_channel[] = {
 	PAC193x_VPOWER_ACC_CHANNEL(0, PAC193X_VPOWER_ACC_0_ADDR),
-	PAC193x_VPOWER_CHANNEL(0, PAC193X_VPOWER_0_ADDR),
-	PAC193x_VBUS_CHANNEL(0, PAC193X_VBUS_0_ADDR),
-	PAC193x_VSENSE_CHANNEL(0, PAC193X_VSENSE_0_ADDR),
-	PAC193x_VBUS_AVG_CHANNEL(0, PAC193X_VBUS_AVG_0_ADDR),
+	PAC193x_VPOWER_CHANNEL(0,     PAC193X_VPOWER_0_ADDR),
+	PAC193x_VBUS_CHANNEL(0,	      PAC193X_VBUS_0_ADDR),
+	PAC193x_VSENSE_CHANNEL(0,     PAC193X_VSENSE_0_ADDR),
+	PAC193x_VBUS_AVG_CHANNEL(0,   PAC193X_VBUS_AVG_0_ADDR),
 	PAC193x_VSENSE_AVG_CHANNEL(0, PAC193X_VSENSE_AVG_0_ADDR),
 };
 
@@ -452,12 +449,12 @@ static const struct iio_chan_spec pac193x_ts[] = {
 };
 /* Low-level I2c functions */
 static int pac193x_i2c_read(struct i2c_client *client, u8 reg_addr,
-				void *databuf, u8 len)
+			    void *databuf, u8 len)
 {
 	int ret;
 	struct i2c_msg msgs[] =
 	{
-		{ 
+		{
 			.addr = client->addr,
 			.len = 1,
 			.buf = &reg_addr,
@@ -488,10 +485,10 @@ static int pac193x_i2c_write(struct i2c_client *client, u8 reg_addr,
 
 	struct i2c_msg msg =
 	{
-		.addr = client->addr,
-		.len = len + 1,
-		.buf = buf,
-		.flags = 0,
+		.addr	= client->addr,
+		.len	= len + 1,
+		.buf	= buf,
+		.flags	= 0,
 	};
 
 	if (len >= sizeof(buf))
@@ -521,8 +518,8 @@ inline int pac193x_i2c_send_byte(struct i2c_client *client, u8 reg_addr)
 	return pac193x_i2c_write(client, reg_addr, 0, NULL);
 }
 
-static int pac193x_match_samp_rate(struct pac193x_chip_info *chip_info,
-					u32 new_samp_rate)
+static int pac193x_match_samp_rate(struct pac193x_chip_info *	chip_info,
+				   u32				new_samp_rate)
 {
 	int cnt;
 
@@ -539,9 +536,9 @@ static int pac193x_match_samp_rate(struct pac193x_chip_info *chip_info,
 	return 0;
 }
 
-static ssize_t rst_en_regs_wo_param_store
-			(struct device *dev, struct device_attribute *attr,
-			 const char *buf, size_t count)
+static ssize_t rst_en_regs_wo_param_store(struct device *dev,
+					  struct device_attribute *attr,
+					  const char *buf, size_t count)
 {
 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
 	struct pac193x_chip_info *chip_info = iio_priv(indio_dev);
@@ -561,7 +558,7 @@ static ssize_t rst_en_regs_wo_param_store
 }
 
 static ssize_t shunt_value_show(struct device *dev,
-			struct device_attribute *attr, char *buf)
+				struct device_attribute *attr, char *buf)
 {
 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
 	struct pac193x_chip_info *chip_info = iio_priv(indio_dev);
@@ -578,8 +575,8 @@ static ssize_t shunt_value_show(struct device *dev,
 }
 
 static ssize_t shunt_value_store(struct device *dev,
-			struct device_attribute *attr,
-			const char *buf, size_t count)
+				 struct device_attribute *attr,
+				 const char *buf, size_t count)
 {
 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
 	struct pac193x_chip_info *chip_info = iio_priv(indio_dev);
@@ -625,15 +622,14 @@ static ssize_t shunt_value_store(struct device *dev,
 	return count;
 }
 
-static IIO_DEVICE_ATTR(rst_en_regs_wo_param, 0200,
-		       NULL, rst_en_regs_wo_param_store, 0);
+static IIO_DEVICE_ATTR(rst_en_regs_wo_param, 0200, NULL,
+		       rst_en_regs_wo_param_store, 0);
 
 
-static IIO_DEVICE_ATTR(shunt_value, 0644,
-			shunt_value_show,
-			shunt_value_store, 0);
+static IIO_DEVICE_ATTR(shunt_value, 0644, shunt_value_show,
+		       shunt_value_store, 0);
 
-#define PAC193x_DEV_ATTR(name) (&iio_dev_attr_##name.dev_attr.attr)
+#define PAC193x_DEV_ATTR(name) (&iio_dev_attr_ ## name.dev_attr.attr)
 
 static struct attribute *pac193x_custom_attributes[] = {
 	PAC193x_DEV_ATTR(rst_en_regs_wo_param),
@@ -642,7 +638,7 @@ static struct attribute *pac193x_custom_attributes[] = {
 };
 
 static const struct attribute_group pac193x_group = {
-	.attrs = pac193x_custom_attributes,
+	.attrs	= pac193x_custom_attributes,
 };
 /*
  * pac193x_read_raw() - data read function.
@@ -653,11 +649,11 @@ static const struct attribute_group pac193x_group = {
  * @mask:	what we actually want to read as per the info_mask_*
  *		in iio_chan_spec.
  */
-static int pac193x_read_raw(struct iio_dev *indio_dev,
-			      struct iio_chan_spec const *chan,
-			      int *val,
-			      int *val2,
-			      long mask)
+static int pac193x_read_raw(struct iio_dev *		indio_dev,
+			    struct iio_chan_spec const *chan,
+			    int *			val,
+			    int *			val2,
+			    long			mask)
 {
 	struct pac193x_chip_info *chip_info = iio_priv(indio_dev);
 	int ret = -EINVAL;
@@ -756,10 +752,10 @@ static int pac193x_read_raw(struct iio_dev *indio_dev,
 			case PAC193X_VPOWER_ACC_2_ADDR:
 			case PAC193X_VPOWER_ACC_3_ADDR:
 				/* reduce the value only to the higher 32 bits in order to fit the val
-				* parameter which is int(32b)
-				*/
-				*val = (int)(chip_info->chip_reg_data.energy_sec_acc[chan->channel] 
-					>> PAC193X_ENERGY_SHIFT_MAIN_VAL);
+				 * parameter which is int(32b)
+				 */
+				*val = (int)(chip_info->chip_reg_data.energy_sec_acc[chan->channel]
+					     >> PAC193X_ENERGY_SHIFT_MAIN_VAL);
 				return IIO_VAL_INT;
 			default:
 				return -EINVAL;
@@ -799,7 +795,7 @@ static int pac193x_read_raw(struct iio_dev *indio_dev,
 		case PAC193X_VSENSE_AVG_2_ADDR:
 		case PAC193X_VSENSE_AVG_3_ADDR:
 			tmp = (PAC193X_VSENSE_MILLIVOLTS_MAX * 1000000) /
-				chip_info->shunts[chan->channel];
+			      chip_info->shunts[chan->channel];
 			*val = (int)tmp;
 			if (chan->scan_type.sign == 'u')
 				*val2 = PAC193X_CURRENT_U_RES;
@@ -815,8 +811,8 @@ static int pac193x_read_raw(struct iio_dev *indio_dev,
 		case PAC193X_VPOWER_2_ADDR:
 		case PAC193X_VPOWER_3_ADDR:
 			tmp = (PAC193X_VSENSE_MILLIVOLTS_MAX) * 100 *
-				((10000 * PAC193X_VOLTAGE_MILLIVOLTS_MAX)/
-					chip_info->shunts[chan->channel]);
+			      ((10000 * PAC193X_VOLTAGE_MILLIVOLTS_MAX) /
+			       chip_info->shunts[chan->channel]);
 			*val = (int)tmp;
 			if (chan->scan_type.sign == 'u')
 				*val2 = PAC193X_POWER_U_RES;
@@ -827,17 +823,17 @@ static int pac193x_read_raw(struct iio_dev *indio_dev,
 		case PAC193X_VPOWER_ACC_1_ADDR:
 		case PAC193X_VPOWER_ACC_2_ADDR:
 		case PAC193X_VPOWER_ACC_3_ADDR:
-		/* compute the scale for energy (Watt-second or
-		 * Joule). The Energy mean raw value was the
-		 * higher 32 bits of the s64 variable. The right
-		 * shifted raw value was needed in order to
-		 * prevent the underflow of the scale value.
-		 * Both the raw and the scale are accepting only
-		 * signed 32bits values
-		 */
+			/* compute the scale for energy (Watt-second or
+			 * Joule). The Energy mean raw value was the
+			 * higher 32 bits of the s64 variable. The right
+			 * shifted raw value was needed in order to
+			 * prevent the underflow of the scale value.
+			 * Both the raw and the scale are accepting only
+			 * signed 32bits values
+			 */
 			tmp = (PAC193X_VSENSE_MILLIVOLTS_MAX *
-				PAC193X_VOLTAGE_MILLIVOLTS_MAX)/
-				chip_info->shunts[chan->channel];
+			       PAC193X_VOLTAGE_MILLIVOLTS_MAX) /
+			      chip_info->shunts[chan->channel];
 			*val = (int)tmp;
 			if (chan->scan_type.sign == 'u')
 				*val2 = PAC193X_ENERGY_U_RES -
@@ -870,7 +866,7 @@ static int pac193x_read_raw(struct iio_dev *indio_dev,
 		case PAC193X_VSENSE_3_ADDR:
 			*val = chip_info->chip_reg_data.vsense_avg[chan->channel];
 			tmp = (PAC193X_VSENSE_MILLIVOLTS_MAX * 1000000) /
-				chip_info->shunts[chan->channel];
+			      chip_info->shunts[chan->channel];
 			*val *= (int)tmp;
 			if (chan->scan_type.sign == 'u')
 				*val2 = PAC193X_CURRENT_U_RES;
@@ -902,11 +898,11 @@ static int pac193x_read_raw(struct iio_dev *indio_dev,
  * are assumed to be IIO_INT_PLUS_MICRO unless the callback write_raw_get_fmt
  * in struct iio_info is provided by the driver.
  */
-static int pac193x_write_raw(struct iio_dev *indio_dev,
-			       struct iio_chan_spec const *chan,
-			       int val,
-			       int val2,
-			       long mask)
+static int pac193x_write_raw(struct iio_dev *			indio_dev,
+			     struct iio_chan_spec const *	chan,
+			     int				val,
+			     int				val2,
+			     long				mask)
 {
 	struct pac193x_chip_info *chip_info = iio_priv(indio_dev);
 	struct i2c_client *client = chip_info->client;
@@ -930,9 +926,9 @@ static int pac193x_write_raw(struct iio_dev *indio_dev,
 		mutex_lock(&chip_info->lock);
 		/* enable ALERT pin */
 		ret = pac193x_i2c_write_byte(chip_info->client,
-			PAC193X_CTRL_REG,
-			CTRL_REG(chip_info->chip_reg_data.crt_samp_speed_bitfield,
-			0, 0, 1, 0, 0));
+					     PAC193X_CTRL_REG,
+					     CTRL_REG(chip_info->chip_reg_data.crt_samp_speed_bitfield,
+						      0, 0, 1, 0, 0));
 		if (ret < 0) {
 			dev_err(&client->dev, "%s - cannot write PAC193x ctrl reg at 0x%02X\n",
 				__func__, PAC193X_CTRL_REG);
@@ -949,33 +945,34 @@ static int pac193x_write_raw(struct iio_dev *indio_dev,
 		 * register snapshot and a timestamp update
 		 */
 		chip_info->chip_reg_data.jiffies_tstamp -=
-				msecs_to_jiffies(PAC193X_MIN_POLLING_TIME);
+			msecs_to_jiffies(PAC193X_MIN_POLLING_TIME);
 		ret = pac193x_retrieve_data(chip_info,
-				(1024/old_samp_rate) * 1000);
+					    (1024 / old_samp_rate) * 1000);
 		if (ret < 0) {
 			dev_err(&client->dev, "%s - cannot snapshot PAC193x ctrl and measurement regs\n",
 				__func__);
 			return ret;
 		}
 		ret = 0;
-	break;
+		break;
 	}
 	return ret;
 }
 
 static const struct iio_info pac193x_info = {
-	.attrs = &pac193x_group,
-	.read_raw = pac193x_read_raw,
-	.write_raw = pac193x_write_raw,
+	.attrs		= &pac193x_group,
+	.read_raw	= pac193x_read_raw,
+	.write_raw	= pac193x_write_raw,
 };
 
 static int pac193x_send_rfsh(struct pac193x_chip_info *chip_info,
-				bool refresh_v, u32 wait_time)
+			     bool refresh_v, u32 wait_time)
 {
 	/* this function only sends REFRESH or REFRESH_V */
 	struct i2c_client *client = chip_info->client;
 	int ret;
 	u8 rfsh_option;
+
 	/* if refresh_v is not false, send a REFRESH_V instead
 	 * (doesn't reset the accumulators)
 	 */
@@ -997,7 +994,7 @@ static int pac193x_send_rfsh(struct pac193x_chip_info *chip_info,
 }
 
 static int pac193x_reg_snapshot(struct pac193x_chip_info *chip_info,
-		bool do_rfsh, bool refresh_v, u32 wait_time)
+				bool do_rfsh, bool refresh_v, u32 wait_time)
 {
 	int ret;
 	struct i2c_client *client = chip_info->client;
@@ -1016,21 +1013,21 @@ static int pac193x_reg_snapshot(struct pac193x_chip_info *chip_info,
 	}
 	/* read the ctrl/status registers for this snapshot */
 	ret = pac193x_i2c_read(chip_info->client, PAC193X_CTRL_STAT_REGS_ADDR,
-		(u8 *) chip_info->chip_reg_data.ctrl_regs,
-		PAC193X_CTRL_REG_SNAPSHOT_LEN);
+			       (u8 *)chip_info->chip_reg_data.ctrl_regs,
+			       PAC193X_CTRL_REG_SNAPSHOT_LEN);
 	if (ret < 0) {
 		dev_err(&client->dev, "%s - cannot read PAC193x regs from 0x%02X\n",
-				__func__, PAC193X_CTRL_STAT_REGS_ADDR);
+			__func__, PAC193X_CTRL_STAT_REGS_ADDR);
 		goto reg_snapshot_err;
 	}
 
 	/* read the data registers */
 	ret = pac193x_i2c_read(chip_info->client, PAC193X_ACC_COUNT_REG,
-		(u8 *) chip_info->chip_reg_data.meas_regs,
-		PAC193X_MEAS_REG_SNAPSHOT_LEN);
+			       (u8 *)chip_info->chip_reg_data.meas_regs,
+			       PAC193X_MEAS_REG_SNAPSHOT_LEN);
 	if (ret < 0) {
 		dev_err(&client->dev, "%s - cannot read PAC193x regs from 0x%02X\n",
-				__func__, PAC193X_ACC_COUNT_REG);
+			__func__, PAC193X_ACC_COUNT_REG);
 		goto reg_snapshot_err;
 	}
 	offset_reg_data = 0;
@@ -1044,7 +1041,7 @@ static int pac193x_reg_snapshot(struct pac193x_chip_info *chip_info,
 		/* check if the channel is active(within the data read from
 		 * the chip), skip all fields if disabled
 		 */
-		if (((chip_info->chip_reg_data.ctrl_regs[PAC193X_CHANNEL_DIS_LAT_REG_OFF] << cnt) &	0x80) == 0) {
+		if (((chip_info->chip_reg_data.ctrl_regs[PAC193X_CHANNEL_DIS_LAT_REG_OFF] << cnt) & 0x80) == 0) {
 			/* add the power_acc field */
 			if (chip_info->chip_reg_data.bi_dir[cnt]) {
 				/* bi-directional channel */
@@ -1063,12 +1060,12 @@ static int pac193x_reg_snapshot(struct pac193x_chip_info *chip_info,
 			/* the chip's sampling rate is 2^samp_shift samples/sec */
 			chip_info->chip_reg_data.energy_sec_acc[cnt] +=
 				(s64)((s64)(chip_info->chip_reg_data.vpower_acc[cnt] *
-				chip_info->chip_reg_data.acc_count) >> samp_shift);
+					    chip_info->chip_reg_data.acc_count) >> samp_shift);
 		}
 	}
 	/* continue with VBUS */
 	for (cnt = 0; cnt < chip_info->phys_channels; cnt++) {
-	/* check if the channel is active, skip all fields if disabled */
+		/* check if the channel is active, skip all fields if disabled */
 		if (((chip_info->chip_reg_data.ctrl_regs[PAC193X_CHANNEL_DIS_LAT_REG_OFF] << cnt) & 0x80) == 0) {
 			/* read the VBUS channels */
 			chip_info->chip_reg_data.vbus[cnt] = mVBUS_SENSEu(&chip_info->chip_reg_data.meas_regs[offset_reg_data]);
@@ -1077,7 +1074,7 @@ static int pac193x_reg_snapshot(struct pac193x_chip_info *chip_info,
 	}
 	/* VSENSE */
 	for (cnt = 0; cnt < chip_info->phys_channels; cnt++) {
-	/* check if the channel is active, skip all fields if disabled */
+		/* check if the channel is active, skip all fields if disabled */
 		if (((chip_info->chip_reg_data.ctrl_regs[PAC193X_CHANNEL_DIS_LAT_REG_OFF] << cnt) & 0x80) == 0) {
 			/* read the VSENSE registers */
 			if (chip_info->chip_reg_data.bi_dir[cnt]) {
@@ -1092,7 +1089,7 @@ static int pac193x_reg_snapshot(struct pac193x_chip_info *chip_info,
 	}
 	/* VBUS_AVG */
 	for (cnt = 0; cnt < chip_info->phys_channels; cnt++) {
-	/* check if the channel is active, skip all fields if disabled */
+		/* check if the channel is active, skip all fields if disabled */
 		if (((chip_info->chip_reg_data.ctrl_regs[PAC193X_CHANNEL_DIS_LAT_REG_OFF] << cnt) & 0x80) == 0) {
 			/* read the VBUS_AVG registers */
 			chip_info->chip_reg_data.vbus_avg[cnt] = mVBUS_SENSEu(&chip_info->chip_reg_data.meas_regs[offset_reg_data]);
@@ -1101,7 +1098,7 @@ static int pac193x_reg_snapshot(struct pac193x_chip_info *chip_info,
 	}
 	/* VSENSE_AVG */
 	for (cnt = 0; cnt < chip_info->phys_channels; cnt++) {
-	/* check if the channel is active, skip all fields if disabled */
+		/* check if the channel is active, skip all fields if disabled */
 		if (((chip_info->chip_reg_data.ctrl_regs[PAC193X_CHANNEL_DIS_LAT_REG_OFF] << cnt) & 0x80) == 0) {
 			/* read the VSENSE_AVG registers */
 			if (chip_info->chip_reg_data.bi_dir[cnt]) {
@@ -1116,7 +1113,7 @@ static int pac193x_reg_snapshot(struct pac193x_chip_info *chip_info,
 	}
 	/* VPOWER */
 	for (cnt = 0; cnt < chip_info->phys_channels; cnt++) {
-	/* check if the channel is active, skip all fields if disabled */
+		/* check if the channel is active, skip all fields if disabled */
 		if (((chip_info->chip_reg_data.ctrl_regs[PAC193X_CHANNEL_DIS_LAT_REG_OFF] << cnt) & 0x80) == 0) {
 			/* read the VPOWER fields */
 			if (chip_info->chip_reg_data.bi_dir[cnt]) {
@@ -1138,9 +1135,10 @@ static void pac193x_work_periodic_rfsh(struct work_struct *work)
 {
 	struct pac193x_chip_info *chip_info = to_pac193x_chip_info(work);
 	int ret;
+
 	/* do a REFRESH, then read */
 	ret = pac193x_reg_snapshot(chip_info, true, false,
-			PAC193x_MIN_UPDATE_WAIT_TIME);
+				   PAC193x_MIN_UPDATE_WAIT_TIME);
 }
 
 void pac193x_read_reg_timeout(struct timer_list *t)
@@ -1150,7 +1148,7 @@ void pac193x_read_reg_timeout(struct timer_list *t)
 	struct i2c_client *client = chip_info->client;
 
 	ret = mod_timer(&chip_info->tmr_forced_update,
-		jiffies + msecs_to_jiffies(PAC193X_MAX_RFSH_LIMIT));
+			jiffies + msecs_to_jiffies(PAC193X_MAX_RFSH_LIMIT));
 	if (ret < 0)
 		dev_err(&client->dev,
 			"forced read timer cannot be modified!\n");
@@ -1163,20 +1161,21 @@ static int pac193x_chip_identify(struct pac193x_chip_info *chip_info)
 	int ret = 0;
 	struct i2c_client *client = chip_info->client;
 	u8 chip_rev_info[3];
+
 	/*try to identify the chip variant
 	 * read the chip ID values
 	 */
 	ret = pac193x_i2c_read(chip_info->client, PAC193X_PID_REG_ADDR,
-				(u8 *) chip_rev_info, 3);
+			       (u8 *)chip_rev_info, 3);
 	if (ret < 0) {
 		dev_err(&client->dev, "cannot read PAC193x revision\n");
 		goto chip_identify_err;
 	}
 	if (chip_rev_info[0] !=
-		pac193x_chip_config[chip_info->chip_variant].prod_id) {
+	    pac193x_chip_config[chip_info->chip_variant].prod_id) {
 		ret = -EINVAL;
-		dev_err(&client->dev, 
-			"chip's product ID doesn't match the exact one for this part %x %x %x\n", 
+		dev_err(&client->dev,
+			"chip's product ID doesn't match the exact one for this part %x %x %x\n",
 			chip_rev_info[0], chip_rev_info[1], chip_rev_info[2]);
 		goto chip_identify_err;
 	}
@@ -1197,13 +1196,13 @@ static int pac193x_setup_periodic_refresh(struct pac193x_chip_info *chip_info)
 	/* register the timer */
 	chip_info->forced_reads_triggered = 0;
 	mod_timer(&chip_info->tmr_forced_update, jiffies +
-			msecs_to_jiffies(PAC193X_MAX_RFSH_LIMIT));
+		  msecs_to_jiffies(PAC193X_MAX_RFSH_LIMIT));
 
 	return ret;
 }
 
-static const char *pac193x_match_of_device(struct i2c_client *client,
-					struct pac193x_chip_info *chip_info)
+static const char *pac193x_match_of_device(struct i2c_client *		client,
+					   struct pac193x_chip_info *	chip_info)
 {
 	struct device_node *node;
 	unsigned int crt_ch;
@@ -1212,7 +1211,7 @@ static const char *pac193x_match_of_device(struct i2c_client *client,
 	ptr_name = pac193x_get_of_match_entry(client);
 
 	if (of_property_read_u32(client->dev.of_node, "samp-rate",
-				&chip_info->sample_rate_value)) {
+				 &chip_info->sample_rate_value)) {
 		dev_err(&client->dev, "Cannot read sample rate value ...\n");
 		return NULL;
 	}
@@ -1230,20 +1229,20 @@ static const char *pac193x_match_of_device(struct i2c_client *client,
 		chip_info->chip_reg_data.active_channels[crt_ch] =
 			of_property_read_bool(node, "channel_enabled");
 		if (!chip_info->chip_reg_data.active_channels[crt_ch]) {
-		/* set the chunt value to 0 for the disabled channels */
+			/* set the chunt value to 0 for the disabled channels */
 			chip_info->shunts[crt_ch] = 0;
 			crt_ch++;
 			continue;
 		}
 		if (of_property_read_u32(node,
-			"uohms-shunt-res", &chip_info->shunts[crt_ch])) {
+					 "uohms-shunt-res", &chip_info->shunts[crt_ch])) {
 			dev_err(&client->dev,
 				"invalid shunt-resistor value on %s\n",
 				node->full_name);
 			return NULL;
 		}
 		chip_info->chip_reg_data.bi_dir[crt_ch] =
-				of_property_read_bool(node, "bi-dir");
+			of_property_read_bool(node, "bi-dir");
 		/* increment the channel index */
 		crt_ch++;
 	}
@@ -1273,11 +1272,11 @@ static int pac193x_chip_configure(struct pac193x_chip_info *chip_info)
 	 * Read the chip ID values
 	 */
 	ret = pac193x_i2c_read(chip_info->client, PAC193X_CTRL_STAT_REGS_ADDR,
-				(u8 *)regs, PAC193X_CTRL_STATUS_INFO_LEN);
+			       (u8 *)regs, PAC193X_CTRL_STATUS_INFO_LEN);
 	if (ret < 0) {
 		dev_err(&client->dev,
-				"%s - cannot read PAC193x regs from 0x%02X\n",
-				__func__, PAC193X_CTRL_STAT_REGS_ADDR);
+			"%s - cannot read PAC193x regs from 0x%02X\n",
+			__func__, PAC193X_CTRL_STAT_REGS_ADDR);
 		goto chip_configure_err;
 	}
 	/* write the CHANNEL_DIS and the NEG_PWR registers */
@@ -1290,10 +1289,10 @@ static int pac193x_chip_configure(struct pac193x_chip_info *chip_info)
 
 	regs[PAC193X_NEG_PWR_REG_OFF] =
 		NEG_PWR_REG(chip_info->chip_reg_data.bi_dir[0],
-			chip_info->chip_reg_data.bi_dir[1],
-			chip_info->chip_reg_data.bi_dir[2],
-			chip_info->chip_reg_data.bi_dir[3],
-			0, 0, 0, 0);
+			    chip_info->chip_reg_data.bi_dir[1],
+			    chip_info->chip_reg_data.bi_dir[2],
+			    chip_info->chip_reg_data.bi_dir[3],
+			    0, 0, 0, 0);
 	/* the current can be measured uni or bi-dir, but voltages are set only
 	 * for uni-directional operation
 	 * no SLOW triggered REFRESH, clear POR
@@ -1304,14 +1303,14 @@ static int pac193x_chip_configure(struct pac193x_chip_info *chip_info)
 				3, (u8 *)regs);
 	if (ret < 0) {
 		dev_err(&client->dev,
-				"%s - cannot write PAC193x regs to 0x%02X\n",
-				__func__, PAC193X_CTRL_STAT_REGS_ADDR);
+			"%s - cannot write PAC193x regs to 0x%02X\n",
+			__func__, PAC193X_CTRL_STAT_REGS_ADDR);
 		goto chip_configure_err;
 	}
 	/* enable the ALERT pin functionality */
 	ret = pac193x_i2c_write_byte(chip_info->client, PAC193X_CTRL_REG,
-		CTRL_REG(chip_info->chip_reg_data.crt_samp_speed_bitfield,
-		0, 0, 1, 0, 0));
+				     CTRL_REG(chip_info->chip_reg_data.crt_samp_speed_bitfield,
+					      0, 0, 1, 0, 0));
 	if (ret < 0) {
 		dev_err(&client->dev,
 			"%s - cannot write PAC193x ctrl reg at 0x%02X\n",
@@ -1324,8 +1323,8 @@ static int pac193x_chip_configure(struct pac193x_chip_info *chip_info)
 	ret = pac193x_i2c_send_byte(chip_info->client, PAC193X_REFRESH_REG);
 	if (ret < 0) {
 		dev_err(&client->dev,
-				"%s - cannot send byte to PAC193x 0x%02X reg\n",
-				__func__, PAC193X_REFRESH_REG);
+			"%s - cannot send byte to PAC193x 0x%02X reg\n",
+			__func__, PAC193X_REFRESH_REG);
 		return ret;
 	}
 
@@ -1334,7 +1333,7 @@ static int pac193x_chip_configure(struct pac193x_chip_info *chip_info)
 	 * the timeout is 1/sampling_speed
 	 */
 	wait_time = (1024 /
-		samp_rate_map_tbl[(regs[PAC193X_CTRL_ACT_REG_OFF]>>6)]) * 1000;
+		     samp_rate_map_tbl[(regs[PAC193X_CTRL_ACT_REG_OFF] >> 6)]) * 1000;
 	/* wait the maximum amount of time to be on the safe side - the
 	 * maximum wait time is for 8sps
 	 */
@@ -1345,16 +1344,17 @@ chip_configure_err:
 	return ret;
 }
 
-static int pac193x_retrieve_data(struct pac193x_chip_info *chip_info,
-					u32 wait_time)
+static int pac193x_retrieve_data(struct pac193x_chip_info *	chip_info,
+				 u32				wait_time)
 {
 	int ret = 0;
 	struct i2c_client *client = chip_info->client;
+
 	/* check if the minimal elapsed time has passed and if so,
 	 * re-read the chip, otherwise the cached info is just fine
 	 */
 	if (time_after(jiffies, chip_info->chip_reg_data.jiffies_tstamp +
-		msecs_to_jiffies(PAC193X_MIN_POLLING_TIME))) {
+		       msecs_to_jiffies(PAC193X_MIN_POLLING_TIME))) {
 		/* we need to re-read the chip values
 		 * call the pac193x_reg_snapshot
 		 */
@@ -1363,16 +1363,16 @@ static int pac193x_retrieve_data(struct pac193x_chip_info *chip_info,
 		 * (to prevent chip regs saturation)
 		 */
 		ret = mod_timer(&chip_info->tmr_forced_update,
-			chip_info->chip_reg_data.jiffies_tstamp +
-			msecs_to_jiffies(PAC193X_MAX_RFSH_LIMIT));
+				chip_info->chip_reg_data.jiffies_tstamp +
+				msecs_to_jiffies(PAC193X_MAX_RFSH_LIMIT));
 		if (ret < 0)
 			dev_err(&client->dev, "forced read timer cannot be modified!\n");
 	}
 	return ret;
 }
 
-static int pac193x_prep_iio_channels(struct pac193x_chip_info *chip_info,
-					struct iio_dev *indio_dev)
+static int pac193x_prep_iio_channels(struct pac193x_chip_info * chip_info,
+				     struct iio_dev *		indio_dev)
 {
 	struct i2c_client *client;
 	struct iio_chan_spec *ch_sp;
@@ -1386,7 +1386,7 @@ static int pac193x_prep_iio_channels(struct pac193x_chip_info *chip_info,
 	channel_size = 0;
 	for (cnt = 0; cnt < chip_info->phys_channels; cnt++) {
 		if (chip_info->chip_reg_data.active_channels[cnt]) {
-	/* add the size of the properties of one chip physical channel */
+			/* add the size of the properties of one chip physical channel */
 			channel_size += sizeof(pac193x_single_channel);
 			/* count how many enabled channels we have */
 			active_num_chan += ARRAY_SIZE(pac193x_single_channel);
@@ -1439,7 +1439,7 @@ static int pac193x_prep_iio_channels(struct pac193x_chip_info *chip_info,
 				ch_sp[IIO_VOLT].scan_type.sign = 'u';
 				ch_sp[IIO_VOLT].scan_type.realbits = PAC193X_VOLTAGE_U_RES;
 				ch_sp[IIO_CRT].scan_type.sign = 's';
-				ch_sp[IIO_CRT].scan_type.realbits =	PAC193X_CURRENT_S_RES;
+				ch_sp[IIO_CRT].scan_type.realbits = PAC193X_CURRENT_S_RES;
 				ch_sp[IIO_VOLTAVG].scan_type.sign = 'u';
 				ch_sp[IIO_VOLTAVG].scan_type.realbits = PAC193X_VOLTAGE_U_RES;
 				ch_sp[IIO_CRTAVG].scan_type.sign = 's';
@@ -1460,7 +1460,7 @@ static int pac193x_prep_iio_channels(struct pac193x_chip_info *chip_info,
 	indio_dev->num_channels = total_iio_chan;
 	indio_dev->channels =
 		kmemdup((const struct iio_chan_spec *)dyn_ch_struct,
-				channel_size, GFP_KERNEL);
+			channel_size, GFP_KERNEL);
 	if (!indio_dev->channels) {
 		dev_err(&client->dev, "failed to duplicate channels\n");
 		return -EINVAL;
@@ -1471,8 +1471,8 @@ static int pac193x_prep_iio_channels(struct pac193x_chip_info *chip_info,
 	return 0;
 }
 
-static int pac193x_probe(struct i2c_client *client,
-			  const struct i2c_device_id *id)
+static int pac193x_probe(struct i2c_client *		client,
+			 const struct i2c_device_id *	id)
 {
 	struct pac193x_chip_info *chip_info;
 	struct iio_dev *indio_dev;
@@ -1521,7 +1521,7 @@ static int pac193x_probe(struct i2c_client *client,
 	 * if no settings are available, use the defaults
 	 */
 	if ((!client->dev.of_node) ||
-		(!of_get_next_child(client->dev.of_node, NULL))) {
+	    (!of_get_next_child(client->dev.of_node, NULL))) {
 		return -EINVAL;
 	}
 	/* we have DT */
@@ -1551,7 +1551,7 @@ static int pac193x_probe(struct i2c_client *client,
 	 * and reset the accumulators
 	 */
 	ret = pac193x_reg_snapshot(chip_info, true, false,
-					PAC193x_MIN_UPDATE_WAIT_TIME);
+				   PAC193x_MIN_UPDATE_WAIT_TIME);
 	/* register with IIO */
 	ret = devm_iio_device_register(&client->dev, indio_dev);
 	if (ret < 0) {
@@ -1572,28 +1572,28 @@ static int pac193x_remove(struct i2c_client *client)
 
 	/* free the channel attributes memory */
 	kfree(indio_dev->channels);
-	
+
 	return ret;
 }
 
 static const struct i2c_device_id pac193x_id[] = {
-	{"pac1934", pac1934},
-	{"pac1933", pac1933},
-	{"pac1932", pac1932},
-	{"pac1931", pac1931},
+	{ "pac1934", pac1934 },
+	{ "pac1933", pac1933 },
+	{ "pac1932", pac1932 },
+	{ "pac1931", pac1931 },
 	{}
 };
 MODULE_DEVICE_TABLE(i2c, pac193x_id);
 
 static const struct of_device_id pac193x_of_match[] = {
 	{ .compatible = "microchip,pac1934",
-		.data = (void *)&pac193x_chip_config[pac1934]},
+	  .data = (void *)&pac193x_chip_config[pac1934] },
 	{ .compatible = "microchip,pac1933",
-		.data = (void *)&pac193x_chip_config[pac1933]},
+	  .data = (void *)&pac193x_chip_config[pac1933] },
 	{ .compatible = "microchip,pac1932",
-		.data = (void *)&pac193x_chip_config[pac1932]},
+	  .data = (void *)&pac193x_chip_config[pac1932] },
 	{ .compatible = "microchip,pac1931",
-		.data = (void *)&pac193x_chip_config[pac1931]},
+	  .data = (void *)&pac193x_chip_config[pac1931] },
 	{ },
 };
 MODULE_DEVICE_TABLE(of, pac193x_of_match);
@@ -1607,13 +1607,13 @@ static const char *pac193x_get_of_match_entry(struct i2c_client *client)
 }
 
 static struct i2c_driver pac193x_driver = {
-	.driver	 = {
-			.name = "pac193x",
-			.of_match_table = pac193x_of_match,
-		    },
-	.probe	 = pac193x_probe,
-	.remove		= pac193x_remove,
-	.id_table = pac193x_id,
+	.driver			= {
+		.name		= "pac193x",
+		.of_match_table = pac193x_of_match,
+	},
+	.probe			= pac193x_probe,
+	.remove			= pac193x_remove,
+	.id_table		= pac193x_id,
 };
 
 module_i2c_driver(pac193x_driver);
