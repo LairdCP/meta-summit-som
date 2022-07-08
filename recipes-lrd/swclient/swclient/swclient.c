@@ -16,8 +16,8 @@
 static PyObject * prepare_fw_update(PyObject *self, PyObject *args)
 {
 	struct swupdate_request req;
-	const char* software_set;
-	const char* running_mode;
+	const char *software_set;
+	const char *running_mode;
 	int dryrun = 1, fd = -1;
 
 	if (!PyArg_ParseTuple(args, "i|ss", &dryrun, &software_set, &running_mode)) {
@@ -43,7 +43,7 @@ static PyObject * prepare_fw_update(PyObject *self, PyObject *args)
 
 static PyObject * do_fw_update(PyObject *self, PyObject *args)
 {
-	int rc = -1, fd = -1;
+	int rc, fd = -1;
 	Py_buffer py_buf;
 
 	if (!PyArg_ParseTuple(args, "y*i", &py_buf, &fd)) {
@@ -88,7 +88,7 @@ static PyObject * open_progress_ipc(PyObject *self, PyObject *Py_UNUSED(ignored)
 static PyObject * read_progress_ipc(PyObject *self, PyObject *args)
 {
 	struct progress_msg msg;
-	int rc = 0, msg_fd = -1;
+	int rc, msg_fd = -1;
 
 	if (!PyArg_ParseTuple(args, "i", &msg_fd)) {
 		PyErr_SetString(PyExc_RuntimeError, "read_progress_ipc: PyArg_ParseTuple failed");
@@ -136,13 +136,13 @@ static PyObject * close_progress_ipc(PyObject *self, PyObject *args)
 
 static PyMethodDef swclient_methods[] =
 {
-	{ "prepare_fw_update",	 prepare_fw_update,   METH_VARARGS, "Prepare to update firmware"	 },
-	{ "do_fw_update",	 do_fw_update,	      METH_VARARGS, "Do firmware update"		 },
-	{ "end_fw_update",	 end_fw_update,	      METH_VARARGS, "End firmware update"		 },
-	{ "open_progress_ipc",	 open_progress_ipc,   METH_NOARGS,  "Open progress IPC connection"	 },
-	{ "read_progress_ipc",	 read_progress_ipc,   METH_VARARGS, "Read progress via IPC connection"	 },
-	{ "close_progress_ipc",	 close_progress_ipc,  METH_VARARGS, "Close progress IPC connection"	 },
-	{ NULL,			 NULL,		      0,	    NULL				 }
+	{ "prepare_fw_update",	prepare_fw_update,  METH_VARARGS, "Prepare to update firmware"	     },
+	{ "do_fw_update",	do_fw_update,	    METH_VARARGS, "Do firmware update"		     },
+	{ "end_fw_update",	end_fw_update,	    METH_VARARGS, "End firmware update"		     },
+	{ "open_progress_ipc",	open_progress_ipc,  METH_NOARGS,  "Open progress IPC connection"     },
+	{ "read_progress_ipc",	read_progress_ipc,  METH_VARARGS, "Read progress via IPC connection" },
+	{ "close_progress_ipc", close_progress_ipc, METH_VARARGS, "Close progress IPC connection"    },
+	{ NULL,			NULL,		    0,		  NULL				     }
 };
 
 // The arguments of this structure tell Python what to call your extension,
@@ -158,6 +158,5 @@ static struct PyModuleDef swclient_definition =
 
 PyMODINIT_FUNC PyInit_swclient(void)
 {
-	Py_Initialize();
 	return PyModule_Create(&swclient_definition);
 }
