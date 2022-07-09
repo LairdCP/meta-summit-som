@@ -62,26 +62,27 @@ ${o_quiet} && exec >/dev/null
 case "${url}" in
 *://*)
     if [ -x /usr/bin/curl ]; then
-        download_cmd="/usr/bin/curl -s ${url} --output -"
+        download_cmd="/usr/bin/curl ${url}"
     elif [ -x /usr/bin/wget ]; then
-        download_cmd="/usr/bin/wget -qO - ${url}"
+        download_cmd="/usr/bin/wget -O - ${url}"
     else
         die "Download utility not found (need curl or wget)"
     fi
 
-    ${download_cmd} | swupdate-client -e stable,${p_method} ${o_verbose} - | tee /tmp/swup
+    ${download_cmd} | swupdate-client -e stable,${p_method} ${o_verbose} -
     ;;
 
 *)
-    swupdate-client -e stable,${p_method} ${o_verbose} "${url}" | tee /tmp/swup
+    swupdate-client -e stable,${p_method} ${o_verbose} "${url}"
     ;;
 esac
 
-grep -q "SWUPDATE successful" /tmp/swup && update_ok=true || update_ok=false
-rm -f /tmp/swup
-
-if ${update_ok} && ${o_restart} && ! ${run_on_sd}; then
-   reboot
+if [ $? -eq 0 ]; then
+    echo "Firmware update succeeded"
+    if ${o_restart} && ! ${run_on_sd}; then
+        reboot
+    fi
+else
+    echo "Firmware update failed"
+    exit 1
 fi
-
-${update_ok}

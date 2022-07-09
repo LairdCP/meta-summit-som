@@ -11,8 +11,9 @@ SRC_URI = " \
     "
 
 RDEPENDS_${PN} = "\
-	swupdate \
-	swupdate-client \
+    swupdate \
+    swupdate-client \
+    curl \
 "
 
 S = "${WORKDIR}"
