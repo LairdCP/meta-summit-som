@@ -33,7 +33,7 @@ software =
 					device = "/dev/mmcblk2boot0";
 					type = "raw";
 					installed-directly = true;
-					sha256 = "@imx-boot";
+					sha256 = "$swupdate_get_sha256(imx-boot)";
 				},
 				{
 					filename = "fitImage";
@@ -42,7 +42,7 @@ software =
 					type = "rawfile";
 					filesystem = "vfat";
 					installed-directly = true;
-					sha256 = "@fitImage";
+					sha256 = "$swupdate_get_sha256(fitImage)";
 				},
 				{
 					filename = "lrd-m7-low-power-wakeup-demo-itcm.bin";
@@ -51,14 +51,14 @@ software =
 					type = "rawfile";
 					filesystem = "vfat";
 					installed-directly = true;
-					sha256 = "@lrd-m7-low-power-wakeup-demo-itcm.bin";
+					sha256 = "$swupdate_get_sha256(lrd-m7-low-power-wakeup-demo-itcm.bin)";
 				},
 				{
 					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
 					device = "/dev/mmcblk2p2";
 					type = "raw";
 					installed-directly = true;
-					sha256 = "@@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
+					sha256 = "$swupdate_get_sha256(@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@)";
 				},
 			);
 
@@ -99,7 +99,7 @@ software =
 					device = "/dev/mmcblk2boot1";
 					type = "raw";
 					installed-directly = true;
-					sha256 = "@imx-boot";
+					sha256 = "$swupdate_get_sha256(imx-boot)";
 				},
 				{
 					filename = "fitImage";
@@ -108,7 +108,7 @@ software =
 					type = "rawfile";
 					filesystem = "vfat";
 					installed-directly = true;
-					sha256 = "@fitImage";
+					sha256 = "$swupdate_get_sha256(fitImage)";
 				},
 				{
 					filename = "lrd-m7-low-power-wakeup-demo-itcm.bin";
@@ -117,14 +117,14 @@ software =
 					type = "rawfile";
 					filesystem = "vfat";
 					installed-directly = true;
-					sha256 = "@lrd-m7-low-power-wakeup-demo-itcm.bin";
+					sha256 = "$swupdate_get_sha256(lrd-m7-low-power-wakeup-demo-itcm.bin)";
 				},
 				{
 					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
 					device = "/dev/mmcblk2p5";
 					type = "raw";
 					installed-directly = true;
-					sha256 = "@@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
+					sha256 = "$swupdate_get_sha256(@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@)";
 				},
 			);
 
@@ -206,13 +206,13 @@ software =
 					filename = "imx-boot";
 					device = "/dev/mmcblk2boot0";
 					type = "raw";
-					sha256 = "@imx-boot";
+					sha256 = "$swupdate_get_sha256(imx-boot)";
 				},
 				{
 					filename = "imx-boot";
 					device = "/dev/mmcblk2boot1";
 					type = "raw";
-					sha256 = "@imx-boot";
+					sha256 = "$swupdate_get_sha256(imx-boot)";
 				},
 				{
 					filename = "fitImage";
@@ -220,7 +220,7 @@ software =
 					device = "/dev/mmcblk2p1";
 					type = "rawfile";
 					filesystem = "vfat";
-					sha256 = "@fitImage";
+					sha256 = "$swupdate_get_sha256(fitImage)";
 				},
 				{
 					filename = "lrd-m7-low-power-wakeup-demo-itcm.bin";
@@ -228,13 +228,13 @@ software =
 					device = "/dev/mmcblk2p1";
 					type = "rawfile";
 					filesystem = "vfat";
-					sha256 = "@lrd-m7-low-power-wakeup-demo-itcm.bin";
+					sha256 = "$swupdate_get_sha256(lrd-m7-low-power-wakeup-demo-itcm.bin)";
 				},
 				{
 					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
 					device = "/dev/mmcblk2p2";
 					type = "raw";
-					sha256 = "@@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
+					sha256 = "$swupdate_get_sha256(@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@)";
 				},
 				{
 					filename = "fitImage";
@@ -242,7 +242,7 @@ software =
 					device = "/dev/mmcblk2p4";
 					type = "rawfile";
 					filesystem = "vfat";
-					sha256 = "@fitImage";
+					sha256 = "$swupdate_get_sha256(fitImage)";
 				},
 				{
 					filename = "lrd-m7-low-power-wakeup-demo-itcm.bin";
@@ -250,13 +250,13 @@ software =
 					device = "/dev/mmcblk2p4";
 					type = "rawfile";
 					filesystem = "vfat";
-					sha256 = "@lrd-m7-low-power-wakeup-demo-itcm.bin";
+					sha256 = "$swupdate_get_sha256(lrd-m7-low-power-wakeup-demo-itcm.bin)";
 				},
 				{
 					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
 					device = "/dev/mmcblk2p5";
 					type = "raw";
-					sha256 = "@@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
+					sha256 = "$swupdate_get_sha256(@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@)";
 				}
 			);
 

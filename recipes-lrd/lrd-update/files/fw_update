@@ -2,24 +2,35 @@
 
 die() {
     echo "${1}" >&2
+    echo "Firmware update failed" >&2
     exit 2
 }
 
 usage() {
-    echo "Usage: $0: [-m <method>] [-s <side>] [-x value] [-q] [-v] <url>"
+    echo "Usage: $0: [-m <method>] [-s <side>] [-x value] [-v] <url>"
     exit 3
 }
 
 [ $# -ge 1 ] || usage
 
-unset o_method
-unset o_side
 o_quiet=true
 o_restart=true
 
 update_ok=false
 
-while getopts m:s:x:qv name; do
+# determine update side
+devnum=$(sed -nr 's,.*/dev/(mmcblk[0-9]+)p([0-9]+).*,\1 \2,p' /proc/cmdline)
+mmc=${devnum% *}
+part=${devnum#* }
+
+[ "${part}" -lt 4 ] && o_side=b || o_side=a
+
+read -r mmctype < /sys/block/${mmc}/device/type
+[ "${mmctype}" = "SD" ] && run_on_sd=true || run_on_sd=false
+
+${run_on_sd} && o_method=complete || o_method=full
+
+while getopts m:s:x:v name; do
     case ${name} in
     m)  o_method=${OPTARG} ;;
     s)  o_side=${OPTARG} ;;
@@ -34,37 +45,24 @@ shift $((OPTIND - 1))
 
 url="${1}"
 
-# determine update side
-set -- $(sed -nr 's,.*/dev/(mmcblk[0-9]+)p([0-9]+).*,\1 \2,p' /proc/cmdline)
-mmc="${1}"
-part="${2}"
-
-read -r mmctype < /sys/block/${mmc}/device/type                             
-[ "${mmctype}" = "SD" ] && run_on_sd=true || run_on_sd=false                
-
-if [ -z "${o_side}" ]; then
-    [ "${part}" -ge 4 ] && o_side=a || o_side=b
+if [ "${o_method}" = complete ]; then
+    ${run_on_sd} || die "only 'full' update method supported when booting from eMMC flash"
+    p_method=${o_method}
+else
+    ${run_on_sd} && die "only 'complete' update method supported when booting from SD card"
+    p_method=${o_method}-${o_side}
 fi
-
-if [ -z "${o_method}" ]; then
-    ${run_on_sd} && o_method=complete || o_method=full
-fi
-
-[ "${o_method}" = complete ] && o_complete=true || o_complete=false
-
-${o_complete} && p_method=${o_method} || p_method=${o_method}-${o_side}
-
-${o_complete} && ! ${run_on_sd} && \
-    die "complete method not supported when booting from flash"
 
 ${o_quiet} && exec >/dev/null
 
 case "${url}" in
 *://*)
     if [ -x /usr/bin/curl ]; then
-        download_cmd="/usr/bin/curl ${url}"
+        ${o_quiet} && o_dlsilent="-s"
+        download_cmd="/usr/bin/curl ${o_dlsilent} ${url}"
     elif [ -x /usr/bin/wget ]; then
-        download_cmd="/usr/bin/wget -O - ${url}"
+        ${o_quiet} && o_dlsilent="-q"
+        download_cmd="/usr/bin/wget ${o_dlsilent} -O - ${url}"
     else
         die "Download utility not found (need curl or wget)"
     fi
@@ -78,11 +76,11 @@ case "${url}" in
 esac
 
 if [ $? -eq 0 ]; then
-    echo "Firmware update succeeded"
+    echo "Firmware update succeeded" >&2
     if ${o_restart} && ! ${run_on_sd}; then
         reboot
     fi
 else
-    echo "Firmware update failed"
+    echo "Firmware update failed" >&2
     exit 1
 fi

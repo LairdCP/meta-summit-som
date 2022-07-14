@@ -22,8 +22,8 @@ CONFIG_SW_VERSIONS_FILE="/etc/sw-versions"
 #
 # Socket Paths
 #
-CONFIG_SOCKET_CTRL_PATH=""
-CONFIG_SOCKET_PROGRESS_PATH=""
+CONFIG_SOCKET_CTRL_PATH="/tmp/sockinstctrl"
+CONFIG_SOCKET_PROGRESS_PATH="/tmp/swupdateprog"
 # CONFIG_MTD is not set
 # CONFIG_LUA is not set
 # CONFIG_FEATURE_SYSLOG is not set
@@ -33,8 +33,8 @@ CONFIG_SOCKET_PROGRESS_PATH=""
 #
 CONFIG_CROSS_COMPILE=""
 CONFIG_SYSROOT=""
-CONFIG_EXTRA_CFLAGS=" -O2 -pipe -g -feliminate-unused-debug-types -fmacro-prefix-map=/devel/imx-yocto-bsp-hardknott/build/tmp/work/cortexa53-crypto-fsl-linux/swupdate/2021.11-r0=/usr/src/debug/swupdate/2021.11-r0                      -fdebug-prefix-map=/devel/imx-yocto-bsp-hardknott/build/tmp/work/cortexa53-crypto-fsl-linux/swupdate/2021.11-r0=/usr/src/debug/swupdate/2021.11-r0                      -fdebug-prefix-map=/devel/imx-yocto-bsp-hardknott/build/tmp/work/cortexa53-crypto-fsl-linux/swupdate/2021.11-r0/recipe-sysroot=                      -fdebug-prefix-map=/devel/imx-yocto-bsp-hardknott/build/tmp/work/cortexa53-crypto-fsl-linux/swupdate/2021.11-r0/recipe-sysroot-native= "
-CONFIG_EXTRA_LDFLAGS="-Wl,-O1 -Wl,--hash-style=gnu -Wl,--as-needed -Wl,-z,relro,-z,now"
+CONFIG_EXTRA_CFLAGS=""
+CONFIG_EXTRA_LDFLAGS=""
 CONFIG_EXTRA_LDLIBS=""
 
 #

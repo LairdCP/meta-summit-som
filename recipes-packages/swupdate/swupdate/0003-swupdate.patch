@@ -1,0 +1,12 @@
+diff --git a/recipes-support/swupdate/swupdate/swupdate.service b/recipes-support/swupdate/swupdate/swupdate.service
+index 7f36619..3d8d741 100644
+--- a/swupdate.service
++++ b/swupdate.service
+@@ -6,6 +6,4 @@ Documentation=https://sbabic.github.io/swupdate
+ [Service]
+ ExecStart=@LIBDIR@/swupdate/swupdate.sh
+ KillMode=mixed
+-
+-[Install]
+-WantedBy=multi-user.target
++CapabilityBoundingSet=CAP_SYS_ADMIN
