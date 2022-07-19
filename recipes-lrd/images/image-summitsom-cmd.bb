@@ -12,8 +12,6 @@ IMAGE_INSTALL += "\
 	mpg123 \
 	read-edid \
 	fbida \
-	python3 \
-	python3-dbus \
 	systemd-analyze \
 	bluez5-testtools \
 	mc-mint \
