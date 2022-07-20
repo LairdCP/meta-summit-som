@@ -4,7 +4,7 @@ require image-summitsom-gen.inc
 
 SWUPDATE_IMAGES_FSTYPES[image-summitsom-cmd] = ".squashfs-zstd.verity"
 
-IMAGE_INSTALL += "\
+CORE_IMAGE_EXTRA_INSTALL += "\
 	${IMAGE_INSTALL_BASIC} \
 	${IMAGE_INSTALL_DIAG} \
 	linuxptp \

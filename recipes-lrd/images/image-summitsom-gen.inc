@@ -41,10 +41,6 @@ IMAGE_INSTALL_BASIC = "\
 	u-boot-fw-utils \
 	swupdate \
 	swupdate-client \
-	keyctl-caam \
-	crypto-af-alg \
-	keyutils \
-	lvm2 \
 	mmc-utils \
 	"
 

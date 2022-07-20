@@ -17,7 +17,7 @@ IMAGE_FEATURES = "\
 	allow-root-login \
 	"
 
-IMAGE_INSTALL = "\
+CORE_IMAGE_EXTRA_INSTALL += "\
 	iproute2 \
 	lrd-initdata \
 	lrd-update \
@@ -25,9 +25,5 @@ IMAGE_INSTALL = "\
 	u-boot-fw-utils \
 	swupdate \
 	swupdate-client \
-	keyctl-caam \
-	crypto-af-alg \
-	keyutils \
-	lvm2 \
 	mmc-utils \
 	"
