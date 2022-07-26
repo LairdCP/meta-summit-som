@@ -53,6 +53,8 @@ RDEPENDS_${PN} = "\
 	swupdate \
 	swupdate-client \
 	swclient \
+	tzdata-core \
+	tzdata-posix \
 	lrd-update \
         "
 

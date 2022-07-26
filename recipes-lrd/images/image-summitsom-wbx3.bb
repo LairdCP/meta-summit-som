@@ -15,6 +15,8 @@ do_image_wic[depends] += "${IMAGE_BASENAME}:do_image"
 IMAGE_FEATURES = "\
 	ssh-server-dropbear \
 	allow-root-login \
+	allow-empty-password \
+	empty-root-password \
 	"
 
 CORE_IMAGE_EXTRA_INSTALL += "\

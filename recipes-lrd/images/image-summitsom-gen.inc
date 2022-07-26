@@ -29,7 +29,8 @@ IMAGE_INSTALL_BASIC = "\
 	kernel-module-pac193x \
 	packagegroup-radio-stack \
 	ca-certificates \
-	tzdata \
+	tzdata-core \
+	tzdata-posix \
 	iproute2 \
 	chrony \
 	chronyc \
