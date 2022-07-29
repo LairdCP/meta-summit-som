@@ -67,11 +67,11 @@ case "${url}" in
         die "Download utility not found (need curl or wget)"
     fi
 
-    ${download_cmd} | swupdate-client -e stable,${p_method} ${o_verbose} -
+    ${download_cmd} | swupdate-client -p -e stable,${p_method} ${o_verbose} -
     ;;
 
 *)
-    swupdate-client -e stable,${p_method} ${o_verbose} "${url}"
+    swupdate-client -p -e stable,${p_method} ${o_verbose} "${url}"
     ;;
 esac
 

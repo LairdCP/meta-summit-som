@@ -9,4 +9,4 @@ index 7f36619..3d8d741 100644
 -
 -[Install]
 -WantedBy=multi-user.target
-+CapabilityBoundingSet=CAP_SYS_ADMIN
++CapabilityBoundingSet=CAP_SYS_ADMIN CAP_SYS_RAWIO
