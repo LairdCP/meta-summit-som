@@ -8,14 +8,11 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263 \
 
 DEPENDS = " \
     intltool-native \
-    libxslt-native \
-    glib-2.0-native \
     libnl \
     udev \
     util-linux \
     libndp \
     libnewt \
-    curl \
 "
 
 inherit autotools gettext update-rc.d systemd bash-completion update-alternatives gobject-introspection
@@ -44,8 +41,8 @@ EXTRA_OECONF = " \
     --with-dhcpcd=no \
     --with-dhcpcanon=no \
     --with-netconfig=no \
-    --disable-ovs \
     --enable-introspection \
+    --disable-concheck \
     --disable-nls \
     --disable-vala \
     --disable-gtk-doc \
