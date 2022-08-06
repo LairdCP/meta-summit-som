@@ -1,11 +1,9 @@
-# Copyright 2022 Laird Connectivity
-
 SUMMARY = "Laird Connectivity Summit SOM 8M Plus DVK M7 Demos"
 
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
-inherit deploy allarch
+inherit allarch deploy
 
 BB_STRICT_CHECKSUM_laird-internal = "ignore"
 
@@ -17,18 +15,24 @@ LRD_URI_laird-internal = "https://files.devops.rfpros.com/builds/zephyr/som8mp/l
 
 SRC_URI = "${LRD_URI}/lrd-m7-demos-${PV}.tar.bz2"
 
-SRC_URI[sha256sum] = "227c5bd76f3ed6144326b64acc3723e82a37e209000d2f2942bd096a19116ca4"
+SRC_URI[sha256sum] = "bec121eae520c3196745972a55904372cde349525d78ff95bf7772e9a37f491b"
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
+# if elf files installed, yocto checks architecture, so disable this for the firmware blobs
+INSANE_SKIP_${PN} += "arch"
+
 S = "${WORKDIR}"
 
+FILES_${PN} += "${nonarch_base_libdir}"
+
+do_install() {
+   install -m 0644 -D -t ${D}${nonarch_base_libdir}/firmware ${S}/lrd-m7-low-power-wakeup-demo-itcm.elf
+}
+
 do_deploy () {
-   # Install the demo binaries
-   install -m 0644 ${S}/lrd-m7-low-power-wakeup-demo-itcm.bin ${DEPLOYDIR}/
+   install -m 0644 -D -t ${DEPLOYDIR} ${S}/lrd-m7-low-power-wakeup-demo-itcm.bin
 }
 
 addtask deploy after do_install
-
-PACKAGE_ARCH = "${MACHINE_SOCARCH}"
