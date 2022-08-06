@@ -114,17 +114,16 @@
 	"else "                                         \
 	"setenv bootvol 4; "                            \
 	"fi; "                                          \
-	"setexpr rootvol ${bootvol} + 1;\0"             \
+	"setexpr rootvol ${bootvol} + 1\0"              \
+	"runm7="                                        \
+	"setexpr bootm7 sub m7-rpmsg '' $conf; "        \
+	"test -z \"${bootm7}\" || run bootm7_itcm\0"    \
 	"bootcmd="                                      \
-	"run mmcside; "                                 \
-	"setexpr bootm7 sub \"m7-rpmsg\" \"\" $conf; "  \
-	"if test -n \"${bootm7}\"; then "               \
-	"run bootm7_itcm; "                             \
-	"fi; "                                          \
+	"run mmcside; run runm7; "                      \
 	"if run loadimage; then "                       \
 	"run mmcargs; "                                 \
 	"bootm ${loadaddr}#${conf}; "                   \
-	"fi; "
+	"fi"
 
 /* Link Definitions */
 #define CONFIG_LOADADDR                 0x44000000
