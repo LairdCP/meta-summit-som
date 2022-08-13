@@ -1,9 +1,9 @@
 SUMMARY = "Python minimalist web framework"
 LICENSE = "BSD-3-Clause"
-LIC_FILES_CHKSUM = "file://LICENSE.md;md5=a8cbc5da4e6892b15a972a0b18622b2b"
+LIC_FILES_CHKSUM = "file://LICENSE.md;md5=a5ad8f932e1fd3841133f20d3ffedda1"
 
-SRC_URI[md5sum] = "01dec1a7164faf2406a3a03bf56aef80"
-SRC_URI[sha256sum] = "f33e87286e7b3e309e04e7225d8e49382d9d7773e6092241d7f613893c563495"
+SRC_URI[md5sum] = "033c58bf3da497f283b039911d1c882b"
+SRC_URI[sha256sum] = "9b48cfba8a2f16d5b6419cc657e6d51db005ba35c5e3824e4728bb03bbc7ef9b"
 
 PYPI_PACKAGE = "CherryPy"
 
