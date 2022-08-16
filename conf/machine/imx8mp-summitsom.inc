@@ -27,26 +27,6 @@ UBOOT_ENTRYPOINT_mx8m   = "0x40400000"
 
 WKS_FILES ?= "lrd-imx-uboot-spl-bootpart.wks.in"
 
-KERNEL_DEVICETREE = " \
-    freescale/imx8mp-summitsom-dvk-pcie-uart.dtb \
-    freescale/imx8mp-summitsom-dvk-sdio-uart.dtb \
-    freescale/imx8mp-summitsom-dvk-sdio-uart-stop.dtb \
-    freescale/imx8mp-summitsom-dvk-sdio-uart-susp.dtb \
-    freescale/imx8mp-summitsom-dvk-sdio-sdio.dtb \
-    freescale/imx8mp-summitsom-dvk-pcie-uart-m7-rpmsg.dtb \
-    freescale/imx8mp-summitsom-dvk-sdio-uart-m7-rpmsg.dtb \
-    freescale/imx8mp-summitsom-dvk-sdio-uart-stop-m7-rpmsg.dtb \
-    freescale/imx8mp-summitsom-dvk-sdio-uart-susp-m7-rpmsg.dtb \
-    freescale/imx8mp-summitsom-dvk-sdio-sdio-m7-rpmsg.dtb \
-    freescale/imx8mp-summitsom-wbx-pcie-uart.dtb \
-    freescale/imx8mp-summitsom-wbx-sdio-uart.dtb \
-    freescale/imx8mp-summitsom-wbx-sdio-uart-stop.dtb \
-    freescale/imx8mp-summitsom-wbx-sdio-uart-susp.dtb \
-    freescale/imx8mp-summitsom-wbx-sdio-sdio.dtb \
-    "
-
-UBOOT_DTB_NAME = "imx8mp-summitsom-dvk.dtb"
-
 UBOOT_CONFIG ??= "sd"
 UBOOT_CONFIG[sd] = "${UBOOT_CONFIG_BASENAME}_defconfig,sdcard"
 UBOOT_CONFIG[fspi] = "${UBOOT_CONFIG_BASENAME}_defconfig"
@@ -97,3 +77,4 @@ PREFERRED_RPROVIDER_networkmanager = "lrd-networkmanager-som-nmcli"
 
 MACHINE_FEATURES_remove = "nxp8987 nxp8997"
 MACHINE_FIRMWARE_remove = "linux-firmware-ath10k"
+MACHINE_EXTRA_RRECOMMENDS_remove = "imx-m7-demos"
