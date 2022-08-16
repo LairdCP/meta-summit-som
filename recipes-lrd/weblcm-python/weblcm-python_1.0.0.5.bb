@@ -18,8 +18,6 @@ SYSTEMD_AUTO_ENABLE = "enable"
 USERNAME_${PN} ?= "root"
 PASSWORD_${PN} ?= "summit"
 
-KEY_LOCATION_VALUE_${PN} ?= "/etc/swupdate/dev.crt"
-
 MANAGED_SOFTWARE_DEVICES_${PN} ?= ""
 UNMANAGED_HARDWARE_DEVICES_${PN} ?= ""
 
@@ -76,9 +74,6 @@ do_install_append() {
 	install -D -t ${D}${sysconfdir}/weblcm-python -m 644 ${S}/*.ini
 	install -D -t ${D}${sysconfdir}/weblcm-python/ssl -m 644 \
 		${S}/ssl/server.key ${S}/ssl/server.crt ${S}/ssl/ca.crt
-
-	install -d ${D}${sysconfdir}/swupdate/conf.d
-	echo 'SWUPDATE_ARGS=${SWUPDATE_ARGS} -k ${KEY_LOCATION_VALUE_${PN}} --cert-purpose codeSigning' > ${D}${sysconfdir}/swupdate/conf.d/99-weblcm-python.conf
 
 	sed -i -e '/^default_/d' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
 	sed -i -e '/\[weblcm\]/a default_password: \"${PASSWORD_${PN}}\"' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
