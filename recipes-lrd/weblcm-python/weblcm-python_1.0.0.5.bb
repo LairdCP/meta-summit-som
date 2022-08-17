@@ -93,7 +93,7 @@ do_install_append() {
 	sed -i -e '/\[weblcm\]/a enable_allow_unauthenticated_reboot_reset:${ENABLE_UNAUTHENTICATED}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
 
 	sed -i -e '/^server.socket_host/d' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
-	sed -i -e '/\[global\]/a server.socket_host: ${BIND_IP}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
+	sed -i -e '/\[global\]/a server.socket_host: \"${BIND_IP}\"' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
 
 	if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
 		install -D -m 644 ${S}/weblcm-python.service \
