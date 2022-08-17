@@ -23,6 +23,9 @@ UNMANAGED_HARDWARE_DEVICES_${PN} ?= ""
 
 ADAPTIVE_WW_CFG_FILE_${PN} ?= ""
 
+ENABLE_UNAUTHENTICATED ?= "False"
+BIND_IP ?= "::"
+
 PACKAGECONFIG[awm] = "weblcm/awm,,,python3-libconf"
 PACKAGECONFIG[modem] = "weblcm/modem"
 PACKAGECONFIG[bluetooth] = "weblcm/bluetooth"
@@ -48,12 +51,10 @@ RDEPENDS_${PN} = "\
 	python3-cherrypy \
 	zip \
 	unzip \
-	swupdate \
-	swupdate-client \
+	lrd-update \
 	swclient \
 	tzdata-core \
 	tzdata-posix \
-	lrd-update \
         "
 
 do_compile_prepend() {
@@ -70,7 +71,7 @@ do_install_append() {
 
 	cp -fr ${S}/plugins ${D}${localstatedir}/www/
 
-	install -D -t ${D}${sysconfdir}/weblcm-python/scripts -m 755 ${S}/*.sh
+	install -D -t ${D}${bindir}/weblcm-python.scripts -m 755 ${S}/*.sh
 	install -D -t ${D}${sysconfdir}/weblcm-python -m 644 ${S}/*.ini
 	install -D -t ${D}${sysconfdir}/weblcm-python/ssl -m 644 \
 		${S}/ssl/server.key ${S}/ssl/server.crt ${S}/ssl/ca.crt
@@ -88,7 +89,11 @@ do_install_append() {
 	sed -i -e '/^awm_cfg/d' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
 	sed -i -e '/\[weblcm\]/a awm_cfg:${ADAPTIVE_WW_CFG_FILE_${PN}}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
 
-	sed -i -e 's,/data/secret,/etc,g' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
+	sed -i -e '/^enable_allow_unauthenticated_reboot_reset/d' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
+	sed -i -e '/\[weblcm\]/a enable_allow_unauthenticated_reboot_reset:${ENABLE_UNAUTHENTICATED}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
+
+	sed -i -e '/^server.socket_host/d' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
+	sed -i -e '/\[global\]/a server.socket_host: ${BIND_IP}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
 
 	if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
 		install -D -m 644 ${S}/weblcm-python.service \
