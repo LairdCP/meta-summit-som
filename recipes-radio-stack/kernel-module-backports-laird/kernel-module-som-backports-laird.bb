@@ -11,4 +11,8 @@ RCONFLICTS_${PN} = " \
         kernel-module-lwb5p-backports-laird \
         "
 
+module_conf_lrdmwl = "options lrdmwl null_scan_count=1"
+
+KERNEL_MODULE_PROBECONF += "lrdmwl"
+
 require backports-laird.inc radio-stack-som-version.inc

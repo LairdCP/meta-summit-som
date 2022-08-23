@@ -11,7 +11,6 @@ SRC_URI = " \
     file://set-radio-mode \
     file://set-m7-boot-mode \
     file://lrd.conf \
-    file://lrdmwl.conf \
     file://lrd-profile.sh \
     file://overlayRoot.sh \
     file://var-volatile-log-journal.mount \
@@ -29,9 +28,7 @@ SYSTEMD_AUTO_ENABLE = "enable"
 
 SYSTEMD_SERVICE_${PN}_append_lrdsecure = " var-volatile-log-journal.mount"
 
-RDEPENDS_${PN} = "\
-	libubootenv \
-"
+RDEPENDS_${PN} = "lrd-fwenv"
 
 do_install () {
     install -D -m 0644 ${S}/file-cache.conf ${D}${sysconfdir}/sysctl.d/file-cache.conf
@@ -39,7 +36,6 @@ do_install () {
     install -D -m 0755 ${S}/modem ${D}${bindir}/modem
     install -D -m 0755 ${S}/set-radio-mode ${D}${bindir}/set-radio-mode
     install -D -m 0755 ${S}/set-m7-boot-mode ${D}${bindir}/set-m7-boot-mode
-    install -D -m 0644 ${S}/lrdmwl.conf ${D}${sysconfdir}/modprobe.d/lrdmwl.conf
     install -D -m 0755 ${S}/lrd-profile.sh ${D}${sysconfdir}/profile.d/lrd-profile.sh
     install -D -m 0755 ${S}/overlayRoot.sh ${D}${sbindir}/overlayRoot.sh
     install -d ${D}/perm
