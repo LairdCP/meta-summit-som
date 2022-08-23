@@ -25,7 +25,13 @@ CORE_IMAGE_EXTRA_INSTALL += "\
 	lrd-update \
 	lrd-fwenv \
 	u-boot-fw-utils \
-	swupdate \
 	swupdate-client \
 	mmc-utils \
+	less \
 	"
+
+ROOTFS_POSTPROCESS_COMMAND += "rootfs_auto_login;"
+
+rootfs_auto_login() {
+	sed -i -e 's,/agetty,/agetty -a root,g' ${IMAGE_ROOTFS}${systemd_unitdir}/system/serial-getty@.service
+}
