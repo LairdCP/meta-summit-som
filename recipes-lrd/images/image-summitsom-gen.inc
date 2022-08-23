@@ -39,10 +39,6 @@ IMAGE_INSTALL_BASIC = "\
 	lrd-update \
 	lrd-fwenv \
 	lrd-usbgadget \
-	u-boot-fw-utils \
-	swupdate \
-	swupdate-client \
-	mmc-utils \
 	"
 
 # Diagnostic tools

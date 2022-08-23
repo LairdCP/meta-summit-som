@@ -24,9 +24,6 @@ CORE_IMAGE_EXTRA_INSTALL += "\
 	lrd-initdata \
 	lrd-update \
 	lrd-fwenv \
-	u-boot-fw-utils \
-	swupdate-client \
-	mmc-utils \
 	less \
 	"
 

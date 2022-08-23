@@ -15,6 +15,7 @@ SRC_URI = " \
 RDEPENDS_${PN} = "\
     swupdate \
     swupdate-client \
+    mmc-utils \
     curl \
 "
 
