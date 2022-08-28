@@ -46,8 +46,6 @@ RDEPENDS_${PN} = "\
 	python3-threading \
 	python3-dbus \
 	python3-pygobject \
-	python3-systemd \
-	python3-networkmanager \
 	python3-cherrypy \
 	zip \
 	unzip \
