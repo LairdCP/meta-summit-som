@@ -10,3 +10,4 @@ ConditionPathExists=/perm
 What=/dev/mmcblk2p7
 Where=/perm
 Type=none
+Options=noatime,noexec,nosuid,nodev 
