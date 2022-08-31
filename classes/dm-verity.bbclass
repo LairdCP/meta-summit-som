@@ -1,7 +1,6 @@
-process_verity() {
-    install -d ${DEPLOY_DIR}
-    rm -f $1
+inherit lrdfitgen
 
+process_verity() {
     # Each line contains a key and a value string delimited by ':'. Read the
     # two parts into separate variables and process them separately. For the
     # key part: convert the names to upper case and replace spaces with
@@ -9,13 +8,22 @@ process_verity() {
     # just trim all white-spaces.
     IFS=":"
     while read KEY VAL; do
-        printf '%s=%s\n' \
-            "$(echo "$KEY" | tr '[:lower:]' '[:upper:]' | sed 's/ /_/g')" \
-            "$(echo "$VAL" | tr -d ' \t')" >> $1
+         VKEY=$(echo "$KEY" | tr '[:lower:]' '[:upper:]' | sed 's/ /_/g')
+         VVAL=$(echo "$VAL" | tr -d ' \t')
+         eval "$VKEY=$VVAL"
     done
 
     # Add partition size
-    echo "DATA_SIZE=$SIZE" >> $1
+    HASH_BLOCK=$(expr $DATA_BLOCKS + 1)
+    DATA_SECT=$(expr $DATA_BLOCKS \* 8)
+    BOOT_DEV='/dev/mmcblk${mmcdev}p${rootvol}'
+
+    echo "DATA_BLOCKS=$DATA_BLOCKS"
+    echo "SIZE=$SIZE"
+    echo "HASH_BLOCK=$HASH_BLOCK"
+
+    echo "dm_table=\"vroot,$UUID,,ro,0 $DATA_SECT verity 1 $BOOT_DEV $BOOT_DEV $DATA_BLOCK_SIZE $HASH_BLOCK_SIZE $DATA_BLOCKS $HASH_BLOCK $HASH_ALGORITHM $ROOT_HASH $SALT\"" > ${ENV}
+    echo 'setenv bootargs "${bootargs} dm-mod.create=\"${dm_table}\" dm_verity.dev_wait=1 root=/dev/dm-0 rootwait rootfstype=squashfs ro"' >> ${ENV}
 }
 
 verity_setup() {
@@ -23,17 +31,24 @@ verity_setup() {
     local INPUT=${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.$TYPE
     local SIZE=$(stat --printf="%s" $INPUT)
     local OUTPUT=$INPUT.verity
-    local ENV="${DEPLOY_DIR_IMAGE}/${IMAGE_BASENAME}.$TYPE.verity.env"
+    local ENV=$OUTPUT.env
+    local ENVL=${IMAGE_LINK_NAME}.$TYPE.verity.env
 
     cp -a $INPUT $OUTPUT
 
     # Let's drop the first line of output (doesn't contain any useful info)
     # and feed the rest to another function.
-    veritysetup --hash-offset=$SIZE format $OUTPUT $OUTPUT | tail -n +2 | process_verity $ENV
+    veritysetup --hash-offset=$SIZE format $OUTPUT $OUTPUT | tail -n +2 | process_verity
 
-    #. $ENV
+#    eval . $ENV
 
-    #echo dm_table="vroot,$UUID,,ro,0 $(($DATA_BLOCKS * 8)) verity 1 /dev/mmcblk1p2 /dev/mmcblk1p2 $DATA_BLOCK_SIZE $HASH_BLOCK_SIZE $DATA_BLOCKS $((DATA_BLOCKS+1)) $HASH_ALGORITHM $ROOT_HASH $SALT"
+    fitimage_script $ENV.its $ENV $ENV.bin
+
+    ln -rsf $ENV.bin $ENVL.bin
+    ln -rsf $ENV.its $ENVL.its
+    ln -rsf $ENV $ENVL
+    install -D -t ${DEPLOY_DIR_IMAGE}/verity -m 644 $ENVL.bin
+    ln -rsf ${DEPLOY_DIR_IMAGE}/verity/$ENVL.bin ${DEPLOY_DIR_IMAGE}/verity/fitImageVerity.bin
 }
 
 IMAGE_TYPES += "verity"

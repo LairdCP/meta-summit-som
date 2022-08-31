@@ -19,5 +19,5 @@ CORE_IMAGE_EXTRA_INSTALL += "\
 	weblcm-python \
 	"
 
-IMAGE_BOOT_FILES += "lrd-m7-low-power-wakeup-demo-itcm.bin"
-SWUPDATE_IMAGES += "lrd-m7-low-power-wakeup-demo-itcm.bin"
+IMAGE_BOOT_FILES += "fitImageMcu.bin"
+SWUPDATE_IMAGES += "fitImageMcu.bin"

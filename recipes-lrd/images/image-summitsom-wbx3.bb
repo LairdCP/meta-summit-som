@@ -10,7 +10,7 @@ IMAGE_ROOTFS_EXTRA_SPACE = "0"
 
 IMAGE_FSTYPES = "squashfs-zstd.verity wic.bz2 wic.bmap"
 
-do_image_wic[depends] += "${IMAGE_BASENAME}:do_image"
+IMAGE_BOOT_FILES += "verity/${IMAGE_LINK_NAME}.${DM_VERITY_IMAGE_TYPE}.env.bin;fitImageVerity.bin"
 
 IMAGE_FEATURES = "\
 	ssh-server-dropbear \

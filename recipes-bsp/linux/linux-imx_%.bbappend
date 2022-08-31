@@ -22,6 +22,7 @@ SRC_URI += " \
 	file://0016-gpio-regulator-off-delay.patch \
 	file://0017-fix-88w8997-pcie-enum.patch \
 	file://0018-i2c-rpmsg-imx-increase-max-buf-size.patch \
+	file://0019-dm-verity-partition-wait-chromeos.patch \
 	"
 
 KBUILD_DEFCONFIG_remove = "${IMX_KERNEL_CONFIG_AARCH64}"
@@ -33,3 +34,6 @@ do_copy_defconfig () {
 
 
 RDEPENDS_${KERNEL_PACKAGE_NAME}-base_remove = "${KERNEL_PACKAGE_NAME}-image"
+
+#DEPENDS += "${M7_PACKAGE}"
+#do_assemble_fitimage[depends] += "${M7_PACKAGE}:do_deploy"

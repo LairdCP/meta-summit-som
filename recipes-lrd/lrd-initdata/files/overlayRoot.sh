@@ -68,8 +68,10 @@ set -- $(mount | awk '$3 == "/" {print $1, $5}')
 rootDev=$1
 rootFsType=$2
 
-PART=${rootDev#*p}
-DRV=${rootDev%p*}
+rootDevL=$(sed 's,.*\(/dev/mmcblk[0-9]p[0-9]\).*,\1,' /proc/cmdline)
+
+PART=${rootDevL#*p}
+DRV=${rootDevL%p*}
 
 OVERLAY=${DRV}p$((PART + 1))
 
@@ -80,7 +82,7 @@ mkdir -p /mnt/rw/upper
 mkdir -p /mnt/rw/work
 mkdir /mnt/newroot
 
-mount -t ${rootFsType} -o noatime,ro ${rootDev} /mnt/lower ||\
+mount -t auto -o noatime,ro ${rootDev} /mnt/lower ||\
 	fail "ERROR: could not ro-mount original root partition"
 
 mount -t overlay -o noatime,lowerdir=/mnt/lower,upperdir=/mnt/rw/upper,workdir=/mnt/rw/work overlayfs-root /mnt/newroot ||\

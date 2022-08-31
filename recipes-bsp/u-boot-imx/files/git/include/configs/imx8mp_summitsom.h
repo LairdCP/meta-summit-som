@@ -93,19 +93,18 @@
 	"m7_bootaddr_itcm=0x7e0000\0"                   \
 	"m7_bootaddr_ddr=0x80000000\0"                  \
 	"m7_bootaddr_qspi=0x08000000\0"                 \
-	"m7_image=lrd-m7-low-power-wakeup-demo-itcm.bin\0" \
 	"m7_ddr_temp=0x48000000\0"                      \
-	"bootm7_itcm=load mmc ${mmcdev}:${bootvol} ${m7_ddr_temp} ${m7_image}; cp.b ${m7_ddr_temp} ${m7_bootaddr_itcm} 20000; bootaux ${m7_bootaddr_itcm}\0" \
-	"bootm7_ddr=load mmc ${mmcdev}:${bootvol} ${m7_bootaddr_ddr} ${m7_image}; dcache flush; bootaux ${m7_bootaddr_ddr}\0" \
+	"bootm7_itcm=imxtract ${loadaddr} firmware-1 ${m7_ddr_temp}; cp.b ${m7_ddr_temp} ${m7_bootaddr_itcm} 20000; bootaux ${m7_bootaddr_itcm}\0" \
+	"bootm7_ddr=imxtract ${loadaddr} firmware-1 ${m7_bootaddr_ddr}; dcache flush; bootaux ${m7_bootaddr_ddr}\0" \
 	"bootm7_qspi=sf probe; sf read ${m7_ddr_temp} 0 0x100000; bootaux ${m7_bootaddr_qspi}\0" \
 	"splashimage=0x50000000\0"                      \
 	"conf=conf-freescale_imx8mp-summitsom-dvk-pcie-uart.dtb\0" \
 	"loadimage=load mmc ${mmcdev}:${bootvol} ${loadaddr} fitImage\0" \
+	"loadverity=load mmc ${mmcdev}:${bootvol} ${loadaddr} fitImageVerity.bin\0" \
+	"loadm7=load mmc ${mmcdev}:${bootvol} ${loadaddr} fitImageMcu.bin\0" \
 	"mmcargs="                                      \
 	"setenv bootargs console=${console} "           \
-	"root=/dev/mmcblk${mmcdev}p${rootvol} "         \
-	"rootfstype=squashfs rootwait ro quiet "        \
-	"clk_ignore_unused "                            \
+	"quiet clk_ignore_unused "                      \
 	"bootside=${bootside} "                         \
 	"init=/usr/sbin/overlayRoot.sh\0"               \
 	"mmcside="                                      \
@@ -117,13 +116,15 @@
 	"setexpr rootvol ${bootvol} + 1\0"              \
 	"runm7="                                        \
 	"setexpr bootm7 sub m7-rpmsg '' $conf; "        \
-	"test -z \"${bootm7}\" || run bootm7_itcm\0"    \
+	"if test -n \"${bootm7}\"; then "               \
+	"run loadm7 && run bootm7_itcm; "               \
+	"fi\0"                                          \
 	"bootcmd="                                      \
-	"run mmcside; run runm7; "                      \
-	"if run loadimage; then "                       \
+	"run mmcside; "                                 \
+	"run runm7; "                                   \
 	"run mmcargs; "                                 \
-	"bootm ${loadaddr}#${conf}; "                   \
-	"fi"
+	"run loadverity; source ${loadaddr}:script-1; " \
+	"run loadimage && bootm ${loadaddr}#${conf}"
 
 /* Link Definitions */
 #define CONFIG_LOADADDR                 0x44000000

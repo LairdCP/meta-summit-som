@@ -45,13 +45,22 @@ software =
 					sha256 = "$swupdate_get_sha256(fitImage)";
 				},
 				{
-					filename = "lrd-m7-low-power-wakeup-demo-itcm.bin";
-					path = "lrd-m7-low-power-wakeup-demo-itcm.bin";
+					filename = "fitImageMcu.bin";
+					path = "fitImageMcu.bin";
 					device = "/dev/mmcblk2p1";
 					type = "rawfile";
 					filesystem = "vfat";
 					installed-directly = true;
-					sha256 = "$swupdate_get_sha256(lrd-m7-low-power-wakeup-demo-itcm.bin)";
+					sha256 = "$swupdate_get_sha256(fitImageMcu.bin)";
+				},
+				{
+					filename = "fitImageVerity.bin";
+					path = "fitImageVerity.bin";
+					device = "/dev/mmcblk2p1";
+					type = "rawfile";
+					filesystem = "vfat";
+					installed-directly = true;
+					sha256 = "$swupdate_get_sha256(fitImageVerity.bin)";
 				},
 				{
 					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
@@ -111,13 +120,22 @@ software =
 					sha256 = "$swupdate_get_sha256(fitImage)";
 				},
 				{
-					filename = "lrd-m7-low-power-wakeup-demo-itcm.bin";
-					path = "lrd-m7-low-power-wakeup-demo-itcm.bin";
+					filename = "fitImageMcu.bin";
+					path = "fitImageMcu.bin";
 					device = "/dev/mmcblk2p4";
 					type = "rawfile";
 					filesystem = "vfat";
 					installed-directly = true;
-					sha256 = "$swupdate_get_sha256(lrd-m7-low-power-wakeup-demo-itcm.bin)";
+					sha256 = "$swupdate_get_sha256(fitImageMcu.bin)";
+				},
+				{
+					filename = "fitImageVerity.bin";
+					path = "fitImageVerity.bin";
+					device = "/dev/mmcblk2p4";
+					type = "rawfile";
+					filesystem = "vfat";
+					installed-directly = true;
+					sha256 = "$swupdate_get_sha256(fitImageVerity.bin)";
 				},
 				{
 					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
@@ -223,12 +241,21 @@ software =
 					sha256 = "$swupdate_get_sha256(fitImage)";
 				},
 				{
-					filename = "lrd-m7-low-power-wakeup-demo-itcm.bin";
-					path = "lrd-m7-low-power-wakeup-demo-itcm.bin";
+					filename = "fitImageMcu.bin";
+					path = "fitImageMcu.bin";
 					device = "/dev/mmcblk2p1";
 					type = "rawfile";
 					filesystem = "vfat";
-					sha256 = "$swupdate_get_sha256(lrd-m7-low-power-wakeup-demo-itcm.bin)";
+					sha256 = "$swupdate_get_sha256(fitImageMcu.bin)";
+				},
+				{
+					filename = "fitImageVerity.bin";
+					path = "fitImageVerity.bin";
+					device = "/dev/mmcblk2p1";
+					type = "rawfile";
+					filesystem = "vfat";
+					installed-directly = true;
+					sha256 = "$swupdate_get_sha256(fitImageVerity.bin)";
 				},
 				{
 					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
@@ -245,19 +272,28 @@ software =
 					sha256 = "$swupdate_get_sha256(fitImage)";
 				},
 				{
-					filename = "lrd-m7-low-power-wakeup-demo-itcm.bin";
-					path = "lrd-m7-low-power-wakeup-demo-itcm.bin";
+					filename = "fitImageMcu.bin";
+					path = "fitImageMcu.bin";
 					device = "/dev/mmcblk2p4";
 					type = "rawfile";
 					filesystem = "vfat";
-					sha256 = "$swupdate_get_sha256(lrd-m7-low-power-wakeup-demo-itcm.bin)";
+					sha256 = "$swupdate_get_sha256(fitImageMcu.bin)";
+				},
+				{
+					filename = "fitImageVerity.bin";
+					path = "fitImageVerity.bin";
+					device = "/dev/mmcblk2p4";
+					type = "rawfile";
+					filesystem = "vfat";
+					installed-directly = true;
+					sha256 = "$swupdate_get_sha256(fitImageVerity.bin)";
 				},
 				{
 					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
 					device = "/dev/mmcblk2p5";
 					type = "raw";
 					sha256 = "$swupdate_get_sha256(@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@)";
-				}
+				},
 			);
 
 			scripts: (

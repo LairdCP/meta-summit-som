@@ -540,6 +540,7 @@ int board_late_init(void)
 	switch (get_boot_device()) {
 	case SD2_BOOT:
 		env_set_ulong("mmcdev", 1);
+		env_set("bootside", "a");
 		printf("Booting from SD, side a\n");
 		break;
 	case MMC3_BOOT:

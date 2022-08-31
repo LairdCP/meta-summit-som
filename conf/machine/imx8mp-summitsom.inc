@@ -18,7 +18,7 @@ KERNEL_CLASSES  = "kernel-fitimage"
 KERNEL_IMAGETYPES = "fitImage"
 
 KERNEL_IMAGETYPE_summitsom = "fitImage"
-IMAGE_BOOT_FILES = "${KERNEL_IMAGETYPE}"
+IMAGE_BOOT_FILES_remove = "${@make_dtb_boot_files(d)} ${OPTEE_BOOT_IMAGE}"
 
 IMAGE_CLASSES = "squashfs-zstd dm-verity"
 

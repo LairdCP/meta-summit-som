@@ -1,0 +1,60 @@
+diff --git a/drivers/md/dm-verity-target.c b/drivers/md/dm-verity-target.c
+index 808a98ef624c..419b7425968c 100644
+--- a/drivers/md/dm-verity-target.c
++++ b/drivers/md/dm-verity-target.c
+@@ -18,6 +18,7 @@
+ #include "dm-verity-verify-sig.h"
+ #include <linux/module.h>
+ #include <linux/reboot.h>
++#include <linux/delay.h>
+ 
+ #define DM_MSG_PREFIX			"verity"
+ 
+@@ -964,6 +965,31 @@ static int verity_parse_opt_args(struct dm_arg_set *as, struct dm_verity *v,
+ 	return r;
+ }
+ 
++/* Controls whether verity_get_device will wait forever for a device. */
++static int dev_wait;
++module_param(dev_wait, int, 0444);
++MODULE_PARM_DESC(dev_wait, "Wait forever for a backing device");
++
++static int verity_get_device(struct dm_target *ti, const char *devname,
++			     struct dm_dev **dm_dev)
++{
++	do {
++		/* Try the normal path first since if everything is ready, it
++		 * will be the fastest.
++		 */
++		if (!dm_get_device(ti, devname,
++				   dm_table_get_mode(ti->table), dm_dev))
++			return 0;
++		if (!dev_wait)
++			break;
++		/* This delay directly affects boot time if code reaches here.
++		 * So keep it small.
++		 */
++		msleep(5);
++	} while (dev_wait && (driver_probe_done() != 0 || *dm_dev == NULL));
++	return -1;
++}
++
+ /*
+  * Target parameters:
+  *	<version>	The current format is version 1.
+@@ -1023,13 +1049,13 @@ static int verity_ctr(struct dm_target *ti, unsigned argc, char **argv)
+ 	}
+ 	v->version = num;
+ 
+-	r = dm_get_device(ti, argv[1], FMODE_READ, &v->data_dev);
++	r = verity_get_device(ti, argv[1], &v->data_dev);
+ 	if (r) {
+ 		ti->error = "Data device lookup failed";
+ 		goto bad;
+ 	}
+ 
+-	r = dm_get_device(ti, argv[2], FMODE_READ, &v->hash_dev);
++	r = verity_get_device(ti, argv[1], &v->hash_dev);
+ 	if (r) {
+ 		ti->error = "Hash device lookup failed";
+ 		goto bad;
