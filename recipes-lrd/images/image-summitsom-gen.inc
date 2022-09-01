@@ -13,7 +13,7 @@ IMAGE_ROOTFS_EXTRA_SPACE = "0"
 IMAGE_FSTYPES = "squashfs-zstd.verity wic.bz2 wic.bmap"
 
 IMAGE_BOOT_FILES += "verity/fitImageVerity.bin"
-SWUPDATE_IMAGES += "imx-boot fitImage verity/fitImageVerity.bin"
+SWUPDATE_IMAGES += "imx-boot ${IMAGE_BOOT_FILES}"
 
 IMAGE_FEATURES = "\
 	ssh-server-dropbear \

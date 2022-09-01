@@ -32,8 +32,4 @@ do_copy_defconfig () {
 	cp ${WORKDIR}/config/*.dts* ${S}/arch/arm64/boot/dts/freescale/
 }
 
-
 RDEPENDS_${KERNEL_PACKAGE_NAME}-base_remove = "${KERNEL_PACKAGE_NAME}-image"
-
-#DEPENDS += "${M7_PACKAGE}"
-#do_assemble_fitimage[depends] += "${M7_PACKAGE}:do_deploy"

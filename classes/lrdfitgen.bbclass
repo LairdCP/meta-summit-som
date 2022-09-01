@@ -156,6 +156,10 @@ fitimage_firmware() {
 	fitimage_emit_section_maint $1 fitend
 
 	${UBOOT_MKIMAGE} -f $1 $3
+
+	if [ "${UBOOT_SIGN_ENABLE}" = "1" ]; then
+		${UBOOT_MKIMAGE_SIGN} -F -k "${UBOOT_SIGN_KEYDIR}" -r ${3}
+	fi
 }
 
 fitimage_script() {
@@ -170,4 +174,8 @@ fitimage_script() {
 	fitimage_emit_section_maint $1 fitend
 
 	${UBOOT_MKIMAGE} -f $1 $3
+
+	if [ "${UBOOT_SIGN_ENABLE}" = "1" ]; then
+		${UBOOT_MKIMAGE_SIGN} -F -k "${UBOOT_SIGN_KEYDIR}" -r ${3}
+	fi
 }
