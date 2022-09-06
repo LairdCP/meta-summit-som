@@ -48,7 +48,7 @@ verity_setup() {
     ln -rsf $ENV.its $ENVL.its
     ln -rsf $ENV $ENVL
     install -D -t ${DEPLOY_DIR_IMAGE}/verity -m 644 $ENVL.bin
-    ln -rsf ${DEPLOY_DIR_IMAGE}/verity/$ENVL.bin ${DEPLOY_DIR_IMAGE}/verity/fitImageVerity.bin
+    ln -rsf ${DEPLOY_DIR_IMAGE}/verity/$ENVL.bin ${DEPLOY_DIR_IMAGE}/fitImageVerity.bin
 }
 
 IMAGE_TYPES += "verity"
