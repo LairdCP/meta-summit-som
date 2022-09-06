@@ -40,8 +40,6 @@ verity_setup() {
     # and feed the rest to another function.
     veritysetup --hash-offset=$SIZE format $OUTPUT $OUTPUT | tail -n +2 | process_verity
 
-#    eval . $ENV
-
     fitimage_script $ENV.its $ENV $ENV.bin
 
     ln -rsf $ENV.bin $ENVL.bin
@@ -55,6 +53,8 @@ IMAGE_TYPES += "verity"
 CONVERSIONTYPES += "verity"
 CONVERSION_CMD_verity = "verity_setup ${type}"
 CONVERSION_DEPENDS_verity = "cryptsetup-native"
+
+IMAGE_BOOT_FILES += "fitImageVerity.bin"
 
 python __anonymous() {
     image_fstypes = d.getVar('IMAGE_FSTYPES')
