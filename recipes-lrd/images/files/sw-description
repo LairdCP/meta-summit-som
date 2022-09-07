@@ -254,7 +254,6 @@ software =
 					device = "/dev/mmcblk2p1";
 					type = "rawfile";
 					filesystem = "vfat";
-					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(fitImageVerity.bin)";
 				},
 				{
@@ -285,7 +284,6 @@ software =
 					device = "/dev/mmcblk2p4";
 					type = "rawfile";
 					filesystem = "vfat";
-					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(fitImageVerity.bin)";
 				},
 				{
