@@ -1,7 +1,7 @@
 echo "Loading lrdmwl Drivers"
 
 case "${1}" in
-SU|ST)
+ST|SOM8MP)
   systemctl start adaptive_bt
   systemctl start adaptive_ww
   ;;
@@ -11,7 +11,7 @@ mfg)
   systemctl stop adaptive_ww
   ;;
 *)
-   echo "usage load-lrdmwl.sh [SU | ST | mfg]"
+   echo "usage load-lrdmwl.sh [SOM8MP | ST | mfg]"
    exit 1
    ;;
 esac
