@@ -69,12 +69,10 @@ fitimage_emit_section_firmware() {
 	firmware_csum="${FIT_HASH_ALG}"
 	firmware_sign_algo="${FIT_SIGN_ALG}"
 
-	if [ "${UBOOT_SIGN_ENABLE}" != "1" ] ; then
-                firmware_sign_keyname=""
-        elif [ "${FIT_SIGN_INDIVIDUAL}" = "1" ]; then
-                firmware_sign_keyname="${UBOOT_SIGN_IMG_KEYNAME}"
-        else
+        if [ "${UBOOT_SIGN_ENABLE}" = "1" -a "${FIT_SIGN_INDIVIDUAL}" = "1" ]; then
                 firmware_sign_keyname="${UBOOT_SIGN_KEYNAME}"
+        else
+                firmware_sign_keyname=""
         fi
 
 	cat << EOF >> $1
@@ -112,12 +110,10 @@ fitimage_emit_section_script() {
 	scr_csum="${FIT_HASH_ALG}"
 	scr_sign_algo="${FIT_SIGN_ALG}"
 
-	if [ "${UBOOT_SIGN_ENABLE}" != "1" ] ; then
-                scr_sign_keyname=""
-        elif [ "${FIT_SIGN_INDIVIDUAL}" = "1" ]; then
-                scr_sign_keyname="${UBOOT_SIGN_IMG_KEYNAME}"
-        else
+        if [ "${UBOOT_SIGN_ENABLE}" = "1" -a "${FIT_SIGN_INDIVIDUAL}" = "1" ]; then
                 scr_sign_keyname="${UBOOT_SIGN_KEYNAME}"
+        else
+                scr_sign_keyname=""
         fi
 
         cat << EOF >> $1
@@ -144,6 +140,45 @@ EOF
 	fi
 }
 
+#
+# Emit the fitImage ITS configuration section
+#
+# $1 ... .its filename
+# $2 ... images ID
+fitimage_emit_section_config() {
+
+	conf_csum="${FIT_HASH_ALG}"
+	conf_sign_algo="${FIT_SIGN_ALG}"
+	if [ "${UBOOT_SIGN_ENABLE}" = "1" ] ; then
+		conf_sign_keyname="${UBOOT_SIGN_KEYNAME}"
+	fi
+
+	its_file="${1}"
+	images="${2}"
+
+	cat << EOF >> ${its_file}
+                default = "config-1";
+
+                config-1 {
+			description = "Default";
+			loadables = "${images}";
+EOF
+
+	if [ -n "${conf_sign_keyname}" ] ; then
+		cat << EOF >> ${its_file}
+                        signature-1 {
+                                algo = "${conf_csum},${conf_sign_algo}";
+                                key-name-hint = "${conf_sign_keyname}";
+				sign-images = "loadables";
+                        };
+EOF
+	fi
+
+	cat << EOF >> ${its_file}
+                };
+EOF
+}
+
 fitimage_firmware() {
 	count=1
 
@@ -153,12 +188,15 @@ fitimage_firmware() {
 	fitimage_emit_section_maint $1 imagestart
 	fitimage_emit_section_firmware $1 $count $2 "none"
 	fitimage_emit_section_maint $1 sectend
+	fitimage_emit_section_maint $1 confstart
+	fitimage_emit_section_config $1 "firmware-1"
+	fitimage_emit_section_maint $1 sectend
 	fitimage_emit_section_maint $1 fitend
 
 	${UBOOT_MKIMAGE} -f $1 $3
 
 	if [ "${UBOOT_SIGN_ENABLE}" = "1" ]; then
-		${UBOOT_MKIMAGE_SIGN} -F -k "${UBOOT_SIGN_KEYDIR}" -r ${3}
+		${UBOOT_MKIMAGE_SIGN} -F -k "${UBOOT_SIGN_KEYDIR}" ${3}
 	fi
 }
 
@@ -171,11 +209,14 @@ fitimage_script() {
 	fitimage_emit_section_maint $1 imagestart
 	fitimage_emit_section_script $1 $count $2 "none"
 	fitimage_emit_section_maint $1 sectend
+	fitimage_emit_section_maint $1 confstart
+	fitimage_emit_section_config $1 "script-1"
+	fitimage_emit_section_maint $1 sectend
 	fitimage_emit_section_maint $1 fitend
 
 	${UBOOT_MKIMAGE} -f $1 $3
 
 	if [ "${UBOOT_SIGN_ENABLE}" = "1" ]; then
-		${UBOOT_MKIMAGE_SIGN} -F -k "${UBOOT_SIGN_KEYDIR}" -r ${3}
+		${UBOOT_MKIMAGE_SIGN} -F -k "${UBOOT_SIGN_KEYDIR}" ${3}
 	fi
 }

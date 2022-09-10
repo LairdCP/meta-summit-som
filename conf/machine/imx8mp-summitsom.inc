@@ -4,28 +4,15 @@
 #@DESCRIPTION: Machine configuration for Laird Connectivity i.MX8M Plus Summit SOM
 #@MAINTAINER: Boris Krasnovskiy <Boris.Krasnovskiy@lairdconnect.com>
 
-MACHINEOVERRIDES =. "mx8:mx8m:mx8mp:summitsom:"
+MACHINEOVERRIDES =. "mx8:mx8m:mx8mp:"
 
 require conf/machine/include/imx-base.inc
 require conf/machine/include/tune-cortexa53.inc
+require summitsom.inc
 
-MACHINE_FEATURES += "pci usbhost alsa rtc qemu-usermode optee"
+MACHINE_FEATURES += "pci usbhost alsa rtc optee"
 
-FIT_KERNEL_COMP_ALG = "zstd"
-FIT_KERNEL_COMP_ALG_EXTENSION = ".zstd"
-
-KERNEL_CLASSES  = "kernel-fitimage"
-KERNEL_IMAGETYPES = "fitImage"
-
-KERNEL_IMAGETYPE_summitsom = "fitImage"
 IMAGE_BOOT_FILES_remove = "${@make_dtb_boot_files(d)} ${OPTEE_BOOT_IMAGE}"
-
-IMAGE_CLASSES = "squashfs-zstd dm-verity"
-
-UBOOT_DTB_LOADADDRESS = "0x43000000"
-UBOOT_ENTRYPOINT_mx8m   = "0x40400000"
-
-WKS_FILES ?= "lrd-imx-uboot-spl-bootpart.wks.in"
 
 UBOOT_CONFIG ??= "sd"
 UBOOT_CONFIG[sd] = "${UBOOT_CONFIG_BASENAME}_defconfig,sdcard"
@@ -67,13 +54,6 @@ TEE_LOAD_ADDR = "0x56000000"
 MACHINE_EXTRA_RDEPENDS += "${MACHINE_FIRMWARE} kernel-modules"
 
 IMXBOOT_TARGETS_BASENAME = "flash_evk"
-
-PREFERRED_RPROVIDER_wireless-regdb-static = "som8mp-radio-firmware"
-PREFERRED_RPROVIDER_wpa-supplicant = "summit-supplicant-som"
-PREFERRED_RPROVIDER_wpa-supplicant-cli = "summit-supplicant-som"
-PREFERRED_RPROVIDER_wpa-supplicant-passphrase = "summit-supplicant-som"
-PREFERRED_RPROVIDER_networkmanager = "lrd-networkmanager-som"
-PREFERRED_RPROVIDER_networkmanager = "lrd-networkmanager-som-nmcli"
 
 MACHINE_FEATURES_remove = "nxp8987 nxp8997"
 MACHINE_FIRMWARE_remove = "linux-firmware-ath10k"

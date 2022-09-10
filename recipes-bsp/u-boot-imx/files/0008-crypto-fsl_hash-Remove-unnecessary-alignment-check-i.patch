@@ -1,0 +1,53 @@
+From 41b2182af73efcdfd074570976264dddacee5b70 Mon Sep 17 00:00:00 2001
+From: Stefan Roese <sr@denx.de>
+Date: Fri, 29 Apr 2022 15:34:44 +0200
+Subject: [PATCH 2/2] crypto: fsl_hash: Remove unnecessary alignment check in
+ caam_hash()
+
+While working on an LX2160 based board and updating to latest mainline
+I noticed problems using the HW accelerated hash functions on this
+platform, when trying to boot a FIT Kernel image. Here the resulting
+error message:
+
+   Using 'conf-freescale_lx2160a.dtb' configuration
+   Trying 'kernel-1' kernel subimage
+   Verifying Hash Integrity ... sha256Error: Address arguments are not aligned
+CAAM was not setup properly or it is faulty
+ error!
+Bad hash value for 'hash-1' hash node in 'kernel-1' image node
+Bad Data Hash
+ERROR: can't get kernel image!
+
+Testing and checking with Gaurav Jain from NXP has revealed, that this
+alignment check is not necessary here at all. So let's remove this
+check completely.
+
+Signed-off-by: Stefan Roese <sr@denx.de>
+Cc: Gaurav Jain <gaurav.jain@nxp.com>
+Cc: dullfire@yahoo.com
+Reviewed-by: Gaurav Jain <gaurav.jain@nxp.com>
+---
+ drivers/crypto/fsl/fsl_hash.c | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/drivers/crypto/fsl/fsl_hash.c b/drivers/crypto/fsl/fsl_hash.c
+index 9e6829b7ad..575196778c 100644
+--- a/drivers/crypto/fsl/fsl_hash.c
++++ b/drivers/crypto/fsl/fsl_hash.c
+@@ -176,13 +176,6 @@ int caam_hash(const unsigned char *pbuf, unsigned int buf_len,
+ 	uint32_t *desc;
+ 	unsigned int size;
+ 
+-	if (!IS_ALIGNED((uintptr_t)pbuf, ARCH_DMA_MINALIGN) ||
+-	    !IS_ALIGNED((uintptr_t)pout, ARCH_DMA_MINALIGN)) {
+-		puts("Error: Address arguments are not aligned\n");
+-		return -EINVAL;
+-	}
+-
+-	debug("\ncaam hash\n");
+ 	desc = malloc_cache_aligned(sizeof(int) * MAX_CAAM_DESCSIZE);
+ 	if (!desc) {
+ 		debug("Not enough memory for descriptor allocation\n");
+-- 
+2.37.3
+

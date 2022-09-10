@@ -1,0 +1,43 @@
+From 1919f58a8f371c19c340127b6a76859867e90247 Mon Sep 17 00:00:00 2001
+From: Gaurav Jain <gaurav.jain@nxp.com>
+Date: Wed, 11 May 2022 14:23:19 +0530
+Subject: [PATCH 1/2] crypto/fsl: fsl_hash: Fix dcache issue in
+ caam_hash_finish
+
+HW accelerated hash operations are giving incorrect hash output.
+so add flush and invalidate for input/output hash buffers.
+
+Fixes: 94e3c8c4fd (crypto/fsl - Add progressive hashing support using hardware acceleration.)
+Signed-off-by: Gaurav Jain <gaurav.jain@nxp.com>
+---
+ drivers/crypto/fsl/fsl_hash.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/crypto/fsl/fsl_hash.c b/drivers/crypto/fsl/fsl_hash.c
+index a52c4ac957..9e6829b7ad 100644
+--- a/drivers/crypto/fsl/fsl_hash.c
++++ b/drivers/crypto/fsl/fsl_hash.c
+@@ -149,12 +149,20 @@ static int caam_hash_finish(void *hash_ctx, void *dest_buf,
+ 				  driver_hash[caam_algo].digestsize,
+ 				  1);
+ 
++	flush_dcache_range((ulong)ctx->sg_tbl, (ulong)(ctx->sg_tbl) + len);
++	flush_dcache_range((ulong)ctx->sha_desc,
++			   (ulong)(ctx->sha_desc) + (sizeof(uint32_t) * MAX_CAAM_DESCSIZE));
++	flush_dcache_range((ulong)ctx->hash,
++			   (ulong)(ctx->hash) + driver_hash[caam_algo].digestsize);
++
+ 	ret = run_descriptor_jr(ctx->sha_desc);
+ 
+ 	if (ret) {
+ 		debug("Error %x\n", ret);
+ 		return ret;
+ 	} else {
++		invalidate_dcache_range((ulong)ctx->hash,
++					(ulong)(ctx->hash) + driver_hash[caam_algo].digestsize);
+ 		memcpy(dest_buf, ctx->hash, sizeof(ctx->hash));
+ 	}
+ 	free(ctx);
+-- 
+2.37.3
+

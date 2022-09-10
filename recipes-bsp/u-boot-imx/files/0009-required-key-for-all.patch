@@ -1,0 +1,20 @@
+--- a/common/image-fit-sig.c	2022-09-10 12:23:14.000000000 
++++ b/common/image-fit-sig.c	2022-09-10 13:25:32.000000000 
+@@ -208,7 +208,7 @@
+ 
+ 		required = fdt_getprop(sig_blob, noffset, FIT_KEY_REQUIRED,
+ 				       NULL);
+-		if (!required || strcmp(required, "image"))
++		if (!required)
+ 			continue;
+ 		ret = fit_image_verify_sig(fit, image_noffset, data, size,
+ 					   sig_blob, noffset);
+@@ -448,7 +448,7 @@
+ 
+ 		required = fdt_getprop(sig_blob, noffset, FIT_KEY_REQUIRED,
+ 				       NULL);
+-		if (!required || strcmp(required, "conf"))
++		if (!required)
+ 			continue;
+ 
+ 		reqd_sigs++;
