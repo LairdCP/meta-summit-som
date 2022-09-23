@@ -33,7 +33,7 @@ Usage:                                   . $PROGNAME [-i] [-r] [-h] <build-dir>
     <build-dir>  build directory
     Optional parameters: [-i] [-r] [-h]
     * [-i]: Laird Connectivity internal build
-    * [-r]: Add meta-laird-cp to install
+    * [-r]: Add meta-laird-cp and meta-lrd-rdvk to install
     * [-h]: help
 
 The first usage is for creating a new build directory. In this case, the
@@ -144,13 +144,14 @@ if ${build_dir_setup_enabled}; then
 ' >> conf/local.conf
 
     ${setup_radio} && echo 'BBMASK += " \
-    meta-laird-cp/recipes-packages/openssl \
-    meta-laird-cp/recipes-packages/.*/.*openssl10.* \
+    meta-laird-cp/meta-laird-cp-pre-3.4/recipes-packages/openssl \
+    meta-laird-cp/meta-laird-cp-pre-3.4/recipes-packages/.*/.*openssl10.* \
 "
 ' >> conf/local.conf
 
 ${setup_lrd} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-lrd-radio-mfg"'  >> conf/bblayers.conf
-${setup_radio} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-laird-cp/meta-laird-cp"' >> conf/bblayers.conf
+${setup_radio} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-lrd-rdvk"' >> conf/bblayers.conf
+${setup_radio} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-laird-cp/meta-laird-cp-pre-3.4"' >> conf/bblayers.conf
 
 fi
 
