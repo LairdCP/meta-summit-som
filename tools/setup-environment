@@ -146,6 +146,8 @@ if ${build_dir_setup_enabled}; then
     ${setup_radio} && echo 'BBMASK += " \
     meta-laird-cp/meta-laird-cp-pre-3.4/recipes-packages/openssl \
     meta-laird-cp/meta-laird-cp-pre-3.4/recipes-packages/.*/.*openssl10.* \
+    meta-lrd-rdvk/recipes-radio-stack/openssl \
+    meta-lrd-rdvk/recipes-radio-stack/.*/.*openssl10.* \
 "
 ' >> conf/local.conf
 
