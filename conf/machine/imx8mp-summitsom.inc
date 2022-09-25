@@ -4,19 +4,20 @@
 #@DESCRIPTION: Machine configuration for Laird Connectivity i.MX8M Plus Summit SOM
 #@MAINTAINER: Boris Krasnovskiy <Boris.Krasnovskiy@lairdconnect.com>
 
-MACHINEOVERRIDES =. "mx8:mx8m:mx8mp:"
+MACHINEOVERRIDES =. "imx-boot-container:mx8mp:"
 
 require conf/machine/include/imx-base.inc
-require conf/machine/include/tune-cortexa53.inc
+require conf/machine/include/arm/armv8a/tune-cortexa53.inc
 require summitsom.inc
+
+DEFAULTTUNE ?= "armv8a-crc-crypto"
 
 MACHINE_FEATURES += "pci usbhost alsa rtc optee"
 
-IMAGE_BOOT_FILES_remove = "${@make_dtb_boot_files(d)} ${OPTEE_BOOT_IMAGE}"
+IMAGE_BOOT_FILES:remove = "${@make_dtb_boot_files(d)} ${OPTEE_BOOT_IMAGE}"
 
 UBOOT_CONFIG ??= "sd"
 UBOOT_CONFIG[sd] = "${UBOOT_CONFIG_BASENAME}_defconfig,sdcard"
-UBOOT_CONFIG[fspi] = "${UBOOT_CONFIG_BASENAME}_defconfig"
 UBOOT_CONFIG[mfgtool] = "${UBOOT_CONFIG_BASENAME}_defconfig"
 
 # Set DDR FIRMWARE
@@ -55,6 +56,6 @@ MACHINE_EXTRA_RDEPENDS += "${MACHINE_FIRMWARE} kernel-modules"
 
 IMXBOOT_TARGETS_BASENAME = "flash_evk"
 
-MACHINE_FEATURES_remove = "nxp8987 nxp8997"
-MACHINE_FIRMWARE_remove = "linux-firmware-ath10k"
-MACHINE_EXTRA_RRECOMMENDS_remove = "imx-m7-demos"
+MACHINE_FEATURES:remove = "nxp8987 nxp8997"
+MACHINE_FIRMWARE:remove = "linux-firmware-ath10k"
+MACHINE_EXTRA_RRECOMMENDS:remove = "imx-m7-demos"

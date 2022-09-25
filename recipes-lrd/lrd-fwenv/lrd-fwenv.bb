@@ -12,12 +12,12 @@ SRC_URI = " \
 
 S = "${WORKDIR}"
 
-SYSTEMD_SERVICE_${PN} = "fw_env.service"
+SYSTEMD_SERVICE:${PN} = "fw_env.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
-RDEPENDS_${PN} += "u-boot-fw-utils"
+RDEPENDS:${PN} += "u-boot-fw-utils"
 
-FILES_${PN} += "${systemd_unitdir}/system ${sysconfdir}"
+FILES:${PN} += "${systemd_unitdir}/system ${sysconfdir}"
 
 do_install() {
     install -d ${D}${sysconfdir}/

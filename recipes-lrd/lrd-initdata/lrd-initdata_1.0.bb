@@ -21,14 +21,14 @@ SRC_URI = " \
 
 S = "${WORKDIR}"
 
-FILES_${PN} += "${systemd_unitdir}/system ${sysconfdir} /perm /data"
+FILES:${PN} += "${systemd_unitdir}/system ${sysconfdir} /perm /data"
 
-SYSTEMD_SERVICE_${PN} = "perm-enable.service"
+SYSTEMD_SERVICE:${PN} = "perm-enable.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
-SYSTEMD_SERVICE_${PN}_append_lrdsecure = " var-volatile-log-journal.mount"
+SYSTEMD_SERVICE_${PN}:append:lrdsecure = " var-volatile-log-journal.mount"
 
-RDEPENDS_${PN} = "lrd-fwenv"
+RDEPENDS:${PN} = "lrd-fwenv"
 
 do_install () {
     install -D -m 0644 ${S}/file-cache.conf ${D}${sysconfdir}/sysctl.d/file-cache.conf
@@ -44,7 +44,7 @@ do_install () {
     install -D -m 0644 ${S}/perm.mount ${D}${systemd_unitdir}/system/perm.mount
 }
 
-do_install_append_lrdsecure () {
+do_install:append_lrdsecure () {
     install -d ${D}/data
     install -D -m 0644 ${S}/var-volatile-log-journal.mount ${D}${systemd_unitdir}/system/var-volatile-log-journal.mount
     rm -f ${D}${sbindir}/overlayRoot.sh

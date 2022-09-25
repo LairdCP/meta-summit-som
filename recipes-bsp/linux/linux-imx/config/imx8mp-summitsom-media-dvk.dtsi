@@ -44,10 +44,16 @@
 	};
 
 	sound-xcvr {
-		compatible = "fsl,imx-audio-xcvr";
+		compatible = "fsl,imx-audio-card";
 		model = "imx-audio-xcvr";
-		cpu-dai = <&xcvr>;
 		status = "disabled";
+
+		pri-dai-link {
+			link-name = "XCVR PCM";
+			cpu {
+				sound-dai = <&xcvr>;
+			};
+		};
 	};
 
 	audio_volume {

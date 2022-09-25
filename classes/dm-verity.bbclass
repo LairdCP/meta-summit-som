@@ -51,7 +51,7 @@ verity_setup() {
 
 IMAGE_TYPES += "verity"
 CONVERSIONTYPES += "verity"
-CONVERSION_CMD_verity = "verity_setup ${type}"
+CONVERSION_CMD:verity = "verity_setup ${type}"
 CONVERSION_DEPENDS_verity = "cryptsetup-native"
 
 IMAGE_BOOT_FILES += "fitImageVerity.bin"

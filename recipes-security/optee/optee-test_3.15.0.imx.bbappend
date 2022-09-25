@@ -10,4 +10,4 @@ do_install () {
 	install ${B}/supp_plugin/*plugin ${D}/${nonarch_libdir}/tee-supplicant/plugins/
 }
 
-FILES_${PN} = "${bindir} ${nonarch_base_libdir}/optee_armtz/ ${nonarch_libdir}/tee-supplicant/plugins/"
+FILES:${PN} = "${bindir} ${nonarch_base_libdir}/optee_armtz/ ${nonarch_libdir}/tee-supplicant/plugins/"

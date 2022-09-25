@@ -1,8 +1,8 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI += "file://journald.conf"
 
-PACKAGECONFIG_remove = "\
+PACKAGECONFIG:remove = "\
     networkd \
     timesyncd \
     randomseed \
@@ -15,6 +15,6 @@ PACKAGECONFIG_remove = "\
     gshadow \
 "
 
-do_install_append() {
+do_install:append() {
         install -Dm 0644 ${WORKDIR}/journald.conf ${D}${sysconfdir}/systemd/journald.conf
 }

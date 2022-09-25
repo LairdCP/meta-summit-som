@@ -13,13 +13,13 @@ SRC_URI = " \
     file://lrdmwl_2040.conf \
     "
 
-RDEPENDS_${PN} = "\
+RDEPENDS:${PN} = "\
 	libubootenv \
 "
 
 S = "${WORKDIR}"
 
-FILES_${PN} += "/home/root"
+FILES:${PN} += "/home/root"
 
 do_install() {
     install -D -m 775 -t ${D}/home/root/ ${S}/*lrdmwl.sh

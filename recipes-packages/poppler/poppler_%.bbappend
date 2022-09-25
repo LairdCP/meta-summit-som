@@ -1,1 +1,1 @@
-PACKAGECONFIG_remove = "splash"
+PACKAGECONFIG:remove = "splash"

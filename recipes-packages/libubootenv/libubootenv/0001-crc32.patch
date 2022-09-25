@@ -30,17 +30,14 @@
  	struct var_entry *entry;
 --- a/src/CMakeLists.txt	2022-03-29 01:36:47.000000000 
 +++ b/src/CMakeLists.txt	2022-03-29 12:21:41.000000000 
-@@ -20,8 +20,8 @@
+@@ -20,7 +20,6 @@
  SET_TARGET_PROPERTIES(ubootenv_static PROPERTIES OUTPUT_NAME ubootenv)
  add_executable(fw_printenv fw_printenv.c)
  add_executable(fw_setenv fw_setenv.c)
--target_link_libraries(fw_printenv ubootenv z)
--target_link_libraries(fw_setenv ubootenv z)
-+target_link_libraries(fw_printenv ubootenv)
-+target_link_libraries(fw_setenv ubootenv)
+-target_link_libraries(ubootenv z)
+ target_link_libraries(fw_printenv ubootenv)
+ target_link_libraries(fw_setenv ubootenv)
  
- install (TARGETS ubootenv ubootenv_static DESTINATION ${CMAKE_INSTALL_LIBDIR})
- install (FILES libuboot.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 --- a/src/libubootenv.pc.in	2021-11-02 11:11:40.000000000 
 +++ b/src/libubootenv.pc.in	2022-08-26 12:36:07.000000000 
 @@ -10,5 +10,5 @@

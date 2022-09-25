@@ -3,7 +3,7 @@ MACHINEOVERRIDES =. "summitsom:"
 KERNEL_CLASSES  = "kernel-fitimage"
 KERNEL_IMAGETYPES = "fitImage"
 
-KERNEL_IMAGETYPE_summitsom = "fitImage"
+KERNEL_IMAGETYPE:summitsom = "fitImage"
 IMAGE_CLASSES = "squashfs-zstd dm-verity"
 
 UBOOT_DTB_LOADADDRESS = "0x43000000"
@@ -25,4 +25,5 @@ FIT_KERNEL_COMP_ALG_EXTENSION = ".zstd"
 FIT_SIGN_INDIVIDUAL = "1"
 
 UBOOT_SIGN_KEYNAME = "dev"
+UBOOT_SIGN_IMG_KEYNAME = "dev1"
 UBOOT_SIGN_ENABLE = "1"

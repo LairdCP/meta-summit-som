@@ -7,7 +7,7 @@ require radio-stack-som-version.inc
 
 inherit packagegroup
 
-RDEPENDS_${PN} = " \
+RDEPENDS:${PN} = " \
 	kernel-module-som-backports-laird \
 	som8mp-radio-firmware \
 	${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'adaptive-bt-som lrd-bt-uart-scripts-som', '', d)} \

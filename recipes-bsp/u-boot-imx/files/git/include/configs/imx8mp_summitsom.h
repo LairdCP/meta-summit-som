@@ -13,10 +13,8 @@
 
 #define CONFIG_SYS_BOOTM_LEN            (32 * SZ_1M)
 
-#define CONFIG_SPL_MAX_SIZE             (152 * 1024)
+#define CONFIG_SPL_MAX_SIZE             (176 * 1024)
 #define CONFIG_SYS_MONITOR_LEN          (512 * 1024)
-#define CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_USE_SECTOR
-#define CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR 0x300
 #define CONFIG_SYS_UBOOT_BASE   (QSPI0_AMBA_BASE + CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR * 512)
 
 #ifdef CONFIG_SPL_BUILD
@@ -103,8 +101,7 @@
 	"loadverity=load mmc ${mmcdev}:${bootvol} ${loadaddr} fitImageVerity.bin\0" \
 	"loadm7=load mmc ${mmcdev}:${bootvol} ${loadaddr} fitImageMcu.bin\0" \
 	"mmcargs="                                      \
-	"setenv bootargs console=${console} "           \
-	"quiet clk_ignore_unused "                      \
+	"setenv bootargs console=${console} quiet "     \
 	"bootside=${bootside} "                         \
 	"init=/usr/sbin/overlayRoot.sh\0"               \
 	"mmcside="                                      \
@@ -126,27 +123,12 @@
 	"run loadverity; source ${loadaddr}:script-1; " \
 	"run loadimage && bootm ${loadaddr}#${conf}"
 
-/* Link Definitions */
-#define CONFIG_LOADADDR                 0x44000000
-
-#define CONFIG_SYS_LOAD_ADDR            CONFIG_LOADADDR
-
 #define CONFIG_SYS_INIT_RAM_ADDR        0x40000000
 #define CONFIG_SYS_INIT_RAM_SIZE        0x80000
 #define CONFIG_SYS_INIT_SP_OFFSET \
 	(CONFIG_SYS_INIT_RAM_SIZE - GENERATED_GBL_DATA_SIZE)
 #define CONFIG_SYS_INIT_SP_ADDR \
 	(CONFIG_SYS_INIT_RAM_ADDR + CONFIG_SYS_INIT_SP_OFFSET)
-
-#define CONFIG_ENV_SPI_BUS              CONFIG_SF_DEFAULT_BUS
-#define CONFIG_ENV_SPI_CS               CONFIG_SF_DEFAULT_CS
-#define CONFIG_ENV_SPI_MODE             CONFIG_SF_DEFAULT_MODE
-#define CONFIG_ENV_SPI_MAX_HZ           CONFIG_SF_DEFAULT_SPEED
-
-#define CONFIG_SYS_MMC_ENV_PART         0
-
-/* Size of malloc() pool */
-#define CONFIG_SYS_MALLOC_LEN           SZ_32M
 
 /* Totally 2GB DDR */
 #define CONFIG_SYS_SDRAM_BASE           0x40000000
@@ -167,8 +149,6 @@
 
 #define CONFIG_SYS_FSL_USDHC_NUM        2
 #define CONFIG_SYS_FSL_ESDHC_ADDR       0
-
-#define CONFIG_SYS_MMC_IMG_LOAD_PART    1
 
 #define CONFIG_SYS_I2C_SPEED            100000
 

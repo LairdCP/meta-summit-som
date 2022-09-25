@@ -16,9 +16,9 @@ SRC_URI = " \
 
 S = "${WORKDIR}"
 
-FILES_${PN} += "${systemd_unitdir}/system ${sysconfdir}"
+FILES:${PN} += "${systemd_unitdir}/system ${sysconfdir}"
 
-SYSTEMD_SERVICE_${PN} = "btattach.service"
+SYSTEMD_SERVICE:${PN} = "btattach.service"
 
 do_install() {
     install -D -m 0775 ${S}/bt-service.sh ${D}${bindir}/bt-service.sh

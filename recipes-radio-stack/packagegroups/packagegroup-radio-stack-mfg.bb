@@ -7,7 +7,7 @@ require radio-stack-som-version.inc
 
 inherit packagegroup
 
-RDEPENDS_${PN} = " \
+RDEPENDS:${PN} = " \
 	mfg60n-som \
 	lrd-mfg-scripts-som \
 	"

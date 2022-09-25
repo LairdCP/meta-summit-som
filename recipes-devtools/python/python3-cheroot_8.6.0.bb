@@ -20,7 +20,7 @@ DEPENDS += "\
         python3-setuptools-scm-git-archive-native \
 "
 
-RDEPENDS_${PN} = "\
+RDEPENDS:${PN} = "\
         python3-io \
         python3-six \
         python3-jaraco-functools \

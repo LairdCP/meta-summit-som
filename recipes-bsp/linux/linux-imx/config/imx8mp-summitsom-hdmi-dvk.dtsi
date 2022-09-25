@@ -2,10 +2,10 @@
 /*
  * Copyright 2021 Laird Connectivity
  */
-/*
+
 / {
 	sound-hdmi {
-		compatible = "fsl,imx-audio-cdnhdmi";
+		compatible = "fsl,imx-audio-hdmi";
 		model = "audio-hdmi";
 		audio-cpu = <&aud2htx>;
 		hdmi-out;
@@ -16,9 +16,10 @@
 				<48000>,
 				<96000>,
 				<192000>;
+		//status = "okay";
 	};
 };
-*/
+
 &aud2htx {
 	status = "okay";
 };

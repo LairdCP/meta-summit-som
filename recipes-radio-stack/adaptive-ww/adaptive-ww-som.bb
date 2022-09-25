@@ -1,5 +1,5 @@
-OPENSSLVER = ""
+OPENSSLVER = "_openssl_3_0"
 
-RDEPENDS_${PN} += "libcrypto (>= 1.1.0)"
+RDEPENDS:${PN} += "libcrypto (>= 3.0)"
 
 require adaptive-ww.inc radio-stack-som-version.inc

@@ -1,22 +1,22 @@
 SUMMARY = "Laird Connectivity Wi-Fi Summit Supplicant"
 SECTION = "Wireless"
 
-LICENSE = "BSD"
+LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://../COPYING;md5=279b4f5abb9c153c285221855ddb78cc"
 
-SYSTEMD_SERVICE_${PN} = "wpa_supplicant.service wpa_supplicant-nl80211@.service wpa_supplicant-wired@.service"
+SYSTEMD_SERVICE:${PN} = "wpa_supplicant.service wpa_supplicant-nl80211@.service wpa_supplicant-wired@.service"
 SYSTEMD_AUTO_ENABLE = "disable"
 
 HFP = "${@bb.utils.contains('TUNE_FEATURES', 'callconvention-hard', 'eabihf', 'eabi', d)}"
 
 LRD_URI ?= "${LRD_URI_BASE}"
-LRD_URI_laird-internal = "https://files.devops.rfpros.com/builds/linux/summit_supplicant/laird/${PV}"
+LRD_URI:laird-internal = "https://files.devops.rfpros.com/builds/linux/summit_supplicant/laird/${PV}"
 
-SUPP_ARCH_x86 = "-x86"
-SUPP_ARCH_x86-64 = "-x86_64"
-SUPP_ARCH_powerpc64 = "-powerpc64-e5500"
-SUPP_ARCH_arm = "-arm-${HFP}"
-SUPP_ARCH_aarch64 = "-aarch64"
+SUPP_ARCH:x86 = "-x86"
+SUPP_ARCH:x86-64 = "-x86_64"
+SUPP_ARCH:powerpc64 = "-powerpc64-e5500"
+SUPP_ARCH:arm = "-arm-${HFP}"
+SUPP_ARCH:aarch64 = "-aarch64"
 
 SRC_URI += "\
 	${LRD_URI}/summit_supplicant${OPENSSLVER}${SUPP_ARCH}-${PV}.tar.bz2;subdir=src;name=summit-supplicant${OPENSSLVER}${SUPP_ARCH} \
@@ -28,32 +28,32 @@ do_compile[noexec] = "1"
 
 S = "${WORKDIR}/src"
 
-RDEPENDS_${PN} = "dbus-lib libnl libnl-genl libcrypto libssl"
-RDEPENDS_${PN}-passphrase = "dbus-lib libnl libnl-genl libcrypto libssl"
+RDEPENDS:${PN} = "dbus-lib libnl libnl-genl libcrypto libssl"
+RDEPENDS:${PN}-passphrase = "dbus-lib libnl libnl-genl libcrypto libssl"
 
-INSANE_SKIP_${PN} = "ldflags already-stripped"
-INSANE_SKIP_${PN}-passphrase = "ldflags already-stripped"
-INSANE_SKIP_${PN}-cli = "ldflags already-stripped"
+INSANE_SKIP:${PN} = "ldflags already-stripped"
+INSANE_SKIP:${PN}-passphrase = "ldflags already-stripped"
+INSANE_SKIP:${PN}-cli = "ldflags already-stripped"
 
-ALLOW_EMPTY_${PN}-dev = "0"
-ALLOW_EMPTY_${PN}-dbg = "0"
+ALLOW_EMPTY:${PN}-dev = "0"
+ALLOW_EMPTY:${PN}-dbg = "0"
 
-RPROVIDES_${PN} += "wpa-supplicant"
-RREPLACES_${PN} += "wpa-supplicant"
-RCONFLICTS_${PN} += "wpa-supplicant"
+RPROVIDES:${PN} += "wpa-supplicant"
+RREPLACES:${PN} += "wpa-supplicant"
+RCONFLICTS:${PN} += "wpa-supplicant"
 
-RPROVIDES_${PN}-passphrase  += "wpa-supplicant-passphrase"
-RREPLACES_${PN}-passphrase  += "wpa-supplicant-passphrase"
-RCONFLICTS_${PN}-passphrase += "wpa-supplicant-passphrase"
+RPROVIDES:${PN}-passphrase  += "wpa-supplicant-passphrase"
+RREPLACES:${PN}-passphrase  += "wpa-supplicant-passphrase"
+RCONFLICTS:${PN}-passphrase += "wpa-supplicant-passphrase"
 
-RPROVIDES_${PN}-cli  += "wpa-supplicant-cli"
-RREPLACES_${PN}-cli  += "wpa-supplicant-cli"
-RCONFLICTS_${PN}-cli += "wpa-supplicant-cli"
+RPROVIDES:${PN}-cli  += "wpa-supplicant-cli"
+RREPLACES:${PN}-cli  += "wpa-supplicant-cli"
+RCONFLICTS:${PN}-cli += "wpa-supplicant-cli"
 
-PACKAGES_prepend = "${PN}-passphrase ${PN}-cli "
-FILES_${PN}-passphrase = "${bindir}/wpa_passphrase"
-FILES_${PN}-cli = "${sbindir}/wpa_cli"
-FILES_${PN} += "${datadir}/dbus-1/system-services/* ${sysconfdir}/dbus-1/system.d/* ${systemd_unitdir}/system/*"
+PACKAGES:prepend = "${PN}-passphrase ${PN}-cli "
+FILES:${PN}-passphrase = "${bindir}/wpa_passphrase"
+FILES:${PN}-cli = "${sbindir}/wpa_cli"
+FILES:${PN} += "${datadir}/dbus-1/system-services/* ${sysconfdir}/dbus-1/system.d/* ${systemd_unitdir}/system/*"
 
 SOLIBS = ".so*"
 FILES_SOLIBSDEV = ""
@@ -75,7 +75,7 @@ do_install () {
 	install -D -m 0644 ${S}${libdir}/libwpa_client.so ${D}${libdir}/libwpa_client.so
 }
 
-pkg_postinst_${PN} () {
+pkg_postinst:${PN} () {
 	# If we're offline, we don't need to do this.
 	if [ "x$D" = "x" ]; then
 		killall -q -HUP dbus-daemon || true

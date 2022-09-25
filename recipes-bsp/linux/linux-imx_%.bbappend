@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI += " \
 	file://config/summitsom_defconfig \
@@ -10,7 +10,6 @@ SRC_URI += " \
 	file://0004-Introduce-the-BQ25790-charger-driver.patch \
 	file://0005-ts3a227.patch \
 	file://0006-sound_ts3a227_support.patch \
-	file://0007-hdmi.patch \
 	file://0008-fsl_aud2htx-probe.patch \
 	file://0009-it6161.patch \
 	file://0010-imx-sdma.patch \
@@ -25,11 +24,11 @@ SRC_URI += " \
 	file://0019-dm-verity-partition-wait-chromeos.patch \
 	"
 
-KBUILD_DEFCONFIG_remove = "${IMX_KERNEL_CONFIG_AARCH64}"
+KBUILD_DEFCONFIG:remove = "${IMX_KERNEL_CONFIG_AARCH64}"
 
 do_copy_defconfig () {
 	install -d ${B}
 	cp ${WORKDIR}/config/*.dts* ${S}/arch/arm64/boot/dts/freescale/
 }
 
-RDEPENDS_${KERNEL_PACKAGE_NAME}-base_remove = "${KERNEL_PACKAGE_NAME}-image"
+RDEPENDS:${KERNEL_PACKAGE_NAME}-base:remove = "${KERNEL_PACKAGE_NAME}-image"

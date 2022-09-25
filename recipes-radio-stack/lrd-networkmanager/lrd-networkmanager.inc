@@ -1,7 +1,7 @@
 SUMMARY = "Laird Connectivity NetworkManager"
 SECTION = "net/misc"
 
-LICENSE = "GPLv2+ & LGPLv2.1+"
+LICENSE = "GPL-2.0-or-later & LGPL-2.1-or-later"
 LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263 \
                     file://COPYING.LGPL;md5=4fbd65380cdd255951079008b364516c \
 "
@@ -18,7 +18,7 @@ DEPENDS = " \
 inherit autotools gettext update-rc.d systemd bash-completion update-alternatives gobject-introspection gtk-doc
 
 LRD_URI ?= "${LRD_URI_BASE}"
-LRD_URI_laird-internal = "https://files.devops.rfpros.com/builds/linux/lrd-network-manager/src/${PV}"
+LRD_URI:laird-internal = "https://files.devops.rfpros.com/builds/linux/lrd-network-manager/src/${PV}"
 
 SRC_URI = " \
     ${LRD_URI}/lrd-network-manager-src-${PV}.tar.xz;name=lrd-network-manager \
@@ -49,20 +49,20 @@ EXTRA_OECONF = " \
 # stolen from https://github.com/void-linux/void-packages/blob/master/srcpkgs/NetworkManager/template
 # avoids:
 # | ../NetworkManager-1.16.0/libnm-core/nm-json.c:106:50: error: 'RTLD_DEEPBIND' undeclared (first use in this function); did you mean 'RTLD_DEFAULT'?
-CFLAGS_append_libc-musl = " \
+CFLAGS:append:libc-musl = " \
     -DRTLD_DEEPBIND=0 \
 "
 
-do_compile_prepend() {
+do_compile:prepend() {
     export GIR_EXTRA_LIBS_PATH="${B}/src/libnm-client-impl/.libs"
 }
 
-PACKAGECONFIG ?= "gnutls dnsmasq nmcli \
+PACKAGECONFIG ?= "gnutls dnsmasq nmcli modemmanager \
     ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'systemd', bb.utils.contains('DISTRO_FEATURES', 'x11', 'consolekit', '', d), d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'bluez5', '', d)} \
     ${@bb.utils.filter('DISTRO_FEATURES', 'wifi polkit', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'selinux', 'selinux audit', '', d)} \
-    ${@bb.utils.contains('DISTRO_FEATURES','3g','modemmanager','',d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES','3g','ofono','',d)} \
 "
 
 inherit ${@bb.utils.contains('PACKAGECONFIG', 'nmcli', 'bash-completion', '', d)}
@@ -99,19 +99,19 @@ PACKAGES =+ " \
 
 SYSTEMD_PACKAGES = "${PN} ${PN}-cloud-setup"
 
-FILES_${PN}-adsl = "${libdir}/NetworkManager/*/libnm-device-plugin-adsl.so"
+FILES:${PN}-adsl = "${libdir}/NetworkManager/*/libnm-device-plugin-adsl.so"
 
-FILES_${PN}-cloud-setup = " \
+FILES:${PN}-cloud-setup = " \
     ${libexecdir}/nm-cloud-setup \
     ${systemd_system_unitdir}/nm-cloud-setup.service \
     ${systemd_system_unitdir}/nm-cloud-setup.timer \
     ${libdir}/NetworkManager/dispatcher.d/90-nm-cloud-setup.sh \
     ${libdir}/NetworkManager/dispatcher.d/no-wait.d/90-nm-cloud-setup.sh \
 "
-ALLOW_EMPTY_${PN}-cloud-setup = "1"
-SYSTEMD_SERVICE_${PN}-cloud-setup = "${@bb.utils.contains('PACKAGECONFIG', 'cloud-setup', 'nm-cloud-setup.service nm-cloud-setup.timer', '', d)}"
+ALLOW_EMPTY:${PN}-cloud-setup = "1"
+SYSTEMD_SERVICE:${PN}-cloud-setup = "${@bb.utils.contains('PACKAGECONFIG', 'cloud-setup', 'nm-cloud-setup.service nm-cloud-setup.timer', '', d)}"
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${libexecdir} \
     ${libdir}/NetworkManager/*/*.so \
     ${libdir}/NetworkManager \
@@ -130,31 +130,31 @@ FILES_${PN} += " \
     ${libdir}/pppd \
 "
 
-RDEPENDS_${PN} += "ethtool"
-RRECOMMENDS_${PN} += "iptables \
+RDEPENDS:${PN} += "ethtool"
+RRECOMMENDS:${PN} += "iptables \
     ${@bb.utils.filter('PACKAGECONFIG', 'dnsmasq', d)} \
 "
-RCONFLICTS_${PN} = "connman networkmanager"
-RREPLACES_${PN} = "networkmanager"
+RCONFLICTS:${PN} = "connman networkmanager"
+RREPLACES:${PN} = "networkmanager"
 
-FILES_${PN}-dev += " \
+FILES:${PN}-dev += " \
     ${datadir}/NetworkManager/gdb-cmd \
     ${libdir}/pppd/*/*.la \
     ${libdir}/NetworkManager/*.la \
     ${libdir}/NetworkManager/*/*.la \
 "
 
-RRECOMMENDS_${PN}-nmcli += "less"
+RRECOMMENDS:${PN}-nmcli += "less"
 
-FILES_${PN}-nmcli = " \
+FILES:${PN}-nmcli = " \
     ${bindir}/nmcli \
 "
 
-FILES_${PN}-nmcli-doc = " \
+FILES:${PN}-nmcli-doc = " \
     ${mandir}/man1/nmcli* \
 "
 
-FILES_${PN}-nmtui = " \
+FILES:${PN}-nmtui = " \
     ${bindir}/nmtui \
     ${bindir}/nmtui-edit \
     ${bindir}/nmtui-connect \
@@ -166,14 +166,14 @@ FILES_${PN}-nmtui-doc = " \
 "
 
 INITSCRIPT_NAME = "network-manager"
-SYSTEMD_SERVICE_${PN} = "${@bb.utils.contains('PACKAGECONFIG', 'systemd', 'NetworkManager.service NetworkManager-dispatcher.service', '', d)}"
+SYSTEMD_SERVICE:${PN} = "${@bb.utils.contains('PACKAGECONFIG', 'systemd', 'NetworkManager.service NetworkManager-dispatcher.service', '', d)}"
 
 ALTERNATIVE_PRIORITY = "100"
-ALTERNATIVE_${PN} = "${@bb.utils.contains('DISTRO_FEATURES','systemd','resolv-conf','',d)}"
+ALTERNATIVE:${PN} = "${@bb.utils.contains('DISTRO_FEATURES','systemd','resolv-conf','',d)}"
 ALTERNATIVE_TARGET[resolv-conf] = "${@bb.utils.contains('DISTRO_FEATURES','systemd','${sysconfdir}/resolv-conf.NetworkManager','',d)}"
 ALTERNATIVE_LINK_NAME[resolv-conf] = "${@bb.utils.contains('DISTRO_FEATURES','systemd','${sysconfdir}/resolv.conf','',d)}"
 
-do_install_append() {
+do_install:append() {
     install -Dm 0644 ${WORKDIR}/NetworkManager.conf ${D}${sysconfdir}/NetworkManager/NetworkManager.conf
 
     rm -rf ${D}/run ${D}${localstatedir}/run
@@ -189,22 +189,22 @@ do_install_append() {
     fi
 }
 
-RPROVIDES_${PN} += "networkmanager"
-RREPLACES_${PN} += "networkmanager"
-RCONFLICTS_${PN} += "networkmanager"
+RPROVIDES:${PN} += "networkmanager"
+RREPLACES:${PN} += "networkmanager"
+RCONFLICTS:${PN} += "networkmanager"
 
-RPROVIDES_${PN}-nmcli += "networkmanager-nmcli"
-RREPLACES_${PN}-nmcli += "networkmanager-nmcli"
-RCONFLICTS_${PN}-nmcli += "networkmanager-nmcli"
+RPROVIDES:${PN}-nmcli += "networkmanager-nmcli"
+RREPLACES:${PN}-nmcli += "networkmanager-nmcli"
+RCONFLICTS:${PN}-nmcli += "networkmanager-nmcli"
 
-RPROVIDES_${PN}-nmcli-doc += "networkmanager-nmcli-doc"
-RREPLACES_${PN}-nmcli-doc += "networkmanager-nmcli-doc"
-RCONFLICTS_${PN}-nmcli-doc += "networkmanager-nmcli-doc"
+RPROVIDES:${PN}-nmcli-doc += "networkmanager-nmcli-doc"
+RREPLACES:${PN}-nmcli-doc += "networkmanager-nmcli-doc"
+RCONFLICTS:${PN}-nmcli-doc += "networkmanager-nmcli-doc"
 
-RPROVIDES_${PN}-nmtui += "networkmanager-nmtui"
-RREPLACES_${PN}-nmtui += "networkmanager-nmtui"
-RCONFLICTS_${PN}-nmtui += "networkmanager-nmtui"
+RPROVIDES:${PN}-nmtui += "networkmanager-nmtui"
+RREPLACES:${PN}-nmtui += "networkmanager-nmtui"
+RCONFLICTS:${PN}-nmtui += "networkmanager-nmtui"
 
-RPROVIDES_${PN}-nmtui-doc += "networkmanager-nmtui-doc"
-RREPLACES_${PN}-nmtui-doc += "networkmanager-nmtui-doc"
-RCONFLICTS_${PN}-nmtui-doc += "networkmanager-nmtui-doc"
+RPROVIDES:${PN}-nmtui-doc += "networkmanager-nmtui-doc"
+RREPLACES:${PN}-nmtui-doc += "networkmanager-nmtui-doc"
+RCONFLICTS:${PN}-nmtui-doc += "networkmanager-nmtui-doc"

@@ -104,7 +104,7 @@
 		/* PMIC PCA9450 PMIC_nINT GPIO1_IO3 */
 		pinctrl-0 = <&pinctrl_pmic>;
 		interrupt-parent = <&gpio1>;
-		interrupts = <3 GPIO_ACTIVE_LOW>;
+		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
 
 		regulators {
 			buck1: BUCK1 {
@@ -208,9 +208,6 @@
 };
 
 &pcie_phy {
-	clocks = <&clk IMX8MP_CLK_PCIE_PHY>;
-	assigned-clocks = <&clk IMX8MP_CLK_PCIE_PHY>;
-	assigned-clock-parents = <&clk IMX8MP_CLK_24M>;
 };
 
 &uart1 {

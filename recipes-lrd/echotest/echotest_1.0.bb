@@ -12,7 +12,7 @@ SRC_URI = " \
         file://setup.py \
         "
 
-RDEPENDS_${PN} = "\
+RDEPENDS:${PN} = "\
         python3 \
         python3-core \
         python3-io \

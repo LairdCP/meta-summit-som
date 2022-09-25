@@ -1,1 +1,0 @@
-FILES_${PN} += "${base_libdir}/optee_armtz"

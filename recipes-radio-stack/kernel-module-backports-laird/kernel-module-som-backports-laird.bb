@@ -4,7 +4,7 @@ BACKPORTS_CONFIG = " \
 	${@bb.utils.contains('DISTRO_FEATURES','bluetooth','defconfig-som8mplus','defconfig-som8mplus_nbt',d)} \
 	"
 
-RCONFLICTS_${PN} = " \
+RCONFLICTS:${PN} = " \
         kernel-module-summit-backports-laird \
         kernel-module-sterling-backports-laird \
         kernel-module-lwb-backports-laird \

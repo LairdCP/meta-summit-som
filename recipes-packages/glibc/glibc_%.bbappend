@@ -1,2 +1,2 @@
 
-RDEPENDS_${PN} += "libgcc"
+RDEPENDS:${PN} += "libgcc"

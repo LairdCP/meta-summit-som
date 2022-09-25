@@ -67,7 +67,7 @@ diff --git a/drivers/gpio/gpio-of-helper.c b/drivers/gpio/gpio-of-helper.c
 new file mode 100644
 --- /dev/null
 +++ b/drivers/gpio/gpio-of-helper.c
-@@ -0,0 +1,255 @@
+@@ -0,0 +1,254 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
 + * GPIO OF based helper
@@ -322,4 +322,3 @@ new file mode 100644
 +MODULE_DESCRIPTION("GPIO OF Helper driver");
 +MODULE_LICENSE("GPL");
 +MODULE_ALIAS("platform:gpio-of-helper");
-+

@@ -13,14 +13,14 @@ SRC_URI = " \
 	"
 
 INITSCRIPT_NAME = "usb-gadget"
-SYSTEMD_SERVICE_${PN} = "usb-gadget.service"
+SYSTEMD_SERVICE:${PN} = "usb-gadget.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
-ALLOW_EMPTY_${PN}-dev = "0"
-ALLOW_EMPTY_${PN}-dbg = "0"
+ALLOW_EMPTY:${PN}-dev = "0"
+ALLOW_EMPTY:${PN}-dbg = "0"
 
 ETHERNET_PORTS ?= "1"
 GADGET_TYPE ?= "ncm"
@@ -30,7 +30,7 @@ SERIAL_PORTS ?= "0"
 
 S = "${WORKDIR}"
 
-FILES_${PN} += "${systemd_unitdir}/system ${sysconfdir}"
+FILES:${PN} += "${systemd_unitdir}/system ${sysconfdir}"
 
 do_install() {
     install -D -m 0755 ${S}/usb-gadget.sh \

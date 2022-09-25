@@ -8,20 +8,20 @@ inherit setuptools3 systemd
 S = "${WORKDIR}/git"
 
 SRC_URI = "git://git@github.com/LairdCP/weblcm-python.git;protocol=https;branch=lrd-10.0.0.x"
-SRC_URI_laird-internal = "git://git@git.devops.rfpros.com/cp_apps/weblcm-python.git;protocol=ssh;branch=lrd-10.0.0.x"
+SRC_URI:laird-internal = "git://git@git.devops.rfpros.com/cp_apps/weblcm-python.git;protocol=ssh;branch=lrd-10.0.0.x"
 
 SRCREV = "${AUTOREV}"
 
-SYSTEMD_SERVICE_${PN} = "weblcm-python.service"
+SYSTEMD_SERVICE:${PN} = "weblcm-python.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
-USERNAME_${PN} ?= "root"
-PASSWORD_${PN} ?= "summit"
+USERNAME:${PN} ?= "root"
+PASSWORD:${PN} ?= "summit"
 
-MANAGED_SOFTWARE_DEVICES_${PN} ?= ""
-UNMANAGED_HARDWARE_DEVICES_${PN} ?= ""
+MANAGED_SOFTWARE_DEVICES:${PN} ?= ""
+UNMANAGED_HARDWARE_DEVICES:${PN} ?= ""
 
-ADAPTIVE_WW_CFG_FILE_${PN} ?= ""
+ADAPTIVE_WW_CFG_FILE:${PN} ?= ""
 
 ENABLE_UNAUTHENTICATED ?= "False"
 BIND_IP ?= "::"
@@ -35,7 +35,7 @@ PACKAGECONFIG[ws4] = ",,,,python3-ws4py"
 
 PACKAGECONFIG ?= "awm ${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'bluetooth', '', d)}"
 
-RDEPENDS_${PN} = "\
+RDEPENDS:${PN} = "\
 	python3 \
 	python3-core \
 	python3-crypt \
@@ -55,11 +55,11 @@ RDEPENDS_${PN} = "\
 	tzdata-posix \
         "
 
-do_compile_prepend() {
+do_compile:prepend() {
         export WEBLCM_PYTHON_EXTRA_PACKAGES="${PACKAGECONFIG_CONFARGS}"
 }
 
-do_install_append() {
+do_install:append() {
 	install -D -t ${D}${localstatedir}/www/assets/fonts -m 644 ${S}/assets/fonts/*
 	install -D -t ${D}${localstatedir}/www/assets/css -m 644 ${S}/assets/css/*.css
 	install -D -t ${D}${localstatedir}/www/assets/img -m 644 ${S}/assets/img/*.png
@@ -75,14 +75,14 @@ do_install_append() {
 		${S}/ssl/server.key ${S}/ssl/server.crt ${S}/ssl/ca.crt
 
 	sed -i -e '/^default_/d' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
-	sed -i -e '/\[weblcm\]/a default_password: \"${PASSWORD_${PN}}\"' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
-	sed -i -e '/\[weblcm\]/a default_username: \"${USERNAME_${PN}}\"' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
+	sed -i -e '/\[weblcm\]/a default_password: \"${PASSWORD:${PN}}\"' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
+	sed -i -e '/\[weblcm\]/a default_username: \"${USERNAME:${PN}}\"' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
 
 	sed -i -e '/^managed_software_devices/d' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
-	sed -i -e '/\[weblcm\]/a managed_software_devices: ${MANAGED_SOFTWARE_DEVICES_${PN}}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
+	sed -i -e '/\[weblcm\]/a managed_software_devices: ${MANAGED_SOFTWARE_DEVICES:${PN}}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
 
 	sed -i -e '/^unmanaged_hardware_devices/d' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
-	sed -i -e '/\[weblcm\]/a unmanaged_hardware_devices: ${UNMANAGED_HARDWARE_DEVICES_${PN}}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
+	sed -i -e '/\[weblcm\]/a unmanaged_hardware_devices: ${UNMANAGED_HARDWARE_DEVICES:${PN}}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
 
 	sed -i -e '/^awm_cfg/d' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
 	sed -i -e '/\[weblcm\]/a awm_cfg:${ADAPTIVE_WW_CFG_FILE_${PN}}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini

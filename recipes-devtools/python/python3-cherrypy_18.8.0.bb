@@ -18,7 +18,7 @@ DEPENDS += "\
     python3-setuptools-scm-native \
 "
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     python3-io \
     python3-email \
     python3-threading \

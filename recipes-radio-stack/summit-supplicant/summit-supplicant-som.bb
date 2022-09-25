@@ -1,6 +1,6 @@
-OPENSSLVER = ""
+OPENSSLVER = "_openssl_3_0"
 
-RDEPENDS_${PN} += "libssl (>= 1.1.0) libcrypto (>= 1.1.0)"
+RDEPENDS:${PN} += "libssl (>= 3.0) libcrypto (>= 3.0)"
 
 SRC_URI += "file://0001-wpa-cli-nm.patch"
 

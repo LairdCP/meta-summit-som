@@ -22,7 +22,7 @@ ALLOW_EMPTY_${PN}-dbg = "0"
 
 S = "${WORKDIR}"
 
-FILES_${PN} += "${sysconfdir}/udev/rules.d ${sysconfdir}/default"
+FILES:${PN} += "${sysconfdir}/udev/rules.d ${sysconfdir}/default"
 
 do_install() {
 	install -D -m 0755 -t ${D}${bindir} ${S}/usb-mount.sh

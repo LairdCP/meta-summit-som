@@ -8,10 +8,10 @@ inherit setuptools3
 DEPENDS += "swupdate"
 
 SRC_URI = "git://git@github.com/LairdCP/lrd-userspace-examples.git;protocol=https;branch=lrd-10.0.0.x"
-SRC_URI_laird-internal = "git://git@git.devops.rfpros.com/cp_linux/lrd-userspace-examples.git;protocol=ssh;branch=lrd-10.0.0.x"
+SRC_URI:laird-internal = "git://git@git.devops.rfpros.com/cp_linux/lrd-userspace-examples.git;protocol=ssh;branch=lrd-10.0.0.x"
 
 SRCREV = "${AUTOREV}"
 
 S = "${WORKDIR}/git/swclient"
 
-RDEPENDS_${PN} = "python3 swupdate"
+RDEPENDS:${PN} = "python3 swupdate"

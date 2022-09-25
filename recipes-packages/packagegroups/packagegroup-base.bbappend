@@ -1,1 +1,0 @@
-RDEPENDS_packagegroup-base-3g_remove = "ofono"

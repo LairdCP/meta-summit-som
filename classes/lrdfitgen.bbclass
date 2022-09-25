@@ -5,7 +5,7 @@ UBOOT_MKIMAGE_SIGN ?= "${UBOOT_MKIMAGE}"
 FIT_HASH_ALG ?= "sha256"
 FIT_SIGN_ALG ?= "rsa2048"
 
-DEPENDS += "u-boot-tools-native"
+DEPENDS += "u-boot-tools-native dtc-native"
 
 #
 # Emit the fitImage ITS header
@@ -111,7 +111,7 @@ fitimage_emit_section_script() {
 	scr_sign_algo="${FIT_SIGN_ALG}"
 
         if [ "${UBOOT_SIGN_ENABLE}" = "1" -a "${FIT_SIGN_INDIVIDUAL}" = "1" ]; then
-                scr_sign_keyname="${UBOOT_SIGN_KEYNAME}"
+                scr_sign_keyname="${UBOOT_SIGN_IMG_KEYNAME}"
         else
                 scr_sign_keyname=""
         fi
@@ -149,7 +149,7 @@ fitimage_emit_section_config() {
 
 	conf_csum="${FIT_HASH_ALG}"
 	conf_sign_algo="${FIT_SIGN_ALG}"
-	if [ "${UBOOT_SIGN_ENABLE}" = "1" ] ; then
+        if [ "${UBOOT_SIGN_ENABLE}" = "1"  ]; then
 		conf_sign_keyname="${UBOOT_SIGN_KEYNAME}"
 	fi
 
@@ -195,7 +195,7 @@ fitimage_firmware() {
 
 	${UBOOT_MKIMAGE} -f $1 $3
 
-	if [ "${UBOOT_SIGN_ENABLE}" = "1" ]; then
+        if [ "${UBOOT_SIGN_ENABLE}" = "1" ]; then
 		${UBOOT_MKIMAGE_SIGN} -F -k "${UBOOT_SIGN_KEYDIR}" ${3}
 	fi
 }
@@ -216,7 +216,7 @@ fitimage_script() {
 
 	${UBOOT_MKIMAGE} -f $1 $3
 
-	if [ "${UBOOT_SIGN_ENABLE}" = "1" ]; then
+        if [ "${UBOOT_SIGN_ENABLE}" = "1" ]; then
 		${UBOOT_MKIMAGE_SIGN} -F -k "${UBOOT_SIGN_KEYDIR}" ${3}
 	fi
 }

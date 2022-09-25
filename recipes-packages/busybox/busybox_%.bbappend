@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI += "\
         file://ifconfig.cfg \
@@ -6,4 +6,4 @@ SRC_URI += "\
         file://ps.cfg \
         "
 
-RRECOMMENDS_${PN}_remove = "${PN}-udhcpc"
+RRECOMMENDS_${PN}:remove = "${PN}-udhcpc"

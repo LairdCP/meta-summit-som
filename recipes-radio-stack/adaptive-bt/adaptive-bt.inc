@@ -9,7 +9,7 @@ inherit pkgconfig update-rc.d systemd
 DEPENDS = "libnl bluez5"
 
 LRD_URI ?= "${LRD_URI_BASE}"
-LRD_URI_laird-internal = "https://files.devops.rfpros.com/builds/linux/adaptive_bt/src/${PV}"
+LRD_URI:laird-internal = "https://files.devops.rfpros.com/builds/linux/adaptive_bt/src/${PV}"
 
 SRC_URI = "${LRD_URI}/adaptive_bt-src-${PV}.tar.gz;name=adaptive-bt"
 
@@ -17,13 +17,13 @@ S = "${WORKDIR}/adaptive_bt-${PV}"
 
 EXTRA_OEMAKE = "'LINKOPT=${LDFLAGS}'"
 
-SYSTEMD_SERVICE_${PN} = "adaptive_bt.service"
+SYSTEMD_SERVICE:${PN} = "adaptive_bt.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
 INITSCRIPT_NAME = "adaptive_bt"
 INITSCRIPT_PARAMS = "defaults 30"
 
-FILES_${PN} += "${sysconfdir}"
+FILES:${PN} += "${sysconfdir}"
 
 do_install () {
 	install -D -t ${D}${bindir} -m 755 ${S}/bin/adaptive_bt
