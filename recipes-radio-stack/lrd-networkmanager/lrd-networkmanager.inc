@@ -161,7 +161,7 @@ FILES:${PN}-nmtui = " \
     ${bindir}/nmtui-hostname \
 "
 
-FILES_${PN}-nmtui-doc = " \
+FILES:${PN}-nmtui-doc = " \
     ${mandir}/man1/nmtui* \
 "
 

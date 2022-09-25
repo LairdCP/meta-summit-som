@@ -1,6 +1,6 @@
 DESCRIPTION = "MINT - Multicast Packet Generator"
 
-LICENSE = "GPL-2.0"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://${S}/gpl.txt;md5=393a5ca445f6965873eca0259a17f833"
 
 SRC_URI = "http://downloads.sourceforge.net/project/mc-mint/mc-mint/Mint%201.2/mint-${PV}.tar.gz \

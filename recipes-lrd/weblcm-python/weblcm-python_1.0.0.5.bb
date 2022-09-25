@@ -85,7 +85,7 @@ do_install:append() {
 	sed -i -e '/\[weblcm\]/a unmanaged_hardware_devices: ${UNMANAGED_HARDWARE_DEVICES:${PN}}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
 
 	sed -i -e '/^awm_cfg/d' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
-	sed -i -e '/\[weblcm\]/a awm_cfg:${ADAPTIVE_WW_CFG_FILE_${PN}}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
+	sed -i -e '/\[weblcm\]/a awm_cfg:${ADAPTIVE_WW_CFG_FILE:${PN}}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
 
 	sed -i -e '/^enable_allow_unauthenticated_reboot_reset/d' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
 	sed -i -e '/\[weblcm\]/a enable_allow_unauthenticated_reboot_reset:${ENABLE_UNAUTHENTICATED}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini

@@ -17,14 +17,14 @@ USB_USER ?= ""
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
-ALLOW_EMPTY_${PN}-dev = "0"
-ALLOW_EMPTY_${PN}-dbg = "0"
+ALLOW_EMPTY:${PN}-dev = "0"
+ALLOW_EMPTY:${PN}-dbg = "0"
 
 S = "${WORKDIR}"
 
 FILES:${PN} += "${sysconfdir}/udev/rules.d ${sysconfdir}/default"
 
-do_install() {
+do_install () {
 	install -D -m 0755 -t ${D}${bindir} ${S}/usb-mount.sh
 	install -D -m 0644 -t ${D}${sysconfdir}/udev/rules.d \
 		${S}/90-usbmount.rules ${S}/91-mmcmount.rules

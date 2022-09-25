@@ -26,7 +26,7 @@ FILES:${PN} += "${systemd_unitdir}/system ${sysconfdir} /perm /data"
 SYSTEMD_SERVICE:${PN} = "perm-enable.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
-SYSTEMD_SERVICE_${PN}:append:lrdsecure = " var-volatile-log-journal.mount"
+SYSTEMD_SERVICE:${PN}:append:lrdsecure = " var-volatile-log-journal.mount"
 
 RDEPENDS:${PN} = "lrd-fwenv"
 
