@@ -21,6 +21,6 @@ do
 done
 
 calc_file "${prefix}/adaptive_bt/src/${ver}/adaptive_bt-src-${ver}.tar.gz" "adaptive-bt"
-calc_file "${prefix}/lrd-network-manager/src/${ver}/lrd-network-manager-src-${ver}.tar.xz" "lrd-network-manager"
+calc_file "${prefix}/lrd-network-manager/src/${ver}/lrd-network-manager-src-${ver}.tar.xz" "summit-network-manager"
 calc_file "${prefix}/backports/laird/${ver}/backports-laird-${ver}.tar.bz2" "backports-laird"
 calc_file "${prefix}/firmware/${ver}/laird-som8mp-radio-firmware-${ver}.tar.bz2" "som8mp-radio-firmware"
