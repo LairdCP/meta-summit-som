@@ -1,4 +1,4 @@
-SUMMARY = "Laird Connectivity Wi-Fi Summit 60 Auto World-Wide Mode"
+SUMMARY = "Wi-Fi Summit 60 Auto Regulatory Domain for SOM"
 SECTION = "Wireless"
 
 LICENSE = "MIT"
@@ -15,7 +15,7 @@ INITSCRIPT_PARAMS = "defaults 30"
 HFP = "${@bb.utils.contains('TUNE_FEATURES', 'callconvention-hard', 'eabihf', 'eabi', d)}"
 
 LRD_URI ?= "${LRD_URI_BASE}"
-LRD_URI_laird-internal = "https://files.devops.rfpros.com/builds/linux/adaptive_ww/laird/${PV}"
+LRD_URI_summit-internal = "https://files.devops.rfpros.com/builds/linux/adaptive_ww/laird/${PV}"
 
 ADAP_ARCH_x86 = "-x86"
 ADAP_ARCH_x86-64 = "-x86_64"

@@ -1,2 +1,2 @@
 # Template settings
-TEMPLATECONF=${TEMPLATECONF:-meta-lrd-turbosom/conf}
+TEMPLATECONF=${TEMPLATECONF:-meta-summit-som/conf}

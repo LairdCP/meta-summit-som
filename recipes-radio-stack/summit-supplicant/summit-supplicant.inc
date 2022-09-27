@@ -1,7 +1,7 @@
-SUMMARY = "Laird Connectivity Wi-Fi Summit Supplicant"
+SUMMARY = "Wi-Fi Summit Supplicant"
 SECTION = "Wireless"
 
-LICENSE = "BSD"
+LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://../COPYING;md5=279b4f5abb9c153c285221855ddb78cc"
 
 SYSTEMD_SERVICE_${PN} = "wpa_supplicant.service wpa_supplicant-nl80211@.service wpa_supplicant-wired@.service"
@@ -10,7 +10,7 @@ SYSTEMD_AUTO_ENABLE = "disable"
 HFP = "${@bb.utils.contains('TUNE_FEATURES', 'callconvention-hard', 'eabihf', 'eabi', d)}"
 
 LRD_URI ?= "${LRD_URI_BASE}"
-LRD_URI_laird-internal = "https://files.devops.rfpros.com/builds/linux/summit_supplicant/laird/${PV}"
+LRD_URI_summit-internal = "https://files.devops.rfpros.com/builds/linux/summit_supplicant/laird/${PV}"
 
 SUPP_ARCH_x86 = "-x86"
 SUPP_ARCH_x86-64 = "-x86_64"

@@ -16,7 +16,7 @@
  	select IMX8M_LPDDR4
 +
 +config TARGET_IMX8MP_SUMMITSOM
-+	bool "Laird Connectivity i.MX8M Plus Summit SOM"
++	bool "Summit SOM i.MX8M Plus"
 +	select IMX8MP
 +	select SUPPORT_SPL
 +	select IMX8M_LPDDR4

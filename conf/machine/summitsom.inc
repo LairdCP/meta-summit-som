@@ -9,14 +9,14 @@ IMAGE_CLASSES = "squashfs-zstd dm-verity"
 UBOOT_DTB_LOADADDRESS = "0x43000000"
 UBOOT_ENTRYPOINT_mx8m   = "0x40400000"
 
-WKS_FILES ?= "lrd-imx-uboot-spl-bootpart.wks.in"
+WKS_FILES ?= "summit-imx-uboot-spl-bootpart.wks.in"
 
 PREFERRED_RPROVIDER_wireless-regdb-static = "som8mp-radio-firmware"
 PREFERRED_RPROVIDER_wpa-supplicant = "summit-supplicant-som"
 PREFERRED_RPROVIDER_wpa-supplicant-cli = "summit-supplicant-som"
 PREFERRED_RPROVIDER_wpa-supplicant-passphrase = "summit-supplicant-som"
-PREFERRED_RPROVIDER_networkmanager = "lrd-networkmanager-som"
-PREFERRED_RPROVIDER_networkmanager = "lrd-networkmanager-som-nmcli"
+PREFERRED_RPROVIDER_networkmanager = "summit-networkmanager-som"
+PREFERRED_RPROVIDER_networkmanager = "summit-networkmanager-som-nmcli"
 
 MACHINE_FEATURES += "qemu-usermode"
 

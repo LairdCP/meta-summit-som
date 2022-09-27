@@ -1,4 +1,4 @@
-SUMMARY = "Laird Connectivity Bluetooth Summit 60 Auto World-Wide Mode"
+SUMMARY = "Bluetooth Summit 60 Auto World-Wide Mode"
 SECTION = "Wireless"
 
 LICENSE = "MIT"
@@ -9,7 +9,7 @@ inherit pkgconfig update-rc.d systemd
 DEPENDS = "libnl bluez5"
 
 LRD_URI ?= "${LRD_URI_BASE}"
-LRD_URI_laird-internal = "https://files.devops.rfpros.com/builds/linux/adaptive_bt/src/${PV}"
+LRD_URI_summit-internal = "https://files.devops.rfpros.com/builds/linux/adaptive_bt/src/${PV}"
 
 SRC_URI = "${LRD_URI}/adaptive_bt-src-${PV}.tar.gz;name=adaptive-bt"
 
