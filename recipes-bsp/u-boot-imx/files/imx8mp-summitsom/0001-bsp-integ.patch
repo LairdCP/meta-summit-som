@@ -31,6 +31,6 @@
  source "board/beacon/imx8mn/Kconfig"
  source "board/phytec/phycore_imx8mm/Kconfig"
  source "board/phytec/phycore_imx8mp/Kconfig"
-+source "board/laird/imx8mp_summitsom/Kconfig"
++source "board/summit/imx8mp_summitsom/Kconfig"
  
  endif
