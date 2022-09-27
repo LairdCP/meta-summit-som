@@ -1,4 +1,4 @@
-inherit lrdfitgen
+inherit custom-fit-gen
 
 process_verity() {
     # Each line contains a key and a value string delimited by ':'. Read the

@@ -1,7 +1,7 @@
 #@TYPE: Machine
-#@NAME: Laird Connectivity i.MX8M Plus Summit SOM
+#@NAME: Summit SOM i.MX8M Plus
 #@SOC: i.MX8
-#@DESCRIPTION: Machine configuration for Laird Connectivity i.MX8M Plus Summit SOM
+#@DESCRIPTION: Machine configuration for Summit SOM i.MX8M Plus
 #@MAINTAINER: Boris Krasnovskiy <Boris.Krasnovskiy@lairdconnect.com>
 
 MACHINEOVERRIDES =. "imx-boot-container:mx8mp:"

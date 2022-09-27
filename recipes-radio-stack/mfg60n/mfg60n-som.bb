@@ -1,4 +1,4 @@
-SUMMARY = "Laird Connectivity Wi-Fi Summit 60 Manufacturing tools for SOM"
+SUMMARY = "Summit Wi-Fi Regulatory Test tools for SOM"
 
 require mfg60n.inc radio-stack-som-version.inc
 

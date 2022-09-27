@@ -16,7 +16,7 @@
  	select IMX8M_LPDDR4
 +
 +config TARGET_IMX8MP_SUMMITSOM
-+       bool "Laird Connectivity i.MX8M Plus Summit SOM"
++       bool "Summit SOM i.MX8M Plus"
 +       select IMX8MP
 +       select SUPPORT_SPL
 +       select IMX8M_LPDDR4
@@ -27,6 +27,6 @@
  source "board/beacon/imx8mn/Kconfig"
  source "board/phytec/phycore_imx8mm/Kconfig"
  source "board/phytec/phycore_imx8mp/Kconfig"
-+source "board/laird/imx8mp_summitsom/Kconfig"
++source "board/summit/imx8mp_summitsom/Kconfig"
  
  endif

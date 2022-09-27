@@ -14,7 +14,7 @@ REG_ARCH:aarch64 = "-aarch64"
 REG_FULL_NAME = "${REG_NAME}${REG_ARCH}-${PV}"
 
 LRD_URI ?= "${LRD_URI_LOCAL}"
-LRD_URI:laird-internal = "https://files.devops.rfpros.com/builds/linux/${REG_NAME}/laird/${PV}"
+LRD_URI:summit-internal = "https://files.devops.rfpros.com/builds/linux/${REG_NAME}/laird/${PV}"
 
 SRC_URI = "${LRD_URI}/${REG_FULL_NAME}.tar.bz2;subdir=src;name=${REG_NAME}${REG_ARCH}"
 

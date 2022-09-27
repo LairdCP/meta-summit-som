@@ -3,7 +3,7 @@ SECTION = "kernel"
 inherit allarch
 
 LRD_URI ?= "${LRD_URI_BASE}"
-LRD_URI:laird-internal = "https://files.devops.rfpros.com/builds/linux/firmware/${PV}"
+LRD_URI:summit-internal = "https://files.devops.rfpros.com/builds/linux/firmware/${PV}"
 
 SRC_URI = "${LRD_URI}/laird-${BPN}-${PV}.tar.bz2;name=${BPN}"
 

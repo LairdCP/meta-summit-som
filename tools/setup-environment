@@ -32,8 +32,8 @@ Usage:                                   . $PROGNAME [-i] [-r] [-h] <build-dir>
     <distro>     distro name
     <build-dir>  build directory
     Optional parameters: [-i] [-r] [-h]
-    * [-i]: Laird Connectivity internal build
-    * [-r]: Add meta-laird-cp to install
+    * [-i]: Internal build
+    * [-r]: Add meta-summit-radio to install
     * [-h]: help
 
 The first usage is for creating a new build directory. In this case, the
@@ -46,10 +46,10 @@ the script prepares the calling shell for running bitbake on the build
 directory <build-dir>. The build directory configuration is unchanged.
 "
         echo -e "
-Supported machines: `echo; ls sources/meta-lrd-summitsom/conf/machine/*.conf \
+Supported machines: `echo; ls sources/meta-summit-som/conf/machine/*.conf \
 | sed s/\.conf//g | sed -r 's/^.+\///' | xargs -I% echo -e "\t%"`
 
-Supported Laird Connectivity's distros: `echo; ls sources/meta-lrd-summitsom/conf/distro/*.conf \
+Supported distros: `echo; ls sources/meta-summit-som/conf/distro/*.conf \
 | sed s/\.conf//g | sed -r 's/^.+\///' | xargs -I% echo -e "\t%"`
 
 Examples:
@@ -67,11 +67,11 @@ clean_up()
    unset EULA REPLY
    unset CWD ARGS PROGNAME
    unset MACHINE DISTRO OEROOT
-   unset build_dir_setup_enabled setup_radio setup_lrd
+   unset build_dir_setup_enabled setup_radio setup_summit
 }
 
 setup_radio=false
-setup_lrd=false
+setup_summit=false
 
 ARGS=$(getopt -o "hir" -l "help," --name $PROGNAME -- "$@" )
 # Print the usage menu if invalid options are specified
@@ -93,7 +93,7 @@ do
            setup_radio=true
            ;;
         -i)
-           setup_lrd=true
+           setup_summit=true
            ;;
         --)
            shift
@@ -129,28 +129,22 @@ BB_ENV_PASSTHROUGH_ADDITIONS="${BB_ENV_PASSTHROUGH_ADDITIONS} DL_DIR"
 
 if [ -n "${VERSION}" ]; then
     export IMAGE_VERSION_SUFFIX="-${VERSION}"
-    export LRD_VERSION="${VERSION}"
-    BB_ENV_PASSTHROUGH_ADDITIONS="${BB_ENV_PASSTHROUGH_ADDITIONS} IMAGE_VERSION_SUFFIX LRD_VERSION LAIRD_RELEASE_STRING"
+    export SUMMIT_VERSION="${VERSION}"
+    BB_ENV_PASSTHROUGH_ADDITIONS="${BB_ENV_PASSTHROUGH_ADDITIONS} IMAGE_VERSION_SUFFIX SUMMIT_VERSION SUMMIT_RELEASE_STRING"
 fi
 
-TEMPLATECONF=${TEMPLATECONF:-$CWD/sources/meta-lrd-summitsom/conf} . $OEROOT/oe-init-build-env $CWD/$1
+TEMPLATECONF=${TEMPLATECONF:-$CWD/sources/meta-summit-som/conf} . $OEROOT/oe-init-build-env $CWD/$1
 
 if ${build_dir_setup_enabled}; then 
     # Change settings according environment
     [ -n "${MACHINE}" ] && sed -e "s,MACHINE ??=.*,MACHINE ??= '$MACHINE',g" -i conf/local.conf
     [ -n "${DISTRO}" ] && sed -e "s,DISTRO ?=.*,DISTRO ?= '$DISTRO',g" -i conf/local.conf
 
-    ${setup_lrd} && echo 'OVERRIDES .= ":laird-internal"
+    ${setup_summit} && echo 'OVERRIDES .= ":summit-internal"
 ' >> conf/local.conf
 
-    ${setup_radio} && echo 'BBMASK += " \
-    meta-laird-cp/recipes-packages/openssl \
-    meta-laird-cp/recipes-packages/.*/.*openssl10.* \
-"
-' >> conf/local.conf
-
-${setup_lrd} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-lrd-radio-mfg"'  >> conf/bblayers.conf
-${setup_radio} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-laird-cp/meta-laird-cp"' >> conf/bblayers.conf
+${setup_summit} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-radio-mfg"'  >> conf/bblayers.conf
+${setup_radio} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-radio/meta-summit-radio"' >> conf/bblayers.conf
 
 fi
 
