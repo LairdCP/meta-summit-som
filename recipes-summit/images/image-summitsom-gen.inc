@@ -8,6 +8,9 @@ EXTRA_USERS_PARAMS = "usermod -p '${PASSWD}' root;"
 
 export IMAGE_BASENAME = "${PN}"
 
+# This file is included by recipes in other layers
+# Add to files fetcher search path
+FILESEXTRAPATHS:append := ":${THISDIR}/files"
 SRC_URI += "file://update_support.sh"
 
 IMAGE_ROOTFS_EXTRA_SPACE = "0"
