@@ -33,7 +33,7 @@ Usage:                                   . $PROGNAME [-i] [-r] [-h] <build-dir>
     <build-dir>  build directory
     Optional parameters: [-i] [-r] [-h]
     * [-i]: Internal build
-    * [-r]: Add meta-summit-radio to install
+    * [-r]: Add radio development to setup
     * [-h]: help
 
 The first usage is for creating a new build directory. In this case, the
@@ -144,6 +144,7 @@ if ${build_dir_setup_enabled}; then
 ' >> conf/local.conf
 
 ${setup_summit} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-radio-mfg"'  >> conf/bblayers.conf
+${setup_radio} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-rdvk"' >> conf/bblayers.conf
 ${setup_radio} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-radio/meta-summit-radio"' >> conf/bblayers.conf
 
 fi
