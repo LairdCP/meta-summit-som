@@ -9,5 +9,5 @@ inherit packagegroup
 
 RDEPENDS_${PN} = " \
 	mfg60n-som \
-	lrd-mfg-scripts-som \
+	mfg-scripts-som \
 	"
