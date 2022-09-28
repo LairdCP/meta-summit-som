@@ -1,9 +1,6 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI += " \
-	file://config/summitsom_defconfig \
-	file://config/ \
-	\
 	file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch \
 	file://0002-gpio-add-gpio_of_helper.patch \
 	file://0003-max310x-crystal-stabilize.patch \
@@ -22,6 +19,11 @@ SRC_URI += " \
 	file://0017-fix-88w8997-pcie-enum.patch \
 	file://0018-i2c-rpmsg-imx-increase-max-buf-size.patch \
 	file://0019-dm-verity-partition-wait-chromeos.patch \
+	"
+
+SRC_URI:append:imx8mp-summitsom = " \
+	file://config/ \
+	file://config/summitsom_defconfig \
 	"
 
 KBUILD_DEFCONFIG:remove = "${IMX_KERNEL_CONFIG_AARCH64}"
