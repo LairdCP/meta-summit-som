@@ -4,7 +4,9 @@
 #@DESCRIPTION: Machine configuration for Summit SOM i.MX8M Plus
 #@MAINTAINER: Boris Krasnovskiy <Boris.Krasnovskiy@lairdconnect.com>
 
-MACHINEOVERRIDES =. "imx-boot-container:mx8mp:"
+MACHINEOVERRIDES =. "mx8mp:"
+
+MACHINEOVERRIDES =. "${@bb.utils.contains('IMX_DEFAULT_BOOTLOADER', 'u-boot-imx', '', 'imx-boot-container:', d)}"
 
 require conf/machine/include/imx-base.inc
 require conf/machine/include/arm/armv8a/tune-cortexa53.inc
@@ -15,6 +17,8 @@ DEFAULTTUNE:mx8m-nxp-bsp ?= "armv8a-crc-crypto"
 MACHINE_FEATURES += "pci usbhost alsa rtc optee"
 
 IMAGE_BOOT_FILES:remove = "${@make_dtb_boot_files(d)} ${OPTEE_BOOT_IMAGE}"
+
+IMX_DEFAULT_BOOTLOADER = "u-boot-imx"
 
 UBOOT_CONFIG ??= "sd"
 UBOOT_CONFIG[sd] = "${UBOOT_CONFIG_BASENAME}_defconfig,sdcard"
@@ -55,6 +59,8 @@ TEE_LOAD_ADDR = "0x56000000"
 MACHINE_EXTRA_RDEPENDS += "${MACHINE_FIRMWARE} kernel-modules"
 
 IMXBOOT_TARGETS_BASENAME = "flash_evk"
+
+IMX_DEFAULT_BSP = "nxp"
 
 MACHINE_FEATURES:remove = "nxp8987 nxp8997"
 MACHINE_FIRMWARE:remove = "linux-firmware-ath10k"
