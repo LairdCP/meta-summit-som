@@ -17,7 +17,7 @@ CORE_IMAGE_EXTRA_INSTALL += "\
 	mc-mint \
 	summit-m7-demos \
 	weblcm-python \
+	v4l-utils \
 	"
 
 IMAGE_BOOT_FILES += "fitImageMcu.bin"
-SWUPDATE_IMAGES += "fitImageMcu.bin"
