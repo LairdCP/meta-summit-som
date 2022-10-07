@@ -19,6 +19,11 @@ IMAGE_FSTYPES = "squashfs-zstd.verity wic.bz2 wic.bmap"
 
 SWUPDATE_IMAGES += "imx-boot ${IMAGE_BOOT_FILES}"
 
+WIC_ROOTFS_FIXED_SIZE ?= "512M"
+WIC_ROOTFS_DATA_FIXED_SIZE ?= "1G"
+
+WKS_FILES = "summit-imx-uboot-spl-bootpart.wks.in"
+
 IMAGE_FEATURES = "\
 	ssh-server-dropbear \
 	allow-root-login \
