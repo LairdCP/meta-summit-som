@@ -21,3 +21,4 @@ CORE_IMAGE_EXTRA_INSTALL += "\
 	"
 
 IMAGE_BOOT_FILES += "fitImageMcu.bin"
+WKS_FILE_DEPENDS += "fitImageMcu.bin"
