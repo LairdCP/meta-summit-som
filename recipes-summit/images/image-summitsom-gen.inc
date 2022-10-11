@@ -62,7 +62,7 @@ IMAGE_INSTALL_DIAG = "\
 
 ROOTFS_POSTPROCESS_COMMAND += "rootfs_os_release; "
 
-LRD_VERSION ?= "0.0.0.0"
+SUMMIT_VERSION ?= "0.0.0.0"
 
 rootfs_os_release() {
 	sed -i -e 's,ID=os-release,ID=${IMAGE_BASENAME},g' ${IMAGE_ROOTFS}${libdir}/os-release

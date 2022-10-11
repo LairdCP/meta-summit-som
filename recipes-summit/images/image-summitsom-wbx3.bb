@@ -36,10 +36,10 @@ rootfs_auto_login() {
 	sed -i -e 's,/agetty,/agetty -a root,g' ${IMAGE_ROOTFS}${systemd_unitdir}/system/serial-getty@.service
 }
 
-LRD_VERSION ?= "0.0.0.0"
+SUMMIT_VERSION ?= "0.0.0.0"
 
 rootfs_os_release() {
 	sed -i -e 's,ID=os-release,ID=${IMAGE_BASENAME},g' ${IMAGE_ROOTFS}${libdir}/os-release
-	echo 'Laird Connectivity Summit SOM ${IMAGE_BASENAME} ${LRD_VERSION} \\n \l' > ${IMAGE_ROOTFS}${sysconfdir}/issue
-	echo 'Laird Connectivity Summit SOM ${IMAGE_BASENAME} ${LRD_VERSION} %h' > ${IMAGE_ROOTFS}${sysconfdir}/issue.net
+	echo 'Laird Connectivity Summit SOM ${IMAGE_BASENAME} ${SUMMIT_VERSION} \\n \l' > ${IMAGE_ROOTFS}${sysconfdir}/issue
+	echo 'Laird Connectivity Summit SOM ${IMAGE_BASENAME} ${SUMMIT_VERSION} %h' > ${IMAGE_ROOTFS}${sysconfdir}/issue.net
 }
