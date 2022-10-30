@@ -12,8 +12,6 @@ calc_file () {
   rm -f ${name}
 }
 
-echo -e "PV = \"${ver}\"\n" > ${file}
-
 for i in aarch64
 do
   calc_file "${prefix}/summit_supplicant/laird/${ver}/summit_supplicant-${i}-${ver}.tar.bz2" "summit-supplicant-${i}"
@@ -24,3 +22,5 @@ calc_file "${prefix}/adaptive_bt/src/${ver}/adaptive_bt-src-${ver}.tar.gz" "adap
 calc_file "${prefix}/lrd-network-manager/src/${ver}/lrd-network-manager-src-${ver}.tar.xz" "summit-network-manager"
 calc_file "${prefix}/backports/laird/${ver}/backports-laird-${ver}.tar.bz2" "summit-backports"
 calc_file "${prefix}/firmware/${ver}/laird-som8mp-radio-firmware-${ver}.tar.bz2" "som8mp-radio-firmware"
+
+echo "RADIO_STACK_VERSION_SOM = \"${ver}\"" > radio-stack-som8mp-version-base.inc
