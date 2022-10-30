@@ -15,7 +15,7 @@ SRC_URI += "file://update_support.sh"
 
 IMAGE_ROOTFS_EXTRA_SPACE = "0"
 
-IMAGE_FSTYPES = "squashfs-zstd.verity wic.bz2 wic.bmap"
+IMAGE_FSTYPES = "squashfs-zstd.verity wic.zst wic.bmap"
 
 SWUPDATE_IMAGES += "imx-boot ${IMAGE_BOOT_FILES}"
 

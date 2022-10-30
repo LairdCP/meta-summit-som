@@ -13,7 +13,7 @@ WIC_ROOTFS_DATA_FIXED_SIZE ?= "1G"
 
 WKS_FILES = "summit-imx-uboot-spl-bootpart.wks.in"
 
-IMAGE_FSTYPES = "squashfs-zstd.verity wic.bz2 wic.bmap"
+IMAGE_FSTYPES = "squashfs-zstd.verity wic.zst wic.bmap"
 
 IMAGE_FEATURES = "\
 	ssh-server-dropbear \
