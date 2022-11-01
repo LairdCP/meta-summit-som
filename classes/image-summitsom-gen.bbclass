@@ -62,17 +62,12 @@ rootfs_os_release() {
 }
 
 ARCHIVE_NAME ?= "${IMAGE_BASENAME}-summit-${SUMMIT_VERSION}"
+ARCHIVE_WILDCARD ?= ""
 
-python () {
-    if d.getVar('SUMMIT_VERSION') != '0.0.0.0':
-       bb.build.addtask('create_archive', 'do_build', 'do_image_complete', d)
-       bb.build.addtask('create_archive_final', 'do_build', 'do_create_archive', d)
-}
+addtask create_archive after do_image_complete before do_build
 
 do_create_archive() {
-	tar -cf ${DEPLOY_DIR_IMAGE}/${ARCHIVE_NAME}.tar -T /dev/null
-}
-
-do_create_archive_final() {
-	bzip2 -f ${DEPLOY_DIR_IMAGE}/${ARCHIVE_NAME}.tar
+	if [ "${SUMMIT_VERSION}" != "0.0.0.0" ]; then
+		tar --transform='s,.*/,,' -cjf ${DEPLOY_DIR_IMAGE}/${ARCHIVE_NAME}.tar ${ARCHIVE_WILDCARD}
+	fi
 }

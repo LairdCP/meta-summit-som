@@ -5,8 +5,4 @@ WIC_ROOTFS_DATA_FIXED_SIZE ?= "1G"
 
 WKS_FILES = "summit-imx-uboot-spl-bootpart.wks.in"
 
-do_create_archive:append() {
-	cd ${IMGDEPLOYDIR}
-	tar -rf ${DEPLOY_DIR_IMAGE}/${ARCHIVE_NAME}.tar \
-		${IMAGE_NAME}.rootfs.wic.* ${IMAGE_LINK_NAME}.wic.*
-}
+ARCHIVE_WILDCARD += "${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.wic.* ${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.wic.*"
