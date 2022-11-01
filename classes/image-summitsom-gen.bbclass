@@ -1,6 +1,6 @@
 LICENSE = "MIT"
 
-inherit core-image extrausers swupdate-image
+inherit core-image extrausers
 
 PASSWD = "\$5\$JJ/ksbVr4475qA49\$wzyEBumoH1YyHOG9OgKzjRKjwGVImxFDCu0m90hymoA"
 
@@ -8,21 +8,9 @@ EXTRA_USERS_PARAMS = "usermod -p '${PASSWD}' root;"
 
 export IMAGE_BASENAME = "${PN}"
 
-# This file is included by recipes in other layers
-# Add to files fetcher search path
-FILESEXTRAPATHS:append := ":${THISDIR}/files"
-SRC_URI += "file://update_support.sh"
+IMAGE_FSTYPES = "squashfs-zstd.verity"
 
 IMAGE_ROOTFS_EXTRA_SPACE = "0"
-
-IMAGE_FSTYPES = "squashfs-zstd.verity wic.zst wic.bmap"
-
-SWUPDATE_IMAGES += "imx-boot ${IMAGE_BOOT_FILES}"
-
-WIC_ROOTFS_FIXED_SIZE ?= "512M"
-WIC_ROOTFS_DATA_FIXED_SIZE ?= "1G"
-
-WKS_FILES = "summit-imx-uboot-spl-bootpart.wks.in"
 
 IMAGE_FEATURES = "\
 	ssh-server-dropbear \
@@ -60,6 +48,7 @@ IMAGE_INSTALL_DIAG = "\
 	picocom \
 	can-utils \
 	stress-ng \
+	mc-mint \
 	"
 
 ROOTFS_POSTPROCESS_COMMAND += "rootfs_os_release; "
@@ -70,4 +59,20 @@ rootfs_os_release() {
 	sed -i -e 's,ID=os-release,ID=${IMAGE_BASENAME},g' ${IMAGE_ROOTFS}${libdir}/os-release
 	echo 'Summit SOM ${IMAGE_BASENAME} ${SUMMIT_VERSION} \\n \l' > ${IMAGE_ROOTFS}${sysconfdir}/issue
 	echo 'Summit SOM ${IMAGE_BASENAME} ${SUMMIT_VERSION} %h' > ${IMAGE_ROOTFS}${sysconfdir}/issue.net
+}
+
+ARCHIVE_NAME ?= "${IMAGE_BASENAME}-summit-${SUMMIT_VERSION}"
+
+python () {
+    if d.getVar('SUMMIT_VERSION') != '0.0.0.0':
+       bb.build.addtask('create_archive', 'do_build', 'do_image_complete', d)
+       bb.build.addtask('create_archive_final', 'do_build', 'do_create_archive', d)
+}
+
+do_create_archive() {
+	tar -cf ${DEPLOY_DIR_IMAGE}/${ARCHIVE_NAME}.tar -T /dev/null
+}
+
+do_create_archive_final() {
+	bzip2 -f ${DEPLOY_DIR_IMAGE}/${ARCHIVE_NAME}.tar
 }
