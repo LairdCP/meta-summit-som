@@ -1,8 +1,8 @@
 DESCRIPTION = "Summit SOM Command Line Image"
 
-require image-summitsom-gen.inc
+inherit image-summitsom-gen image-summitsom-sd-gen image-summitsom-swu-gen
 
-SWUPDATE_IMAGES_FSTYPES[image-summitsom-cmd] = ".squashfs-zstd.verity"
+#SWUPDATE_IMAGES_FSTYPES[image-summitsom-cmd] = ".squashfs-zstd.verity"
 
 CORE_IMAGE_EXTRA_INSTALL += "\
 	${IMAGE_INSTALL_BASIC} \
@@ -14,7 +14,6 @@ CORE_IMAGE_EXTRA_INSTALL += "\
 	fbida \
 	systemd-analyze \
 	bluez5-testtools \
-	mc-mint \
 	summit-m7-demos \
 	weblcm-python \
 	v4l-utils \

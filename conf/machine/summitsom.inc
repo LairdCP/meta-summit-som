@@ -4,7 +4,7 @@ KERNEL_CLASSES  = "kernel-fitimage"
 KERNEL_IMAGETYPES = "fitImage"
 
 KERNEL_IMAGETYPE_summitsom = "fitImage"
-IMAGE_CLASSES = "squashfs-zstd dm-verity"
+IMAGE_CLASSES += "squashfs-zstd dm-verity"
 
 UBOOT_DTB_LOADADDRESS = "0x43000000"
 UBOOT_ENTRYPOINT_mx8m   = "0x40400000"
