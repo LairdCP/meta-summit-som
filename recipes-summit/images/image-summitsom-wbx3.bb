@@ -7,6 +7,8 @@ IMAGE_FEATURES += "\
 	empty-root-password \
 	"
 
+EXTRA_USERS_PARAMS = ""
+
 CORE_IMAGE_EXTRA_INSTALL += "\
 	iproute2 \
 	summit-initdata \

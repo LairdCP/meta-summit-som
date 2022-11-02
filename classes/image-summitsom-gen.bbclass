@@ -2,7 +2,9 @@ LICENSE = "MIT"
 
 inherit core-image extrausers
 
-EXTRA_USERS_PARAMS = "usermod -P summit root;"
+PASSWD = "\$5\$JJ/ksbVr4475qA49\$wzyEBumoH1YyHOG9OgKzjRKjwGVImxFDCu0m90hymoA"
+
+EXTRA_USERS_PARAMS = "usermod -p '${PASSWD}' root;"
 
 export IMAGE_BASENAME = "${PN}"
 
