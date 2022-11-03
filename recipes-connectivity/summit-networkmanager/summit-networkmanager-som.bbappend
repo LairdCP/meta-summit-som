@@ -1,1 +1,1 @@
-PACKAGECONFIG += "modemmanager"
+PACKAGECONFIG:append = " modemmanager"
