@@ -9,6 +9,7 @@ obj-y += imx8mp_summitsom.o
 ifdef CONFIG_SPL_BUILD
 obj-y += spl.o
 
+obj-y += lpddr4_timing_4gb.o
 obj-y += lpddr4_timing_2gb.o
 obj-y += lpddr4_timing_1gb.o
 obj-y += lpddr4_timing_512mb.o

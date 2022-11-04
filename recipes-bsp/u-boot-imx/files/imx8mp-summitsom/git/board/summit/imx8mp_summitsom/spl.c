@@ -35,6 +35,7 @@
 #include <asm/arch/ddr.h>
 #include <fuse.h>
 
+extern struct dram_timing_info dram_timing_4g;
 extern struct dram_timing_info dram_timing_2g;
 extern struct dram_timing_info dram_timing_1g;
 extern struct dram_timing_info dram_timing_512m;
@@ -79,6 +80,9 @@ void spl_dram_init(void)
 		break;
 	case 2:
 		ddr_init(&dram_timing_2g);
+		break;
+	case 3:
+		ddr_init(&dram_timing_4g);
 		break;
 	default:
 		ddr_init(&dram_timing_512m);
