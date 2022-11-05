@@ -17,4 +17,5 @@ PACKAGECONFIG:remove:summitsom = "\
 
 do_install:append:summitsom() {
         install -Dm 0644 ${WORKDIR}/journald.conf ${D}${sysconfdir}/systemd/journald.conf
+        rm -f ${D}${systemd_unitdir}/system-generators/systemd-gpt-auto-generator
 }
