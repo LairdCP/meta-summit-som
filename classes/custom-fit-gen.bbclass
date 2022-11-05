@@ -4,6 +4,7 @@ UBOOT_MKIMAGE_SIGN ?= "${UBOOT_MKIMAGE}"
 
 FIT_HASH_ALG ?= "sha256"
 FIT_SIGN_ALG ?= "rsa2048"
+FIT_PAD_ALG ?= "pkcs-1.5"
 
 DEPENDS += "u-boot-tools-native dtc-native"
 
@@ -109,6 +110,7 @@ fitimage_emit_section_script() {
 
 	scr_csum="${FIT_HASH_ALG}"
 	scr_sign_algo="${FIT_SIGN_ALG}"
+	scr_padding_algo="${FIT_PAD_ALG}"
 
         if [ "${UBOOT_SIGN_ENABLE}" = "1" -a "${FIT_SIGN_INDIVIDUAL}" = "1" ]; then
                 scr_sign_keyname="${UBOOT_SIGN_IMG_KEYNAME}"
@@ -149,6 +151,8 @@ fitimage_emit_section_config() {
 
 	conf_csum="${FIT_HASH_ALG}"
 	conf_sign_algo="${FIT_SIGN_ALG}"
+	conf_padding_algo="${FIT_PAD_ALG}"
+
         if [ "${UBOOT_SIGN_ENABLE}" = "1"  ]; then
 		conf_sign_keyname="${UBOOT_SIGN_KEYNAME}"
 	fi
@@ -169,6 +173,7 @@ EOF
                         signature-1 {
                                 algo = "${conf_csum},${conf_sign_algo}";
                                 key-name-hint = "${conf_sign_keyname}";
+				padding = "$conf_padding_algo";
 				sign-images = "loadables";
                         };
 EOF
