@@ -1,8 +1,8 @@
-FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend:summitsom := "${THISDIR}/files:"
 
-SRC_URI += "file://journald.conf"
+SRC_URI:append:summitsom = " file://journald.conf"
 
-PACKAGECONFIG:remove = "\
+PACKAGECONFIG:remove:summitsom = "\
     networkd \
     timesyncd \
     randomseed \
@@ -15,6 +15,6 @@ PACKAGECONFIG:remove = "\
     gshadow \
 "
 
-do_install:append() {
+do_install:append:summitsom() {
         install -Dm 0644 ${WORKDIR}/journald.conf ${D}${sysconfdir}/systemd/journald.conf
 }

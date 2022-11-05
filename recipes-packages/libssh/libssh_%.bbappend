@@ -1,1 +1,1 @@
-PACKAGECONFIG:remove = "gcrypt"
+PACKAGECONFIG = " "

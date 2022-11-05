@@ -1,2 +1,2 @@
 
-hostname = "summit"
+hostname:summitsom = "summit"

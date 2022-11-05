@@ -6,9 +6,6 @@ python () {
 
 inherit swupdate-image
 
-# This file is included by recipes in other layers
-# Add to files fetcher search path
-FILESEXTRAPATHS:append := ":${THISDIR}/files"
 SRC_URI += "file://update_support.sh"
 
 SWUPDATE_IMAGES += "imx-boot ${IMAGE_BOOT_FILES}"
