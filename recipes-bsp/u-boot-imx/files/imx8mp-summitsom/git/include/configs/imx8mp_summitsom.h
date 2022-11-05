@@ -104,6 +104,11 @@
 	"setenv bootargs console=${console} quiet "     \
 	"bootside=${bootside} "                         \
 	"init=/usr/sbin/overlayRoot.sh\0"               \
+	"mmcargs_trad="                                 \
+	"setenv bootargs console=${console} quiet "     \
+	"bootside=${bootside} "                         \
+	"root=/dev/mmcblk${mmcdev}p${rootvol} "         \
+	"rootwait rootfstype=ext4 rw\0"                 \
 	"mmcside="                                      \
 	"if test ${bootside} = a; then "                \
 	"setenv bootvol 1; "                            \
@@ -119,9 +124,14 @@
 	"bootcmd="                                      \
 	"run mmcside; "                                 \
 	"run runm7; "                                   \
+	"if test -e mmc ${mmcdev}:${bootvol} fitImageVerity.bin; then " \
 	"run mmcargs; "                                 \
-	"run loadverity; source ${loadaddr}:script-1; " \
-	"run loadimage && bootm ${loadaddr}#${conf}"
+	"run loadverity && source ${loadaddr}:script-1; " \
+	"run loadimage && bootm ${loadaddr}#${conf}; "  \ 
+	"elif test ${mmcdev} = 1; then "                \
+	"run mmcargs_trad; "                            \
+	"run loadimage && bootm ${loadaddr}#${conf}; "  \
+	"fi"
 
 #define CONFIG_SYS_INIT_RAM_ADDR        0x40000000
 #define CONFIG_SYS_INIT_RAM_SIZE        0x80000

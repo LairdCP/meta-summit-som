@@ -13,5 +13,8 @@ BB_DISKMON_DIRS ??= "\
 
 PACKAGECONFIG:append:pn-qemu-system-native = " sdl"
 
+IMAGE_FEATURES ?= "debug-tweaks"
+USER_CLASSES ?= "buildstats"
+
 CONF_VERSION = "2"
 

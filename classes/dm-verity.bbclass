@@ -54,8 +54,6 @@ CONVERSIONTYPES += "verity"
 CONVERSION_CMD:verity = "verity_setup ${type}"
 CONVERSION_DEPENDS_verity = "cryptsetup-native"
 
-IMAGE_BOOT_FILES += "fitImageVerity.bin"
-
 python __anonymous() {
     image_fstypes = d.getVar('IMAGE_FSTYPES')
     pn = d.getVar('PN')
@@ -71,4 +69,5 @@ python __anonymous() {
             dep = ' %s:do_image_%s' % (pn, f.replace('-', '_'))
             d.appendVarFlag('do_image_wic', 'depends', dep)
             d.setVar('DM_VERITY_IMAGE_TYPE', fst)
+            d.appendVar('IMAGE_BOOT_FILES', ' fitImageVerity.bin')
 }
