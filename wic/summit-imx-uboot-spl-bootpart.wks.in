@@ -14,8 +14,8 @@
 #   ${IMX_BOOT_SEEK} 32 or 33kiB, see reference manual
 #
 part u-boot --source rawcopy --sourceparams="file=imx-boot" --ondisk mmcblk --no-table --align ${IMX_BOOT_SEEK}
-part /boot --source bootimg-partition --ondisk mmcblk --fstype=vfat --label boot --active --align 8192 --fixed-size 16M
+part /boot --source bootimg-partition --ondisk mmcblk --fstype=msdos --label boot --active --align 8192 --fixed-size 16M
 part / --source rawcopy --sourceparams="file=${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.${DM_VERITY_IMAGE_TYPE}" --ondisk mmcblk --fstype=squashfs --align 8192 --fixed-size ${WIC_ROOTFS_FIXED_SIZE}
 part rootfs_data  --ondisk mmcblk --fstype=ext4 --label rootfs_data --align 8192 --fixed-size ${WIC_ROOTFS_DATA_FIXED_SIZE}
 
-bootloader --ptable gpt
+bootloader --ptable msdos
