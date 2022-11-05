@@ -70,28 +70,28 @@ do_install:append() {
 	cp -fr ${S}/plugins ${D}${localstatedir}/www/
 
 	install -D -t ${D}${bindir}/weblcm-python.scripts -m 755 ${S}/*.sh
-	install -D -t ${D}${sysconfdir}/weblcm-python -m 644 ${S}/*.ini
+	install -D -t ${D}${sysconfdir}/ -m 644 ${S}/weblcm-python.ini
 	install -D -t ${D}${sysconfdir}/weblcm-python/ssl -m 644 \
 		${S}/ssl/server.key ${S}/ssl/server.crt ${S}/ssl/ca.crt
 
-	sed -i -e '/^default_/d' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
-	sed -i -e '/\[weblcm\]/a default_password: \"${PASSWORD:${PN}}\"' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
-	sed -i -e '/\[weblcm\]/a default_username: \"${USERNAME:${PN}}\"' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
+	sed -i -e '/^default_/d' ${D}${sysconfdir}/weblcm-python.ini
+	sed -i -e '/\[weblcm\]/a default_password: \"${PASSWORD:${PN}}\"' ${D}${sysconfdir}/weblcm-python.ini
+	sed -i -e '/\[weblcm\]/a default_username: \"${USERNAME:${PN}}\"' ${D}${sysconfdir}/weblcm-python.ini
 
-	sed -i -e '/^managed_software_devices/d' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
-	sed -i -e '/\[weblcm\]/a managed_software_devices: ${MANAGED_SOFTWARE_DEVICES:${PN}}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
+	sed -i -e '/^managed_software_devices/d' ${D}${sysconfdir}/weblcm-python.ini
+	sed -i -e '/\[weblcm\]/a managed_software_devices: ${MANAGED_SOFTWARE_DEVICES:${PN}}' ${D}${sysconfdir}/weblcm-python.ini
 
-	sed -i -e '/^unmanaged_hardware_devices/d' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
-	sed -i -e '/\[weblcm\]/a unmanaged_hardware_devices: ${UNMANAGED_HARDWARE_DEVICES:${PN}}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
+	sed -i -e '/^unmanaged_hardware_devices/d' ${D}${sysconfdir}/weblcm-python.ini
+	sed -i -e '/\[weblcm\]/a unmanaged_hardware_devices: ${UNMANAGED_HARDWARE_DEVICES:${PN}}' ${D}${sysconfdir}/weblcm-python.ini
 
-	sed -i -e '/^awm_cfg/d' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
-	sed -i -e '/\[weblcm\]/a awm_cfg:${ADAPTIVE_WW_CFG_FILE:${PN}}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
+	sed -i -e '/^awm_cfg/d' ${D}${sysconfdir}/weblcm-python.ini
+	sed -i -e '/\[weblcm\]/a awm_cfg:${ADAPTIVE_WW_CFG_FILE:${PN}}' ${D}${sysconfdir}/weblcm-python.ini
 
-	sed -i -e '/^enable_allow_unauthenticated_reboot_reset/d' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
-	sed -i -e '/\[weblcm\]/a enable_allow_unauthenticated_reboot_reset:${ENABLE_UNAUTHENTICATED}' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
+	sed -i -e '/^enable_allow_unauthenticated_reboot_reset/d' ${D}${sysconfdir}/weblcm-python.ini
+	sed -i -e '/\[weblcm\]/a enable_allow_unauthenticated_reboot_reset:${ENABLE_UNAUTHENTICATED}' ${D}${sysconfdir}/weblcm-python.ini
 
-	sed -i -e '/^server.socket_host/d' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
-	sed -i -e '/\[global\]/a server.socket_host: \"${BIND_IP}\"' ${D}${sysconfdir}/weblcm-python/weblcm-python.ini
+	sed -i -e '/^server.socket_host/d' ${D}${sysconfdir}/weblcm-python.ini
+	sed -i -e '/\[global\]/a server.socket_host: \"${BIND_IP}\"' ${D}${sysconfdir}/weblcm-python.ini
 
 	if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
 		install -D -m 644 ${S}/weblcm-python.service \
