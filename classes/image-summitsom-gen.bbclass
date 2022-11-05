@@ -30,6 +30,7 @@ IMAGE_INSTALL_BASIC = "\
 	iproute2 \
 	chrony \
 	chronyc \
+	keyctl-caam \
 	summit-automount \
 	summit-initdata \
 	summit-update \
