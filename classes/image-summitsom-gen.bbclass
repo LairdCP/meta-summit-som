@@ -69,6 +69,6 @@ addtask create_archive after do_image_complete before do_build
 
 do_create_archive() {
 	if [ "${SUMMIT_VERSION}" != "0.0.0.0" ]; then
-		tar --transform='s,.*/,,' -cjf ${DEPLOY_DIR_IMAGE}/${ARCHIVE_NAME}.tar ${ARCHIVE_WILDCARD}
+		tar --transform='s,.*/,,' -cjf ${DEPLOY_DIR_IMAGE}/${ARCHIVE_NAME}.tar.bz2 ${ARCHIVE_WILDCARD}
 	fi
 }
