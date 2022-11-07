@@ -19,6 +19,8 @@ SYSTEMD_AUTO_ENABLE = "enable"
 
 SYSTEMD_SERVICE:${PN}:append:lrdsecure = " var-volatile-log-journal.mount"
 
+DEPENDS += "rsync-native"
+
 RDEPENDS:${PN} = "summit-fwenv"
 
 do_install () {
