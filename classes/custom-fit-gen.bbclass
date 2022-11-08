@@ -2,9 +2,15 @@
 UBOOT_MKIMAGE ?= "uboot-mkimage"
 UBOOT_MKIMAGE_SIGN ?= "${UBOOT_MKIMAGE}"
 
+UBOOT_SIGN_ENABLE ?= "0"
+FIT_SIGN_INDIVIDUAL ?= "0"
+
 FIT_HASH_ALG ?= "sha256"
 FIT_SIGN_ALG ?= "rsa2048"
 FIT_PAD_ALG ?= "pkcs-1.5"
+
+UBOOT_ENCRYPT_ENABLE ?= "0"
+FIT_CRYPT_ALG ?= "aes128"
 
 DEPENDS += "u-boot-tools-native dtc-native"
 
@@ -69,9 +75,10 @@ fitimage_emit_section_firmware() {
 
 	firmware_csum="${FIT_HASH_ALG}"
 	firmware_sign_algo="${FIT_SIGN_ALG}"
+	firmware_padding_algo="${FIT_PAD_ALG}"
 
         if [ "${UBOOT_SIGN_ENABLE}" = "1" -a "${FIT_SIGN_INDIVIDUAL}" = "1" ]; then
-                firmware_sign_keyname="${UBOOT_SIGN_KEYNAME}"
+                firmware_sign_keyname="${UBOOT_SIGN_IMG_KEYNAME}"
         else
                 firmware_sign_keyname=""
         fi
@@ -88,12 +95,23 @@ fitimage_emit_section_firmware() {
                 };
 EOF
 
+	if [ "${UBOOT_ENCRYPT_ENABLE}" = "1" ]; then
+		cat << EOF >> $1
+			cipher {
+				algo = "${FIT_ENCRYPT_ALGO}";
+				key-name-hint = "${UBOOT_ENCRYPT_KEYNAME}";
+				iv-name-hint = "${UBOOT_ENCRYPT_IVNAME}";
+			};
+EOF
+	fi
+
 	if [ -n "$firmware_sign_keyname" ]; then
 		sed -i '$ d' $1
 		cat << EOF >> $1
                         signature-1 {
                                 algo = "$firmware_csum,$firmware_sign_algo";
                                 key-name-hint = "$firmware_sign_keyname";
+				padding = "$firmware_padding_algo";
                         };
                 };
 EOF
@@ -130,12 +148,23 @@ fitimage_emit_section_script() {
                 };
 EOF
 
+	if [ "${UBOOT_ENCRYPT_ENABLE}" = "1" ]; then
+		cat << EOF >> $1
+			cipher {
+				algo = "${FIT_ENCRYPT_ALGO}";
+				key-name-hint = "${UBOOT_ENCRYPT_KEYNAME}";
+				iv-name-hint = "${UBOOT_ENCRYPT_IVNAME}";
+			};
+EOF
+	fi
+
 	if [ -n "$scr_sign_keyname" ]; then
 		sed -i '$ d' $1
 		cat << EOF >> $1
                         signature-1 {
                                 algo = "$scr_csum,$scr_sign_algo";
                                 key-name-hint = "$scr_sign_keyname";
+				padding = "$scr_padding_algo";
                         };
                 };
 EOF
