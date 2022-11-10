@@ -64,13 +64,16 @@ int board_phys_sdram_size(phys_size_t *memsize)
 
 	switch (gp1 & 0xff) {
 	case 1:
-		*memsize = 0x40000000;
+		*memsize = SZ_1G;
 		break;
 	case 2:
-		*memsize = 0x80000000;
+		*memsize = SZ_2G;
+		break;
+	case 3:
+		*memsize = SZ_4G;
 		break;
 	default:
-		*memsize = 0x20000000;
+		*memsize = SZ_512M;
 		break;
 	}
 
