@@ -75,6 +75,9 @@ void spl_dram_init(void)
 	fuse_read(14, 0, &gp1);
 
 	switch (gp1 & 0xff) {
+	case 0:
+		ddr_init(&dram_timing_512m);
+		break;
 	case 1:
 		ddr_init(&dram_timing_1g);
 		break;
@@ -85,7 +88,8 @@ void spl_dram_init(void)
 		ddr_init(&dram_timing_4g);
 		break;
 	default:
-		ddr_init(&dram_timing_512m);
+		if (ddr_init(&dram_timing_512m))
+			ddr_init(&dram_timing_4g);
 		break;
 	}
 }
