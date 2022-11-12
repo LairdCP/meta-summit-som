@@ -127,7 +127,7 @@
 	"if test -e mmc ${mmcdev}:${bootvol} fitImageVerity.bin; then " \
 	"run mmcargs; "                                 \
 	"run loadverity && source ${loadaddr}:script-1; " \
-	"run loadimage && bootm ${loadaddr}#${conf}; "  \ 
+	"run loadimage && bootm ${loadaddr}#${conf}; "  \
 	"elif test ${mmcdev} = 1; then "                \
 	"run mmcargs_trad; "                            \
 	"run loadimage && bootm ${loadaddr}#${conf}; "  \
@@ -144,7 +144,9 @@
 #define CONFIG_SYS_SDRAM_BASE           0x40000000
 
 #define PHYS_SDRAM                      0x40000000
-#define PHYS_SDRAM_SIZE                 0x80000000      /* 2 GB */
+#define PHYS_SDRAM_SIZE                 SZ_2G
+#define PHYS_SDRAM_2                    0x100000000
+#define PHYS_SDRAM_2_SIZE               SZ_2G
 
 #define CONFIG_MXC_UART_BASE            UART2_BASE_ADDR
 
