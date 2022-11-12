@@ -7,6 +7,7 @@
 #include <errno.h>
 #include <miiphy.h>
 #include <netdev.h>
+#include <init.h>
 #include <asm/io.h>
 #include <asm/mach-imx/iomux-v3.h>
 #include <asm-generic/gpio.h>
@@ -72,8 +73,14 @@ int board_phys_sdram_size(phys_size_t *memsize)
 	case 3:
 		*memsize = SZ_4G;
 		break;
+	case 4:
+		*memsize = SZ_512M;	
+		break;
 	default:
-		*memsize = SZ_512M;
+		if ((readl(0x3d400000) & 0xf000000) == 0x3000000)
+			*memsize = SZ_4G;
+		else
+			*memsize = get_ram_size((void *)PHYS_SDRAM, SZ_2G);
 		break;
 	}
 

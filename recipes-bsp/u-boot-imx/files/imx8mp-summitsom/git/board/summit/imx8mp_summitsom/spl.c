@@ -35,10 +35,10 @@
 #include <asm/arch/ddr.h>
 #include <fuse.h>
 
-extern struct dram_timing_info dram_timing_4g;
-extern struct dram_timing_info dram_timing_2g;
-extern struct dram_timing_info dram_timing_1g;
-extern struct dram_timing_info dram_timing_512m;
+extern const struct dram_timing_info dram_timing_4g;
+extern const struct dram_timing_info dram_timing_2g;
+extern const struct dram_timing_info dram_timing_1g;
+extern const struct dram_timing_info dram_timing_512m;
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -71,13 +71,11 @@ int spl_board_boot_device(enum boot_device boot_dev_spl)
 void spl_dram_init(void)
 {
 	u32 gp1 = 0;
+	int rc;
 
 	fuse_read(14, 0, &gp1);
 
 	switch (gp1 & 0xff) {
-	case 0:
-		ddr_init(&dram_timing_512m);
-		break;
 	case 1:
 		ddr_init(&dram_timing_1g);
 		break;
@@ -87,9 +85,17 @@ void spl_dram_init(void)
 	case 3:
 		ddr_init(&dram_timing_4g);
 		break;
+	case 4:
+		ddr_init(&dram_timing_512m);
+		break;
 	default:
-		if (ddr_init(&dram_timing_512m))
-			ddr_init(&dram_timing_4g);
+		rc = ddr_init(&dram_timing_4g);
+		if (rc)
+			rc = ddr_init(&dram_timing_2g);
+		if (rc)
+			rc = ddr_init(&dram_timing_1g);
+		if (rc)
+			rc = ddr_init(&dram_timing_512m);
 		break;
 	}
 }
