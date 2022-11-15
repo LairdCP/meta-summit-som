@@ -12,6 +12,8 @@ calc_file () {
   rm -f ${name}
 }
 
+rm -f ${file}
+
 for i in aarch64
 do
   calc_file "${prefix}/summit_supplicant/laird/${ver}/summit_supplicant-${i}-${ver}.tar.bz2" "summit-supplicant-${i}"
