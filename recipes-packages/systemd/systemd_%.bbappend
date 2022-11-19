@@ -1,6 +1,9 @@
 FILESEXTRAPATHS:prepend:summitsom := "${THISDIR}/files:"
 
-SRC_URI:append:summitsom = " file://journald.conf"
+SRC_URI:append:summitsom = "\
+    file://journald.conf \
+    file://0005-timedate-symlink.patch \
+    "
 
 PACKAGECONFIG:remove:summitsom = "\
     networkd \

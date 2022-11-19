@@ -78,9 +78,7 @@
 	"emmc_dev=2\0" \
 	"sd_dev=1\0" \
 
-
-#define CONFIG_EXTRA_ENV_SETTINGS                       \
-	CONFIG_MFG_ENV_SETTINGS                         \
+#define EXTRA_ENV_SETTINGS_DEFAULT                      \
 	"autoload=no\0"                                 \
 	"autostart=no\0"                                \
 	"console=ttymxc1,115200\0"                      \
@@ -100,15 +98,6 @@
 	"loadimage=load mmc ${mmcdev}:${bootvol} ${loadaddr} fitImage\0" \
 	"loadverity=load mmc ${mmcdev}:${bootvol} ${loadaddr} fitImageVerity.bin\0" \
 	"loadm7=load mmc ${mmcdev}:${bootvol} ${loadaddr} fitImageMcu.bin\0" \
-	"mmcargs="                                      \
-	"setenv bootargs console=${console} quiet "     \
-	"bootside=${bootside} "                         \
-	"init=/usr/sbin/overlayRoot.sh\0"               \
-	"mmcargs_trad="                                 \
-	"setenv bootargs console=${console} quiet "     \
-	"bootside=${bootside} "                         \
-	"root=/dev/mmcblk${mmcdev}p${rootvol} "         \
-	"rootwait rootfstype=ext4 rw\0"                 \
 	"mmcside="                                      \
 	"if test ${bootside} = a; then "                \
 	"setenv bootvol 1; "                            \
@@ -120,7 +109,34 @@
 	"setexpr bootm7 sub m7-rpmsg '' $conf; "        \
 	"if test -n \"${bootm7}\"; then "               \
 	"run loadm7 && run bootm7_itcm; "               \
-	"fi\0"                                          \
+	"fi\0"
+
+#ifdef CONFIG_SUMMIT_SECURE
+#define CONFIG_EXTRA_ENV_SETTINGS                       \
+	EXTRA_ENV_SETTINGS_DEFAULT                      \
+	"mmcargs="                                      \
+	"setenv bootargs console=${console} quiet "     \
+	"bootside=${bootside}\0"                         \
+	"bootcmd="                                      \
+	"run mmcside; "                                 \
+	"run runm7; "                                   \
+	"if test -e mmc ${mmcdev}:${bootvol} fitImageVerity.bin; then " \
+	"run mmcargs; "                                 \
+	"run loadverity && source ${loadaddr}:script-1; " \
+	"run loadimage && bootm ${loadaddr}#${conf}; "  \
+	"fi"
+#else
+#define CONFIG_EXTRA_ENV_SETTINGS                       \
+	EXTRA_ENV_SETTINGS_DEFAULT                      \
+	"mmcargs="                                      \
+	"setenv bootargs console=${console} quiet "     \
+	"bootside=${bootside} "                         \
+	"init=/usr/sbin/overlayRoot.sh\0"               \
+	"mmcargs_trad="                                 \
+	"setenv bootargs console=${console} quiet "     \
+	"bootside=${bootside} "                         \
+	"root=/dev/mmcblk${mmcdev}p${rootvol} "         \
+	"rootwait rootfstype=ext4 rw\0"                 \
 	"bootcmd="                                      \
 	"run mmcside; "                                 \
 	"run runm7; "                                   \
@@ -132,6 +148,7 @@
 	"run mmcargs_trad; "                            \
 	"run loadimage && bootm ${loadaddr}#${conf}; "  \
 	"fi"
+#endif
 
 #define CONFIG_SYS_INIT_RAM_ADDR        0x40000000
 #define CONFIG_SYS_INIT_RAM_SIZE        0x80000

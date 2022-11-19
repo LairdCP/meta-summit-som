@@ -17,7 +17,7 @@ IMAGE_FEATURES = "\
 	allow-root-login \
 	"
 
-IMAGE_FEATURES:append:lrdsecure = "\
+IMAGE_FEATURES:append:summit-secure = "\
 	read-only-rootfs \
 	"
 
@@ -72,3 +72,37 @@ do_create_archive() {
 		tar --transform='s,.*/,,' -cjf ${DEPLOY_DIR_IMAGE}/${ARCHIVE_NAME}.tar.bz2 ${ARCHIVE_WILDCARD}
 	fi
 }
+
+do_backup_runtime () {
+	BACKUP_SECRET_DIR=${IMAGE_ROOTFS}/usr/share/factory/etc/secret
+	BACKUP_MISC_DIR=${IMAGE_ROOTFS}/usr/share/factory/etc/misc
+
+	mkdir -p ${BACKUP_SECRET_DIR}
+	for BACKUP_TARGET in "firewalld" "weblcm-python" "modem" "stunnel"; do
+		if [ -d ${IMAGE_ROOTFS}/etc/"${BACKUP_TARGET}" ]; then
+			mv ${IMAGE_ROOTFS}/etc/${BACKUP_TARGET}/ ${BACKUP_SECRET_DIR}
+			ln -sf /data/secret/${BACKUP_TARGET} ${IMAGE_ROOTFS}/etc/${BACKUP_TARGET}
+		fi
+	done
+
+	mkdir -p ${BACKUP_SECRET_DIR}/NetworkManager
+	for SM_SUB_DIR in "certs" "system-connections"; do
+		if [ -d ${IMAGE_ROOTFS}/etc/NetworkManager/${SM_SUB_DIR} ]; then
+			mv ${IMAGE_ROOTFS}/etc/NetworkManager/${SM_SUB_DIR} ${BACKUP_SECRET_DIR}/NetworkManager
+		else
+			mkdir -p ${BACKUP_SECRET_DIR}/NetworkManager/${SM_SUB_DIR}
+		fi
+		ln -sf /data/secret/NetworkManager/${SM_SUB_DIR} ${IMAGE_ROOTFS}/etc/NetworkManager/${SM_SUB_DIR}
+	done
+
+	ln -sf /data/secret/NetworkManager.state ${IMAGE_ROOTFS}/etc/NetworkManager/NetworkManager.state
+
+	mkdir -p ${BACKUP_MISC_DIR}
+	mv ${IMAGE_ROOTFS}/etc/timezone ${BACKUP_MISC_DIR}
+
+	ln -sf /data/misc/timezone ${IMAGE_ROOTFS}/etc/timezone
+	ln -sf /data/misc/localtime ${IMAGE_ROOTFS}/etc/localtime
+	ln -sf /data/misc/adjtime ${IMAGE_ROOTFS}/etc/adjtime
+}
+
+ROOTFS_POSTPROCESS_COMMAND:append:summit-secure = "do_backup_runtime; "
