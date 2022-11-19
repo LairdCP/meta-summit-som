@@ -2,7 +2,7 @@ DESCRIPTION = "Summit SOM Devel Image"
 
 inherit image-summitsom-gen image-summitsom-sd-gen
 
-# Rootfs overlay size
+# Data partition size
 WIC_ROOTFS_DATA_FIXED_SIZE = "5G"
 
 CORE_IMAGE_EXTRA_INSTALL += "\

@@ -9,6 +9,9 @@ config SYS_VENDOR
 config SYS_CONFIG_NAME
 	default "imx8mp_summitsom"
 
+config SUMMIT_SECURE
+	bool "Secure image" 
+
 source "board/freescale/common/Kconfig"
 
 endif

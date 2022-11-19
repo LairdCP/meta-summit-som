@@ -7,17 +7,15 @@ inherit allarch systemd
 
 SRC_URI = " \
     file://rootfs-additions \
-    file://var-volatile-log-journal.mount \
+    file://rootfs-additions-secure \
     "
 
 S = "${WORKDIR}"
 
-FILES_${PN} += "${libdir} ${systemd_system_unitdir} ${sysconfdir} /perm /data"
+FILES_${PN} += "${sbindir} ${libdir} ${systemd_system_unitdir} ${sysconfdir} /perm /data"
 
 SYSTEMD_SERVICE_${PN} = "perm-enable.service"
 SYSTEMD_AUTO_ENABLE = "enable"
-
-SYSTEMD_SERVICE_${PN}_append_lrdsecure = " var-volatile-log-journal.mount"
 
 DEPENDS += "rsync-native"
 
@@ -27,8 +25,9 @@ do_install () {
     rsync -rlpDWK --no-perms --exclude=.empty ${S}/rootfs-additions/ ${D}/
 }
 
-do_install_append_lrdsecure () {
-    install -d ${D}/data
-    install -D -m 0644 ${S}/var-volatile-log-journal.mount ${D}${systemd_unitdir}/system/var-volatile-log-journal.mount
+SYSTEMD_SERVICE_${PN}_append_summit-secure = " var-volatile-log-journal.mount mount_data.service"
+
+do_install_append_summit-secure () {
+    rsync -rlpDWK --no-perms --exclude=.empty ${S}/rootfs-additions-secure/ ${D}/
     rm -f ${D}${sbindir}/overlayRoot.sh
 }
