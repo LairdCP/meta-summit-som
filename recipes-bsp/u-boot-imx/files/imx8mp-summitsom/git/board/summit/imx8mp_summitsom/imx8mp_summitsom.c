@@ -68,6 +68,7 @@ int board_phys_sdram_size(phys_size_t *memsize)
 		*memsize = SZ_1G;
 		break;
 	case 2:
+	case 5:
 		*memsize = SZ_2G;
 		break;
 	case 3:
