@@ -80,6 +80,7 @@ void spl_dram_init(void)
 		ddr_init(&dram_timing_1g);
 		break;
 	case 2:
+	case 5:
 		ddr_init(&dram_timing_2g);
 		break;
 	case 3:
