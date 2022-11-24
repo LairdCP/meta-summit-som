@@ -30,14 +30,18 @@ IMAGE_INSTALL_BASIC = "\
 	iproute2 \
 	chrony \
 	chronyc \
-	keyctl-caam \
-	keyutils \
 	summit-automount \
 	summit-initdata \
 	summit-update \
 	summit-fwenv \
 	summit-usbgadget \
 	"
+
+IMAGE_INSTALL_BASIC:append:summit-secure = "\
+	keyctl-caam \
+	keyutils \
+	lvm2 \
+"
 
 # Diagnostic tools
 IMAGE_INSTALL_DIAG = "\
