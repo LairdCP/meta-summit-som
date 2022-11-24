@@ -2,8 +2,6 @@ DESCRIPTION = "Summit SOM Command Line Image"
 
 inherit image-summitsom-gen image-summitsom-sd-gen image-summitsom-swu-gen
 
-#SWUPDATE_IMAGES_FSTYPES[image-summitsom-cmd] = ".squashfs-zstd.verity"
-
 CORE_IMAGE_EXTRA_INSTALL += "\
 	${IMAGE_INSTALL_BASIC} \
 	${IMAGE_INSTALL_DIAG} \

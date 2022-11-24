@@ -22,3 +22,7 @@ do_install:append:summitsom() {
         install -Dm 0644 ${WORKDIR}/journald.conf ${D}${sysconfdir}/systemd/journald.conf
         rm -f ${D}${systemd_unitdir}/system-generators/systemd-gpt-auto-generator
 }
+
+do_install:append:summitsom:summit-secure() {
+        rm -f ${D}${sysconfdir}/systemd/journald.conf
+}

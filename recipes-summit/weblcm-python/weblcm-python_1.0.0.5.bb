@@ -12,6 +12,8 @@ SRC_URI:summit-internal = "git://git@git.devops.rfpros.com/cp_apps/weblcm-python
 
 SRCREV = "${AUTOREV}"
 
+DEPENDS += "python3-cython-native"
+
 SYSTEMD_SERVICE:${PN} = "weblcm-python.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
@@ -95,6 +97,6 @@ do_install:append() {
 
 	if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
 		install -D -m 644 ${S}/weblcm-python.service \
-			${D}${systemd_unitdir}/system/weblcm-python.service
+			${D}${systemd_system_unitdir}/weblcm-python.service
 	fi
 }

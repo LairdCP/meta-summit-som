@@ -17,7 +17,7 @@ SYSTEMD_AUTO_ENABLE = "enable"
 
 RDEPENDS:${PN} += "u-boot-fw-utils"
 
-FILES:${PN} += "${systemd_unitdir}/system ${sysconfdir}"
+FILES:${PN} += "${systemd_system_unitdir} ${sysconfdir}"
 
 do_install() {
     install -d ${D}${sysconfdir}/
@@ -26,6 +26,6 @@ do_install() {
 
     if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
         install -D -m 0644 ${S}/fw_env.service \
-            ${D}${systemd_unitdir}/system/fw_env.service
+            ${D}${systemd_system_unitdir}/fw_env.service
     fi
 }
