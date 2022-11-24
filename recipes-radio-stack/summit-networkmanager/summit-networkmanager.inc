@@ -232,6 +232,7 @@ do_install:append() {
     fi
 
 	install -Dm 0644 ${WORKDIR}/NetworkManager.conf ${D}${sysconfdir}/NetworkManager/NetworkManager.conf
+    install -d ${D}${sysconfdir}/NetworkManager/certs
 }
 
 RDEPENDS:${PN} += "ethtool"

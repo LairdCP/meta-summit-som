@@ -118,7 +118,8 @@
 	EXTRA_ENV_SETTINGS_DEFAULT                      \
 	"mmcargs="                                      \
 	"setenv bootargs console=${console} quiet "     \
-	"bootside=${bootside}\0"                         \
+	"bootside=${bootside} "                         \
+	"init=/usr/sbin/pre-systemd-init.sh\0"          \
 	"bootcmd="                                      \
 	"run mmcside; "                                 \
 	"run runm7; "                                   \

@@ -30,13 +30,13 @@ SERIAL_PORTS ?= "0"
 
 S = "${WORKDIR}"
 
-FILES_${PN} += "${systemd_unitdir}/system ${sysconfdir}"
+FILES_${PN} += "${systemd_system_unitdir} ${libdir}"
 
 do_install() {
     install -D -m 0755 ${S}/usb-gadget.sh \
         ${D}${bindir}/usb-gadget.sh
     install -D -m 0600 shared-usb0.nmconnection \
-        ${D}${sysconfdir}/NetworkManager/system-connections/shared-usb0.nmconnection
+        ${D}${libdir}/NetworkManager/system-connections/shared-usb0.nmconnection
 
     install -d ${D}${sysconfdir}/default
     echo "USB_GADGET_ETHER_PORTS=${ETHERNET_PORTS}"       > ${D}${sysconfdir}/default/usb-gadget
@@ -47,9 +47,9 @@ do_install() {
 
     if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
         install -D -m 0644 ${S}/usb-gadget.service \
-            ${D}${systemd_unitdir}/system/usb-gadget.service
+            ${D}${systemd_system_unitdir}/usb-gadget.service
     else
         install -D -m 0644 ${WORKDIR}/usb-gadget.rules \
-            ${D}${sysconfdir}/udev/rules.d/usb-gadget.rules
+            ${D}${libdir}/udev/rules.d/usb-gadget.rules
     fi
 }

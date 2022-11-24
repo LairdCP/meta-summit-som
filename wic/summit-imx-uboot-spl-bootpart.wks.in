@@ -13,9 +13,10 @@
 # 0 |        8MiB          72MiB          72MiB + rootfs + IMAGE_EXTRA_SPACE (default 10MiB)
 #   ${IMX_BOOT_SEEK} 32 or 33kiB, see reference manual
 #
-part u-boot --source rawcopy --sourceparams="file=imx-boot" --ondisk mmcblk --no-table --align ${IMX_BOOT_SEEK}
-part /boot --source bootimg-partition --ondisk mmcblk --fstype=vfat --label boot --active --align 8192 --fixed-size 16M
-part / --source rawcopy --sourceparams="file=${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.${DM_VERITY_IMAGE_TYPE}" --ondisk mmcblk --fstype=squashfs --align 8192 --fixed-size ${WIC_ROOTFS_FIXED_SIZE}
-part rootfs_data  --ondisk mmcblk --fstype=ext4 --label rootfs_data --align 8192 --fixed-size ${WIC_ROOTFS_DATA_FIXED_SIZE}
+part --source rawcopy --sourceparams="file=imx-boot" --ondisk mmcblk --no-table --align ${IMX_BOOT_SEEK}
+part /boot --source bootimg-partition --ondisk mmcblk --fstype=vfat --label kernel_a --part-name kernel_a --active --align 8192 --fixed-size 16M
+part / --source rawcopy --sourceparams="file=${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.${DM_VERITY_IMAGE_TYPE}" --ondisk mmcblk --fstype=squashfs --part-name rootfs_a --align 8192
+part --ondisk mmcblk --fstype=ext4 --label rootfs_data_a --part-name rootfs_data_a --align 8192 --fixed-size ${WIC_ROOTFS_DATA_FIXED_SIZE}
+part --ondisk mmcblk --fstype=ext4 --label perm --part-name perm --align 8192 --fixed-size 2G
 
 bootloader --ptable gpt

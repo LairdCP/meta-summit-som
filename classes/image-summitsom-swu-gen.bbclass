@@ -6,7 +6,7 @@ python () {
 
 inherit swupdate-image
 
-SRC_URI += "file://update_support.sh"
+SRC_URI += "file://update_support.sh file://erase_data.sh"
 
 SWUPDATE_IMAGES += "imx-boot ${IMAGE_BOOT_FILES}"
 

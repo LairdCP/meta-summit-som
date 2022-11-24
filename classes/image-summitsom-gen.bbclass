@@ -31,6 +31,7 @@ IMAGE_INSTALL_BASIC = "\
 	chrony \
 	chronyc \
 	keyctl-caam \
+	keyutils \
 	summit-automount \
 	summit-initdata \
 	summit-update \
@@ -98,11 +99,19 @@ do_backup_runtime () {
 	ln -sf /data/secret/NetworkManager.state ${IMAGE_ROOTFS}/etc/NetworkManager/NetworkManager.state
 
 	mkdir -p ${BACKUP_MISC_DIR}
-	mv ${IMAGE_ROOTFS}/etc/timezone ${BACKUP_MISC_DIR}
+	mv -t ${BACKUP_MISC_DIR} \
+		${IMAGE_ROOTFS}/etc/timezone \
+		${IMAGE_ROOTFS}/etc/localtime \
+		${IMAGE_ROOTFS}/etc/adjtime
 
 	ln -sf /data/misc/timezone ${IMAGE_ROOTFS}/etc/timezone
 	ln -sf /data/misc/localtime ${IMAGE_ROOTFS}/etc/localtime
 	ln -sf /data/misc/adjtime ${IMAGE_ROOTFS}/etc/adjtime
+
+	ln -sf /perm/etc/machine-id ${IMAGE_ROOTFS}/etc/machine-id
+
+	rm -rf ${IMAGE_ROOTFS}/media
+	ln -sf /run/media ${IMAGE_ROOTFS}/media
 }
 
-ROOTFS_POSTPROCESS_COMMAND:append:summit-secure = "do_backup_runtime; "
+IMAGE_PREPROCESS_COMMAND:append:summit-secure = "do_backup_runtime; "

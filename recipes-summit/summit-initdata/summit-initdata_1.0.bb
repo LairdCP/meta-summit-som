@@ -14,18 +14,16 @@ S = "${WORKDIR}"
 
 FILES_${PN} += "${sbindir} ${libdir} ${systemd_system_unitdir} ${sysconfdir} /perm /data"
 
-SYSTEMD_SERVICE_${PN} = "perm-enable.service"
-SYSTEMD_AUTO_ENABLE = "enable"
-
 DEPENDS += "rsync-native"
 
-RDEPENDS_${PN} = "summit-fwenv"
+RDEPENDS_${PN} = "util-linux-lsblk summit-fwenv"
 
 do_install () {
-    rsync -rlpDWK --no-perms --exclude=.empty ${S}/rootfs-additions/ ${D}/
+    rsync -rlpDWK --no-perms --delete --exclude=.empty ${S}/rootfs-additions/ ${D}/
 }
 
-SYSTEMD_SERVICE_${PN}_append_summit-secure = " var-volatile-log-journal.mount mount_data.service"
+SYSTEMD_SERVICE_${PN}_summit-secure = "mount_data.service"
+SYSTEMD_AUTO_ENABLE_summit-secure = "enable"
 
 do_install_append_summit-secure () {
     rsync -rlpDWK --no-perms --exclude=.empty ${S}/rootfs-additions-secure/ ${D}/

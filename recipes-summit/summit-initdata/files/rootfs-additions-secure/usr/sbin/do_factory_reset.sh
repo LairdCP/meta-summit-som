@@ -28,18 +28,18 @@ do_check_and_reset() {
 	# Check if secret directory has been populated, do not blow away settings
 	elif [ -d "${USER_SETTINGS_SECRET_TARGET}/NetworkManager" ]; then
 		# Always copy over system connections, as the host connection is critical
-		cp -r ${FACTORY_SETTING_SECRET_SOURCE}/NetworkManager/system-connections ${USER_SETTINGS_SECRET_TARGET}/NetworkManager
+		cp -ar ${FACTORY_SETTING_SECRET_SOURCE}/NetworkManager/system-connections ${USER_SETTINGS_SECRET_TARGET}/NetworkManager
 		return
 	fi
 
 	mkdir -p ${BLUETOOTH_STATE_DIR}
 
-	cp -r ${FACTORY_SETTING_SECRET_SOURCE}/* ${USER_SETTINGS_SECRET_TARGET} || \
+	cp -ar ${FACTORY_SETTING_SECRET_SOURCE}/* ${USER_SETTINGS_SECRET_TARGET} || \
 		exit_on_error "Copying factory default files failed"
 
 	mkdir -p ${USER_SETTINGS_MISC_TARGET}
 
-	cp -r ${FACTORY_SETTING_MISC_SOURCE}/* ${USER_SETTINGS_MISC_TARGET} || \
+	cp -ar ${FACTORY_SETTING_MISC_SOURCE}/* ${USER_SETTINGS_MISC_TARGET} || \
 		exit_on_error "Copying factory default files failed"
 
 	# timezone file should be included in backup but we create a default if it
@@ -52,6 +52,8 @@ do_check_and_reset() {
 
 	touch "${FACTORY_SETTING_ADJTIME_FILE}" || exit_on_error "unable to create adjtime file"
 
+	systemd-machine-id-setup --root=/
+
 	sync
 }
 
@@ -62,6 +64,7 @@ case "${1}" in
 
 	reset)
 		touch ${RESET_INIDICATOR}
+		echo "Reboot required to complete the reset"
 		;;
 
 	*)
