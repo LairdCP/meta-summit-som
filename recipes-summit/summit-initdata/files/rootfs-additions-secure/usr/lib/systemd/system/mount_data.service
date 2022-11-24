@@ -2,7 +2,7 @@
 Description=Mount Data Partition
 DefaultDependencies=false
 Wants=local-fs.target
-Before=multi-user.target systemd-machine-id-commit.service
+Before=multi-user.target
 
 [Service]
 Type=oneshot

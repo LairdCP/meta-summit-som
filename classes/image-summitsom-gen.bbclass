@@ -112,10 +112,17 @@ do_backup_runtime () {
 	ln -sf /data/misc/localtime ${IMAGE_ROOTFS}/etc/localtime
 	ln -sf /data/misc/adjtime ${IMAGE_ROOTFS}/etc/adjtime
 
-	ln -sf /perm/etc/machine-id ${IMAGE_ROOTFS}/etc/machine-id
+	# Needed to satisfy preset_all on some rebuilds
+	rm -rf ${IMAGE_ROOTFS}/etc/machine-id
 
 	rm -rf ${IMAGE_ROOTFS}/media
 	ln -sf /run/media ${IMAGE_ROOTFS}/media
 }
 
-IMAGE_PREPROCESS_COMMAND:append:summit-secure = "do_backup_runtime; "
+ROOTFS_POSTPROCESS_COMMAND:append:summit-secure = "do_backup_runtime; "
+
+do_machine_id () {
+	ln -sf /perm/etc/machine-id ${IMAGE_ROOTFS}/etc/machine-id
+}
+
+IMAGE_PREPROCESS_COMMAND:append:summit-secure = "do_machine_id; "
