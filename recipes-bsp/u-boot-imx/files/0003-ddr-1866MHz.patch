@@ -12,22 +12,29 @@ diff --git a/arch/arm/mach-imx/imx8m/clock_imx8mm.c b/arch/arm/mach-imx/imx8m/cl
 index a97498c162..37abda87e1 100644
 --- a/arch/arm/mach-imx/imx8m/clock_imx8mm.c
 +++ b/arch/arm/mach-imx/imx8m/clock_imx8mm.c
-@@ -49,6 +49,7 @@ int enable_i2c_clk(unsigned char enable, unsigned i2c_num)
+@@ -16,11 +16,13 @@ index a97498c162..37abda87e1 100644
  
  static struct imx_int_pll_rate_table imx8mm_fracpll_tbl[] = {
  	PLL_1443X_RATE(1000000000U, 250, 3, 1, 0),
-+	PLL_1443X_RATE(933000000U, 311, 8, 1, 0),
++	PLL_1443X_RATE(933000000U, 311, 8, 0, 0),
  	PLL_1443X_RATE(800000000U, 200, 3, 1, 0),
  	PLL_1443X_RATE(750000000U, 250, 2, 2, 0),
  	PLL_1443X_RATE(650000000U, 325, 3, 2, 0),
+ 	PLL_1443X_RATE(600000000U, 300, 3, 2, 0),
+ 	PLL_1443X_RATE(594000000U, 99, 1, 2, 0),
++	PLL_1443X_RATE(466000000U, 311, 8, 1, 0),
+ 	PLL_1443X_RATE(400000000U, 400, 3, 3, 0),
+ 	PLL_1443X_RATE(266000000U, 266, 3, 3, 0),
+ 	PLL_1443X_RATE(167000000U, 334, 3, 4, 0),
 diff --git a/drivers/ddr/imx/imx8m/ddrphy_utils.c b/drivers/ddr/imx/imx8m/ddrphy_utils.c
 index 326b92d784..6c32983cee 100644
 --- a/drivers/ddr/imx/imx8m/ddrphy_utils.c
 +++ b/drivers/ddr/imx/imx8m/ddrphy_utils.c
-@@ -117,6 +117,10 @@ void ddrphy_init_set_dfi_clk(unsigned int drate)
+@@ -117,6 +117,11 @@ void ddrphy_init_set_dfi_clk(unsigned int drate)
  		dram_pll_init(MHZ(1000));
  		dram_disable_bypass();
  		break;
++	case 3732:
 +	case 3733:
 +		dram_pll_init(MHZ(933));
 +		dram_disable_bypass();
