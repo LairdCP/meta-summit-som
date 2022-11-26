@@ -1,10 +1,10 @@
 #!/bin/sh
 
-set -x
+set -x -e
 
 DATA_MOUNT=/data
 
-case $1 in
+case "${1}" in
 start)
 	# Mount proper data device (based on boot side)
 	read -r cmdline </proc/cmdline
@@ -21,15 +21,19 @@ start)
 	DRV=${ROOTDEV%p*}
 
 	DATA_DEVICE=${DRV}p$((PART + 1))
-	/bin/systemd-mount -o noatime,noexec,nosuid,nodev --fsck=no -t auto ${DATA_DEVICE} ${DATA_MOUNT}
 
-	# Create encrypted data directory
-	DATA_SECRET=${DATA_MOUNT}/secret
-	mkdir -p ${DATA_SECRET}
+	if [ -f /perm/caam/datakey ]; then
+		caam-keygen import /perm/caam/datakey.bb datakey
+	else
+		caam-keygen create datakey ecb -s 16
+	fi
+	cat /perm/caam/datakey | keyctl padd logon logkey: @s
 
-	#FSCRYPT_KEY=ffffffffffffffff
-	#keyctl search %:_builtin_fs_keys logon fscrypt:${FSCRYPT_KEY} @us
-	#fscryptctl set_policy ${FSCRYPT_KEY} ${DATA_SECRET} >/dev/null
+	dmsetup -v create data_enc --table "0 $(($(lsblk -nbo SIZE ${DATA_DEVICE}) / 512)) crypt capi:tk(cbc(aes))-plain :36:logon:logkey: 0 ${DATA_DEVICE} 0 1 sector_size:512"
+
+	[ "$(lsblk -no FSTYPE /dev/mapper/data_enc)" = "ext4" ] || mkfs.ext4 /dev/mapper/data_enc
+
+	/bin/systemd-mount -o noatime,noexec,nosuid,nodev --fsck=no -t auto /dev/mapper/data_enc ${DATA_MOUNT}
 
 	. do_factory_reset.sh check
 
@@ -38,6 +42,12 @@ start)
 
 stop)
 	/bin/systemd-umount ${DATA_MOUNT}
+	dmsetup remove data_enc
 	echo 3 >/proc/sys/vm/drop_caches
+	;;
+
+*)
+	echo "Usage: ${0} <start/stop>"
+	exit 1
 	;;
 esac

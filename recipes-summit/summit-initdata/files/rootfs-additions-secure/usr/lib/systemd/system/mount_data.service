@@ -9,7 +9,7 @@ Type=oneshot
 RemainAfterExit=yes
 ExecStart=/usr/sbin/mount_data.sh start
 ExecStop=/usr/sbin/mount_data.sh stop
-KeyringMode=inherit
+CapabilityBoundingSet=CAP_SYS_ADMIN
 
 [Install]
 WantedBy=local-fs.target
