@@ -41,6 +41,7 @@ IMAGE_INSTALL_BASIC:append:summit-secure = "\
 	keyctl-caam \
 	keyutils \
 	lvm2 \
+	e2fsprogs-mke2fs \
 "
 
 # Diagnostic tools
