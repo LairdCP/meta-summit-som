@@ -1,1 +1,1 @@
-PACKAGECONFIG:remove = "splash"
+PACKAGECONFIG:summitsom ?= "jpeg openjpeg png tiff"
