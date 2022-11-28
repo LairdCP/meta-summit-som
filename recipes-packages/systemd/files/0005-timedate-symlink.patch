@@ -12,7 +12,7 @@
  
 -        r = readlink_malloc("/etc/localtime", &t);
 -        if (r == -ENOENT) {
--                /* If the symlink does not exist, assume "UTC", like glibc does */
+-                /* If the symlink does not exist, assume "UTC", like glibc does*/
 -                z = strdup("UTC");
 -                if (!z)
 -                        return -ENOMEM;
