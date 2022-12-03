@@ -65,5 +65,3 @@ IMX_DEFAULT_BSP = "nxp"
 MACHINE_FEATURES:remove = "nxp8987 nxp8997"
 MACHINE_FIRMWARE:remove = "linux-firmware-ath10k"
 MACHINE_EXTRA_RRECOMMENDS:remove = "imx-m7-demos"
-
-INHERIT += "vigiles"
