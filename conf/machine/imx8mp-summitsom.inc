@@ -58,5 +58,3 @@ IMXBOOT_TARGETS_BASENAME = "flash_evk"
 MACHINE_FEATURES_remove = "nxp8987 nxp8997"
 MACHINE_FIRMWARE_remove = "linux-firmware-ath10k"
 MACHINE_EXTRA_RRECOMMENDS_remove = "imx-m7-demos"
-
-INHERIT += "vigiles"

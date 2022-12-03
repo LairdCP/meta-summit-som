@@ -26,14 +26,15 @@ PROGNAME="setup-environment"
 usage()
 {
     echo -e "
-Usage: MACHINE=<machine> DISTRO=<distro> . $PROGNAME [-i] [-r] [-h] <build-dir>
-Usage:                                   . $PROGNAME [-i] [-r] [-h] <build-dir>
+Usage: MACHINE=<machine> DISTRO=<distro> . $PROGNAME [-i] [-r] [-v] [-h] <build-dir>
+Usage:                                   . $PROGNAME [-i] [-r] [-v] [-h] <build-dir>
     <machine>    machine name
     <distro>     distro name
     <build-dir>  build directory
     Optional parameters: [-i] [-r] [-h]
     * [-i]: Internal build
     * [-r]: Add radio development to setup
+    * [-v]: Add Vigiles check to setup
     * [-h]: help
 
 The first usage is for creating a new build directory. In this case, the
@@ -72,6 +73,7 @@ clean_up()
 
 setup_radio=false
 setup_summit=false
+setup_vigiles=false
 
 ARGS=$(getopt -o "hir" -l "help," --name $PROGNAME -- "$@" )
 # Print the usage menu if invalid options are specified
@@ -94,6 +96,9 @@ do
            ;;
         -i)
            setup_summit=true
+           ;;
+        -v)
+           setup_vigiles=true
            ;;
         --)
            shift
@@ -140,13 +145,12 @@ if ${build_dir_setup_enabled}; then
     [ -n "${MACHINE}" ] && sed -e "s,MACHINE ??=.*,MACHINE ??= '$MACHINE',g" -i conf/local.conf
     [ -n "${DISTRO}" ] && sed -e "s,DISTRO ?=.*,DISTRO ?= '$DISTRO',g" -i conf/local.conf
 
-    ${setup_summit} && echo 'OVERRIDES .= ":summit-internal"
-' >> conf/local.conf
+    ${setup_summit} && echo 'OVERRIDES .= ":summit-internal"' >> conf/local.conf
+    ${setup_vigiles} &&  echo 'INHERIT += "vigiles"' >> conf/local.conf
 
-${setup_summit} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-radio-mfg"'  >> conf/bblayers.conf
-${setup_radio} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-rdvk"' >> conf/bblayers.conf
-${setup_radio} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-radio/meta-summit-radio"' >> conf/bblayers.conf
-
+    ${setup_summit} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-radio-mfg"'  >> conf/bblayers.conf
+    ${setup_radio} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-rdvk"' >> conf/bblayers.conf
+    ${setup_radio} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-radio/meta-summit-radio"' >> conf/bblayers.conf
 fi
 
 # Handle EULA setting
