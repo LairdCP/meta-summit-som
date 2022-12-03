@@ -28,8 +28,7 @@ SRC_URI:append:imx8mp-summitsom = " \
 KBUILD_DEFCONFIG:remove = "${IMX_KERNEL_CONFIG_AARCH64}"
 
 do_copy_defconfig () {
-	install -d ${B}
-	cp ${WORKDIR}/config/*.dts* ${S}/arch/arm64/boot/dts/freescale/
+	install -D -m 0644 -t ${S}/arch/arm64/boot/dts/freescale/ ${WORKDIR}/config/*.dts* 
 }
 
 RDEPENDS:${KERNEL_PACKAGE_NAME}-base:remove = "${KERNEL_PACKAGE_NAME}-image"
