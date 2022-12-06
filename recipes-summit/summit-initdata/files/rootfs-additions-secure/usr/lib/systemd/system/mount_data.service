@@ -2,7 +2,7 @@
 Description=Mount Data Partition
 DefaultDependencies=false
 Wants=local-fs.target
-Before=multi-user.target
+Before=multi-user.target systemd-tmpfiles-setup.service
 
 [Service]
 Type=oneshot
