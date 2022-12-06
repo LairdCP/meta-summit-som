@@ -15,7 +15,7 @@ LRD_URI_summit-internal = "https://files.devops.rfpros.com/builds/zephyr/som8mp/
 
 SRC_URI = "${LRD_URI}/lrd-m7-demos-${PV}.tar.bz2"
 
-SRC_URI[sha256sum] = "bec121eae520c3196745972a55904372cde349525d78ff95bf7772e9a37f491b"
+SRC_URI[sha256sum] = "d1adfbdc94deb332dc888d3df5254100a41b052002526e3ea9ad8dec96873df2"
 
 do_configure[noexec] = "1"
 
