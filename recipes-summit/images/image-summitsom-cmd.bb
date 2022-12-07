@@ -12,10 +12,10 @@ CORE_IMAGE_EXTRA_INSTALL += "\
 	fbida \
 	systemd-analyze \
 	bluez5-testtools \
-	summit-m7-demos \
+	summit-mcu-demos \
 	weblcm-python \
 	v4l-utils \
 	"
 
 IMAGE_BOOT_FILES += "fitImageMcu.bin"
-WKS_FILE_DEPENDS += "summit-m7-demos"
+WKS_FILE_DEPENDS += "summit-mcu-demos"
