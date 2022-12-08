@@ -76,7 +76,7 @@ DRV=${rootDevL%p*}
 OVERLAY=${DRV}p$((PART + 1))
 
 mount -o noatime -t auto ${OVERLAY} /mnt/rw ||\
-    fail "ERROR: could not create tempfs for upper filesystem"
+    fail "ERROR: could not create parition for upper filesystem"
 
 mkdir -p /mnt/rw/upper
 mkdir -p /mnt/rw/work
