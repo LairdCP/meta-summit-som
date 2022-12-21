@@ -150,7 +150,7 @@ if ${build_dir_setup_enabled}; then
 
     ${setup_summit} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-radio-mfg"'  >> conf/bblayers.conf
     ${setup_radio} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-rdvk"' >> conf/bblayers.conf
-    ${setup_radio} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-radio/meta-summit-radio"' >> conf/bblayers.conf
+    #${setup_radio} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-radio/meta-summit-radio"' >> conf/bblayers.conf
 fi
 
 # Handle EULA setting
