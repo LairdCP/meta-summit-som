@@ -7,8 +7,8 @@ inherit setuptools3 systemd
 
 S = "${WORKDIR}/git"
 
-SRC_URI = "git://git@github.com/LairdCP/weblcm-python.git;protocol=https;branch=lrd-10.0.0.x"
-SRC_URI:summit-internal = "git://git@git.devops.rfpros.com/cp_apps/weblcm-python.git;protocol=ssh;branch=lrd-10.0.0.x"
+SRC_URI = "git://git@github.com/LairdCP/weblcm-python.git;protocol=https;branch=lrd-10.140.0.x"
+SRC_URI:summit-internal = "git://git@git.devops.rfpros.com/cp_apps/weblcm-python.git;protocol=ssh;branch=lrd-10.140.0.x"
 
 SRCREV = "${AUTOREV}"
 
