@@ -4,13 +4,15 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 inherit setuptools3 systemd
+require summit-platform-version.inc
 
 S = "${WORKDIR}/git"
 
-SRC_URI = "git://git@github.com/LairdCP/weblcm-python.git;protocol=https;branch=lrd-10.140.0.x"
-SRC_URI:summit-internal = "git://git@git.devops.rfpros.com/cp_apps/weblcm-python.git;protocol=ssh;branch=lrd-10.140.0.x"
+SRC_URI = "git://git@github.com/LairdCP/weblcm-python.git;protocol=https;nobranch=1"
+SRC_URI:summit-internal = "git://git@git.devops.rfpros.com/cp_apps/weblcm-python.git;protocol=ssh;nobranch=1"
 
-SRCREV = "${AUTOREV}"
+SRCREV = "LRD-REL-${SUMMIT_PLATFORM_VERSION}"
+PV = "${SUMMIT_PLATFORM_VERSION}+git${SRCPV}"
 
 DEPENDS += "python3-cython-native"
 
