@@ -74,14 +74,6 @@ do_compile:prepend() {
 }
 
 do_install:append() {
-	install -D -t ${D}${localstatedir}/www/assets/fonts -m 644 ${S}/assets/fonts/*
-	install -D -t ${D}${localstatedir}/www/assets/css -m 644 ${S}/assets/css/*.css
-	install -D -t ${D}${localstatedir}/www/assets/img -m 644 ${S}/assets/img/*.png
-	install -D -t ${D}${localstatedir}/www/assets/js -m 644 ${S}/assets/js/*.js
-	install -D -t ${D}${localstatedir}/www/assets/i18n -m 644 ${S}/assets/i18n/*.json
-	install -D -t ${D}${localstatedir}/www -m 644 ${S}/LICENSE
-
-	cp -fr ${S}/plugins ${D}${localstatedir}/www/
 
 	install -D -t ${D}${bindir}/weblcm-python.scripts -m 755 ${S}/*.sh
 	install -D -t ${D}${sysconfdir}/ -m 644 ${S}/weblcm-python.ini
