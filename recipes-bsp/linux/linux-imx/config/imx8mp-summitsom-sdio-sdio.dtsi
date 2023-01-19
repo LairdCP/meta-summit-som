@@ -29,7 +29,7 @@
 	non-removable;
 	keep-power-in-suspend;
 
-	fsl,sdio-interrupt-enabled;
+	fsl,sdio-async-interrupt-enabled;
 
 	wifi: wifi {
 		compatible = "marvell,sd8997";
