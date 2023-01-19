@@ -45,7 +45,7 @@
 
 	mmc-pwrseq = <&wifi_pwrseq>;
 
-	fsl,sdio-interrupt-enabled;
+	fsl,sdio-async-interrupt-enabled;
 
 	non-removable;
 	keep-power-in-suspend;
