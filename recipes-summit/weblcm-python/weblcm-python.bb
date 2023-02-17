@@ -11,7 +11,7 @@ S = "${WORKDIR}/git"
 SRC_URI = "git://git@github.com/LairdCP/weblcm-python.git;protocol=https;nobranch=1"
 SRC_URI:summit-internal = "git://git@git.devops.rfpros.com/cp_apps/weblcm-python.git;protocol=ssh;nobranch=1"
 
-SRCREV = "LRD-REL-${SUMMIT_PLATFORM_VERSION}"
+SRCREV = "${SUMMIT_PLATFORM_VERSION}"
 PV = "${SUMMIT_PLATFORM_VERSION}+git${SRCPV}"
 
 DEPENDS += "python3-cython-native"
