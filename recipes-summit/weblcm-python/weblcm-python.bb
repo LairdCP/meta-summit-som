@@ -45,8 +45,9 @@ PACKAGECONFIG[vsp] = "weblcm/vsp"
 PACKAGECONFIG[ws4] = ",,,,python3-ws4py"
 PACKAGECONFIG[stunnel] = "weblcm/stunnel"
 PACKAGECONFIG[iptables] = "weblcm/iptables,,,iptables"
+PACKAGECONFIG[chrony] = "weblcm/chrony,,,chrony"
 
-PACKAGECONFIG ?= "awm ${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'bluetooth', '', d)}"
+PACKAGECONFIG ?= "awm chrony ${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'bluetooth', '', d)}"
 
 RDEPENDS:${PN} = "\
 	python3 \
