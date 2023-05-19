@@ -1,5 +1,5 @@
-SRC_URI[summit-supplicant-aarch64.md5sum] = "09a207ef4aa697b068d38bd79121e860"
-SRC_URI[summit-supplicant-aarch64.sha256sum] = "0a1ec991d511a8375475a65e4ca5a19eefab4682113c09cc06237c58c1a7b3c5"
+SRC_URI[summit-supplicant_openssl_3_0-aarch64.md5sum] = "e2ce0098c91098747cd9cba0d2f9fe72"
+SRC_URI[summit-supplicant_openssl_3_0-aarch64.sha256sum] = "0093d5a77bc3091906d753cee4d2c6931f505b8b6a9069ee29458893b0dd2e86"
 SRC_URI[adaptive-ww-aarch64.md5sum] = "c9852b3cb6d6241c951d868991384f45"
 SRC_URI[adaptive-ww-aarch64.sha256sum] = "13dab62bdd14ad43f45534263633068451c4bac27b36ef66745449253a61fb8f"
 SRC_URI[adaptive-bt.md5sum] = "eaf07c00aae2712c4f952131219cc72d"

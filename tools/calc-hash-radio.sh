@@ -16,7 +16,7 @@ rm -f ${file}
 
 for i in aarch64
 do
-  calc_file "${prefix}/summit_supplicant/laird/${ver}/summit_supplicant-${i}-${ver}.tar.bz2" "summit-supplicant-${i}"
+  calc_file "${prefix}/summit_supplicant/laird/${ver}/summit_supplicant_openssl_3_0-${i}-${ver}.tar.bz2" "summit-supplicant_openssl_3_0-${i}"
   calc_file "${prefix}/adaptive_ww/laird/${ver}/adaptive_ww-${i}-${ver}.tar.bz2" "adaptive-ww-${i}"
 done
 
