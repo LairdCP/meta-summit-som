@@ -22,7 +22,7 @@ do_install () {
     rsync -rlpDWK --no-perms --delete --exclude=.empty ${S}/rootfs-additions/ ${D}/
 }
 
-SYSTEMD_SERVICE:${PN}:summit-secure = "mount_data.service"
+SYSTEMD_SERVICE:${PN}:summit-secure = "mount_data.service var-lib-bluetooth.mount var-log-journal.mount"
 SYSTEMD_AUTO_ENABLE:summit-secure = "enable"
 
 do_install:append:summit-secure () {
