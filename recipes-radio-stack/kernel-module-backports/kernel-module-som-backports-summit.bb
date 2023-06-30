@@ -1,8 +1,6 @@
 SUMMARY = "Summit Backports for SOM"
 
-BACKPORTS_CONFIG = " \
-	${@bb.utils.contains('DISTRO_FEATURES','bluetooth','defconfig-som8mplus','defconfig-som8mplus_nbt',d)} \
-	"
+BACKPORTS_CONFIG = "${@bb.utils.contains('DISTRO_FEATURES','bluetooth','som8mplus','som8mplus_nbt',d)}"
 
 RCONFLICTS:${PN} = " \
         kernel-module-summit-backports-summit \
