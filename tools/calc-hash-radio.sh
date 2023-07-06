@@ -16,10 +16,11 @@ rm -f ${file}
 
 for i in aarch64
 do
-  calc_file "${prefix}/summit_supplicant/laird/${ver}/summit_supplicant-${i}-${ver}.tar.bz2" "summit-supplicant-${i}"
+  calc_file "${prefix}/summit_supplicant/laird/${ver}/summit_supplicant_libs-${i}-${ver}.tar.bz2" "summit-supplicant-libs-${i}"
   calc_file "${prefix}/adaptive_ww/laird/${ver}/adaptive_ww-${i}-${ver}.tar.bz2" "adaptive-ww-${i}"
 done
 
+calc_file "${prefix}/summit_supplicant/laird/${ver}/summit_supplicant-src-${ver}.tar.gz" "summit-supplicant-src"
 calc_file "${prefix}/adaptive_bt/src/${ver}/adaptive_bt-src-${ver}.tar.gz" "adaptive-bt"
 calc_file "${prefix}/lrd-network-manager/src/${ver}/lrd-network-manager-src-${ver}.tar.xz" "summit-network-manager"
 calc_file "${prefix}/backports/laird/${ver}/backports-laird-${ver}.tar.bz2" "summit-backports"

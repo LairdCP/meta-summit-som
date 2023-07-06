@@ -11,6 +11,7 @@ RDEPENDS:${PN} = " \
 	kernel-module-som-backports-summit \
 	som8mp-radio-firmware \
 	${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'adaptive-bt-som bt-uart-scripts-som', '', d)} \
+	summit-supplicant-libs-som \
 	summit-supplicant-som \
 	summit-supplicant-som-cli \
 	adaptive-ww-som \

@@ -1,0 +1,31 @@
+From cb89da09509b1fe4861af77af79fe595205c2917 Mon Sep 17 00:00:00 2001
+From: Boris Krasnovskiy <boris.krasnovskiy@lairdconnect.com>
+Date: Tue, 30 May 2023 09:56:50 -0400
+Subject: [PATCH] lrd-network-manager: Fixed nmtui build
+
+Bug 23673
+---
+ src/nmtui/nmt-8021x-fields.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/nmtui/nmt-8021x-fields.c b/src/nmtui/nmt-8021x-fields.c
+index 441ff7ff7a..f99daec7a7 100644
+--- a/src/nmtui/nmt-8021x-fields.c
++++ b/src/nmtui/nmt-8021x-fields.c
+@@ -160,11 +160,11 @@ phase2_auth_setting_changed(GObject *object, GParamSpec *pspec, gpointer user_da
+     gs_free char   *active_id = NULL;
+     const char     *auth;
+ 
+-    auth = nm_setting_802_1x_get_phase2_auth(setting);
++    auth = nm_setting_802_1x_get_phase2_auth(setting, 0);
+     if (auth) {
+         active_id = g_strdup(auth);
+     } else {
+-        auth = nm_setting_802_1x_get_phase2_autheap(setting);
++        auth = nm_setting_802_1x_get_phase2_autheap(setting, 0);
+         if (auth)
+             active_id = g_strdup_printf("eap-%s", auth);
+     }
+-- 
+2.41.0
+
