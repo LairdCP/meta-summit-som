@@ -15,6 +15,7 @@ CORE_IMAGE_EXTRA_INSTALL += "\
 	summit-mcu-demos \
 	weblcm-python \
 	v4l-utils \
+	qfirehose \
 	"
 
 IMAGE_BOOT_FILES += "fitImageMcu.bin"

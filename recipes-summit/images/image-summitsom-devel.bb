@@ -14,5 +14,6 @@ CORE_IMAGE_EXTRA_INSTALL += "\
 	systemd-analyze \
 	weblcm-python \
 	v4l-utils \
+	qfirehose \
 	packagegroup-core-buildessential \
 	"
