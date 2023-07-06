@@ -10,10 +10,10 @@ BB_STRICT_CHECKSUM:summit-internal = "ignore"
 PREMIRRORS:summit-internal = ""
 MIRRORS:summit-internal = ""
 
-LRD_URI ?= "https://github.com/LairdCP/Summit-SOM-Zephyr-Release-Packages/releases/download/SUMMIT-ZEPHYR-${PV}"
-LRD_URI:summit-internal = "https://files.devops.rfpros.com/builds/zephyr/summitsom/laird/${PV}"
+SUMMIT_URI ?= "https://github.com/LairdCP/Summit-SOM-Zephyr-Release-Packages/releases/download/SUMMIT-ZEPHYR-${PV}"
+SUMMIT_URI:summit-internal = "https://files.devops.rfpros.com/builds/zephyr/summitsom/laird/${PV}"
 
-SRC_URI = "${LRD_URI}/summit-mcu-demos-${PV}.tar.bz2"
+SRC_URI = "${SUMMIT_URI}/summit-mcu-demos-${PV}.tar.bz2"
 
 SRC_URI[sha256sum] = "c8443b9f1b60bb58a35afc546df3b650c74690f8fbe59005e5eaf7f134bddc81"
 

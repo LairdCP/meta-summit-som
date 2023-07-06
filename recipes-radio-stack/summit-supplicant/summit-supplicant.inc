@@ -9,8 +9,8 @@ SYSTEMD_AUTO_ENABLE = "disable"
 
 HFP = "${@bb.utils.contains('TUNE_FEATURES', 'callconvention-hard', 'eabihf', 'eabi', d)}"
 
-LRD_URI ?= "${LRD_URI_BASE}"
-LRD_URI:summit-internal = "https://files.devops.rfpros.com/builds/linux/summit_supplicant/laird/${PV}"
+SUMMIT_URI ?= "${SUMMIT_URI_BASE}"
+SUMMIT_URI:summit-internal = "${SUMMIT_URI_BASE}/laird/${PV}"
 
 SUPP_ARCH:x86 = "-x86"
 SUPP_ARCH:x86-64 = "-x86_64"
@@ -19,7 +19,7 @@ SUPP_ARCH:arm = "-arm-${HFP}"
 SUPP_ARCH:aarch64 = "-aarch64"
 
 SRC_URI += "\
-	${LRD_URI}/summit_supplicant${OPENSSLVER}${SUPP_ARCH}-${PV}.tar.bz2;subdir=src;name=summit-supplicant${OPENSSLVER}${SUPP_ARCH} \
+	${SUMMIT_URI}/summit_supplicant${OPENSSLVER}${SUPP_ARCH}-${PV}.tar.bz2;subdir=src;name=summit-supplicant${OPENSSLVER}${SUPP_ARCH} \
 	file://COPYING \
 	"
 
