@@ -3,7 +3,7 @@ SUMMARY = "Summit SOM USB Gadget"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
-inherit allarch systemd update-rc.d
+inherit allarch systemd
 
 SRC_URI = " \
     file://usb-gadget.sh \
@@ -12,7 +12,6 @@ SRC_URI = " \
     file://shared-usb0.nmconnection \
 	"
 
-INITSCRIPT_NAME = "usb-gadget"
 SYSTEMD_SERVICE:${PN} = "usb-gadget.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
