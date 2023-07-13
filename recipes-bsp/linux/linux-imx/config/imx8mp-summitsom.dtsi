@@ -5,8 +5,10 @@
 
 /dts-v1/;
 
-#include <dt-bindings/usb/pd.h>
 #include <dt-bindings/net/ti-dp83867.h>
+#include <dt-bindings/phy/phy-imx8-pcie.h>
+#include <dt-bindings/usb/pd.h>
+
 #include "imx8mp.dtsi"
 
 / {
@@ -99,9 +101,9 @@
 	status = "okay";
 
 	pmic: pca9450@25 {
-		reg = <0x25>;
 		compatible = "nxp,pca9450c";
-		/* PMIC PCA9450 PMIC_nINT GPIO1_IO3 */
+		reg = <0x25>;
+		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_pmic>;
 		interrupt-parent = <&gpio1>;
 		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
@@ -196,18 +198,19 @@
 
 &pcie {
 	clocks = <&clk IMX8MP_CLK_HSIO_ROOT>,
-		 <&clk IMX8MP_CLK_PCIE_AUX>,
-		 <&clk IMX8MP_CLK_HSIO_AXI>,
-		 <&clk IMX8MP_CLK_PCIE_ROOT>;
-	clock-names = "pcie", "pcie_aux", "pcie_phy", "pcie_bus";
-	assigned-clocks = <&clk IMX8MP_CLK_HSIO_AXI>,
-			  <&clk IMX8MP_CLK_PCIE_AUX>;
-	assigned-clock-rates = <500000000>, <10000000>;
-	assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_500M>,
-				 <&clk IMX8MP_SYS_PLL2_50M>;
+	         <&clk IMX8MP_CLK_PCIE_ROOT>,
+	         <&clk IMX8MP_CLK_HSIO_AXI>;
+	clock-names = "pcie", "pcie_aux", "pcie_bus";
+	assigned-clocks = <&clk IMX8MP_CLK_PCIE_AUX>;
+
+	assigned-clock-rates = <10000000>;
+	assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_50M>;
 };
 
 &pcie_phy {
+	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_OUTPUT>;
+	clocks = <&clk IMX8MP_CLK_HSIO_AXI>;
+	clock-names = "ref";
 };
 
 &uart1 {
@@ -440,10 +443,15 @@
 		>;
 	};
 
-	pinctrl_pcie_gpio: pciegpiogrp {
+	pinctrl_pcie_disable: pciedisablegrp {
+		fsl,pins = <
+			MX8MP_IOMUXC_SD1_DATA5__GPIO2_IO07         0x00000000
+		>;
+	};
+
+	pinctrl_pcie_reset: pcieresetgrp {
 		fsl,pins = <
 			MX8MP_IOMUXC_SD1_DATA4__GPIO2_IO06         0x00000000
-			MX8MP_IOMUXC_SD1_DATA5__GPIO2_IO07         0x00000000
 		>;
 	};
 

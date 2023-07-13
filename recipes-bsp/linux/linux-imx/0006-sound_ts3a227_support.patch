@@ -60,7 +60,7 @@ index d886f46264fb..ab988f6189fc 100644
 +	priv->hp_jack.pin.pin = "Headphone Jack";
 +	priv->hp_jack.pin.mask = SND_JACK_HEADSET;
 +
-+	ret = snd_soc_card_jack_new(&priv->card, priv->hp_jack.pin.pin,
++	ret = snd_soc_card_jack_new_pins(&priv->card, priv->hp_jack.pin.pin,
 +		SND_JACK_HEADSET |
 +		SND_JACK_BTN_0 | SND_JACK_BTN_1 |
 +		SND_JACK_BTN_2 | SND_JACK_BTN_3,

@@ -57,11 +57,6 @@ static int get_boot_side(int dev)
 	if (mmc_init(mmc))
 		return 0;
 
-#ifdef CONFIG_BLOCK_CACHE
-	struct blk_desc *bd = mmc_get_blk_desc(mmc);
-	blkcache_invalidate(bd->if_type, bd->devnum);
-#endif
-
 	if (IS_SD(mmc))
 		return 0;
 

@@ -15,6 +15,4 @@ config IMX_CONFIG
 config SUMMIT_SECURE
 	bool "Secure image" 
 
-source "board/freescale/common/Kconfig"
-
 endif

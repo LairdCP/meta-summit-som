@@ -22,6 +22,9 @@ BBLAYERS = " \
   ${BSPDIR}/sources/meta-imx/meta-sdk \
   ${BSPDIR}/sources/meta-imx/meta-ml \
   \
+  ${BSPDIR}/sources/meta-arm/meta-arm \
+  ${BSPDIR}/sources/meta-arm/meta-arm-toolchain \
+  \
   ${BSPDIR}/sources/meta-openembedded/meta-networking \
   ${BSPDIR}/sources/meta-openembedded/meta-filesystems \
   \

@@ -7,9 +7,9 @@ index 808a98ef624c..419b7425968c 100644
  #include <linux/module.h>
  #include <linux/reboot.h>
 +#include <linux/delay.h>
- 
- #define DM_MSG_PREFIX			"verity"
- 
+ #include <linux/scatterlist.h>
+ #include <linux/string.h>
+ #include <linux/jump_label.h>
 @@ -964,6 +965,31 @@ static int verity_parse_opt_args(struct dm_arg_set *as, struct dm_verity *v,
  	return r;
  }

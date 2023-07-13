@@ -4,7 +4,7 @@ SRC_URI:append:summitsom = "\
     file://0005-timedate-symlink.patch \
     "
 
-PACKAGECONFIG:summitsom ?= " \
+PACKAGECONFIG:summitsom = " \
     ${@bb.utils.filter('DISTRO_FEATURES', 'acl audit efi ldconfig pam selinux smack usrmerge polkit seccomp', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', 'rfkill', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'xkbcommon', '', d)} \

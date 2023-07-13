@@ -13,4 +13,5 @@ PACKAGECONFIG:summitsom ?= "\
 
 do_install:append() {
    install -D -m 0644 ${S}/src/main.conf ${D}${sysconfdir}/bluetooth/main.conf
+   sed -i 's/ConfigurationDirectoryMode=0555/ConfigurationDirectoryMode=0755/g' ${D}/usr/lib/systemd/system/bluetooth.service
 }

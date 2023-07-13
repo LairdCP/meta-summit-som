@@ -3,7 +3,7 @@ index 5947cba737f8..8c6b0fda50f6 100644
 --- a/drivers/phy/freescale/phy-fsl-samsung-hdmi.c
 +++ b/drivers/phy/freescale/phy-fsl-samsung-hdmi.c
 @@ -1033,14 +1033,14 @@ static int samsung_hdmi_phy_probe(struct platform_device *pdev)
- 	samsung->apbclk = devm_clk_get(samsung->dev, "apb");
+ 	samsung->apbclk = devm_clk_get_optional(samsung->dev, "apb");
  	if (IS_ERR(samsung->apbclk)) {
  		ret = PTR_ERR(samsung->apbclk);
 -		dev_err(samsung->dev, "failed to get phy apb clk: %d\n", ret);
@@ -11,7 +11,7 @@ index 5947cba737f8..8c6b0fda50f6 100644
  		return ret;
  	}
  
- 	samsung->refclk = devm_clk_get(samsung->dev, "ref");
+ 	samsung->refclk = devm_clk_get_optional(samsung->dev, "ref");
  	if (IS_ERR(samsung->refclk)) {
  		ret =  PTR_ERR(samsung->refclk);
 -		dev_err(samsung->dev, "failed to get phy refclk: %d\n", ret);

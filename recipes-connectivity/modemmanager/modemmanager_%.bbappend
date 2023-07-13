@@ -1,2 +1,2 @@
-PACKAGECONFIG:remove = "vala"
+PACKAGECONFIG:remove:summitsom = "vala"
 

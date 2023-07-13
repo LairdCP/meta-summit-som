@@ -1023,7 +1023,7 @@ index 000000000000..2a2305b985df
 +
 +static int bq25790_hw_init(struct bq25790_device *bq)
 +{
-+	struct power_supply_battery_info bat_info = { };
++	struct power_supply_battery_info *bat_info;
 +	int wd_reg_val = BQ25790_WATCHDOG_DIS;
 +	int wd_max_val = BQ25790_NUM_WD_VAL - 1;
 +	int ret = 0;
@@ -1052,39 +1052,39 @@ index 000000000000..2a2305b985df
 +	if (ret) {
 +		dev_warn(bq->dev, "battery info missing, default values will be applied\n");
 +
-+		bat_info.constant_charge_current_max_ua =
++		bat_info->constant_charge_current_max_ua =
 +							BQ25790_ICHRG_I_DEF_uA;
 +
-+		bat_info.constant_charge_voltage_max_uv =
++		bat_info->constant_charge_voltage_max_uv =
 +							BQ25790_VREG_V_DEF_uV;
 +
-+		bat_info.precharge_current_ua = BQ25790_PRECHRG_I_DEF_uA;
-+		bat_info.charge_term_current_ua = BQ25790_TERMCHRG_I_DEF_uA;
++		bat_info->precharge_current_ua = BQ25790_PRECHRG_I_DEF_uA;
++		bat_info->charge_term_current_ua = BQ25790_TERMCHRG_I_DEF_uA;
 +		bq->init_data.ichg_max = BQ25790_ICHRG_I_MAX_uA;
 +		bq->init_data.vreg_max = BQ25790_VREG_V_MAX_uV;
 +	} else {
 +		bq->init_data.ichg_max =
-+				bat_info.constant_charge_current_max_ua;
++				bat_info->constant_charge_current_max_ua;
 +
 +		bq->init_data.vreg_max =
-+				bat_info.constant_charge_voltage_max_uv;
++				bat_info->constant_charge_voltage_max_uv;
 +	}
 +
 +	ret = bq25790_set_ichrg_curr(bq,
-+				bat_info.constant_charge_current_max_ua);
++				bat_info->constant_charge_current_max_ua);
 +	if (ret)
 +		return ret;
 +
-+	ret = bq25790_set_prechrg_curr(bq, bat_info.precharge_current_ua);
++	ret = bq25790_set_prechrg_curr(bq, bat_info->precharge_current_ua);
 +	if (ret)
 +		return ret;
 +
 +	ret = bq25790_set_chrg_volt(bq,
-+				bat_info.constant_charge_voltage_max_uv);
++				bat_info->constant_charge_voltage_max_uv);
 +	if (ret)
 +		return ret;
 +
-+	ret = bq25790_set_term_curr(bq, bat_info.charge_term_current_ua);
++	ret = bq25790_set_term_curr(bq, bat_info->charge_term_current_ua);
 +	if (ret)
 +		return ret;
 +
@@ -1109,7 +1109,7 @@ index 000000000000..2a2305b985df
 +	if (ret)
 +		return ret;
 +
-+	power_supply_put_battery_info(bq->charger, &bat_info);
++	power_supply_put_battery_info(bq->charger, bat_info);
 +
 +	return 0;
 +}

@@ -6,7 +6,7 @@
 / {
 	reg_pcie_gpio: regulator-pcie-gpio {
 		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_pcie_gpio>;
+		pinctrl-0 = <&pinctrl_pcie_disable &pinctrl_pcie_reset>;
 
 		compatible = "regulator-fixed";
 

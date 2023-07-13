@@ -6,7 +6,7 @@
 / {
 	reg_pmu_enable: regulator_pmu_enablegrp {
 		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_wifi_pmu>, <&pinctrl_wifibs>;
+		pinctrl-0 = <&pinctrl_wifi_pmu &pinctrl_wifibs &pinctrl_pcie_disable>;
 
 		compatible = "regulator-gpio";
 
@@ -16,8 +16,9 @@
 
 		gpios = <&gpio2  8 GPIO_ACTIVE_HIGH>,
 		        <&gpio2  9 GPIO_ACTIVE_HIGH>,
-		        <&gpio2 10 GPIO_ACTIVE_HIGH>;
-		states = <1800000 7>, <0 0>;
+		        <&gpio2 10 GPIO_ACTIVE_HIGH>,
+				<&gpio2  7 GPIO_ACTIVE_HIGH>;
+		states = <1800000 15>, <0 0>;
 		enable-active-high;
 
 		startup-delay-us = <1000>;
@@ -27,11 +28,10 @@
 
 &pcie {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_pcie_gpio &pinctrl_pcie_clkreq>;
+	pinctrl-0 = <&pinctrl_pcie_reset &pinctrl_pcie_clkreq>;
 
-	disable-gpio = <&gpio2 7 GPIO_ACTIVE_LOW>;
 	reset-gpio = <&gpio2 6 GPIO_ACTIVE_LOW>;
-	epdev_on-supply = <&reg_pmu_enable>;
+	vpcie-supply = <&reg_pmu_enable>;
 
 	status = "okay";
 };

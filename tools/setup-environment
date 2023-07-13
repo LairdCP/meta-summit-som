@@ -117,7 +117,7 @@ fi
 [ -e $1/conf/local.conf ] && build_dir_setup_enabled=false \
     || build_dir_setup_enabled=true
 
-[ -z "$FSL_EULA_FILE" ] && FSL_EULA_FILE=$CWD/sources/meta-freescale/EULA
+[ -z "$FSL_EULA_FILE" ] && FSL_EULA_FILE=$CWD/sources/meta-imx/LICENSE.txt
 if [ ! -e $FSL_EULA_FILE ]; then
     echo -e "ERROR: EULA not found at $FSL_EULA_FILE."
     clean_up
@@ -138,7 +138,7 @@ if [ -n "${VERSION}" ]; then
     BB_ENV_PASSTHROUGH_ADDITIONS="${BB_ENV_PASSTHROUGH_ADDITIONS} IMAGE_VERSION_SUFFIX SUMMIT_VERSION SUMMIT_RELEASE_STRING"
 fi
 
-TEMPLATECONF=${TEMPLATECONF:-$CWD/sources/meta-summit-som/conf} . $OEROOT/oe-init-build-env $CWD/$1
+TEMPLATECONF=${TEMPLATECONF:-$CWD/sources/meta-summit-som/conf/templates/default} . $OEROOT/oe-init-build-env $CWD/$1
 
 if ${build_dir_setup_enabled}; then 
     # Change settings according environment

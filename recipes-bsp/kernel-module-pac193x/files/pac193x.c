@@ -312,7 +312,7 @@ struct pac193x_chip_info {
 static int pac193x_retrieve_data(struct pac193x_chip_info *chip_info, u32 wait_time);
 static int pac193x_send_rfsh(struct pac193x_chip_info *chip_info, bool refresh_v, u32 wait_time);
 static int pac193x_reg_snapshot(struct pac193x_chip_info *chip_info, bool do_rfsh, bool refresh_v, u32 wait_time);
-static int pac193x_remove(struct i2c_client *client);
+static void pac193x_remove(struct i2c_client *client);
 static const char *pac193x_get_of_match_entry(struct i2c_client *client);
 
 #define PAC193x_VPOWER_ACC_CHANNEL(_index, _address) {                  \
@@ -1471,8 +1471,8 @@ static int pac193x_prep_iio_channels(struct pac193x_chip_info * chip_info,
 	return 0;
 }
 
-static int pac193x_probe(struct i2c_client *		client,
-			 const struct i2c_device_id *	id)
+static int pac193x_probe(struct i2c_client *client, 
+	const struct i2c_device_id *id)
 {
 	struct pac193x_chip_info *chip_info;
 	struct iio_dev *indio_dev;
@@ -1561,9 +1561,8 @@ free_chan_attr_mem:
 	return ret;
 }
 
-static int pac193x_remove(struct i2c_client *client)
+static void pac193x_remove(struct i2c_client *client)
 {
-	int ret = 0;
 	struct iio_dev *indio_dev = dev_get_drvdata(&client->dev);
 	struct pac193x_chip_info *chip_info = iio_priv(indio_dev);
 
@@ -1572,8 +1571,6 @@ static int pac193x_remove(struct i2c_client *client)
 
 	/* free the channel attributes memory */
 	kfree(indio_dev->channels);
-
-	return ret;
 }
 
 static const struct i2c_device_id pac193x_id[] = {

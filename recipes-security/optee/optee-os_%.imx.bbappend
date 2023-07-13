@@ -1,5 +1,3 @@
-FILES:${PN} += "${base_libdir}/optee_armtz"
-
 RPMB_FS_DEV_ID ?= "2"
 
 #EXTRA_OEMAKE:append:summit-secure = "\

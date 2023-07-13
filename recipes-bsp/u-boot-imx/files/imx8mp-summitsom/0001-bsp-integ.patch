@@ -1,20 +1,19 @@
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -997,6 +997,7 @@ dtb-$(CONFIG_ARCH_IMX8M) += \
- 	imx8mp-evk.dtb \
- 	imx8mp-phyboard-pollux-rdk.dtb \
-	imx8mp-verdin.dtb \
+@@ -1080,6 +1080,7 @@ dtb-$(CONFIG_ARCH_IMX8M) += \
+ 	imx8mp-venice.dtb \
+ 	imx8mp-venice-gw74xx.dtb \
+ 	imx8mp-verdin-wifi-dev.dtb \
 +	imx8mp-summitsom-dvk.dtb \
  	imx8mq-pico-pi.dtb \
- 	imx8mq-kontron-pitx-imx8m.dtb
- 
-
+ 	imx8mq-kontron-pitx-imx8m.dtb \
+ 	imx8mq-librem5-r4.dtb
 --- a/arch/arm/mach-imx/imx8m/Kconfig
 +++ b/arch/arm/mach-imx/imx8m/Kconfig
-@@ -296,6 +296,17 @@ config TARGET_IMX8MP_RSB3720A1_6G
- 	select IMX8MP
- 	select SUPPORT_SPL
- 	select IMX8M_LPDDR4
+@@ -448,6 +448,17 @@ config TARGET_LIBREM5
+ 	select IMX8MQ
+	select SUPPORT_SPL
+	select IMX8M_LPDDR4
 +
 +config TARGET_IMX8MP_SUMMITSOM
 +	bool "Summit SOM i.MX8M Plus"
@@ -26,13 +25,23 @@
 +	select MISC
 +	select ARCH_MISC_INIT
 +	select SPL_CRYPTO if SPL
+ 
  endchoice
  
- source "board/advantech/imx8mp_rsb3720a1/Kconfig"
-@@ -320,5 +326,6 @@ source "board/beacon/imx8mm/Kconfig"
+@@ -481,5 +492,6 @@ source "board/technexion/pico-imx8mq/Kconfig"
  source "board/variscite/imx8mn_var_som/Kconfig"
  source "board/toradex/verdin-imx8mm/Kconfig"
  source "board/toradex/verdin-imx8mp/Kconfig"
 +source "board/summit/imx8mp_summitsom/Kconfig"
  
  endif
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -37,6 +37,7 @@
+ config IMX_BOOTAUX
+ 	bool "Support boot auxiliary core"
+ 	depends on ARCH_MX7 || ARCH_MX6 || ARCH_VF610 || ARCH_IMX8 || ARCH_IMX8M
++	select LIB_ELF
+ 	help
+ 	  bootaux [addr] to boot auxiliary core.
+ 

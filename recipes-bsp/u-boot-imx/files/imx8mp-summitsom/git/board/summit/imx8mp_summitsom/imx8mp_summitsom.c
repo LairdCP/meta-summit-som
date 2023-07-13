@@ -32,8 +32,20 @@ DECLARE_GLOBAL_DATA_PTR;
 
 #include "imx8mp_common.c"
 
+#define WDOG_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_ODE | PAD_CTL_PUE | PAD_CTL_PE)
+
+static iomux_v3_cfg_t const wdog_pads[] = {
+	MX8MP_PAD_GPIO1_IO02__WDOG1_WDOG_B  | MUX_PAD_CTRL(WDOG_PAD_CTRL),
+};
+
 int board_early_init_f(void)
 {
+	struct wdog_regs *wdog = (struct wdog_regs *)WDOG1_BASE_ADDR;
+
+	imx_iomux_v3_setup_multiple_pads(wdog_pads, ARRAY_SIZE(wdog_pads));
+
+	set_wdog_reset(wdog);
+
 	early_uart_init();
 
 	return 0;
@@ -407,8 +419,6 @@ static bool wbx3;
 
 int board_init(void)
 {
-	struct arm_smccc_res res;
-
 	wbx3 = setup_charger(1, 0x6b) < 0;
 
 #ifdef CONFIG_USB_TCPC
@@ -429,12 +439,6 @@ int board_init(void)
 	if (!wbx3)
 		init_usb_clk();
 #endif
-
-	/* enable the dispmix & mipi phy power domain */
-	arm_smccc_smc(IMX_SIP_GPC, IMX_SIP_GPC_PM_DOMAIN,
-		      DISPMIX, true, 0, 0, 0, 0, &res);
-	arm_smccc_smc(IMX_SIP_GPC, IMX_SIP_GPC_PM_DOMAIN,
-		      MIPI, true, 0, 0, 0, 0, &res);
 
 	return 0;
 }
@@ -494,7 +498,6 @@ bool is_power_key_pressed(void)
 unsigned long spl_mmc_get_uboot_raw_sector(struct mmc *mmc)
 {
 	u32 boot_dev = spl_boot_device();
-
 	switch (boot_dev) {
 	case BOOT_DEVICE_MMC2:
 		return CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR - UBOOT_RAW_SECTOR_OFFSET;
