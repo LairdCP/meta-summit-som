@@ -16,7 +16,11 @@ SRC_URI += " \
 	file://0015-imx8mp-hdmi-pavi.patch \
 	file://0016-gpio-regulator-off-delay.patch \
 	file://0019-dm-verity-partition-wait-chromeos.patch \
-	file://0020-v2-soc-imx-imx8mp-blk-ctrl-Add-PCIe-SYSPLL-configurations.patch \
+	file://0020-dt-bindings-soc-imx8mp-hsio-blk-ctrl-add-clock-cells.patch \
+	file://0021-soc-imx-add-Kconfig-symbols-for-blk-ctrl-drivers.patch \
+	file://0022-soc-imx-imx8mp-blk-ctrl-add-instance-specific-probe-.patch \
+	file://0023-soc-imx-imx8mp-blk-ctrl-expose-high-performance-PLL-.patch \
+	file://0024-arm64-dts-imx8mp-add-clock-cells-to-hsio-blk-ctrl.patch	\
 	"
 
 SRC_URI:append:imx8mp-summitsom = " \

@@ -196,6 +196,7 @@
 	};
 };
 
+
 &pcie {
 	clocks = <&clk IMX8MP_CLK_HSIO_ROOT>,
 	         <&clk IMX8MP_CLK_PCIE_ROOT>,
@@ -209,7 +210,7 @@
 
 &pcie_phy {
 	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_OUTPUT>;
-	clocks = <&clk IMX8MP_CLK_HSIO_AXI>;
+	clocks = <&hsio_blk_ctrl>;
 	clock-names = "ref";
 };
 
