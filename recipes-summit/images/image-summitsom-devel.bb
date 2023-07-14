@@ -12,7 +12,7 @@ CORE_IMAGE_EXTRA_INSTALL += "\
 	packagegroup-fsl-tools-audio \
 	read-edid \
 	systemd-analyze \
-	weblcm-python \
+	summit-rcm \
 	v4l-utils \
 	qfirehose \
 	packagegroup-core-buildessential \

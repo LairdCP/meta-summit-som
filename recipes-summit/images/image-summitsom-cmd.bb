@@ -13,7 +13,7 @@ CORE_IMAGE_EXTRA_INSTALL += "\
 	systemd-analyze \
 	bluez5-testtools \
 	summit-mcu-demos \
-	weblcm-python \
+	summit-rcm \
 	v4l-utils \
 	qfirehose \
 	"

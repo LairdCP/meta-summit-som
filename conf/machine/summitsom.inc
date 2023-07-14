@@ -16,8 +16,6 @@ PREFERRED_RPROVIDER_wpa-supplicant-passphrase = "summit-supplicant-som"
 PREFERRED_RPROVIDER_networkmanager = "summit-networkmanager-som"
 PREFERRED_RPROVIDER_networkmanager = "summit-networkmanager-som-nmcli"
 
-MACHINE_FEATURES += "qemu-usermode"
-
 FIT_KERNEL_COMP_ALG = "zstd"
 FIT_KERNEL_COMP_ALG_EXTENSION = ".zstd"
 
