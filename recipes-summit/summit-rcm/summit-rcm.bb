@@ -54,13 +54,13 @@ PACKAGECONFIG[radio-siso-mode] = "summit_rcm/radio_siso_mode"
 PACKAGECONFIG[stunnel] = "summit_rcm/stunnel,,,stunnel"
 PACKAGECONFIG[iptables] = "summit_rcm/iptables,,,iptables"
 PACKAGECONFIG[chrony] = "summit_rcm/chrony,,,chrony"
-PACKAGECONFIG[at] = "summit_rcm/at_interface summit_rcm/at_interface/commands,,,${PYTHON_PN}-pyserial-asyncio"
+PACKAGECONFIG[at] = "summit_rcm/at_interface summit_rcm/at_interface/commands,,,${PYTHON_PN}-pyserial-asyncio ${PYTHON_PN}-transitions"
 PACKAGECONFIG[v2] = "summit_rcm/rest_api/v2/system summit_rcm/rest_api/v2/network,,,${PYTHON_PN}-uvicorn ${PYTHON_PN}-falcon"
 PACKAGECONFIG[legacy] = "summit_rcm/rest_api/legacy,,,${PYTHON_PN}-uvicorn ${PYTHON_PN}-falcon"
 
 PACKAGECONFIG ?= "v2 awm chrony ${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'bluetooth', '', d)}"
 
-RDEPENDS:${PN} = "\
+RDEPENDS:${PN} += "\
 	${PYTHON_PN} \
 	${PYTHON_PN}-core \
 	${PYTHON_PN}-crypt \
@@ -70,6 +70,7 @@ RDEPENDS:${PN} = "\
 	${PYTHON_PN}-json \
 	${PYTHON_PN}-syslog \
 	${PYTHON_PN}-threading \
+	${PYTHON_PN}-aiofiles \
 	${PYTHON_PN}-dbus-fast \
 	summit-update \
 	swclient \
