@@ -33,14 +33,7 @@ UNMANAGED_HARDWARE_DEVICES ?= ""
 
 ADAPTIVE_WW_CFG_FILE ?= ""
 
-ENABLE_UNAUTHENTICATED ?= "False"
-
-ENABLE_SESSIONS ?= "True"
-ENABLE_CLIENT_AUTHENTICATION ?= "False"
-
 CA_CERT_CHAIN_PATH ?= "/etc/summit-rcm/ssl/ca.crt"
-
-ALLOW_MULTIPLE_USER_SESSIONS ?= "False"
 
 SUMMIT_RCM_SERIAL_PORT ?= "/dev/ttymxc0"
 SUMMIT_RCM_BAUD_RATE ?= "3000000"
@@ -57,8 +50,12 @@ PACKAGECONFIG[chrony] = "summit_rcm/chrony,,,chrony"
 PACKAGECONFIG[at] = "summit_rcm/at_interface summit_rcm/at_interface/commands,,,${PYTHON_PN}-pyserial-asyncio ${PYTHON_PN}-transitions"
 PACKAGECONFIG[v2] = "summit_rcm/rest_api/v2/system summit_rcm/rest_api/v2/network,,,${PYTHON_PN}-uvicorn ${PYTHON_PN}-falcon"
 PACKAGECONFIG[legacy] = "summit_rcm/rest_api/legacy,,,${PYTHON_PN}-uvicorn ${PYTHON_PN}-falcon"
+PACKAGECONFIG[login-sessions] = "${@'summit_rcm/rest_api/v2/login' if 'v2' in d.getVar('PACKAGECONFIG').split(' ') else ''}"
+PACKAGECONFIG[multiple-user-sessions] = ""
+PACKAGECONFIG[unauthenticated-reboot-reset] = ""
+PACKAGECONFIG[client-authentication] = ""
 
-PACKAGECONFIG ?= "v2 awm chrony ${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'bluetooth', '', d)}"
+PACKAGECONFIG ?= "v2 awm chrony login-sessions ${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'bluetooth', '', d)}"
 
 RDEPENDS:${PN} += "\
 	${PYTHON_PN} \
@@ -80,7 +77,7 @@ RDEPENDS:${PN} += "\
     "
 
 do_compile:prepend() {
-        export SUMMIT_RCM_EXTRA_PACKAGES="summit_rcm/services ${PACKAGECONFIG_CONFARGS}"
+	export SUMMIT_RCM_EXTRA_PACKAGES="summit_rcm/services ${PACKAGECONFIG_CONFARGS}"
 }
 
 do_install:append() {
@@ -103,17 +100,17 @@ do_install:append() {
 	sed -i -e '/\[summit-rcm\]/a awm_cfg:${ADAPTIVE_WW_CFG_FILE}' ${D}${sysconfdir}/summit-rcm.ini
 
 	sed -i -e '/^enable_allow_unauthenticated_reboot_reset/d' ${D}${sysconfdir}/summit-rcm.ini
-	sed -i -e '/\[summit-rcm\]/a enable_allow_unauthenticated_reboot_reset:${ENABLE_UNAUTHENTICATED}' ${D}${sysconfdir}/summit-rcm.ini
+	sed -i -e '/\[summit-rcm\]/a enable_allow_unauthenticated_reboot_reset: ${@bb.utils.contains('PACKAGECONFIG','unauthenticated-reboot-reset','True','False',d)}' ${D}${sysconfdir}/summit-rcm.ini
 
 	sed -i -e '/^allow_multiple_user_sessions/d' ${D}${sysconfdir}/summit-rcm.ini
-	sed -i -e '/\[summit-rcm\]/a allow_multiple_user_sessions: ${ALLOW_MULTIPLE_USER_SESSIONS}' ${D}${sysconfdir}/summit-rcm.ini
+	sed -i -e '/\[summit-rcm\]/a allow_multiple_user_sessions: ${@bb.utils.contains('PACKAGECONFIG','multiple-user-sessions','True','False',d)}' ${D}${sysconfdir}/summit-rcm.ini
 
-	sed -i -e 's,^tools.sessions.on:.*,tools.sessions.on: ${ENABLE_SESSIONS},' ${D}${sysconfdir}/summit-rcm.ini
+	sed -i -e 's,^tools.sessions.on:.*,tools.sessions.on: ${@bb.utils.contains('PACKAGECONFIG','login-sessions','True','False',d)},' ${D}${sysconfdir}/summit-rcm.ini
 
 	sed -i -e '/^enable_client_auth/d' ${D}${sysconfdir}/summit-rcm.ini
-	sed -i -e '/\[summit-rcm\]/a enable_client_auth: ${ENABLE_CLIENT_AUTHENTICATION}' ${D}${sysconfdir}/summit-rcm.ini
+	sed -i -e '/\[summit-rcm\]/a enable_client_auth: ${@bb.utils.contains('PACKAGECONFIG','client-authentication','True','False',d)}' ${D}${sysconfdir}/summit-rcm.ini
 
-	if [ "${ENABLE_CLIENT_AUTHENTICATION}" = "True" ]; then
+	if ${@bb.utils.contains('PACKAGECONFIG','client-authentication','true','false',d)}; then
 		sed -i -e 's,^server.ssl_certificate_chain:.*,server.ssl_certificate_chain: \"${CA_CERT_CHAIN_PATH}\",' ${D}${sysconfdir}/summit-rcm.ini
 	fi
 
