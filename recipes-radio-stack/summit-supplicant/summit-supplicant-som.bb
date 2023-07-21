@@ -1,6 +1,6 @@
 DEFCONFIG = "config_openssl"
 
-require summit-supplicant.inc radio-stack-60-version.inc
+require summit-supplicant.inc radio-stack-som-version.inc
 
 DEPENDS += "dbus"
 RRECOMMENDS:${PN} += "summit-supplicant-libs-som"
