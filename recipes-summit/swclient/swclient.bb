@@ -8,7 +8,7 @@ require summit-platform-version.inc
 
 DEPENDS += "swupdate"
 
-SRC_URI = "git://git@github.com/LairdCP/lrd-userspace-examples.git;protocol=https;nobranch=1"
+SRC_URI = "git://github.com/LairdCP/lrd-userspace-examples.git;protocol=https;nobranch=1"
 SRC_URI:summit-internal = "git://git@git.devops.rfpros.com/cp_linux/lrd-userspace-examples.git;protocol=ssh;nobranch=1"
 
 SRCREV = "${SUMMIT_PLATFORM_VERSION}"
