@@ -26,14 +26,15 @@ PROGNAME="setup-environment"
 usage()
 {
     echo -e "
-Usage: MACHINE=<machine> DISTRO=<distro> . $PROGNAME [-i] [-r] [-v] [-h] <build-dir>
-Usage:                                   . $PROGNAME [-i] [-r] [-v] [-h] <build-dir>
+Usage: MACHINE=<machine> DISTRO=<distro> . $PROGNAME [-i] [-r] [-v] [-a] [-h] <build-dir>
+Usage:                                   . $PROGNAME [-i] [-r] [-v] [-a] [-h] <build-dir>
     <machine>    machine name
     <distro>     distro name
     <build-dir>  build directory
     Optional parameters: [-i] [-r] [-h]
     * [-i]: Internal build
-    * [-r]: Add radio development to setup
+    * [-r]: Add Radio DVK to setup
+    * [-a]: Development desktop setup (enable all)
     * [-v]: Add Vigiles check to setup
     * [-h]: help
 
@@ -68,10 +69,11 @@ clean_up()
    unset EULA REPLY
    unset CWD ARGS PROGNAME
    unset MACHINE DISTRO OEROOT
-   unset build_dir_setup_enabled setup_radio setup_summit
+   unset build_dir_setup_enabled setup_radio setup_summit setup_vigiles setup_devel
 }
 
 setup_radio=false
+setup_devel=false
 setup_summit=false
 setup_vigiles=false
 
@@ -93,6 +95,12 @@ do
            ;;
         -r)
            setup_radio=true
+           ;;
+        -a)
+           setup_devel=true
+           setup_radio=true
+           setup_summit=true
+           setup_vigiles=true
            ;;
         -i)
            setup_summit=true
@@ -146,11 +154,13 @@ if ${build_dir_setup_enabled}; then
     [ -n "${DISTRO}" ] && sed -e "s,DISTRO ?=.*,DISTRO ?= '$DISTRO',g" -i conf/local.conf
 
     ${setup_summit} && echo 'OVERRIDES .= ":summit-internal"' >> conf/local.conf
+
+    ${setup_vigiles} && ${setup_devel} && echo -n '#'
     ${setup_vigiles} &&  echo 'INHERIT += "vigiles"' >> conf/local.conf
 
     ${setup_summit} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-radio-mfg"'  >> conf/bblayers.conf
     ${setup_radio} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-rdvk"' >> conf/bblayers.conf
-    ${setup_radio} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-radio/meta-summit-radio"' >> conf/bblayers.conf
+    ${setup_devel} && echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-radio/meta-summit-radio"' >> conf/bblayers.conf
 fi
 
 # Handle EULA setting
