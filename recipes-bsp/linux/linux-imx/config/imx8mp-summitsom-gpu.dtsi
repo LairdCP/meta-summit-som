@@ -43,4 +43,4 @@ The downside of this is reducing graphics capability
 
 &resmem {
 	/delete-node/ gpu_reserved@100000000;
-}
+};
