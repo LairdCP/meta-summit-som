@@ -20,6 +20,10 @@
 	};
 };
 
+&sdma2 {
+	status = "okay";
+};
+
 &aud2htx {
 	status = "okay";
 };
