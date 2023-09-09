@@ -10,6 +10,12 @@ S = "${WORKDIR}/git"
 SRC_URI = "git://git@github.com/LairdCP/weblcm-python.git;protocol=https;branch=lrd-10.0.0.x"
 SRC_URI_summit-internal = "git://git@github.com/rfpros/cp_apps-weblcm-python.git;protocol=ssh;branch=lrd-10.0.0.x"
 
+SRC_URI:append = "\
+	file://ca.crt \
+	file://server.crt \
+	file://server.key \
+	"
+
 SRCREV = "${AUTOREV}"
 
 DEPENDS += "python3-cython-native"
@@ -70,11 +76,10 @@ do_install_append() {
 	install -D -t ${D}${localstatedir}/www -m 644 ${S}/LICENSE
 
 	cp -fr ${S}/plugins ${D}${localstatedir}/www/
-
 	install -D -t ${D}${bindir}/weblcm-python.scripts -m 755 ${S}/*.sh
 	install -D -t ${D}${sysconfdir}/ -m 644 ${S}/weblcm-python.ini
 	install -D -t ${D}${sysconfdir}/weblcm-python/ssl -m 644 \
-		${S}/ssl/server.key ${S}/ssl/server.crt ${S}/ssl/ca.crt
+		${WORKDIR}/server.key ${WORKDIR}/server.crt ${WORKDIR}/ca.crt
 
 	sed -i -e '/^default_/d' ${D}${sysconfdir}/weblcm-python.ini
 	sed -i -e '/\[weblcm\]/a default_password: \"${PASSWORD:${PN}}\"' ${D}${sysconfdir}/weblcm-python.ini
