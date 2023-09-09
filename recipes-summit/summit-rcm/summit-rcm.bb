@@ -81,10 +81,9 @@ do_compile:prepend() {
 }
 
 do_install:append() {
-
 	install -D -m 644 -t ${D}${sysconfdir}/ ${S}/summit-rcm.ini
 	install -D -m 644 -t ${D}${sysconfdir}/summit-rcm/ssl \
-		${S}/../server.key ${S}/../server.crt ${S}/../ca.crt
+		${WORKDIR}/server.key ${WORKDIR}/server.crt ${WORKDIR}/ca.crt
 
 	sed -i -e '/^default_/d' ${D}${sysconfdir}/summit-rcm.ini
 	sed -i -e '/\[summit-rcm\]/a default_password: \"${PASSWORD}\"' ${D}${sysconfdir}/summit-rcm.ini
