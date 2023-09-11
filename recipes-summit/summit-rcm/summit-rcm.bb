@@ -39,21 +39,52 @@ SUMMIT_RCM_SERIAL_PORT ?= "/dev/ttymxc0"
 SUMMIT_RCM_BAUD_RATE ?= "3000000"
 
 PACKAGECONFIG[awm] = "summit_rcm/awm,,,${PYTHON_PN}-libconf"
-PACKAGECONFIG[modem] = "summit_rcm/modem"
-PACKAGECONFIG[bluetooth] = "summit_rcm/bluetooth"
-PACKAGECONFIG[hid] = "summit_rcm/hid,,,${PYTHON_PN}-pyudev"
-PACKAGECONFIG[vsp] = "summit_rcm/vsp"
+PACKAGECONFIG[modem] = ""
+PACKAGECONFIG[bluetooth] = "\
+	${@'summit_rcm/rest_api/v2/bluetooth' if 'v2' in d.getVar('PACKAGECONFIG').split(' ') else ''} \
+	${@'summit_rcm/bluetooth' if 'legacy' in d.getVar('PACKAGECONFIG').split(' ') else ''} \
+	${@'summit_rcm/hid' if 'hid' in d.getVar('PACKAGECONFIG').split(' ') else ''} \
+	${@'summit_rcm/vsp' if 'vsp' in d.getVar('PACKAGECONFIG').split(' ') else ''} \
+	"
+PACKAGECONFIG[hid] = ",,,${PYTHON_PN}-pyudev"
+PACKAGECONFIG[vsp] = ""
 PACKAGECONFIG[radio-siso-mode] = "summit_rcm/radio_siso_mode"
 PACKAGECONFIG[stunnel] = "summit_rcm/stunnel,,,stunnel"
 PACKAGECONFIG[iptables] = "summit_rcm/iptables,,,iptables"
 PACKAGECONFIG[chrony] = "summit_rcm/chrony,,,chrony"
-PACKAGECONFIG[at] = "summit_rcm/at_interface summit_rcm/at_interface/commands,,,${PYTHON_PN}-pyserial-asyncio ${PYTHON_PN}-transitions"
-PACKAGECONFIG[v2] = "summit_rcm/rest_api/v2/system summit_rcm/rest_api/v2/network,,,${PYTHON_PN}-uvicorn ${PYTHON_PN}-falcon"
-PACKAGECONFIG[legacy] = "summit_rcm/rest_api/legacy,,,${PYTHON_PN}-uvicorn ${PYTHON_PN}-falcon"
-PACKAGECONFIG[login-sessions] = "${@'summit_rcm/rest_api/v2/login' if 'v2' in d.getVar('PACKAGECONFIG').split(' ') else ''}"
+PACKAGECONFIG[at] = "\
+	summit_rcm/at_interface \
+	summit_rcm/at_interface/commands \
+	summit_rcm/at_interface/services \
+	${@'summit_rcm/log_forwarding/at_interface/commands' if 'log-forwarding' in d.getVar('PACKAGECONFIG').split(' ') else ''} \
+	, \
+	, \
+	, \
+	${PYTHON_PN}-pyserial-asyncio ${PYTHON_PN}-transitions"
+PACKAGECONFIG[v2] = "\
+	summit_rcm/rest_api/v2/system \
+	summit_rcm/rest_api/v2/network \
+	summit_rcm/rest_api/services \
+	${@'summit_rcm/rest_api/v2/login' if 'v2' in d.getVar('PACKAGECONFIG').split(' ') else ''} \
+	${@'summit_rcm/log_forwarding/rest_api/v2/system' if 'log-forwarding' in d.getVar('PACKAGECONFIG').split(' ') else ''} \
+	, \
+	, \
+	, \
+	${PYTHON_PN}-uvicorn ${PYTHON_PN}-falcon"
+PACKAGECONFIG[legacy] = "\
+	summit_rcm/rest_api/legacy \
+	summit_rcm/rest_api/services \
+	${@'summit_rcm/modem' if 'modem' in d.getVar('PACKAGECONFIG').split(' ') else ''} \
+	${@'summit_rcm/log_forwarding/rest_api/legacy' if 'log-forwarding' in d.getVar('PACKAGECONFIG').split(' ') else ''} \
+	, \
+	, \
+	, \
+	${PYTHON_PN}-uvicorn ${PYTHON_PN}-falcon"
+PACKAGECONFIG[login-sessions] = ""
 PACKAGECONFIG[multiple-user-sessions] = ""
 PACKAGECONFIG[unauthenticated-reboot-reset] = ""
 PACKAGECONFIG[client-authentication] = ""
+PACKAGECONFIG[log-forwarding] = "summit_rcm/log_forwarding/services,,,systemd-journal-gatewayd"
 
 PACKAGECONFIG ?= "v2 awm chrony login-sessions ${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'bluetooth', '', d)}"
 
