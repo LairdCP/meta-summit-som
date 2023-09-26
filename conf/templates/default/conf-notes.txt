@@ -5,7 +5,8 @@ You can now run 'bitbake <target>'
 
 Common targets are:
     image-summitsom-cmd
-    image-summitsom-mfg
+    image-summitsom-weston
+    image-summitsom-devel
     meta-toolchain
     meta-ide-support
 
