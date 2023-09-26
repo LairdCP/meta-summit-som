@@ -58,6 +58,6 @@ IMXBOOT_TARGETS_BASENAME = "flash_evk"
 
 IMX_DEFAULT_BSP = "nxp"
 
-MACHINE_FEATURES:remove = "nxp8987 nxp8997"
+MACHINE_FEATURES:remove = "nxp8801-sdio nxp8987-sdio nxp8997-pcie nxp8997-sdio nxp9098-pcie nxp9098-sdio nxpiw416-sdio nxpiw612-sdio"
 MACHINE_FIRMWARE:remove = "linux-firmware-ath10k"
 MACHINE_EXTRA_RRECOMMENDS:remove = "imx-m7-demos"
