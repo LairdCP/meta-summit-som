@@ -21,6 +21,7 @@ RDEPENDS:${PN} = "util-linux-lsblk summit-fwenv"
 do_install () {
     rsync -rlpDWK --no-perms --delete --exclude=.empty ${S}/rootfs-additions/ ${D}/
     chmod 600 ${D}/usr/lib/NetworkManager/system-connections/*
+    install -d ${D}${sysconfdir}/NetworkManager/certs
 }
 
 SYSTEMD_SERVICE:${PN}:summit-secure = "mount_data.service var-lib-bluetooth.mount var-log-journal.mount"
