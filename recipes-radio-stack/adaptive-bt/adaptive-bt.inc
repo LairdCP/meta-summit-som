@@ -1,4 +1,4 @@
-SUMMARY = "Bluetooth Summit 60 Auto World-Wide Mode"
+SUMMARY = "Summit Bluetooth 60 Auto World-Wide Mode"
 SECTION = "Wireless"
 
 LICENSE = "MIT"
