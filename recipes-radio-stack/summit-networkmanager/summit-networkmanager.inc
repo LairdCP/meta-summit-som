@@ -6,6 +6,8 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263 \
                     file://COPYING.LGPL;md5=4fbd65380cdd255951079008b364516c \
 "
 
+# coreutils-native needed to support 'printenv' on kirkstone and below
+
 DEPENDS = " \
     coreutils-native \
     intltool-native \
@@ -221,7 +223,6 @@ ALTERNATIVE_LINK_NAME[resolv-conf] = "${@bb.utils.contains('DISTRO_FEATURES','sy
 do_install:append() {
     install -Dm 0644 ${WORKDIR}/NetworkManager.conf ${D}${sysconfdir}/NetworkManager/NetworkManager.conf
     install -Dm 0755 ${WORKDIR}/networkmanager.initd ${D}${sysconfdir}/init.d/network-manager
-    install -d ${D}${sysconfdir}/NetworkManager/certs
 
     rm -rf ${D}/run ${D}${localstatedir}/run
 
@@ -232,7 +233,6 @@ do_install:append() {
         # systemd v210 and newer do not need this rule file
         rm ${D}/${nonarch_base_libdir}/udev/rules.d/84-nm-drivers.rules
     fi
-
 }
 
 RDEPENDS:${PN} += "ethtool"
