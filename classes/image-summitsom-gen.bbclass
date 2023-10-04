@@ -106,6 +106,7 @@ do_backup_runtime () {
 	ln -sf /data/secret/NetworkManager.state ${IMAGE_ROOTFS}/etc/NetworkManager/NetworkManager.state
 
 	mkdir -p ${BACKUP_MISC_DIR}
+	[ -f ${IMAGE_ROOTFS}/etc/timezone ] && \
 	mv -t ${BACKUP_MISC_DIR} \
 		${IMAGE_ROOTFS}/etc/timezone \
 		${IMAGE_ROOTFS}/etc/localtime \
