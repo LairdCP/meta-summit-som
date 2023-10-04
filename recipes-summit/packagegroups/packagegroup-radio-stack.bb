@@ -15,5 +15,4 @@ RDEPENDS:${PN} = " \
 	adaptive-ww \
 	summit-networkmanager-60 \
 	summit-networkmanager-60-nmcli \
-	iptables \
 	"

@@ -16,7 +16,7 @@ FILES:${PN} += "${sbindir} ${libdir} ${systemd_system_unitdir} ${sysconfdir} /pe
 
 DEPENDS += "rsync-native"
 
-RDEPENDS:${PN} = "util-linux-lsblk summit-fwenv"
+RDEPENDS:${PN} = "util-linux-lsblk summit-fwenv iptables"
 
 do_install () {
     rsync -rlpDWK --no-perms --delete --exclude=.empty ${S}/rootfs-additions/ ${D}/
