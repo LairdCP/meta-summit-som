@@ -10,11 +10,11 @@ UBOOT_DTB_LOADADDRESS = "0x43000000"
 UBOOT_ENTRYPOINT:mx8m-generic-bsp   = "0x40400000"
 
 PREFERRED_RPROVIDER_wireless-regdb-static = "som8mp-radio-firmware"
-PREFERRED_RPROVIDER_wpa-supplicant = "summit-supplicant-som"
-PREFERRED_RPROVIDER_wpa-supplicant-cli = "summit-supplicant-som"
-PREFERRED_RPROVIDER_wpa-supplicant-passphrase = "summit-supplicant-som"
-PREFERRED_RPROVIDER_networkmanager = "summit-networkmanager-som"
-PREFERRED_RPROVIDER_networkmanager = "summit-networkmanager-som-nmcli"
+PREFERRED_RPROVIDER_wpa-supplicant = "summit-supplicant-60"
+PREFERRED_RPROVIDER_wpa-supplicant-cli = "summit-supplicant-60"
+PREFERRED_RPROVIDER_wpa-supplicant-passphrase = "summit-supplicant-60"
+PREFERRED_RPROVIDER_networkmanager = "summit-networkmanager-60"
+PREFERRED_RPROVIDER_networkmanager = "summit-networkmanager-60-nmcli"
 
 MACHINE_FEATURES += "qemu-usermode"
 
