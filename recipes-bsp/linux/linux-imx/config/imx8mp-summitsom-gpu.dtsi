@@ -30,17 +30,3 @@
 &mix_gpu_ml {
 	status = "okay";
 };
-
-/*
-Below statements reduce frame buffer size to 64 MB, default is 256 MB 
-This is needed to support 512 MB RAM board
-The downside of this is reducing graphics capability
-*/
-&mix_gpu_ml {
-	reg = <0x0 0x40000000 0x0 0x40000000>, <0x0 0x0 0x0 0x4000000>;
-	/delete-property/ memory-region;
-};
-
-&resmem {
-	/delete-node/ gpu_reserved@100000000;
-}
