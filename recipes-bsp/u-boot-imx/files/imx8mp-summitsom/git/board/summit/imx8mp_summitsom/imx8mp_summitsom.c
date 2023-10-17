@@ -42,6 +42,14 @@ int board_early_init_f(void)
 #ifdef CONFIG_OF_BOARD_SETUP
 int ft_board_setup(void *blob, struct bd_info *bd)
 {
+	if (gd->ram_size <= SZ_1G) {
+			int offs = fdt_path_offset(blob, "/mix_gpu_ml");
+			if (offs >= 0)
+					fdt_setprop_string(blob, offs, "status", "disabled");
+			else
+					printf("Node /mix_gpu_ml not found.\n");
+	}
+
 #ifdef CONFIG_IMX8M_DRAM_INLINE_ECC
 	int rc;
 	phys_addr_t ecc0_start = 0xb0000000;
