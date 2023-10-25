@@ -1,7 +1,9 @@
 [Unit]
 Description=Mount Data Partition
-Before=multi-user.target
-After=blk-availability.service
+DefaultDependencies=no
+Conflicts=umount.target
+Before=umount.target local-fs.target
+After=local-fs-pre.target system.slice blk-availability.service
 
 [Service]
 Type=oneshot
