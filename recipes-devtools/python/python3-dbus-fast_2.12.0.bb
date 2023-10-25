@@ -4,7 +4,7 @@ HOMEPAGE = "https://github.com/bluetooth-devices/dbus-fast"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=729e372b5ea0168438e4fd4a00a04947"
 
-SRC_URI[sha256sum] = "ca376a360f1bc2c3d59e9edfb5e4de5be389cca37e8c92f4539176ddf755341e"
+SRC_URI[sha256sum] = "849478e11d251fa4ebb99ce5bfee332cb6383c63ef0bc97bae23cef4e0badf9c"
 
 PYPI_PACKAGE = "dbus_fast"
 
