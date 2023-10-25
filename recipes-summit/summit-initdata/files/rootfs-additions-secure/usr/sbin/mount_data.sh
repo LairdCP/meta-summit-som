@@ -33,7 +33,7 @@ start)
 
 	[ "$(lsblk -no FSTYPE /dev/mapper/data_enc)" = "ext4" ] || mkfs.ext4 /dev/mapper/data_enc
 
-	/bin/systemd-mount -o noatime,noexec,nosuid,nodev --fsck=no -t auto /dev/mapper/data_enc ${DATA_MOUNT}
+	/usr/bin/mount -o noatime,noexec,nosuid,nodev -t auto /dev/mapper/data_enc ${DATA_MOUNT}
 
 	. do_factory_reset.sh check
 
@@ -41,7 +41,7 @@ start)
 	;;
 
 stop)
-	/bin/systemd-umount ${DATA_MOUNT}
+	/usr/bin/umount ${DATA_MOUNT}
 	dmsetup remove data_enc
 	echo 3 >/proc/sys/vm/drop_caches
 	;;
