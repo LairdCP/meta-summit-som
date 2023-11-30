@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384
 inherit packagegroup
 
 RDEPENDS:${PN} = " \
-	kernel-module-60-backports-summit \
+	kernel-module-60-backports \
 	som8mp-radio-firmware \
 	${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'adaptive-bt bt-uart-scripts', '', d)} \
 	summit-supplicant-libs-60 \
