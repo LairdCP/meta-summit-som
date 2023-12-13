@@ -13,6 +13,11 @@ CORE_IMAGE_EXTRA_INSTALL += "\
 	systemd-analyze \
 	bluez5-testtools \
 	summit-mcu-demos \
+	summit-rcm \
+	summit-rcm-awm-plugin \
+	summit-rcm-chrony-plugin \
+	summit-rcm-firewall-plugin \
+	${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'summit-rcm-bluetooth-plugin', '', d)} \
 	v4l-utils \
 	qfirehose \
 	"

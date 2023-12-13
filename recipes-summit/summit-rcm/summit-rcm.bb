@@ -4,7 +4,7 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 inherit setuptools3 systemd
-require summit-platform-version.inc
+require summit-platform-version.inc summit-rcm.inc
 
 S = "${WORKDIR}/git"
 
@@ -31,62 +31,16 @@ PASSWORD ?= "summit"
 MANAGED_SOFTWARE_DEVICES ?= ""
 UNMANAGED_HARDWARE_DEVICES ?= ""
 
-ADAPTIVE_WW_CFG_FILE ?= ""
-
 CA_CERT_CHAIN_PATH ?= "/etc/summit-rcm/ssl/ca.crt"
 
 SUMMIT_RCM_SERIAL_PORT ?= "/dev/ttymxc0"
 SUMMIT_RCM_BAUD_RATE ?= "3000000"
 
-PACKAGECONFIG[awm] = "summit_rcm/awm,,,${PYTHON_PN}-libconf"
-PACKAGECONFIG[modem] = ""
-PACKAGECONFIG[bluetooth] = "\
-	${@'summit_rcm/rest_api/v2/bluetooth' if 'v2' in d.getVar('PACKAGECONFIG').split(' ') else ''} \
-	${@'summit_rcm/bluetooth' if 'legacy' in d.getVar('PACKAGECONFIG').split(' ') else ''} \
-	${@'summit_rcm/hid' if 'hid' in d.getVar('PACKAGECONFIG').split(' ') else ''} \
-	${@'summit_rcm/vsp' if 'vsp' in d.getVar('PACKAGECONFIG').split(' ') else ''} \
-	"
-PACKAGECONFIG[hid] = ",,,${PYTHON_PN}-pyudev"
-PACKAGECONFIG[vsp] = ""
-PACKAGECONFIG[radio-siso-mode] = "summit_rcm/radio_siso_mode"
-PACKAGECONFIG[stunnel] = "summit_rcm/stunnel,,,stunnel"
-PACKAGECONFIG[iptables] = "summit_rcm/iptables,,,iptables"
-PACKAGECONFIG[chrony] = "summit_rcm/chrony,,,chrony"
-PACKAGECONFIG[at] = "\
-	summit_rcm/at_interface \
-	summit_rcm/at_interface/commands \
-	summit_rcm/at_interface/services \
-	${@'summit_rcm/log_forwarding/at_interface/commands' if 'log-forwarding' in d.getVar('PACKAGECONFIG').split(' ') else ''} \
-	, \
-	, \
-	, \
-	${PYTHON_PN}-pyserial-asyncio ${PYTHON_PN}-transitions"
-PACKAGECONFIG[v2] = "\
-	summit_rcm/rest_api/v2/system \
-	summit_rcm/rest_api/v2/network \
-	summit_rcm/rest_api/services \
-	${@'summit_rcm/rest_api/v2/login' if 'v2' in d.getVar('PACKAGECONFIG').split(' ') else ''} \
-	${@'summit_rcm/log_forwarding/rest_api/v2/system' if 'log-forwarding' in d.getVar('PACKAGECONFIG').split(' ') else ''} \
-	, \
-	, \
-	, \
-	${PYTHON_PN}-uvicorn ${PYTHON_PN}-falcon"
-PACKAGECONFIG[legacy] = "\
-	summit_rcm/rest_api/legacy \
-	summit_rcm/rest_api/services \
-	${@'summit_rcm/modem' if 'modem' in d.getVar('PACKAGECONFIG').split(' ') else ''} \
-	${@'summit_rcm/log_forwarding/rest_api/legacy' if 'log-forwarding' in d.getVar('PACKAGECONFIG').split(' ') else ''} \
-	, \
-	, \
-	, \
-	${PYTHON_PN}-uvicorn ${PYTHON_PN}-falcon"
-PACKAGECONFIG[login-sessions] = ""
+PACKAGECONFIG[login-sessions] = "${@'summit_rcm/rest_api/v2/login' if d.getVar('SUMMIT_RCM_ENABLE_V2_ROUTES') == 'True' else ''}"
 PACKAGECONFIG[multiple-user-sessions] = ""
-PACKAGECONFIG[unauthenticated-reboot-reset] = ""
 PACKAGECONFIG[client-authentication] = ""
-PACKAGECONFIG[log-forwarding] = "summit_rcm/log_forwarding/services,,,systemd-journal-gatewayd"
 
-PACKAGECONFIG ?= "v2 awm chrony login-sessions ${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'bluetooth', '', d)}"
+PACKAGECONFIG ?= "login-sessions"
 
 RDEPENDS:${PN} += "\
 	${PYTHON_PN} \
@@ -105,10 +59,41 @@ RDEPENDS:${PN} += "\
 	tzdata-core \
 	tzdata-posix \
 	iw \
+	${@'${PYTHON_PN}-uvicorn ${PYTHON_PN}-falcon' if d.getVar('SUMMIT_RCM_ENABLE_V2_ROUTES') == 'True' or d.getVar('SUMMIT_RCM_ENABLE_LEGACY_ROUTES') == 'True' else ''} \
+	${@'${PYTHON_PN}-pyserial-asyncio ${PYTHON_PN}-transitions' if d.getVar('SUMMIT_RCM_ENABLE_AT_INTERFACE') == 'True' else ''} \
     "
 
 do_compile:prepend() {
-	export SUMMIT_RCM_EXTRA_PACKAGES="summit_rcm/services ${PACKAGECONFIG_CONFARGS}"
+	export SUMMIT_RCM_EXTRA_PACKAGES="\
+		summit_rcm/services \
+		${PACKAGECONFIG_CONFARGS} \
+		"
+
+    if [ "${SUMMIT_RCM_ENABLE_LEGACY_ROUTES}" = "True" ]; then
+	    export SUMMIT_RCM_EXTRA_PACKAGES="\
+			${SUMMIT_RCM_EXTRA_PACKAGES} \
+			summit_rcm/rest_api/legacy \
+			summit_rcm/rest_api/services \
+			"
+    fi
+
+    if [ "${SUMMIT_RCM_ENABLE_V2_ROUTES}" = "True" ]; then
+	    export SUMMIT_RCM_EXTRA_PACKAGES="\
+			${SUMMIT_RCM_EXTRA_PACKAGES} \
+			summit_rcm/rest_api/v2/system \
+			summit_rcm/rest_api/v2/network \
+			summit_rcm/rest_api/services \
+			"
+    fi
+
+    if [ "${SUMMIT_RCM_ENABLE_AT_INTERFACE}" = "True" ]; then
+	    export SUMMIT_RCM_EXTRA_PACKAGES="\
+			${SUMMIT_RCM_EXTRA_PACKAGES} \
+			summit_rcm/at_interface \
+			summit_rcm/at_interface/commands \
+			summit_rcm/at_interface/services \
+			"
+    fi
 }
 
 do_install:append() {
@@ -125,9 +110,6 @@ do_install:append() {
 
 	sed -i -e '/^unmanaged_hardware_devices/d' ${D}${sysconfdir}/summit-rcm.ini
 	sed -i -e '/\[summit-rcm\]/a unmanaged_hardware_devices: ${UNMANAGED_HARDWARE_DEVICES}' ${D}${sysconfdir}/summit-rcm.ini
-
-	sed -i -e '/^awm_cfg/d' ${D}${sysconfdir}/summit-rcm.ini
-	sed -i -e '/\[summit-rcm\]/a awm_cfg:${ADAPTIVE_WW_CFG_FILE}' ${D}${sysconfdir}/summit-rcm.ini
 
 	sed -i -e '/^enable_allow_unauthenticated_reboot_reset/d' ${D}${sysconfdir}/summit-rcm.ini
 	sed -i -e '/\[summit-rcm\]/a enable_allow_unauthenticated_reboot_reset: ${@bb.utils.contains('PACKAGECONFIG','unauthenticated-reboot-reset','True','False',d)}' ${D}${sysconfdir}/summit-rcm.ini
