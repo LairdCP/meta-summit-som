@@ -10,7 +10,7 @@ require summit-platform-version.inc
 S = "${WORKDIR}/awm"
 
 SRC_URI = "git://github.com/LairdCP/summit-rcm.git;protocol=https;nobranch=1;subpath=summit_rcm/plugins/awm"
-SRC_URI:summit-internal = "git://git@git.devops.rfpros.com/cp_apps/summit-rcm.git;protocol=ssh;nobranch=1;subpath=summit_rcm/plugins/awm"
+SRC_URI:summit-internal = "git://git@github.com:rfpros/cp_apps-summit-rcm.git;protocol=ssh;nobranch=1;subpath=summit_rcm/plugins/awm"
 
 SRCREV = "${SUMMIT_PLATFORM_VERSION}"
 PV = "${SUMMIT_PLATFORM_VERSION}+git${SRCPV}"

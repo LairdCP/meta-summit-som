@@ -10,7 +10,7 @@ require summit-platform-version.inc recipes-summit/summit-rcm/summit-rcm.inc
 S = "${WORKDIR}/git/summit_rcm/plugins/radio-siso-mode"
 
 SRC_URI = "git://github.com/LairdCP/summit-rcm.git;protocol=https;nobranch=1"
-SRC_URI:summit-internal = "git://git@git.devops.rfpros.com/cp_apps/summit-rcm.git;protocol=ssh;nobranch=1"
+SRC_URI:summit-internal = "git://git@github.com:rfpros/cp_apps-summit-rcm.git;protocol=ssh;nobranch=1"
 
 SRCREV = "${SUMMIT_PLATFORM_VERSION}"
 PV = "${SUMMIT_PLATFORM_VERSION}+git${SRCPV}"
