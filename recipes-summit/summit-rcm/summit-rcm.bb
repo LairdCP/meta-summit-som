@@ -9,7 +9,7 @@ require summit-platform-version.inc
 S = "${WORKDIR}/git"
 
 SRC_URI = "git://github.com/LairdCP/summit-rcm.git;protocol=https;nobranch=1"
-SRC_URI:summit-internal = "git://git@github.com/rfpros.com/cp_apps-summit-rcm.git;protocol=ssh;nobranch=1"
+SRC_URI:summit-internal = "git://git@github.com/rfpros/cp_apps-summit-rcm.git;protocol=ssh;nobranch=1"
 
 SRC_URI:append = "\
 	file://ca.crt \
