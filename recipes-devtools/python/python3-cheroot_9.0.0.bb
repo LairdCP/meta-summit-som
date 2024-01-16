@@ -10,8 +10,8 @@ SRC_URI += "\
         file://0002-improve-ssl-error-handling.patch \
 "
 
-SRC_URI[md5sum] = "70247d0948899f453b50e6181cddd0d7"
-SRC_URI[sha256sum] = "366adf6e7cac9555486c2d1be6297993022eff6f8c4655c1443268cca3f08e25"
+SRC_URI[md5sum] = "1617fdbaba7d6edbe5b0ff48f7563111"
+SRC_URI[sha256sum] = "3d47ad9ee19ecbec144b4758399036692fdbf67a40b96eef1fb1454367b3d338"
 
 inherit pypi setuptools3
 
@@ -22,6 +22,5 @@ DEPENDS += "\
 
 RDEPENDS:${PN} = "\
         python3-io \
-        python3-six \
         python3-jaraco-functools \
 "
