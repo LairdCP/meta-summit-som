@@ -19,3 +19,9 @@ RDEPENDS:${PN} += "\
 	${PYTHON_PN}-httptools \
 	${PYTHON_PN}-websockets \
 	"
+
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+
+SRC_URI += "\
+	file://1001-implement-asgiref-tls-extension.patch \
+	"
