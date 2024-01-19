@@ -86,7 +86,7 @@ do_backup_runtime () {
 	BACKUP_MISC_DIR=${IMAGE_ROOTFS}/usr/share/factory/etc/misc
 
 	mkdir -p ${BACKUP_SECRET_DIR}
-	for BACKUP_TARGET in "firewalld" "weblcm-python" "modem" "stunnel" "chrony"; do
+	for BACKUP_TARGET in "modem" "stunnel" "chrony" "summit-rcm"; do
 		if [ -d ${IMAGE_ROOTFS}/etc/"${BACKUP_TARGET}" ]; then
 			mv ${IMAGE_ROOTFS}/etc/${BACKUP_TARGET}/ ${BACKUP_SECRET_DIR}
 			ln -sf /data/secret/${BACKUP_TARGET} ${IMAGE_ROOTFS}/etc/${BACKUP_TARGET}
