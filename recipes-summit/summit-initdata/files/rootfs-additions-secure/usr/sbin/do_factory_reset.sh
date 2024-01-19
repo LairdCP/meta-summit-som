@@ -24,7 +24,7 @@ do_check_and_reset() {
 	if [ -f "${RESET_INIDICATOR}" ]; then
 		# Delete all user data, but not the /data/secret dir as it is encrypted.
 		find /data -maxdepth 1 -mindepth 1 ! -name secret -exec rm -fr {} \;
-		rm -fr ${USER_SETTINGS_SECRET_TARGET}/*
+		find ${USER_SETTINGS_SECRET_TARGET} -maxdepth 1 -mindepth 1 ! -name permanent -exec rm -fr {} \;
 	# Check if secret directory has been populated, do not blow away settings
 	elif [ -d "${USER_SETTINGS_SECRET_TARGET}/NetworkManager" ]; then
 		# Always copy over system connections, as the host connection is critical
