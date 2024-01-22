@@ -86,9 +86,13 @@
 	"setenv bootvol 4; "                            \
 	"fi; "                                          \
 	"setexpr rootvol ${bootvol} + 1\0"              \
-	"runm7="                                        \
+	"prepare_mcore="                                \
 	"setexpr bootm7 sub m7-rpmsg '' $conf; "        \
 	"if test -n \"${bootm7}\"; then "               \
+	"setenv mcore_clk clk-imx8mp.mcore_booted; "    \
+	"fi\0"                                          \
+	"runm7="                                        \
+	"if test -n \"${mcore_clk}\"; then "            \
 	"run loadm7 && run bootm7_itcm; "               \
 	"fi\0"
 
@@ -97,9 +101,10 @@
 	EXTRA_ENV_SETTINGS_DEFAULT                      \
 	"mmcargs="                                      \
 	"setenv bootargs console=${console} quiet "     \
-	"bootside=${bootside} "                         \
+	"bootside=${bootside} ${mcore_clk} "            \
 	"init=/usr/sbin/pre-systemd-init.sh\0"          \
 	"bootcmd="                                      \
+	"run prepare_mcore; "                           \
 	"run mmcside; "                                 \
 	"run runm7; "                                   \
 	"if test -e mmc ${mmcdev}:${bootvol} fitImageVerity.bin; then " \
@@ -112,14 +117,15 @@
 	EXTRA_ENV_SETTINGS_DEFAULT                      \
 	"mmcargs="                                      \
 	"setenv bootargs console=${console} quiet "     \
-	"bootside=${bootside} "                         \
+	"bootside=${bootside} ${mcore_clk} "            \
 	"init=/usr/sbin/overlayRoot.sh\0"               \
 	"mmcargs_trad="                                 \
 	"setenv bootargs console=${console} quiet "     \
-	"bootside=${bootside} "                         \
+	"bootside=${bootside} ${mcore_clk} "            \
 	"root=/dev/mmcblk${mmcdev}p${rootvol} "         \
 	"rootwait rootfstype=ext4 rw\0"                 \
 	"bootcmd="                                      \
+	"run prepare_mcore; "                           \
 	"run mmcside; "                                 \
 	"run runm7; "                                   \
 	"if test -e mmc ${mmcdev}:${bootvol} fitImageVerity.bin; then " \
