@@ -27,21 +27,21 @@ FDT_FILEN="${prefix}-${1}${suffix}.dtb"
 
 [ -n "${prefix}" ] && [ "${FDT_FILE}" != "${FDT_FILEN}" ] || exit
 
-fw_setenv conf ${FDT_FILEN}
+set_symlink() {
+  p=$(readlink -f /lib/firmware/lrdmwl/88W8997_sdio.bin)
+  case "${p}" in
+    *_sdio_${1}_*) return ;;
+  esac
 
-pwd=${PWD}
-cd /lib/firmware/lrdmwl/
+  ln -sf $(basename /lib/firmware/lrdmwl/88W8997_SOM8MP_sdio_${1}_*) /lib/firmware/lrdmwl/88W8997_sdio.bin \
+    || exit 1
+}
 
 case "${1}" in
- sdio-sdio)
-   ln -sf 88W8997_SOM8MP_sdio_sdio_* 88W8997_sdio.bin
-   ;;
-
- sdio-uart*)
-   ln -sf 88W8997_SOM8MP_sdio_uart_* 88W8997_sdio.bin
-   ;;
+  sdio-sdio)  set_symlink sdio ;;
+  sdio-uart*) set_symlink uart ;;
 esac
 
-cd ${pwd}
+fw_setenv conf ${FDT_FILEN}
 
 systemctl reboot
