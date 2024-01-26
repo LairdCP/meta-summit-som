@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -x -e
+set -e
 
 DATA_MOUNT=/data
 
