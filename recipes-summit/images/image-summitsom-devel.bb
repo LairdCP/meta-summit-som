@@ -15,5 +15,6 @@ CORE_IMAGE_EXTRA_INSTALL += "\
 	weblcm-python \
 	v4l-utils \
 	qfirehose \
+	packagegroup-fsl-gstreamer1.0 \
 	packagegroup-core-buildessential \
 	"

@@ -8,6 +8,7 @@ CORE_IMAGE_EXTRA_INSTALL += "\
 	${IMAGE_INSTALL_BASIC} \
 	${IMAGE_INSTALL_DIAG} \
 	summit-mcu-demos \
+	packagegroup-fsl-gstreamer1.0 \
 	"
 
 IMAGE_BOOT_FILES += "fitImageMcu.bin"
