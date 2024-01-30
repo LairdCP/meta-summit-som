@@ -19,5 +19,6 @@ CORE_IMAGE_EXTRA_INSTALL += "\
 	${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'summit-rcm-bluetooth-plugin', '', d)} \
 	v4l-utils \
 	qfirehose \
+	packagegroup-fsl-gstreamer1.0 \
 	packagegroup-core-buildessential \
 	"
