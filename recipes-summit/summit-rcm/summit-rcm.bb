@@ -54,11 +54,11 @@ RDEPENDS:${PN} += "\
 	${PYTHON_PN}-threading \
 	${PYTHON_PN}-aiofiles \
 	${PYTHON_PN}-dbus-fast \
+	${PYTHON_PN}-pyroute2 \
 	summit-update \
 	swclient \
 	tzdata-core \
 	tzdata-posix \
-	iw \
 	${@'${PYTHON_PN}-uvicorn ${PYTHON_PN}-falcon' if d.getVar('SUMMIT_RCM_ENABLE_V2_ROUTES') == 'True' or d.getVar('SUMMIT_RCM_ENABLE_LEGACY_ROUTES') == 'True' else ''} \
 	${@'${PYTHON_PN}-pyserial-asyncio ${PYTHON_PN}-transitions' if d.getVar('SUMMIT_RCM_ENABLE_AT_INTERFACE') == 'True' else ''} \
     "
