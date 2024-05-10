@@ -3,15 +3,17 @@
 # This script is called from our systemd unit file to mount or unmount
 # a USB drive.
 
+set -x
+
 usage()
 {
-    echo "Usage: $0 {add|remove} device_name (e.g. /dev/sdb1) [mount_user]"
+    echo "Usage: $0 {add|remove} device_name (e.g. /dev/sdb1) [mount_user]" >&2
     exit 1
 }
 
 parse_blkid()
 {
-    echo ${1} | sed "s/.*${2}=\"\([^\"]*\).*/\1/"
+    echo ${1} | sed -n "s/.*${2}=\"\([^\"]*\).*/\1/p"
 }
 
 if [ $# -lt 2 ]; then
@@ -57,7 +59,7 @@ do_mount()
     esac
 
     if [ -n "${MOUNT_POINT}" ]; then
-        echo "Warning: ${DEVICE} is already mounted at ${MOUNT_POINT}"
+        echo "Warning: ${DEVICE} is already mounted at ${MOUNT_POINT}" >&2
         exit 1
     fi
 
@@ -66,8 +68,8 @@ do_mount()
         BLKID=$(/sbin/blkid ${DEVICE})
 
         ID_FS_TYPE=$(parse_blkid "${BLKID}" TYPE)
-        [ -n "${TYPE}" ] || \
-			{ echo "${DEVICE} is not a fileystem"; exit 1; }
+        [ -n "${ID_FS_TYPE}" ] || \
+            { echo "${DEVICE} is not a fileystem" >&2; exit 1; }
 
         ID_FS_LABEL=$(parse_blkid "${BLKID}" LABEL)
     fi
@@ -81,7 +83,7 @@ do_mount()
     fi
     MOUNT_POINT="${MOUNT_ROOT}/${ID_FS_LABEL}"
 
-    echo "Mount point: ${MOUNT_POINT}"
+    echo "Mount point: ${MOUNT_POINT}" >&2
 
     mkdir -p "${MOUNT_POINT}"
 
@@ -91,7 +93,7 @@ do_mount()
     # File system type specific mount options
     case "${ID_FS_TYPE}" in
     vfat)
-        OPTS="${OPTS},users,utf8=1,flush"
+        OPTS="${OPTS},flush,users,utf8=1"
         if [ -n "${MOUNT_USER}" ]; then
             OPTS="${OPTS},uid=$(id -u ${MOUNT_USER}),gid=$(id -g ${MOUNT_USER})"
         else
@@ -104,7 +106,7 @@ do_mount()
     esac
 
     if ! ${MOUNT} -o ${OPTS} ${DEVICE} ${MOUNT_POINT}; then
-        echo "Error mounting ${DEVICE} (status = $?)"
+        echo "Error mounting ${DEVICE} (status = $?)" >&2
         rmdir ${MOUNT_POINT}
         exit 1
     fi
@@ -112,7 +114,21 @@ do_mount()
     # Change ownership of mounted drive to user, if specified
     [ -z "${MOUNT_USER}" ] || chown ${MOUNT_USER} ${MOUNT_POINT}
 
-    echo "**** Mounted ${DEVICE} at ${MOUNT_POINT} ****"
+    if [ -n "${MOUNT_USER_EXEC}" ]; then
+        if [ -x /usr/bin/systemctl ]; then
+            for i in ${MOUNT_USER_EXEC} ; do
+                /usr/bin/systemctl --no-block start $(/usr/bin/systemd-escape -p --template=${i} ${MOUNT_POINT})
+            done
+        else
+            for i in ${MOUNT_USER_EXEC} ; do
+                if [ -x "${i}" ]; then
+                    nohup ${i} ${MOUNT_POINT} &
+                fi
+            done
+        fi
+    fi
+
+    echo "**** Mounted ${DEVICE} at ${MOUNT_POINT} ****" >&2
 }
 
 do_unmount()
@@ -120,9 +136,9 @@ do_unmount()
     for f in ${MOUNT_POINT} ; do
         case "${f}" in
 		"${MOUNT_ROOT}"*)
-            ${UMOUNT} -l ${f} && echo "**** Unmounted ${f} ${DEVICE}" ;;
-        "") echo "Warning: ${DEVICE} is not mounted" ;;
-        *) echo "Warning: ${DEVICE} is not managed by usb-mount" ;;
+            ${UMOUNT} -l ${f} && echo "**** Unmounted ${f} ${DEVICE}" >&2 ;;
+        "") echo "Warning: ${DEVICE} is not mounted" >&2 ;;
+        *) echo "Warning: ${DEVICE} is not managed by usb-mount" >&2 ;;
         esac
     done
 
@@ -133,7 +149,7 @@ do_unmount()
     for f in ${MOUNT_ROOT}/* ; do
         if [ -e "${f}" ] && [ -z "$(ls -A ${f})" ]; then
             if ! grep -qF " ${f} " /proc/mounts; then
-                echo "**** Removing mount point ${f}"
+                echo "**** Removing mount point ${f}" >&2
                 rmdir "${f}"
             fi
         fi
