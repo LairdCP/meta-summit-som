@@ -20,15 +20,6 @@ UDC_NAME=${2}
 counter=0
 
 create_ether() {
-	case ${USB_GADGET_ETHER} in
-	rndis|ncm)
-		echo 0xa4a2 > idProduct
-		echo "1" > os_desc/use
-		echo "0xcd" > os_desc/b_vendor_code
-		echo "MSFT100" > os_desc/qw_sign
-		;;
-	esac
-
 	func=functions/${USB_GADGET_ETHER}.usb${counter}
 
 	# Create Ethernet config
@@ -36,6 +27,10 @@ create_ether() {
 
 	case ${USB_GADGET_ETHER} in
 	rndis)
+		echo "1" > os_desc/use
+		echo "0xcd" > os_desc/b_vendor_code
+		echo "MSFT100" > os_desc/qw_sign
+
 		echo "ef" > ${func}/class
 		echo "04" > ${func}/subclass
 		echo "01" > ${func}/protocol
@@ -45,6 +40,10 @@ create_ether() {
 		;;
 
 	ncm)
+		echo "1" > os_desc/use
+		echo "0xcd" > os_desc/b_vendor_code
+		echo "MSFT100" > os_desc/qw_sign
+
 		echo "WINNCM" > ${func}/os_desc/interface.ncm/compatible_id
 		;;
 	esac
@@ -73,13 +72,16 @@ create_gadget() {
 		mkdir -p ${GADGET_DIR}/g0
 		cd ${GADGET_DIR}/g0
 
-		echo 0x0525 > idVendor
-		echo 0xa4a1 > idProduct
+		echo ${USB_GADGET_VENDOR_ID}  > idVendor
+		echo ${USB_GADGET_PRODUCT_ID} > idProduct
 
 		mkdir -p strings/0x409
 		if [ -e /sys/devices/soc0/soc_uid ]; then
-			read -r soc_uid < /sys/devices/soc0/soc_uid
-			echo "${soc_uid}" > strings/0x409/serialnumber
+			cat /sys/devices/soc0/soc_uid > strings/0x409/serialnumber
+		elif [ -f /sys/class/net/eth1/address ]; then
+			sed 's/://g' /sys/class/net/eth1/address > strings/0x409/serialnumber
+		elif [ -f /sys/class/net/eth0/address ]; then
+			sed 's/://g' /sys/class/net/eth0/address > strings/0x409/serialnumber
 		else
 			echo "deadbeefdeadbeef" > strings/0x409/serialnumber
 		fi
@@ -105,10 +107,9 @@ create_gadget() {
 
 		ln -s configs/c.1 os_desc/c.1
 		echo ${1} > UDC
-
 }
 
-create_gadgets () {
+create_gadgets() {
 	test -r /etc/default/usb-gadget && . /etc/default/usb-gadget
 
 	[ ${USB_GADGET_ETHER_PORTS:-0}  -gt 0 ] || \
@@ -142,7 +143,7 @@ create_gadgets () {
 	fi
 }
 
-destroy_gadgets () {
+destroy_gadgets() {
 	gadget="${GADGET_DIR}/g0"
 
 	[ -e ${gadget} ] || return
@@ -170,6 +171,6 @@ case "${1}" in
 		;;
 
 	*)
-		echo $"Usage: $0 {start|stop}"
+		echo $"Usage: $0 <start|stop> [port name]"
 		exit 1
 esac

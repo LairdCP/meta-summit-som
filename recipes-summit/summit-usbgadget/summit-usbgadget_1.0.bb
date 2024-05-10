@@ -26,6 +26,8 @@ GADGET_TYPE ?= "ncm"
 LOCAL_MAC ?= "DE:AD:BE:EF:00:00"
 REMOTE_MAC ?= "DE:AD:BE:EF:00:01"
 SERIAL_PORTS ?= "0"
+VENDOR_ID ?= "0x1fa3"
+PRODUCT_ID ?= "0x0002"
 
 S = "${WORKDIR}"
 
@@ -43,6 +45,8 @@ do_install() {
     echo "USB_GADGET_ETHER_LOCAL_MAC=\"${LOCAL_MAC}\""   >> ${D}${sysconfdir}/default/usb-gadget
     echo "USB_GADGET_ETHER_REMOTE_MAC=\"${REMOTE_MAC}\"" >> ${D}${sysconfdir}/default/usb-gadget
     echo "USB_GADGET_SERIAL_PORTS=${SERIAL_PORTS}"       >> ${D}${sysconfdir}/default/usb-gadget
+    echo "USB_GADGET_VENDOR_ID=\"${VENDOR_ID}\""         >> ${D}${sysconfdir}/default/usb-gadget
+    echo "USB_GADGET_PRODUCT_ID=\"${PRODUCT_ID}\""       >> ${D}${sysconfdir}/default/usb-gadget
 
     if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
         install -D -m 0644 ${S}/usb-gadget.service \
