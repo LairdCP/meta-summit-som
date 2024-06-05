@@ -8,11 +8,11 @@ inherit packagegroup
 RDEPENDS:${PN} = " \
 	kernel-module-60-backports \
 	som8mp-radio-firmware \
-	${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'adaptive-bt bt-uart-scripts', '', d)} \
+	${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'summit-adaptive-bt bt-uart-scripts', '', d)} \
 	summit-supplicant-libs-60 \
 	summit-supplicant-60 \
 	summit-supplicant-60-cli \
-	adaptive-ww \
+	summit-adaptive-ww \
 	summit-networkmanager-60 \
 	summit-networkmanager-60-nmcli \
 	"
