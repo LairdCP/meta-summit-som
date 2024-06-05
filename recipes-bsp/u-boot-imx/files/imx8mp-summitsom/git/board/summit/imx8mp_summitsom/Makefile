@@ -1,5 +1,5 @@
 #
-# Copyright 2021 Laird Connectivity
+# Copyright 2021 Ezurio
 #
 # SPDX-License-Identifier:      GPL-2.0+
 #

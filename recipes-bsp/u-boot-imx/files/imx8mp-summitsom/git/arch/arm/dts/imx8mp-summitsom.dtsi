@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
 /*
- * Copyright 2021 Laird Connectivity
+ * Copyright 2021 Ezurio
  */
 
 #include <dt-bindings/usb/pd.h>
 #include "imx8mp.dtsi"
 
 / {
-	model = "Laird Connectivity  i.MX8M Plus Summit SOM";
+	model = "Ezurio  i.MX8M Plus Summit SOM";
 	compatible = "lrd,imx8mp-summitsom", "fsl,imx8mp";
 
 	chosen {

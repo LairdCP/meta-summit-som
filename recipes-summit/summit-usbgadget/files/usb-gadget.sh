@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright (c) 2018-2020, Laird Connectivity
+# Copyright (c) 2018-2020, Ezurio
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
 # copyright notice and this permission notice appear in all copies.
@@ -86,7 +86,7 @@ create_gadget() {
 			echo "deadbeefdeadbeef" > strings/0x409/serialnumber
 		fi
 
-		echo "Laird Connectivity" > strings/0x409/manufacturer
+		echo "Ezurio" > strings/0x409/manufacturer
 		read -r model < /sys/firmware/devicetree/base/model
 		echo "${model}" > strings/0x409/product
 
