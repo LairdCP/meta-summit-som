@@ -8,6 +8,7 @@ WIC_ROOTFS_DATA_FIXED_SIZE = "5G"
 CORE_IMAGE_EXTRA_INSTALL += "\
 	${IMAGE_INSTALL_BASIC} \
 	${IMAGE_INSTALL_DIAG} \
+	mdio-tools \
 	linuxptp \
 	packagegroup-fsl-tools-audio \
 	read-edid \

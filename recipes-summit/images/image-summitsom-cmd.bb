@@ -5,6 +5,7 @@ inherit image-summitsom-gen image-summitsom-sd-gen image-summitsom-swu-gen
 CORE_IMAGE_EXTRA_INSTALL += "\
 	${IMAGE_INSTALL_BASIC} \
 	${IMAGE_INSTALL_DIAG} \
+	mdio-tools \
 	linuxptp \
 	packagegroup-fsl-tools-audio \
 	mpg123 \
