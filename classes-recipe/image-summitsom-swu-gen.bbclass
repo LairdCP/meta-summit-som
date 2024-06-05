@@ -8,7 +8,7 @@ inherit swupdate-image
 
 SRC_URI += "file://update_support.sh file://erase_data.sh"
 
-SWUPDATE_IMAGES += "imx-boot ${IMAGE_BOOT_FILES}"
+SWUPDATE_IMAGES += "imx-boot u-boot.env ${IMAGE_BOOT_FILES}"
 
 ARCHIVE_WILDCARD += "${SWUDEPLOYDIR}/${IMAGE_NAME}.swu ${SWUDEPLOYDIR}/${IMAGE_LINK_NAME}.swu"
 

@@ -138,6 +138,10 @@
 	"fi"
 #endif
 
+#ifdef CONFIG_ENV_WRITEABLE_LIST
+#define CFG_ENV_FLAGS_LIST_STATIC "conf:sw,version:sw"
+#endif
+
 /* Link Definitions */
 
 #define CFG_SYS_INIT_RAM_ADDR        0x40000000
