@@ -19,19 +19,19 @@ ENV_SIZE = "0x4000"
 #Env base Name
 ENV_BASE_NAME ??= "${UBOOT_INITIAL_ENV}-${UBOOT_CONFIG}"
 
-do_compile:append:imx8mp-summitsom() {
+do_compile:append:summitsom() {
 	for config in ${UBOOT_MACHINE}; do
         mkenvimage -s ${ENV_SIZE} -o ${B}/${config}/${ENV_BASE_NAME}.bin ${B}/${config}/${ENV_BASE_NAME}
     done
 }
 
-do_install:append:imx8mp-summitsom() {
+do_install:append:summitsom() {
 	for config in ${UBOOT_MACHINE}; do
 		install -D -m 644 ${B}/${config}/${ENV_BASE_NAME}.bin ${D}/boot/u-boot.env
     done
 }
 
-do_deploy:append:imx8mp-summitsom() {
+do_deploy:append:summitsom() {
 	for config in ${UBOOT_MACHINE}; do
         install -D -m 644 ${B}/${config}/${ENV_BASE_NAME}.bin ${DEPLOYDIR}/u-boot-${UBOOT_CONFIG}.env
 		ln -sf u-boot-${UBOOT_CONFIG}.env ${DEPLOYDIR}/u-boot.env
