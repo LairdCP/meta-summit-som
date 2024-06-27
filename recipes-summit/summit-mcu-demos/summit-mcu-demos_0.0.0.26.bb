@@ -11,7 +11,7 @@ PREMIRRORS:summit-internal = ""
 MIRRORS:summit-internal = ""
 
 SUMMIT_URI ?= "https://github.com/LairdCP/Summit-SOM-Zephyr-Release-Packages/releases/download/SUMMIT-ZEPHYR-${PV}"
-SUMMIT_URI:summit-internal = "https://files.devops.rfpros.com/builds/zephyr/summitsom/laird/${PV}"
+SUMMIT_URI:summit-internal = "https://${RFPROS_FILESHARE_AUTH}files.devops.rfpros.com/builds/zephyr/summitsom/laird/${PV}"
 
 SRC_URI = "${SUMMIT_URI}/summit-mcu-demos-${PV}.tar.bz2"
 
