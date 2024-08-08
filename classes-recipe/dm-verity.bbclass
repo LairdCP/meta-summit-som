@@ -23,7 +23,7 @@ process_verity() {
     echo "HASH_BLOCK=$HASH_BLOCK"
 
     echo "dm_table=\"vroot,$UUID,,ro,0 $DATA_SECT verity 1 $BOOT_DEV $BOOT_DEV $DATA_BLOCK_SIZE $HASH_BLOCK_SIZE $DATA_BLOCKS $HASH_BLOCK $HASH_ALGORITHM $ROOT_HASH $SALT\"" > ${ENV}
-    echo 'setenv bootargs "${bootargs} dm-mod.create=\"${dm_table}\" dm_verity.dev_wait=1 root=/dev/dm-0 rootwait rootfstype=squashfs ro"' >> ${ENV}
+    printf 'setenv bootargs "${bootargs} dm-mod.create=\"${dm_table}\" dm-mod.waitfor=%s root=/dev/dm-0 rootwait rootfstype=squashfs ro"' $BOOT_DEV >> ${ENV}
 }
 
 verity_setup() {
