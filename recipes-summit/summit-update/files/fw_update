@@ -1,42 +1,74 @@
 #! /bin/sh
+# SPDX-License-Identifier: LicenseRef-Ezurio-Clause
+# Copyright (C) 2024 Ezurio
+
+set -e
+
+notify() {
+    [ ! -x /usr/sbin/device_update.sh ] || /usr/sbin/device_update.sh "${1}"
+}
 
 die() {
-    echo "${1}" >&2
+    case "${o_method}" in
+    complete*)
+        flash_cleanup
+        ;;
+    esac
+
+    notify failed
+    [ -z "${1}" ] || echo "${1}" >&2
     echo "Firmware update failed" >&2
-    exit 2
+    exit 1
 }
 
 usage() {
-    echo "Usage: $0: [-m <method>] [-s <side>] [-x value] [-v] <url>"
+    cat << --EOF--
+"Usage: $0: [-m <method>] [-s <side>] [-x value] [-f] [-v] <url>"
+    -m - Updated method (full, main, complete, etc) (default: full - NAND/eMMCC, complete - SD)
+    -s - Update side (a, b) (default: automatic)
+    -x - Extended options (r - no reboot)
+    -f - Factory provision mode (default: off)
+    -v - Verbose mode (default: off)
+    url - URL to update package
+--EOF--
     exit 3
 }
 
 [ $# -ge 1 ] || usage
 
+o_verbose=
 o_quiet=true
 o_restart=true
-
-update_ok=false
+o_factory=false
 
 # determine update side
-devnum=$(sed -nr 's,.*/dev/(mmcblk[0-9]+)p([0-9]+).*,\1 \2,p' /proc/cmdline)
-mmc=${devnum% *}
-part=${devnum#* }
+# shellcheck source=/dev/null
+. /usr/sbin/boot-rootfs.sh || die
 
-[ "${part}" -lt 4 ] && o_side=b || o_side=a
+[ "$(getSide)" = "a" ] && o_side=b || o_side=a
 
-read -r mmctype < /sys/block/${mmc}/device/type
-[ "${mmctype}" = "SD" ] && run_on_sd=true || run_on_sd=false
+# shellcheck disable=SC2154
+[ "$(rootDevType)" = "SD" ] && run_on_sd=true || run_on_sd=false
 
 ${run_on_sd} && o_method=complete || o_method=full
 
-while getopts m:s:x:v name; do
+if grep -qF '"ubi"' /proc/mtd; then
+    # shellcheck source=/dev/null
+    . /usr/bin/update_ubi_support.sh
+else
+    flash_cleanup() { : ; }
+    flash_factory_test() { : ; }
+    flash_format() { : ; }
+fi
+
+while getopts m:s:x:fv name; do
     case ${name} in
     m)  o_method=${OPTARG} ;;
     s)  o_side=${OPTARG} ;;
     x)  case "${OPTARG}" in
             *r*) o_restart=false ;;
         esac ;;
+    f)  o_factory=true ;;
     v)  o_verbose="-v"; o_quiet=false ;;
     ?)  usage ;;
     esac
@@ -46,41 +78,82 @@ shift $((OPTIND - 1))
 url="${1}"
 
 if [ "${o_method}" = complete ]; then
-    ${run_on_sd} || die "only 'full' update method supported when booting from eMMC flash"
+    ${run_on_sd} || die "only 'full' or 'main' update methods supported when booting from NAND/eMMC"
     p_method=${o_method}
 else
-    ${run_on_sd} && die "only 'complete' update method supported when booting from SD card"
+    ! ${run_on_sd} || die "only 'complete' update method supported when booting from SD card"
     p_method=${o_method}-${o_side}
 fi
 
-${o_quiet} && exec >/dev/null
+notify updating
+
+! ${o_quiet} || exec >/dev/null
 
 case "${url}" in
+file://*)
+    url="${url#file://}"
+    [ -r "${url}" ] || die "File ${url} not found"
+    ;;
+
 *://*)
+    case "${url%:*}" in
+    http|https|ftp)
+        if [ -x /usr/bin/curl ]; then
+            /usr/bin/curl -LsfI "${url}" || die "File ${url} not found"
+        elif [ -x /usr/bin/wget ]; then
+            /usr/bin/wget -T4 -t1 --spider -qO - "${url}" || die "File ${url} not found"
+        fi
+        ;;
+    esac
+
     if [ -x /usr/bin/curl ]; then
-        ${o_quiet} && o_dlsilent="-s"
-        download_cmd="/usr/bin/curl ${o_dlsilent} ${url}"
+        ! ${o_quiet} || o_dlsilent="-s"
+        download_cmd="/usr/bin/curl -Lf ${o_dlsilent} ${url}"
     elif [ -x /usr/bin/wget ]; then
-        ${o_quiet} && o_dlsilent="-q"
-        download_cmd="/usr/bin/wget ${o_dlsilent} -O - ${url}"
+        ! ${o_quiet} || o_dlsilent="-q"
+        download_cmd="/usr/bin/wget -T4 -t1 ${o_dlsilent} -O - ${url}"
     else
         die "Download utility not found (need curl or wget)"
     fi
-
-    ${download_cmd} | swupdate-client -p -e stable,${p_method} ${o_verbose} -
     ;;
 
 *)
-    swupdate-client -p -e stable,${p_method} ${o_verbose} "${url}"
+    [ -r "${url}" ] || die "File ${url} not found"
     ;;
 esac
 
-if [ $? -eq 0 ]; then
-    echo "Firmware update succeeded" >&2
-    if ${o_restart} && ! ${run_on_sd}; then
-        reboot
+case "${o_method}" in
+complete*)
+    flash_cleanup
+    ! ${o_factory} || flash_factory_test
+    flash_format
+    ;;
+esac
+
+case "${url}" in
+*://*)
+    ${download_cmd} | swupdate-client -e "stable,${p_method}" ${o_verbose} - || die ""
+    ;;
+
+*)
+    swupdate-client -e "stable,${p_method}" ${o_verbose} "${url}" || die ""
+    ;;
+esac
+
+case "${o_method}" in
+complete*)
+    flash_cleanup 
+    ;;
+*)
+    if [ -x /usr/sbin/migrate_data.sh ]; then
+        /usr/sbin/migrate_data.sh || die "Data migrate failed"
     fi
-else
-    echo "Firmware update failed" >&2
-    exit 1
+    ;;
+esac
+
+notify complete
+echo "Firmware update succeeded" >&2
+
+if ${o_restart} && ! ${run_on_sd}; then
+    reboot
 fi

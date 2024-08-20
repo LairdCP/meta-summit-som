@@ -2,7 +2,7 @@
 #@NAME: Summit SOM i.MX8M Plus
 #@SOC: i.MX8
 #@DESCRIPTION: Machine configuration for Summit SOM i.MX8M Plus
-#@MAINTAINER: Boris Krasnovskiy <Boris.Krasnovskiy@lairdconnect.com>
+#@MAINTAINER: Boris Krasnovskiy <Boris.Krasnovskiy@ezurio.com>
 
 MACHINEOVERRIDES =. "mx8mp:"
 
@@ -55,6 +55,8 @@ TEE_LOAD_ADDR = "0x56000000"
 MACHINE_EXTRA_RDEPENDS += "${MACHINE_FIRMWARE} kernel-modules"
 
 IMXBOOT_TARGETS_BASENAME = "flash_evk"
+
+PREFERRED_PROVIDER_u-boot-mkenvimage-native = "u-boot-imx-tools-native"
 
 IMX_DEFAULT_BSP = "nxp"
 

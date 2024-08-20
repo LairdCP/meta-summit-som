@@ -1,4 +1,6 @@
 #!/bin/sh
+# SPDX-License-Identifier: LicenseRef-Ezurio-Clause
+# Copyright (C) 2024 Ezurio
 
 set -e
 
@@ -6,43 +8,32 @@ DATA_MOUNT=/data
 
 case "${1}" in
 start)
-	# Mount proper data device (based on boot side)
-	read -r cmdline </proc/cmdline
-	for x in ${cmdline}; do
-		case "$x" in
-		/dev/mmcblk*)
-			ROOTDEV=${x}
-			break
-			;;
-		esac
-	done
+	# shellcheck source=/dev/null
+	. /usr/sbin/boot-rootfs.sh
 
-	PART=${ROOTDEV#*p}
-	DRV=${ROOTDEV%p*}
-
-	DATA_DEVICE=${DRV}p$((PART + 1))
+	DATA_DEVICE=/dev/$(getPart rootfs_data)
 
 	if [ -f /perm/caam/datakey ]; then
 		caam-keygen import /perm/caam/datakey.bb datakey
 	else
 		caam-keygen create datakey ecb -s 16
 	fi
-	cat /perm/caam/datakey | keyctl padd logon logkey: @s
+	usr/bin/keyctl padd logon logkey: @s < /perm/caam/datakey
 
-	dmsetup -v create data_enc --table "0 $(($(lsblk -nbo SIZE ${DATA_DEVICE}) / 512)) crypt capi:tk(cbc(aes))-plain :36:logon:logkey: 0 ${DATA_DEVICE} 0 1 sector_size:512"
+	/usr/sbin/dmsetup -v create data_enc --table "0 $(($(lsblk -nbo SIZE "${DATA_DEVICE}") / 512)) crypt capi:tk(cbc(aes))-plain :36:logon:logkey: 0 ${DATA_DEVICE} 0 1 sector_size:512"
 
-	[ "$(lsblk -no FSTYPE /dev/mapper/data_enc)" = "ext4" ] || mkfs.ext4 /dev/mapper/data_enc
+	[ "$(/usr/bin/lsblk -no FSTYPE /dev/mapper/data_enc)" = "ext4" ] || /usr/sbin/mkfs.ext4 /dev/mapper/data_enc
 
 	/usr/bin/mount -o noatime,noexec,nosuid,nodev -t auto /dev/mapper/data_enc ${DATA_MOUNT}
 
-	. do_factory_reset.sh check
+	/usr/sbin/do_factory_reset.sh check
 
 	echo "Secure Boot Cycle Complete" >/dev/console
 	;;
 
 stop)
 	/usr/bin/umount ${DATA_MOUNT}
-	dmsetup remove data_enc
+	/usr/sbin/dmsetup remove data_enc
 	echo 3 >/proc/sys/vm/drop_caches
 	;;
 

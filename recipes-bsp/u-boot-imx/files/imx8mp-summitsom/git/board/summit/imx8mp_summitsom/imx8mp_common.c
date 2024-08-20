@@ -65,30 +65,52 @@ static int get_boot_side(int dev)
 
 uint mmc_get_env_part(struct mmc *mmc)
 {
-	switch (get_boot_device()) {
-	case MMC3_BOOT:
-		return get_boot_side(2);
-	default:
+	enum boot_device bdev = get_boot_device();
+	int devno;
+
+	switch (bdev) {
+	case SD1_BOOT:
+	case SD2_BOOT:
+	case SD3_BOOT:
 		return CONFIG_SYS_MMC_ENV_PART;
+
+	case MMC1_BOOT:
+	case MMC2_BOOT:
+	case MMC3_BOOT:
+		devno = bdev - MMC1_BOOT;
+		return get_boot_side(devno);
+
+	default:
+		return 0;
 	}
 }
 
 static void set_bootside(void)
 {
 	const char *side;
+	enum boot_device bdev = get_boot_device();
+	int devno;
 
-	switch (get_boot_device()) {
+	switch (bdev) {
+	case SD1_BOOT:
 	case SD2_BOOT:
-		env_set_ulong("mmcdev", 1);
+	case SD3_BOOT:
+		devno = bdev - SD1_BOOT;
+		env_set_ulong("mmcdev", devno);
 		env_set("bootside", "a");
 		printf("Booting from SD, side a\n");
 		break;
+
+	case MMC1_BOOT:
+	case MMC2_BOOT:
 	case MMC3_BOOT:
-		env_set_ulong("mmcdev", 2);
-		side = get_boot_side(2) == 2 ? "b" : "a";
+		devno = bdev - MMC1_BOOT;
+		env_set_ulong("mmcdev", devno);
+		side = get_boot_side(devno) == 2 ? "b" : "a";
 		env_set("bootside", side);
 		printf("Booting from eMMC, side %s\n", side);
 		break;
+
 	default:
 		break;
 	}

@@ -1,17 +1,16 @@
 #! /bin/sh
+# SPDX-License-Identifier: LicenseRef-Ezurio-Clause
+# Copyright (C) 2024 Ezurio
 
-set -- $(sed -nr 's,.*/dev/(mmcblk[0-9]+)p([0-9]+).*,\1 \2,p' /proc/cmdline)
-mmc="${1}"
-part="${2}"
+# shellcheck source=/dev/null
+. /usr/sbin/boot-rootfs.sh
 
-if [ -d /sys/block/${mmc}boot0 ]; then 
-    if [ "${part}" -ge 4 ]; then 
-        mmcenv=boot1
-    else
-        mmcenv=boot0
-    fi
+if [ "$(rootDevType)" != "MMC" ]; then
+	mmcenv=
+elif [ "$(getSide)" = b ]; then 
+	mmcenv=boot1
 else
-        mmcenv=
+	mmcenv=boot0
 fi
 
-echo "/dev/${mmc}${mmcenv} 0x3f0000 0x4000" > /run/fw_env.config
+echo "/dev/${rootDevName:?}${mmcenv} 0x3f0000 0x4000" > /run/fw_env.config
