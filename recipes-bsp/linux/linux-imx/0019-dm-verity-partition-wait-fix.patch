@@ -1,0 +1,13 @@
+diff --git a/drivers/md/dm-init.c b/drivers/md/dm-init.c
+index dc4381d68313..bc3649d9f617 100644
+--- a/drivers/md/dm-init.c
++++ b/drivers/md/dm-init.c
+@@ -295,7 +295,7 @@ static int __init dm_init_init(void)
+ 	for (i = 0; i < ARRAY_SIZE(waitfor); i++) {
+ 		if (waitfor[i]) {
+ 			DMINFO("waiting for device %s ...", waitfor[i]);
+-			while (!dm_get_dev_t(waitfor[i]))
++			while (!dm_get_dev_t(waitfor[i]) || driver_probe_done())
+ 				msleep(5);
+ 		}
+ 	}
