@@ -21,35 +21,44 @@ warning() {
 	fi
 }
 
-cleanup() {
-	if [ -d "${MOUNT_POINT}" ]; then
-		/bin/umount ${MOUNT_POINT} || true
-		dmsetup remove data_enc_o
-		rmdir ${MOUNT_POINT}
-	fi
-}
-
 migrate_data() {
 	[ -f /perm/caam/datakey ] && [ -n "${1}" ] || return
 
 	caam-keygen import /perm/caam/datakey.bb datakey
 	keyctl padd logon logkey: @s < /perm/caam/datakey
 
-	dmsetup -v create data_enc_o --table "0 $(($(lsblk -nbo SIZE "${1}") / 512)) crypt capi:tk(cbc(aes))-plain :36:logon:logkey: 0 ${1} 0 1 sector_size:512" ||\
+	DATA_SIZE=$(/usr/bin/lsblk -ndbo SIZE "${1}")
+
+	dmsetup -v create data_enc_o --table "0 $((DATA_SIZE / 512)) \
+		crypt capi:tk(cbc(aes))-plain :36:logon:logkey: 0 ${1} 0 1 \
+		sector_size:512" || \
 		die "dm_crypt table creation for ${1} Failed"
 
 	# Wipe data patition
-	mkfs.ext4 /dev/mapper/data_enc_o
+	mkfs.ext4 /dev/mapper/data_enc_o || {
+		dmsetup remove data_enc_o
+		die "Formatting ${1} Failed"
+	}
 
-	mkdir -p "${MOUNT_POINT}" || exit_on_error false "Directory Creation for ${MOUNT_POINT} Failed"
+	mkdir -p "${MOUNT_POINT}" || {
+		dmsetup remove data_enc_o
+		die "Directory Creation for ${MOUNT_POINT} Failed"
+	}
 
 	# Create mount point and mount the data device
-	/bin/mount -o noatime,noexec,nosuid,nodev -t auto /dev/mapper/data_enc_o ${MOUNT_POINT} ||
+	/bin/mount -o noatime,noexec,nosuid,nodev -t auto /dev/mapper/data_enc_o \
+		${MOUNT_POINT} || {
+		dmsetup remove data_enc_o
+		rmdir ${MOUNT_POINT}
 		die "Mounting ${1} to ${MOUNT_POINT} Failed"
+	}
 
-
-	cp -fa -t ${MOUNT_POINT} ${DATA_SRC}/* ||
+	cp -fa -t ${MOUNT_POINT} ${DATA_SRC}/* || {
+		/bin/umount ${MOUNT_POINT} || true
+		dmsetup remove data_enc_o
+		rmdir ${MOUNT_POINT}
 		die "Data Copying.. Failed"
+	}
 
 	sync
 
@@ -75,7 +84,7 @@ case "${DATA_MOUNT}" in
 esac
 
 # Migrate if /data is mounted on the expected target
-if [ "${DATA_MOUNT}" = "${DATA_DEV_SRC}" ]; then
+if [ "${DATA_MOUNT}" = "${DATA_DEV_SRC##*/}" ]; then
 	migrate_data "${DATA_DEV_TGT}"
 else
 	echo "Data from ${DATA_SRC} not migrated, because it was not mounted." | systemd-cat -t "${0}" -p warning

@@ -12,6 +12,7 @@ SRC_URI = " \
     file://01-capability.conf \
     file://fw_update \
     file://update_ubi_support.sh \
+    file://erase_som_nand \
     "
 
 RDEPENDS:${PN} = "\
@@ -26,7 +27,7 @@ S = "${WORKDIR}"
 FILES:${PN} += "${systemd_unitdir} ${sysconfdir}"
 
 do_install () {
-    install -D -m 0755 -t ${D}${bindir} ${S}/fw_update ${S}/update_ubi_support.sh
+    install -D -m 0755 -t ${D}${bindir} ${S}/fw_update ${S}/update_ubi_support.sh ${S}/erase_som_nand
     install -D -m 0644 -t ${D}${sysconfdir}/swupdate/conf.d ${S}/10-swupdate.conf
 
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then

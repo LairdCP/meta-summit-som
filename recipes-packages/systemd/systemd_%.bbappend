@@ -2,6 +2,7 @@ FILESEXTRAPATHS:prepend:summitsom := "${THISDIR}/files:"
 
 SRC_URI:append:summitsom = "\
     file://0005-timedate-symlink.patch \
+    file://95-network-generator.preset \
     "
 
 PACKAGECONFIG:summitsom = " \
@@ -14,7 +15,6 @@ PACKAGECONFIG:summitsom = " \
     hibernate \
     hostnamed \
     idn \
-    ima \
     kmod \
     localed \
     logind \
@@ -23,13 +23,13 @@ PACKAGECONFIG:summitsom = " \
     set-time-epoch \
     sysusers \
     timedated \
-    userdb \
     utmp \
     vconsole \
-    wheel-group \
     zstd \
 "
 
 do_install:append:summitsom() {
-        rm -f ${D}${systemd_unitdir}/system-generators/systemd-gpt-auto-generator
+    rm -f ${D}${systemd_unitdir}/system-generators/systemd-gpt-auto-generator
+    install -D -m 644 -t ${D}${systemd_unitdir}/system/system-preset \
+        ${S}/../95-network-generator.preset
 }

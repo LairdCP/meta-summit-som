@@ -12,6 +12,7 @@ FACTORY_SETTING_TIMEZONE=/etc/timezone
 FACTORY_SETTING_ADJTIME_FILE=/etc/adjtime
 
 BLUETOOTH_STATE_DIR=${USER_SETTINGS_SECRET_TARGET}/lib/bluetooth
+DROPBEAR_DIR=${USER_SETTINGS_SECRET_TARGET}/dropbear
 RESET_INIDICATOR=/data/.factory_reset
 
 exit_on_error() {
@@ -25,14 +26,28 @@ do_check_and_reset() {
 		# Delete all user data, but not the /data/secret dir as it is encrypted.
 		find /data -maxdepth 1 -mindepth 1 ! -name secret -exec rm -fr {} \;
 		find ${USER_SETTINGS_SECRET_TARGET} -maxdepth 1 -mindepth 1 ! -name permanent -exec rm -fr {} \;
+		# Run factory reset hooks for external components
+		for hook_sh in /usr/sbin/factory_reset_*.sh; do
+			# shellcheck source=/dev/null
+			[ ! -x "${hook_sh}" ] || . "${hook_sh}"
+		done
 	# Check if secret directory has been populated, do not blow away settings
 	elif [ -d "${USER_SETTINGS_SECRET_TARGET}/NetworkManager" ]; then
-		# Always copy over system connections, as the host connection is critical
-		cp -ar ${FACTORY_SETTING_SECRET_SOURCE}/NetworkManager/system-connections ${USER_SETTINGS_SECRET_TARGET}/NetworkManager
+		# Create directories needed during software upgrade
+		[ -x /usr/libexec/bluetooth/bluetoothd ] && mkdir -p ${BLUETOOTH_STATE_DIR}
+		[ -x /usr/sbin/dropbear ] && mkdir -p ${DROPBEAR_DIR}
+
+		for hook_sh in /usr/sbin/factory_powerup_*.sh; do
+			# shellcheck source=/dev/null
+			[ ! -x "${hook_sh}" ] || . "${hook_sh}"
+		done
+
+		sync
 		return
 	fi
 
-	mkdir -p ${BLUETOOTH_STATE_DIR}
+	[ -x /usr/libexec/bluetooth/bluetoothd ] && mkdir -p ${BLUETOOTH_STATE_DIR}
+	[ -x /usr/sbin/dropbear ] && mkdir -p ${DROPBEAR_DIR}
 
 	cp -ar ${FACTORY_SETTING_SECRET_SOURCE}/* ${USER_SETTINGS_SECRET_TARGET} || \
 		exit_on_error "Copying factory default files failed"
@@ -47,12 +62,10 @@ do_check_and_reset() {
 	[ -f "${USER_SETTINGS_MISC_TARGET}/timezone" ] || \
 		echo "Etc/UTC" > "${USER_SETTINGS_MISC_TARGET}/timezone"
 
-	ln -sf ${FACTORY_SETTING_DEFAULT_ZONE}/$(cat ${FACTORY_SETTING_TIMEZONE}) $(readlink ${FACTORY_SETTING_LOCALTIME}) || \
+	ln -sf ${FACTORY_SETTING_DEFAULT_ZONE}/"$(cat ${FACTORY_SETTING_TIMEZONE})" "$(readlink ${FACTORY_SETTING_LOCALTIME})" || \
 		exit_on_error "Unable to create localtime link"
 
 	touch "${FACTORY_SETTING_ADJTIME_FILE}" || exit_on_error "unable to create adjtime file"
-
-	systemd-machine-id-setup --root=/
 
 	sync
 }
@@ -69,6 +82,6 @@ case "${1}" in
 
 	*)
 		echo "Usage: ${0} <reset | check>"
-		exit -1
+		exit 1
 		;;
 esac
