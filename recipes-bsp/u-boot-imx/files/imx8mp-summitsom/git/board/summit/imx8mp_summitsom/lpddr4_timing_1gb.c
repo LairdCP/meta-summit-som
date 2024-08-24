@@ -11,7 +11,7 @@
  * please replace #include <asm/arch/ddr.h> with #include <asm/arch/imx8m_ddr.h>
  */
 
-static const
+
 struct dram_cfg_param ddr_ddrc_cfg_1g[] = {
 	/** Initialize DDRC registers **/
 	{ 0x3d400304, 0x1 },

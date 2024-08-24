@@ -11,7 +11,7 @@
  * please replace #include <asm/arch/ddr.h> with #include <asm/arch/imx8m_ddr.h>
  */
 
-static const
+
 struct dram_cfg_param ddr_ddrc_cfg_4g[] = {
 	/** Initialize DDRC registers **/
 	{ 0x3d400304, 0x1 },
@@ -127,7 +127,7 @@ struct dram_cfg_param ddr_ddrc_cfg_4g[] = {
 };
 
 /* P0 message block parameter for training firmware */
-static const
+
 struct dram_cfg_param ddr_fsp0_cfg_4g[] = {
 	{ 0xd0000, 0x0 },
 	{ 0x54003, 0xfa0 },
@@ -168,7 +168,7 @@ struct dram_cfg_param ddr_fsp0_cfg_4g[] = {
 
 
 /* P1 message block parameter for training firmware */
-static const
+
 struct dram_cfg_param ddr_fsp1_cfg_4g[] = {
 	{ 0xd0000, 0x0 },
 	{ 0x54002, 0x101 },
@@ -210,7 +210,7 @@ struct dram_cfg_param ddr_fsp1_cfg_4g[] = {
 
 
 /* P2 message block parameter for training firmware */
-static const
+
 struct dram_cfg_param ddr_fsp2_cfg_4g[] = {
 	{ 0xd0000, 0x0 },
 	{ 0x54002, 0x102 },
@@ -252,7 +252,7 @@ struct dram_cfg_param ddr_fsp2_cfg_4g[] = {
 
 
 /* P0 2D message block paremeter for training firmware */
-static const
+
 struct dram_cfg_param ddr_fsp0_2d_cfg_4g[] = {
 	{ 0xd0000, 0x0 },
 	{ 0x54003, 0xfa0 },
@@ -292,7 +292,7 @@ struct dram_cfg_param ddr_fsp0_2d_cfg_4g[] = {
 	{ 0xd0000, 0x1 },
 };
 
-static const
+
 struct dram_fsp_msg ddr_dram_fsp_msg_4g[] = {
 	{
 		/* P0 4000mts 1D */

@@ -2,12 +2,10 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI += " \
 	file://0002-gpio-add-gpio_of_helper.patch \
-	file://0003-max310x-crystal-stabilize.patch \
 	file://0004-Introduce-the-BQ25790-charger-driver.patch \
 	file://0005-ts3a227.patch \
 	file://0006-sound_ts3a227_support.patch \
 	file://0008-fsl_aud2htx-probe.patch \
-	file://0009-it6161.patch \
 	file://0010-imx-sdma.patch \
 	file://0011-fsl-sai.patch \
 	file://0012-fsl-easrc.patch \
@@ -15,12 +13,6 @@ SRC_URI += " \
 	file://0014-phy-fsl-samsung-hdmi.patch \
 	file://0015-imx8mp-hdmi-pavi.patch \
 	file://0016-gpio-regulator-off-delay.patch \
-	file://0019-dm-verity-partition-wait-fix.patch \
-	file://0020-dt-bindings-soc-imx8mp-hsio-blk-ctrl-add-clock-cells.patch \
-	file://0021-soc-imx-add-Kconfig-symbols-for-blk-ctrl-drivers.patch \
-	file://0022-soc-imx-imx8mp-blk-ctrl-add-instance-specific-probe-.patch \
-	file://0023-soc-imx-imx8mp-blk-ctrl-expose-high-performance-PLL-.patch \
-	file://0024-arm64-dts-imx8mp-add-clock-cells-to-hsio-blk-ctrl.patch	\
 	"
 
 SRC_URI:append:imx8mp-summitsom = " \

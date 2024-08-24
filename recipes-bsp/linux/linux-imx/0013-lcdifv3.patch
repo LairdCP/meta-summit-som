@@ -2,7 +2,7 @@ diff --git a/drivers/gpu/imx/lcdifv3/lcdifv3-common.c b/drivers/gpu/imx/lcdifv3/
 index 7bdb00e2ecc7..dfe95675085b 100644
 --- a/drivers/gpu/imx/lcdifv3/lcdifv3-common.c
 +++ b/drivers/gpu/imx/lcdifv3/lcdifv3-common.c
-@@ -711,14 +711,14 @@ static int imx_lcdifv3_probe(struct platform_device *pdev)
+@@ -644,14 +644,14 @@ static int imx_lcdifv3_probe(struct platform_device *pdev)
  
  	lcdifv3->irq = platform_get_irq(pdev, 0);
  	if (lcdifv3->irq < 0) {

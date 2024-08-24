@@ -1,14 +1,11 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
 /*
- * Copyright 2018-2019 NXP
+ * Copyright 2018-2019, 2021 NXP
  *
- * SPDX-License-Identifier:	GPL-2.0+
  */
 
 #include <common.h>
-#include <command.h>
-#include <cpu_func.h>
 #include <hang.h>
-#include <image.h>
 #include <init.h>
 #include <log.h>
 #include <spl.h>
@@ -30,12 +27,13 @@
 #include <fsl_esdhc_imx.h>
 #include <mmc.h>
 #include <asm/arch/ddr.h>
+#include <asm/sections.h>
 #include <fuse.h>
 
-extern const struct dram_timing_info dram_timing_4g;
-extern const struct dram_timing_info dram_timing_2g;
-extern const struct dram_timing_info dram_timing_1g;
-extern const struct dram_timing_info dram_timing_512m;
+extern struct dram_timing_info dram_timing_4g;
+extern struct dram_timing_info dram_timing_2g;
+extern struct dram_timing_info dram_timing_1g;
+extern struct dram_timing_info dram_timing_512m;
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -128,7 +126,7 @@ int power_init_board(void)
 		puts("No pca9450@25\n");
 		return 0;
 	}
-	if (ret != 0)
+	if (ret < 0)
 		return ret;
 
 	/* BUCKxOUT_DVS0/1 control BUCK123 output */
@@ -136,22 +134,25 @@ int power_init_board(void)
 
 #ifdef CONFIG_IMX8M_LPDDR4
 	/*
-	 * increase VDD_SOC to typical value 0.95V before first
-	 * DRAM access, set DVS1 to 0.85v for suspend.
+	 * Increase VDD_SOC to typical value 0.95V before first
+	 * DRAM access, set DVS1 to 0.85V for suspend.
 	 * Enable DVS control through PMIC_STBY_REQ and
 	 * set B1_ENMODE=1 (ON by PMIC_ON_REQ=H)
 	 */
-#ifdef CONFIG_IMX8M_VDD_SOC_850MV
-	/* set DVS0 to 0.85v for special case*/
-	pmic_reg_write(dev, PCA9450_BUCK1OUT_DVS0, 0x14);
-#else
-	pmic_reg_write(dev, PCA9450_BUCK1OUT_DVS0, 0x1C);
-#endif
+	if (CONFIG_IS_ENABLED(IMX8M_VDD_SOC_850MV))
+		pmic_reg_write(dev, PCA9450_BUCK1OUT_DVS0, 0x14);
+	else
+		pmic_reg_write(dev, PCA9450_BUCK1OUT_DVS0, 0x1C);
+
 	pmic_reg_write(dev, PCA9450_BUCK1OUT_DVS1, 0x14);
 	pmic_reg_write(dev, PCA9450_BUCK1CTRL, 0x59);
 
-	/* Kernel uses OD/OD freq for SOC */
-	/* To avoid timing risk from SOC to ARM,increase VDD_ARM to OD voltage 0.95v */
+	/*
+	 * Kernel uses OD/OD freq for SOC.
+	 * To avoid timing risk from SOC to ARM,increase VDD_ARM to OD
+	 * voltage 0.95V.
+	 */
+
 	pmic_reg_write(dev, PCA9450_BUCK2OUT_DVS0, 0x1C);
 #elif defined(CONFIG_IMX8M_DDR4)
 	/* DDR4 runs at 3200MTS, uses default ND 0.85v for VDD_SOC and VDD_ARM */
@@ -189,8 +190,6 @@ void board_init_f(ulong dummy)
 
 	timer_init();
 
-	preloader_console_init();
-
 	ret = spl_early_init();
 	if (ret) {
 		debug("spl_early_init() failed: %d\n", ret);
@@ -204,6 +203,8 @@ void board_init_f(ulong dummy)
 		printf("Failed to find clock node. Check device tree\n");
 		hang();
 	}
+
+	preloader_console_init();
 
 	enable_tzc380();
 

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+// SPDX-License-Identifier: LicenseRef-Ezurio-Clause
 /*
  * Copyright 2021 Ezurio
  */
@@ -107,7 +107,7 @@
 	codec: wm8960@1a {
 		compatible = "wlf,wm8960";
 		reg = <0x1a>;
-		clocks = <&audio_blk_ctrl IMX8MP_CLK_AUDIO_BLK_CTRL_SAI3_MCLK1>;
+		clocks = <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SAI3_MCLK1>;
 		clock-names = "mclk";
 		wlf,shared-lrclk;
 		wlf,hp-cfg = <3 3 3>;
@@ -125,6 +125,7 @@
 		interrupt-parent = <&gpio5>;
 		interrupts = <5 IRQ_TYPE_LEVEL_LOW>;
 		ti,micbias = <1>;
+		ti,debounce-insertion-ms = <200>;
 	};
 };
 

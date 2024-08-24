@@ -1,25 +1,22 @@
 SUMMARY = "Summit Remote Control Manager (RCM) Adaptive Worldwide Mode (AWM) Plugin"
-DESCRIPTION = "Add AWM (Adaptive Worldwide Mode) configuration support to Summit RCM."
+DESCRIPTION = "AWM (Adaptive Worldwide Mode) configuration support to Summit RCM."
 
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 inherit setuptools3
-require summit-platform-version.inc
+require summit-platform-version.inc recipes-summit/summit-rcm/summit-rcm.inc
 
-S = "${WORKDIR}/awm"
+S = "${WORKDIR}/git/summit_rcm/plugins/awm"
 
-SRC_URI = "git://github.com/LairdCP/summit-rcm.git;protocol=https;nobranch=1;subpath=summit_rcm/plugins/awm"
-SRC_URI:summit-internal = "git://git@github.com/rfpros/cp_apps-summit-rcm.git;protocol=ssh;nobranch=1;subpath=summit_rcm/plugins/awm"
+SRC_URI = "git://github.com/LairdCP/summit-rcm.git;protocol=https;nobranch=1"
+SRC_URI:summit-internal = "git://git@github.com/rfpros/cp_apps-summit-rcm.git;protocol=ssh;nobranch=1"
 
 SRCREV = "${SUMMIT_PLATFORM_VERSION}"
 PV = "${SUMMIT_PLATFORM_VERSION}+git${SRCPV}"
 
 DEPENDS += "${PYTHON_PN}-cython-native"
-RDEPENDS:${PN} += "\
-    summit-rcm \
-    ${PYTHON_PN}-libconf \
-    "
+RDEPENDS:${PN} += "summit-rcm"
 
 ADAPTIVE_WW_CFG_FILE ?= ""
 

@@ -1,6 +1,9 @@
 --- a/src/uboot_env.c
 +++ b/src/uboot_env.c
-@@ -935,18 +935,23 @@ int libuboot_env_store(struct uboot_ctx *ctx)
+
+Upstream-Status: Inappropriate No time for upstreaming
+
+@@ -1203,18 +1203,23 @@ int libuboot_env_store(struct uboot_ctx *ctx)
  
  	copy = ctx->redundant ? (ctx->current ? 0 : 1) : 0;
  	ret = devwrite(ctx, copy, image);
@@ -31,7 +34,7 @@
  
  	return ret;
  }
-@@ -991,8 +996,8 @@ static int libuboot_load(struct uboot_ctx *ctx)
+@@ -1258,8 +1263,8 @@ static int libuboot_load(struct uboot_ctx *ctx)
  		dev = &ctx->envdevs[i];
  		ret = devread(ctx, i, buf[i]);
  		if (ret != ctx->size) {

@@ -14,7 +14,7 @@
 #include <linux/kernel.h>
 #include <asm/arch/ddr.h>
 
-static const
+
 struct dram_cfg_param ddr_ddrc_cfg_512m[] = {
 	/** Initialize DDRC registers **/
 	{ 0x3d400304, 0x1 },
@@ -130,7 +130,7 @@ struct dram_cfg_param ddr_ddrc_cfg_512m[] = {
 };
 
 /* PHY Initialize Configuration */
-static const
+
 struct dram_cfg_param ddr_ddrphy_cfg_512m[] = {
 	{ 0x100a0, 0x0 },
 	{ 0x100a1, 0x1 },
@@ -340,7 +340,7 @@ struct dram_cfg_param ddr_ddrphy_cfg_512m[] = {
 };
 
 /* P0 message block parameter for training firmware */
-static const
+
 struct dram_cfg_param ddr_fsp0_cfg_512m[] = {
 	{ 0xd0000, 0x0 },
 	{ 0x54003, 0xe94 },
@@ -381,7 +381,7 @@ struct dram_cfg_param ddr_fsp0_cfg_512m[] = {
 
 
 /* P0 2D message block parameter for training firmware */
-static const
+
 struct dram_cfg_param ddr_fsp0_2d_cfg_512m[] = {
 	{ 0xd0000, 0x0 },
 	{ 0x54003, 0xe94 },
@@ -422,7 +422,7 @@ struct dram_cfg_param ddr_fsp0_2d_cfg_512m[] = {
 };
 
 /* DRAM PHY init engine image */
-static const
+
 struct dram_cfg_param ddr_phy_pie_512m[] = {
 	{ 0xd0000, 0x0 },
 	{ 0x90000, 0x10 },
@@ -1007,7 +1007,7 @@ struct dram_cfg_param ddr_phy_pie_512m[] = {
 	{ 0xd0000, 0x1 }
 };
 
-static const
+
 struct dram_fsp_msg ddr_dram_fsp_msg_512m[] = {
 	{
 		/* P0 3732mts 1D */

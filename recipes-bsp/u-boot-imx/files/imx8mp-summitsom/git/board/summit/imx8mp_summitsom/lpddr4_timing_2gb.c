@@ -1,4 +1,4 @@
-static const
+
 struct dram_cfg_param ddr_ddrc_cfg_2g[] = {
 	/** Initialize DDRC registers **/
 	{ 0x3d400304, 0x1 },

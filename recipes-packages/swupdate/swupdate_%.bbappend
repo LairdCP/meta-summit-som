@@ -18,7 +18,6 @@ SRC_URI:append = "\
         file://1014-cpio-error-on-closed-file.patch \
         file://1015-ubi-skip-crc-check.patch \
         file://1016-fat-format.patch \
-        file://1017-rawfile-error.patch \
         file://1020-hw-compatibility.patch \
         "
 
