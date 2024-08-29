@@ -1,6 +1,7 @@
 #!/bin/sh
 # SPDX-License-Identifier: LicenseRef-Ezurio-Clause
 # Copyright (C) 2024 Ezurio
+#
 # Pre-systemd init script
 # This script sets up a writeable partition and mount it to
 # /perm before starting systemd; this is necessary because a
