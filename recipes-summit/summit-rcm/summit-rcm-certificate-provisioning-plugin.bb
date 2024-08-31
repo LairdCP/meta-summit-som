@@ -6,10 +6,10 @@ require summit-rcm.inc
 S = "${WORKDIR}/git/summit_rcm/plugins/provisioning"
 
 SRC_URI:append = "\
-	file://ca.crt \
-	file://server.crt \
-	file://server.key \
-	"
+    file://ca.crt \
+    file://server.crt \
+    file://server.key \
+    "
 
 RDEPENDS:${PN} += "\
     summit-rcm \
@@ -37,10 +37,10 @@ do_install:append() {
 do_install:append:summit-secure () {
     ln -sf /data/secret/fallback_timestamp ${D}${sysconfdir}/fallback_timestamp
 
-    mkdir -p ${D}/usr/share/factory/etc/secret/permanent/provisioning
+    mkdir -p ${D}${datadir}/factory/etc/secret/permanent/provisioning
     ln -sf /data/secret/permanent/provisioning ${D}${sysconfdir}/summit-rcm/provisioning
 }
 
 FILES:${PN} += "\
-    /usr/share/factory/etc/secret/permanent/provisioning \
+    ${datadir}/factory/etc/secret/permanent/provisioning \
     "
