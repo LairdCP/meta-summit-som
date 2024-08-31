@@ -26,14 +26,7 @@ CA_CERT_CHAIN_PATH ?= "/etc/summit-rcm/ssl/ca.crt"
 SUMMIT_RCM_SERIAL_PORT ?= "/dev/ttymxc0"
 SUMMIT_RCM_BAUD_RATE ?= "3000000"
 
-PACKAGECONFIG ?= "\
-    ${SUMMIT_RCM_PROTOCOLS} \
-    ${@bb.utils.contains('SUMMIT_RCM_PROTOCOLS', 'v2_routes', 'login-sessions', '', d)} \
-    "
-
 PACKAGECONFIG[login-sessions] = "summit_rcm/rest_api/v2/login"
-PACKAGECONFIG[multiple-user-sessions] = ""
-PACKAGECONFIG[client-authentication] = ""
 PACKAGECONFIG[v2_routes] = "summit_rcm/rest_api/v2/system summit_rcm/rest_api/v2/network summit_rcm/rest_api/services,,,${PYTHON_PN}-uvicorn ${PYTHON_PN}-falcon"
 PACKAGECONFIG[legacy_routes] = "summit_rcm/rest_api/legacy summit_rcm/rest_api/services,,,${PYTHON_PN}-uvicorn ${PYTHON_PN}-falcon"
 PACKAGECONFIG[at_interface] = "summit_rcm/at_interface summit_rcm/at_interface/commands summit_rcm/at_interface/services,,,${PYTHON_PN}-pyserial-asyncio ${PYTHON_PN}-transitions"
