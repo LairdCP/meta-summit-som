@@ -1,14 +1,14 @@
 
 python () {
     image = d.getVar('IMAGE_BASENAME', True)
-    d.setVarFlag("SWUPDATE_IMAGES_FSTYPES", image, ".squashfs-zstd.verity")
+    d.setVarFlag("SWUPDATE_IMAGES_FSTYPES", image, ".squashfs-zst.verity")
 }
 
 inherit swupdate-image
 
 SRC_URI += "file://update_support.sh file://erase_data.sh"
 
-SWUPDATE_IMAGES += "imx-boot u-boot.env ${IMAGE_BOOT_FILES}"
+SWUPDATE_IMAGES =+ "${IMAGE_BOOTLOADER} u-boot.env ${KERNEL_IMAGETYPE} fitImageVerity.bin"
 
 ARCHIVE_WILDCARD += "${SWUDEPLOYDIR}/${IMAGE_NAME}.swu ${SWUDEPLOYDIR}/${IMAGE_LINK_NAME}.swu"
 

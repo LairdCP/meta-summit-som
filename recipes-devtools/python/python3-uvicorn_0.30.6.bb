@@ -4,7 +4,7 @@ HOMEPAGE = "https://www.uvicorn.org/"
 LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE.md;md5=5c778842f66a649636561c423c0eec2e"
 
-SRC_URI[sha256sum] = "09c8e5a79dc466bdf28dead50093957db184de356fcdc48697bad3bde4c2588e"
+SRC_URI[sha256sum] = "4b15decdda1e72be08209e860a1e10e92439ad5b97cf44cc945fcbee66fc5788"
 
 inherit pypi python_setuptools_build_meta
 

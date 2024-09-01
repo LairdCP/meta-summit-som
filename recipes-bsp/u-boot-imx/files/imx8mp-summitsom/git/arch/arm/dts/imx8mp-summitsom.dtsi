@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 /*
  * Copyright 2021 Ezurio
  */
@@ -7,11 +7,11 @@
 #include "imx8mp.dtsi"
 
 / {
-	model = "Ezurio  i.MX8M Plus Summit SOM";
-	compatible = "lrd,imx8mp-summitsom", "fsl,imx8mp";
+	model = "Summit SOM i.MX8M Plus";
+	compatible = "summit,imx8mp-summitsom", "fsl,imx8mp";
 
 	chosen {
-		bootargs = "console=ttymxc1,115200";
+		bootargs = "console=ttymxc1,115200 earlycon=ec_imx6q,0x30890000,115200";
 		stdout-path = &uart2;
 	};
 
@@ -29,6 +29,22 @@
 	};
 };
 
+&A53_0 {
+	cpu-supply = <&buck2>;
+};
+
+&A53_1 {
+	cpu-supply = <&buck2>;
+};
+
+&A53_2 {
+	cpu-supply = <&buck2>;
+};
+
+&A53_3 {
+	cpu-supply = <&buck2>;
+};
+
 &i2c1 {
 	clock-frequency = <384000>;
 	pinctrl-names = "default", "gpio";
@@ -38,7 +54,7 @@
 	sda-gpios = <&gpio5 15 GPIO_ACTIVE_HIGH>;
 	status = "okay";
 
-	pmic: pca9450@25 {
+	pmic: pmic@25 {
 		compatible = "nxp,pca9450c";
 		reg = <0x25>;
 		pinctrl-names = "default";
@@ -172,22 +188,22 @@
 		>;
 	};
 
-	pinctrl_i2c1_gpio: i2c1grp-gpio {
-		fsl,pins = <
-			MX8MP_IOMUXC_I2C1_SCL__GPIO5_IO14        	0x1c2
-			MX8MP_IOMUXC_I2C1_SDA__GPIO5_IO15        	0x1c2
-		>;
-	};
-
-	pinctrl_pmic: pmicirq {
+	pinctrl_pmic: pmicirqgrp {
 		fsl,pins = <
 			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03	0x40
 		>;
 	};
 
-	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmc {
+	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
 		fsl,pins = <
 			MX8MP_IOMUXC_SD2_RESET_B__GPIO2_IO19	0x40
+		>;
+	};
+
+	pinctrl_i2c1_gpio: i2c1gpiogrp {
+		fsl,pins = <
+			MX8MP_IOMUXC_I2C1_SCL__GPIO5_IO14        	0x1c2
+			MX8MP_IOMUXC_I2C1_SDA__GPIO5_IO15        	0x1c2
 		>;
 	};
 

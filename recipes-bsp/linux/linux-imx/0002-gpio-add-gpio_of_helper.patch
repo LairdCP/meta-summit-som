@@ -218,7 +218,7 @@ new file mode 100644
 +	int ret;
 +
 +	pinctrl = devm_pinctrl_get_select_default(dev);
-+	if (IS_ERR(pinctrl)) {
++	if (IS_ERR(pinctrl) && PTR_ERR(pinctrl) != -ENODEV) {
 +		/* special handling for probe defer */
 +		if (PTR_ERR(pinctrl) == -EPROBE_DEFER)
 +			return -EPROBE_DEFER;

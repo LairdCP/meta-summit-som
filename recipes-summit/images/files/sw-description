@@ -70,11 +70,11 @@ software =
 					sha256 = "$swupdate_get_sha256(fitImageVerity.bin)";
 				},
 				{
-					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
+					filename = "@@DM_VERITY_IMAGE_FNAME@@";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p2";
 					type = "raw";
 					installed-directly = true;
-					sha256 = "$swupdate_get_sha256(@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@)";
+					sha256 = "$swupdate_get_sha256(@@DM_VERITY_IMAGE_FNAME@@)";
 				},
 			);
 
@@ -159,11 +159,11 @@ software =
 					sha256 = "$swupdate_get_sha256(fitImageVerity.bin)";
 				},
 				{
-					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
+					filename = "@@DM_VERITY_IMAGE_FNAME@@";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p5";
 					type = "raw";
 					installed-directly = true;
-					sha256 = "$swupdate_get_sha256(@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@)";
+					sha256 = "$swupdate_get_sha256(@@DM_VERITY_IMAGE_FNAME@@)";
 				},
 			);
 
@@ -191,10 +191,10 @@ software =
 
 					properties: {
 						labeltype = "gpt";
-						partition-1 = ["size=16M",  "name=kernel_a",      "type=BC13C2FF-59E6-4262-A352-B275FD6F7172"];
+						partition-1 = ["size=32M",  "name=kernel_a",      "type=BC13C2FF-59E6-4262-A352-B275FD6F7172"];
 						partition-2 = ["size=512M", "name=rootfs_a",      "type=B921B045-1DF0-41C3-AF44-4C6F280D3FAE"];
 						partition-3 = ["size=256M", "name=rootfs_data_a", "type=0FC63DAF-8483-4772-8E79-3D69D8477DE4"];
-						partition-4 = ["size=16M",  "name=kernel_b",      "type=BC13C2FF-59E6-4262-A352-B275FD6F7172"];
+						partition-4 = ["size=32M",  "name=kernel_b",      "type=BC13C2FF-59E6-4262-A352-B275FD6F7172"];
 						partition-5 = ["size=512M", "name=rootfs_b",      "type=B921B045-1DF0-41C3-AF44-4C6F280D3FAE"];
 						partition-6 = ["size=256M", "name=rootfs_data_b", "type=0FC63DAF-8483-4772-8E79-3D69D8477DE4"];
 						partition-7 = ["size=6G",   "name=perm",          "type=0FC63DAF-8483-4772-8E79-3D69D8477DE4"];
@@ -299,10 +299,10 @@ software =
 					sha256 = "$swupdate_get_sha256(fitImageVerity.bin)";
 				},
 				{
-					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
+					filename = "@@DM_VERITY_IMAGE_FNAME@@";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p2";
 					type = "raw";
-					sha256 = "$swupdate_get_sha256(@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@)";
+					sha256 = "$swupdate_get_sha256(@@DM_VERITY_IMAGE_FNAME@@)";
 				},
 				{
 					filename = "fitImage";
@@ -329,10 +329,10 @@ software =
 					sha256 = "$swupdate_get_sha256(fitImageVerity.bin)";
 				},
 				{
-					filename = "@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@";
+					filename = "@@DM_VERITY_IMAGE_FNAME@@";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p5";
 					type = "raw";
-					sha256 = "$swupdate_get_sha256(@@IMAGE_LINK_NAME@@.@@DM_VERITY_IMAGE_TYPE@@)";
+					sha256 = "$swupdate_get_sha256(@@DM_VERITY_IMAGE_FNAME@@)";
 				},
 			);
 

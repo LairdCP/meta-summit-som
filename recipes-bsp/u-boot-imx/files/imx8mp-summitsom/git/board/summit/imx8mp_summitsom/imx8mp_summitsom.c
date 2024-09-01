@@ -63,6 +63,17 @@ int ft_board_setup(void *blob, struct bd_info *bd)
 	}
 
 #ifdef CONFIG_IMX8M_DRAM_INLINE_ECC
+#ifdef CONFIG_TARGET_IMX8MP_DDR4_EVK
+	int rc;
+	phys_addr_t ecc_start = 0x120000000;
+	size_t ecc_size = 0x20000000;
+
+	rc = add_res_mem_dt_node(blob, "ecc", ecc_start, ecc_size);
+	if (rc < 0) {
+		printf("Could not create ecc reserved-memory node.\n");
+		return rc;
+	}
+#else
 	int rc;
 	phys_addr_t ecc0_start = 0xb0000000;
 	phys_addr_t ecc1_start = 0x130000000;
@@ -86,6 +97,7 @@ int ft_board_setup(void *blob, struct bd_info *bd)
 		printf("Could not create ecc2 reserved-memory node.\n");
 		return rc;
 	}
+#endif
 #endif
 
 	return 0;
@@ -190,15 +202,15 @@ int pd_switch_snk_enable(struct tcpc_port *port)
 }
 
 struct tcpc_port_config port1_config = {
-	.i2c_bus		= 1, /*i2c2*/
-	.addr			= 0x50,
-	.port_type		= TYPEC_PORT_UFP,
-	.max_snk_mv		= 20000,
-	.max_snk_ma		= 3000,
-	.max_snk_mw		= 45000,
-	.op_snk_mv		= 15000,
-	.switch_setup_func	= &pd_switch_snk_enable,
-	.disable_pd		= true,
+	.i2c_bus = 1, /*i2c2*/
+	.addr = 0x50,
+	.port_type = TYPEC_PORT_UFP,
+	.max_snk_mv = 20000,
+	.max_snk_ma = 3000,
+	.max_snk_mw = 45000,
+	.op_snk_mv = 15000,
+	.switch_setup_func = &pd_switch_snk_enable,
+	.disable_pd = true,
 };
 
 #define USB_TYPEC_SEL IMX_GPIO_NR(4, 20)
@@ -241,20 +253,20 @@ static int setup_typec(void)
 
 #ifdef CONFIG_USB_DWC3
 
-#define USB_PHY_CTRL0                   0xF0040
-#define USB_PHY_CTRL0_REF_SSP_EN        BIT(2)
+#define USB_PHY_CTRL0			0xF0040
+#define USB_PHY_CTRL0_REF_SSP_EN	BIT(2)
 
-#define USB_PHY_CTRL1                   0xF0044
-#define USB_PHY_CTRL1_RESET             BIT(0)
-#define USB_PHY_CTRL1_COMMONONN         BIT(1)
-#define USB_PHY_CTRL1_ATERESET          BIT(3)
-#define USB_PHY_CTRL1_VDATSRCENB0       BIT(19)
-#define USB_PHY_CTRL1_VDATDETENB0       BIT(20)
+#define USB_PHY_CTRL1			0xF0044
+#define USB_PHY_CTRL1_RESET		BIT(0)
+#define USB_PHY_CTRL1_COMMONONN		BIT(1)
+#define USB_PHY_CTRL1_ATERESET		BIT(3)
+#define USB_PHY_CTRL1_VDATSRCENB0	BIT(19)
+#define USB_PHY_CTRL1_VDATDETENB0	BIT(20)
 
-#define USB_PHY_CTRL2                   0xF0048
-#define USB_PHY_CTRL2_TXENABLEN0        BIT(8)
+#define USB_PHY_CTRL2			0xF0048
+#define USB_PHY_CTRL2_TXENABLEN0	BIT(8)
 
-#define USB_PHY_CTRL6                   0xF0058
+#define USB_PHY_CTRL6			0xF0058
 
 #define HSIO_GPR_BASE                               (0x32F10000U)
 #define HSIO_GPR_REG_0                              (HSIO_GPR_BASE)
@@ -274,9 +286,9 @@ static struct dwc3_device dwc3_device_data = {
 	.power_down_scale = 2,
 };
 
-int usb_gadget_handle_interrupts(int index)
+int dm_usb_gadget_handle_interrupts(struct udevice *dev)
 {
-	dwc3_uboot_handle_interrupt(index);
+	dwc3_uboot_handle_interrupt(dev);
 	return 0;
 }
 
@@ -291,11 +303,11 @@ static void dwc3_nxp_usb_phy_init(struct dwc3_device *dwc3)
 
 	/* USB3.0 PHY signal fsel for 100M ref */
 	RegData = readl(dwc3->base + USB_PHY_CTRL0);
-	RegData = (RegData & 0xfffff81f) | (0x2a << 5);
+	RegData = (RegData & 0xfffff81f) | (0x2a<<5);
 	writel(RegData, dwc3->base + USB_PHY_CTRL0);
 
 	RegData = readl(dwc3->base + USB_PHY_CTRL6);
-	RegData &= ~0x1;
+	RegData &=~0x1;
 	writel(RegData, dwc3->base + USB_PHY_CTRL6);
 
 	RegData = readl(dwc3->base + USB_PHY_CTRL1);
@@ -323,9 +335,8 @@ int board_usb_init(int index, enum usb_init_type init)
 {
 	int ret = 0;
 
-	imx8m_usb_power(index, true);
-
 	if (index == 0 && init == USB_INIT_DEVICE) {
+		imx8m_usb_power(index, true);
 #ifdef CONFIG_USB_TCPC
 		ret = tcpc_setup_ufp_mode(&port1);
 		if (ret)
@@ -346,16 +357,14 @@ int board_usb_init(int index, enum usb_init_type init)
 int board_usb_cleanup(int index, enum usb_init_type init)
 {
 	int ret = 0;
-
 	if (index == 0 && init == USB_INIT_DEVICE) {
 		dwc3_uboot_exit(index);
+		imx8m_usb_power(index, false);
 	} else if (index == 0 && init == USB_INIT_HOST) {
 #ifdef CONFIG_USB_TCPC
 		ret = tcpc_disable_src_vbus(&port1);
 #endif
 	}
-
-	imx8m_usb_power(index, false);
 
 	return ret;
 }
@@ -385,41 +394,6 @@ int board_typec_get_mode(int index)
 #endif
 #endif
 
-#if CONFIG_IS_ENABLED(FEC_MXC)
-static void setup_fec(void)
-{
-	struct iomuxc_gpr_base_regs *gpr =
-		(struct iomuxc_gpr_base_regs *)IOMUXC_GPR_BASE_ADDR;
-
-	/* Enable RGMII TX clk output */
-	setbits_le32(&gpr->gpr[1], BIT(22));
-}
-#endif
-
-#if CONFIG_IS_ENABLED(DWC_ETH_QOS)
-static int setup_eqos(void)
-{
-	struct iomuxc_gpr_base_regs *gpr =
-		(struct iomuxc_gpr_base_regs *)IOMUXC_GPR_BASE_ADDR;
-
-	/* set INTF as RGMII, enable RGMII TXC clock */
-	clrsetbits_le32(&gpr->gpr[1],
-			IOMUXC_GPR_GPR1_GPR_ENET_QOS_INTF_SEL_MASK, BIT(16));
-	setbits_le32(&gpr->gpr[1], BIT(19) | BIT(21));
-
-	return set_clk_eqos(ENET_125MHZ);
-}
-#endif
-
-#if CONFIG_IS_ENABLED(NET)
-int board_phy_config(struct phy_device *phydev)
-{
-	if (phydev->drv->config)
-		phydev->drv->config(phydev);
-	return 0;
-}
-#endif
-
 #define DISPMIX                         13
 #define MIPI                            15
 
@@ -428,6 +402,7 @@ static bool wbx3;
 int board_init(void)
 {
 	wbx3 = setup_charger(1, 0x6b) < 0;
+	printf("Board Type: %s\n", wbx3 ? "WBx3" : "DVK");
 
 #ifdef CONFIG_USB_TCPC
 	if (!wbx3)
@@ -456,6 +431,7 @@ static void update_dts(const char *oldn, const char *newn)
 	char buf[64], *dvk;
 
 	char *dtb = env_get("conf");
+	printf("Current conf: %s\n", dtb);
 
 	if (!strstr(dtb, oldn))
 		return;
@@ -481,6 +457,7 @@ int board_late_init(void)
 	env_set("board_rev", "iMX8MP");
 #endif
 
+	printf("board_late_init\n");
 	if (wbx3)
 		update_dts("dvk", "wbx");
 	else
@@ -501,16 +478,16 @@ bool is_power_key_pressed(void)
 }
 #endif
 
-#ifdef CONFIG_SPL_MMC_SUPPORT
+#ifdef CONFIG_SPL_MMC
 #define UBOOT_RAW_SECTOR_OFFSET 0x40
-unsigned long spl_mmc_get_uboot_raw_sector(struct mmc *mmc)
+unsigned long spl_mmc_get_uboot_raw_sector(struct mmc *mmc, unsigned long raw_sect)
 {
 	u32 boot_dev = spl_boot_device();
 	switch (boot_dev) {
-	case BOOT_DEVICE_MMC2:
-		return CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR - UBOOT_RAW_SECTOR_OFFSET;
-	default:
-		return CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR;
+		case BOOT_DEVICE_MMC2:
+			return CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR - UBOOT_RAW_SECTOR_OFFSET;
+		default:
+			return CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR;
 	}
 }
 #endif

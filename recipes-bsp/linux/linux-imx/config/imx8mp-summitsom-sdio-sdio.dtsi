@@ -29,8 +29,6 @@
 	non-removable;
 	keep-power-in-suspend;
 
-	fsl,sdio-async-interrupt-enabled;
-
 	wifi: wifi {
 		compatible = "marvell,sd8997";
 		//interrupts-extended = <&gpio3 14 GPIO_ACTIVE_LOW>;

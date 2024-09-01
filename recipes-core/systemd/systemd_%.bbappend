@@ -1,1 +1,0 @@
-PACKAGECONFIG:summitsom:append = " microhttpd"

@@ -245,8 +245,20 @@
 	};
 };
 
-&snvs_pwrkey {
+&flexspi {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_flexspi0>;
 	status = "okay";
+
+	flash0: mt25qu256aba@0 {
+		compatible = "jedec,spi-nor";
+		reg = <0>;
+		#address-cells = <1>;
+		#size-cells = <1>;
+		spi-max-frequency = <80000000>;
+		spi-tx-bus-width = <1>;
+		spi-rx-bus-width = <4>;
+	};
 };
 
 &reg_usdhc2_vmmc {
@@ -365,28 +377,27 @@
 	};
 };
 
-&flexspi {
+&flexcan1 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_flexspi0>;
+	pinctrl-0 = <&pinctrl_flexcan1>;
+	xceiver-supply = <&reg_can1_stby>;
 	status = "okay";
-
-	flash0: mt25qu256aba@0 {
-		reg = <0>;
-		#address-cells = <1>;
-		#size-cells = <1>;
-		compatible = "jedec,spi-nor";
-		spi-max-frequency = <80000000>;
-		spi-tx-bus-width = <1>;
-		spi-rx-bus-width = <4>;
-	};
 };
 
+&flexcan2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_flexcan2>;
+	xceiver-supply = <&reg_can2_stby>;
+	status = "okay";
+};
+
+
 &i2c2 {
+	clock-frequency = <384000>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_i2c2>;
 	status = "okay";
 
-	clock-frequency = <384000>;
 
 	ptn5110: tcpc@50 {
 		compatible = "nxp,ptn5110";
@@ -447,27 +458,26 @@
 };
 
 &i2c3 {
+	clock-frequency = <384000>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_i2c3>;
 	status = "okay";
 
-	clock-frequency = <384000>;
-
 	pca6416: gpio@20 {
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_pca6416>;
-
 		compatible = "nxp,pca6416";
 		reg = <0x20>;
 
 		gpio-controller;
 		#gpio-cells = <2>;
 
-		interrupt-parent = <&gpio1>;
-		interrupts = <12 IRQ_TYPE_EDGE_RISING>;
-
 		interrupt-controller;
 		#interrupt-cells = <2>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_pca6416>;
+
+		interrupt-parent = <&gpio1>;
+		interrupts = <12 IRQ_TYPE_EDGE_RISING>;
 	};
 
 	pac193x@10 {
@@ -491,17 +501,7 @@
 	};
 };
 
-&flexcan1 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_flexcan1>;
-	xceiver-supply = <&reg_can1_stby>;
-	status = "okay";
-};
-
-&flexcan2 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_flexcan2>;
-	xceiver-supply = <&reg_can2_stby>;
+&snvs_pwrkey {
 	status = "okay";
 };
 
@@ -537,6 +537,8 @@
 	adp-disable;
 	usb-role-switch;
 	role-switch-default-mode = "none";
+	snps,dis-u1-entry-quirk;
+	snps,dis-u2-entry-quirk;
 	status = "okay";
 
 	port {

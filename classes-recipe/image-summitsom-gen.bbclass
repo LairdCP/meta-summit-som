@@ -10,7 +10,10 @@ export IMAGE_BASENAME = "${PN}"
 export IMAGE_BASENAME:summit-secure = "${PN}-secure"
 
 
-IMAGE_FSTYPES = "squashfs-zstd.verity"
+IMAGE_FSTYPES = "squashfs-zst.verity"
+IMAGE_BOOT_FILES += "${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.${DM_VERITY_IMAGE_TYPE}.verity.scr.bin;fitImageVerity.bin"
+#IMAGE_BOOT_FILES += "${IMGDEPLOYDIR}/fitImageVerity.bin"
+IMAGE_NAME_SUFFIX = ""
 
 IMAGE_ROOTFS_EXTRA_SPACE = "0"
 
@@ -24,7 +27,7 @@ IMAGE_FEATURES:append:summit-secure = "\
 	"
 
 IMAGE_INSTALL_BASIC = "\
-	kernel-module-pac193x \
+	pac193x \
 	packagegroup-radio-stack \
 	ca-certificates \
 	tzdata-core \
@@ -124,10 +127,4 @@ do_backup_runtime () {
 	ln -sf /run/media ${IMAGE_ROOTFS}/media
 }
 
-ROOTFS_POSTPROCESS_COMMAND:append:summit-secure = "do_backup_runtime; "
-
-do_machine_id () {
-	ln -sf /perm/etc/machine-id ${IMAGE_ROOTFS}/etc/machine-id
-}
-
-IMAGE_PREPROCESS_COMMAND:append:summit-secure = "do_machine_id; "
+ROOTFS_POSTPROCESS_COMMAND:append:summit-secure = "; do_backup_runtime"

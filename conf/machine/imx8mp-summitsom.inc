@@ -14,7 +14,7 @@ DEFAULTTUNE:mx8m-nxp-bsp ?= "armv8a-crc-crypto"
 
 MACHINE_FEATURES += "pci usbhost alsa rtc optee"
 
-IMAGE_BOOT_FILES:remove = "${@make_dtb_boot_files(d)} ${OPTEE_BOOT_IMAGE}"
+IMAGE_BOOT_FILES = "${KERNEL_IMAGETYPE}"
 
 IMX_DEFAULT_BOOTLOADER = "u-boot-imx"
 
@@ -32,6 +32,7 @@ DDR_FIRMWARE_NAME = " \
 "
 
 SPL_BINARY = "spl/u-boot-spl.bin"
+IMAGE_BOOTLOADER = "imx-boot"
 
 ATF_PLATFORM = "imx8mp"
 ATF_LOAD_ADDR = "0x970000"
@@ -60,6 +61,5 @@ PREFERRED_PROVIDER_u-boot-mkenvimage-native = "u-boot-imx-tools-native"
 
 IMX_DEFAULT_BSP = "nxp"
 
-MACHINE_FEATURES:remove = "nxp8801-sdio nxp8987-sdio nxp8997-pcie nxp8997-sdio nxp9098-pcie nxp9098-sdio nxpiw416-sdio nxpiw612-sdio"
-MACHINE_FIRMWARE:remove = "linux-firmware-ath10k"
+MACHINE_FIRMWARE:mx8-nxp-bsp:remove = "linux-firmware-ath10k"
 MACHINE_EXTRA_RRECOMMENDS:remove = "imx-m7-demos"

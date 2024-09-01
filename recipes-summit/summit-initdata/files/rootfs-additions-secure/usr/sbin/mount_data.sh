@@ -14,11 +14,10 @@ start)
 	DATA_DEVICE=/dev/$(getPart rootfs_data)
 	DATA_SIZE=$(/usr/bin/lsblk -ndbo SIZE "${DATA_DEVICE}")
 
-	if [ -f /perm/caam/datakey ]; then
-		caam-keygen import /perm/caam/datakey.bb datakey
-	else
+	{ [ -f /perm/caam/datakey ] &&
+		caam-keygen import /perm/caam/datakey.bb datakey; } ||
 		caam-keygen create datakey ecb -s 16
-	fi
+
 	/usr/bin/keyctl padd logon logkey: @s < /perm/caam/datakey
 
 	/usr/sbin/dmsetup -v create data_enc --table "0 $((DATA_SIZE / 512)) \

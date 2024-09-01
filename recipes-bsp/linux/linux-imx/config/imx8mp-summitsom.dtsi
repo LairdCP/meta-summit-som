@@ -99,7 +99,7 @@
 	pinctrl-0 = <&pinctrl_i2c1>;
 	status = "okay";
 
-	pmic: pca9450@25 {
+	pmic: pmic@25 {
 		compatible = "nxp,pca9450c";
 		reg = <0x25>;
 		pinctrl-names = "default";

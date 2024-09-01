@@ -94,6 +94,10 @@ FIT_SUPPORTED_INITRAMFS_FSTYPES ?= "cpio.lz4 cpio.lzo cpio.lzma cpio.xz cpio.zst
 # Allow user to select the default DTB for FIT image when multiple dtb's exists.
 FIT_CONF_DEFAULT_DTB ?= ""
 
+# length of address in number of <u32> cells
+# ex: 1 32bits address, 2 64bits address
+FIT_ADDRESS_CELLS ?= "1"
+
 # Keys used to sign individually image nodes.
 # The keys to sign image nodes must be different from those used to sign
 # configuration nodes, otherwise the "required" property, from
@@ -112,7 +116,7 @@ fitimage_emit_fit_header() {
 
 / {
         description = "${FIT_DESC}";
-        #address-cells = <1>;
+        #address-cells = <${FIT_ADDRESS_CELLS}>;
 EOF
 }
 
@@ -430,6 +434,7 @@ symlink_points_below() {
 # $5 ... u-boot script ID
 # $6 ... config ID
 # $7 ... default flag
+# $8 ... default DTB image name
 fitimage_emit_section_config() {
 
 	conf_csum="${FIT_HASH_ALG}"
@@ -446,6 +451,7 @@ fitimage_emit_section_config() {
 	bootscr_id="$5"
 	config_id="$6"
 	default_flag="$7"
+	default_dtb_image="$8"
 
 	# Test if we have any DTBs at all
 	sep=""
@@ -457,11 +463,19 @@ fitimage_emit_section_config() {
 	bootscr_line=""
 	setup_line=""
 	default_line=""
-	default_dtb_image="${FIT_CONF_DEFAULT_DTB}"
+	compatible_line=""
 
 	dtb_image_sect=$(symlink_points_below $dtb_image "${EXTERNAL_KERNEL_DEVICETREE}")
 	if [ -z "$dtb_image_sect" ]; then
 		dtb_image_sect=$dtb_image
+	fi
+
+	dtb_path="${EXTERNAL_KERNEL_DEVICETREE}/${dtb_image_sect}"
+	if [ -e "$dtb_path" ]; then
+		compat=$(fdtget -t s "$dtb_path" / compatible | sed 's/ /", "/g')
+		if [ -n "$compat" ]; then
+			compatible_line="compatible = \"$compat\";"
+		fi
 	fi
 
 	dtb_image=$(echo $dtb_image | tr '/' '_')
@@ -511,11 +525,7 @@ fitimage_emit_section_config() {
 		        # Select default node as user specified dtb when
 		        # multiple dtb exists.
 		        if [ -n "$default_dtb_image" ]; then
-			        if [ -s "${EXTERNAL_KERNEL_DEVICETREE}/$default_dtb_image" ]; then
-			                default_line="default = \"${FIT_CONF_PREFIX}$default_dtb_image\";"
-			        else
-			                bbwarn "Couldn't find a valid user specified dtb in ${EXTERNAL_KERNEL_DEVICETREE}/$default_dtb_image"
-			        fi
+			        default_line="default = \"${FIT_CONF_PREFIX}$default_dtb_image\";"
 		        else
 			        default_line="default = \"${FIT_CONF_PREFIX}$dtb_image\";"
 		        fi
@@ -528,6 +538,7 @@ fitimage_emit_section_config() {
                 $default_line
                 $conf_node {
                         description = "$default_flag $conf_desc";
+                        $compatible_line
                         $kernel_line
                         $fdt_line
                         $ramdisk_line
@@ -597,7 +608,8 @@ fitimage_assemble() {
 	ramdiskcount=$3
 	setupcount=""
 	bootscr_id=""
-	rm -f $1 ${KERNEL_OUTPUT_DIR}/$2
+	default_dtb_image=""
+	rm -f $1 arch/${ARCH}/boot/$2
 
 	if [ -n "${UBOOT_SIGN_IMG_KEYNAME}" -a "${UBOOT_SIGN_KEYNAME}" = "${UBOOT_SIGN_IMG_KEYNAME}" ]; then
 		bbfatal "Keys used to sign images and configuration nodes must be different."
@@ -635,6 +647,18 @@ fitimage_assemble() {
 				DTB_PATH="${KERNEL_OUTPUT_DIR}/$DTB"
 			fi
 
+		        # Strip off the path component from the filename
+			if "${@'false' if oe.types.boolean(d.getVar('KERNEL_DTBVENDORED')) else 'true'}"; then
+			    DTB=`basename $DTB`
+			fi
+
+			# Set the default dtb image if it exists in the devicetree.
+			if [ ${FIT_CONF_DEFAULT_DTB} = $DTB ];then
+				default_dtb_image=$(echo "$DTB" | tr '/' '_')
+			fi
+
+			DTB=$(echo "$DTB" | tr '/' '_')
+
 			# Skip DTB if we've picked it up previously
 			echo "$DTBS" | tr ' ' '\n' | grep -xq "$DTB" && continue
 
@@ -648,6 +672,13 @@ fitimage_assemble() {
 		dtbcount=1
 		for DTB in $(find "${EXTERNAL_KERNEL_DEVICETREE}" -name '*.dtb' -printf '%P\n' | sort) \
 		$(find "${EXTERNAL_KERNEL_DEVICETREE}" -name '*.dtbo' -printf '%P\n' | sort); do
+			# Set the default dtb image if it exists in the devicetree.
+			if [ ${FIT_CONF_DEFAULT_DTB} = $DTB ];then
+				default_dtb_image=$(echo "$DTB" | tr '/' '_')
+			fi
+
+			DTB=$(echo "$DTB" | tr '/' '_')
+
 			# Skip DTB/DTBO if we've picked it up previously
 			echo "$DTBS" | tr ' ' '\n' | grep -xq "$DTB" && continue
 
@@ -659,6 +690,10 @@ fitimage_assemble() {
 			DTB=$(echo $DTB | tr '/' '_')
 			fitimage_emit_section_dtb $1 $DTB "${EXTERNAL_KERNEL_DEVICETREE}/$DTB"
 		done
+	fi
+
+	if [ -n "${FIT_CONF_DEFAULT_DTB}" ] && [ -z $default_dtb_image ]; then 
+		bbwarn "${FIT_CONF_DEFAULT_DTB} is not available in the list of device trees."
 	fi
 
 	#
@@ -733,15 +768,15 @@ fitimage_assemble() {
 		for DTB in ${DTBS}; do
 			dtb_ext=${DTB##*.}
 			if [ "$dtb_ext" = "dtbo" ]; then
-				fitimage_emit_section_config $1 "" "$DTB" "" "$bootscr_id" "" "`expr $i = $dtbcount`"
+				fitimage_emit_section_config $1 "" "$DTB" "" "$bootscr_id" "" "`expr $i = $dtbcount`" "$default_dtb_image"
 			else
-				fitimage_emit_section_config $1 $kernelcount "$DTB" "$ramdiskcount" "$bootscr_id" "$setupcount" "`expr $i = $dtbcount`"
+				fitimage_emit_section_config $1 $kernelcount "$DTB" "$ramdiskcount" "$bootscr_id" "$setupcount" "`expr $i = $dtbcount`" "$default_dtb_image"
 			fi
 			i=`expr $i + 1`
 		done
 	else
 		defaultconfigcount=1
-		fitimage_emit_section_config $1 $kernelcount "" "$ramdiskcount" "$bootscr_id"  "$setupcount" $defaultconfigcount
+		fitimage_emit_section_config $1 $kernelcount "" "$ramdiskcount" "$bootscr_id"  "$setupcount" $defaultconfigcount "$default_dtb_image"
 	fi
 
 	fitimage_emit_section_maint $1 sectend

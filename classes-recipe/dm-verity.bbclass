@@ -1,58 +1,66 @@
 inherit custom-fit-gen
 
-process_verity() {
-    # Each line contains a key and a value string delimited by ':'. Read the
-    # two parts into separate variables and process them separately. For the
-    # key part: convert the names to upper case and replace spaces with
-    # underscores to create correct shell variable names. For the value part:
-    # just trim all white-spaces.
-    IFS=":"
-    while read KEY VAL; do
-         VKEY=$(echo "$KEY" | tr '[:lower:]' '[:upper:]' | sed 's/ /_/g')
-         VVAL=$(echo "$VAL" | tr -d ' \t')
-         eval "$VKEY=$VVAL"
-    done
-
-    # Add partition size
-    HASH_BLOCK=$(expr $DATA_BLOCKS + 1)
-    DATA_SECT=$(expr $DATA_BLOCKS \* 8)
-    BOOT_DEV='/dev/mmcblk${mmcdev}p${rootvol}'
-
-    echo "DATA_BLOCKS=$DATA_BLOCKS"
-    echo "SIZE=$SIZE"
-    echo "HASH_BLOCK=$HASH_BLOCK"
-
-    echo "dm_table=\"vroot,$UUID,,ro,0 $DATA_SECT verity 1 $BOOT_DEV $BOOT_DEV $DATA_BLOCK_SIZE $HASH_BLOCK_SIZE $DATA_BLOCKS $HASH_BLOCK $HASH_ALGORITHM $ROOT_HASH $SALT\"" > ${ENV}
-    printf 'setenv bootargs "${bootargs} dm-mod.create=\"${dm_table}\" dm-mod.waitfor=%s root=/dev/dm-0 rootwait rootfstype=squashfs ro"' $BOOT_DEV >> ${ENV}
-}
-
 verity_setup() {
-    local TYPE=$1
-    local INPUT=${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.$TYPE
-    local SIZE=$(stat --printf="%s" $INPUT)
-    local OUTPUT=$INPUT.verity
-    local ENV=$OUTPUT.env
-    local ENVL=${IMAGE_LINK_NAME}.$TYPE.verity.env
+    local INPUT=${IMAGE_NAME}.${1}
+    local OUTPUT=${INPUT}.verity
+    local SIZE=$(stat --printf="%s" ${INPUT})
 
-    cp -a $INPUT $OUTPUT
+    cp -a ${INPUT} ${OUTPUT} || return 1
 
     # Let's drop the first line of output (doesn't contain any useful info)
     # and feed the rest to another function.
-    veritysetup --hash-offset=$SIZE format $OUTPUT $OUTPUT | tail -n +2 | process_verity
+    veritysetup --hash-offset=${SIZE} format ${OUTPUT} ${OUTPUT} | \
+        sed -r '1d; s/^([^:]+):\s+(.+)/\U\1=\E\2/; s/ /_/g' > ${OUTPUT}.env
 
-    fitimage_script $ENV.its $ENV $ENV.bin
+    ln -sf ${OUTPUT}.env ${IMAGE_LINK_NAME}.${1}.verity.env
 
-    ln -rsf $ENV.bin $ENVL.bin
-    ln -rsf $ENV.its $ENVL.its
-    ln -rsf $ENV $ENVL
-    install -D -t ${DEPLOY_DIR_IMAGE}/verity -m 644 $ENVL.bin
-    ln -rsf ${DEPLOY_DIR_IMAGE}/verity/$ENVL.bin ${DEPLOY_DIR_IMAGE}/fitImageVerity.bin
+    fallocate -d ${OUTPUT}
+
+    verity_boot_script
+}
+
+verity_boot_script() {
+    set -x
+    local env=${DM_VERITY_IMAGE_FNAME}.env
+    local scr=${IMAGE_NAME}.${DM_VERITY_IMAGE_TYPE}.verity.scr
+    local scrl=${DM_VERITY_IMAGE_FNAME}.scr
+    local img_type=${DM_VERITY_IMAGE_TYPE}
+
+    #cd "${IMGDEPLOYDIR}"
+
+    while read -r line; do eval ${line}; done < ${env}
+
+    # Add partition size
+    local HASH_BLOCK=$(expr ${DATA_BLOCKS} + 1)
+    local DATA_SECT=$(expr ${DATA_BLOCKS} \* ${DATA_BLOCK_SIZE} / 512)
+    #local BOOT_DEV='/dev/mmcblk${mmcdev}p${rootvol}'
+
+    {
+        printf 'dm_table="vroot,%s,,ro,0 %s verity 1 ${boot_dev} ${boot_dev} %s %s %s %s %s %s %s"\n' \
+            ${UUID} ${DATA_SECT} ${DATA_BLOCK_SIZE} ${HASH_BLOCK_SIZE} \
+            ${DATA_BLOCKS} ${HASH_BLOCK} ${HASH_ALGORITHM} ${ROOT_HASH} ${SALT}
+        printf 'setenv bootargs "${bootargs} dm-mod.create=\"${dm_table}\" '
+        printf 'dm-mod.waitfor=${boot_dev} root=/dev/dm-0 rootwait rootfstype=%s ro"\n' \
+            ${img_type%%-*}
+    } > ${scr}
+
+    fitimage_script ${scr}.its ${scr} ${scr}.bin
+
+    ln -sf ${scr}.bin ${scrl}.bin
+    ln -sf ${scr}.bin fitImageVerity.bin
+
+    #cd -
 }
 
 IMAGE_TYPES += "verity"
 CONVERSIONTYPES += "verity"
 CONVERSION_CMD:verity = "verity_setup ${type}"
 CONVERSION_DEPENDS_verity = "cryptsetup-native"
+
+#IMAGE_CMD:scr.bin = "verity_boot_script"
+#IMAGE_TYPEDEP:scr.bin = "verity"
+#IMAGE_TYPES_MASKED += "verity"
+#IMAGE_FSTYPES += "scr.bin"
 
 python __anonymous() {
     image_fstypes = d.getVar('IMAGE_FSTYPES')
@@ -63,11 +71,14 @@ python __anonymous() {
 
     fstypes_list = image_fstypes.split()
 
+    # If we're using wic: we'll have to use partition images and not the rootfs
+    # source plugin so add the appropriate dependency.
     for fst in fstypes_list:
         if ".verity" in fst:
             f = fst[:fst.index(".verity")]
             dep = ' %s:do_image_%s' % (pn, f.replace('-', '_'))
             d.appendVarFlag('do_image_wic', 'depends', dep)
-            d.setVar('DM_VERITY_IMAGE_TYPE', fst)
-            d.appendVar('IMAGE_BOOT_FILES', ' fitImageVerity.bin')
+            d.setVar('DM_VERITY_IMAGE_TYPE', f)
+            link_name=d.getVar('IMAGE_LINK_NAME')
+            d.setVar('DM_VERITY_IMAGE_FNAME', '%s.%s' % (link_name, fst))
 }

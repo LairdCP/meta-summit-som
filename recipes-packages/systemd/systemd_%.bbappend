@@ -26,6 +26,7 @@ PACKAGECONFIG:summitsom = " \
     utmp \
     vconsole \
     zstd \
+    microhttpd \
 "
 
 do_install:append:summitsom() {

@@ -6,17 +6,14 @@
 / {
 	reg_audio_pwr: regulator-audio-pwr {
 		compatible = "regulator-fixed";
+		regulator-name = "audio-pwr";
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_audpwr>;
 
-		gpio = <&gpio4 29 GPIO_ACTIVE_HIGH>;
-
-		regulator-name = "audio-pwr";
-
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
-
+		gpio = <&gpio4 29 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 		regulator-always-on;
 	};
@@ -79,30 +76,6 @@
 	status = "okay";
 };
 
-&sdma2 {
-	status = "okay";
-};
-
-&easrc {
-	fsl,asrc-rate  = <48000>;
-	status = "okay";
-};
-
-&sai3 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_sai3>;
-	assigned-clocks = <&clk IMX8MP_CLK_SAI3>;
-	assigned-clock-parents = <&clk IMX8MP_AUDIO_PLL1_OUT>;
-	assigned-clock-rates = <12288000>;
-	fsl,sai-mclk-direction-output;
-	status = "okay";
-};
-
-&xcvr {
-	#sound-dai-cells = <0>;
-//	status = "okay";
-};
-
 &i2c3 {
 	codec: wm8960@1a {
 		compatible = "wlf,wm8960";
@@ -128,6 +101,30 @@
 		ti,debounce-insertion-ms = <200>;
 	};
 };
+&easrc {
+	fsl,asrc-rate  = <48000>;
+	status = "okay";
+};
+
+&sai3 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_sai3>;
+	assigned-clocks = <&clk IMX8MP_CLK_SAI3>;
+	assigned-clock-parents = <&clk IMX8MP_AUDIO_PLL1_OUT>;
+	assigned-clock-rates = <12288000>;
+	fsl,sai-mclk-direction-output;
+	status = "okay";
+};
+
+&xcvr {
+	#sound-dai-cells = <0>;
+//	status = "okay";
+};
+
+&sdma2 {
+	status = "okay";
+};
+
 
 &iomuxc {
 	pinctrl_audpwr: audpwrgrp {

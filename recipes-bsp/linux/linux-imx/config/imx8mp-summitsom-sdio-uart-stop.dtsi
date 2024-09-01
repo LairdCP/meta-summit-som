@@ -35,8 +35,6 @@
 	assigned-clocks = <&clk IMX8MP_CLK_USDHC1>;
 	assigned-clock-rates = <400000000>;
 
-	fsl,sdio-async-interrupt-enabled;
-
 	non-removable;
 
 	wifi: wifi {

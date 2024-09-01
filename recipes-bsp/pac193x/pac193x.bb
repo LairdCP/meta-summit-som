@@ -11,3 +11,5 @@ SRC_URI = " \
         "
 
 S = "${WORKDIR}"
+
+MAKE_TARGETS = "modules"

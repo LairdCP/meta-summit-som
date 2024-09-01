@@ -1,0 +1,25 @@
+From 5c1d5d5aae66319e1de64b479407696bfe5eb950 Mon Sep 17 00:00:00 2001
+From: Boris Krasnovskiy <boris.krasnovskiy@lairdconnect.com>
+Date: Mon, 17 Jul 2023 16:10:42 -0400
+Subject: [PATCH] uboot: Fixed uboot environment saved every boot
+
+Bug 23970
+---
+ env/env.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/env/env.c b/env/env.c
+index ad774f4117..144812fecf 100644
+--- a/env/env.c
++++ b/env/env.c
+@@ -193,6 +193,7 @@ int env_load(void)
+ 		if (!ret) {
+ 			printf("OK\n");
+ 			gd->env_load_prio = prio;
++			gd->flags &= ~GD_FLG_ENV_DEFAULT;
+ 
+ 			return 0;
+ 		} else if (ret == -ENOMSG) {
+-- 
+2.46.0
+

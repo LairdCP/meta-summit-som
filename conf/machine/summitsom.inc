@@ -3,11 +3,13 @@ MACHINEOVERRIDES =. "summitsom:"
 KERNEL_CLASSES  = "kernel-fitimage"
 KERNEL_IMAGETYPES = "fitImage"
 
-KERNEL_IMAGETYPE:summitsom = "fitImage"
-IMAGE_CLASSES += "squashfs-zstd dm-verity"
+KERNEL_IMAGETYPE = "fitImage"
+KERNEL_IMAGETYPE:mx8-generic-bsp = "fitImage"
+KERNEL_IMAGETYPE:mx9-generic-bsp = "fitImage"
+IMAGE_CLASSES += "dm-verity"
 
 UBOOT_DTB_LOADADDRESS = "0x43000000"
-UBOOT_ENTRYPOINT:mx8m-generic-bsp   = "0x40400000"
+UBOOT_ENTRYPOINT:mx8m-generic-bsp = "0x40400000"
 
 PREFERRED_RPROVIDER_wireless-regdb-static = "som8mp-radio-firmware"
 PREFERRED_RPROVIDER_wpa-supplicant = "summit-supplicant-60"
@@ -17,7 +19,7 @@ PREFERRED_RPROVIDER_networkmanager = "summit-networkmanager-60"
 PREFERRED_RPROVIDER_networkmanager = "summit-networkmanager-60-nmcli"
 
 FIT_KERNEL_COMP_ALG = "zstd"
-FIT_KERNEL_COMP_ALG_EXTENSION = ".zstd"
+FIT_KERNEL_COMP_ALG_EXTENSION = ".zst"
 
 UBOOT_SIGN_ENABLE = "1"
 UBOOT_SIGN_KEYNAME = "dev"

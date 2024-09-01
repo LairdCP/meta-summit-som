@@ -34,6 +34,8 @@ if [ ! -f "${PERM_MOUNT}/etc/machine-id" ]; then
 	touch "${PERM_MOUNT}/etc/machine-id"
 fi
 
+mount --bind ${PERM_MOUNT}/etc/machine-id /etc/machine-id
+
 mkdir -p ${PERM_MOUNT}/log/journal
 
 # Start init

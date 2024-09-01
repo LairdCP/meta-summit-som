@@ -23,7 +23,15 @@ SRC_URI:append:imx8mp-summitsom = " \
 KBUILD_DEFCONFIG:remove:imx8mp-summitsom = "${IMX_KERNEL_CONFIG_AARCH64}"
 
 do_copy_defconfig:imx8mp-summitsom () {
-	install -D -m 0644 -t ${S}/arch/arm64/boot/dts/freescale/ ${WORKDIR}/config/*.dts* 
+	install -D -m 0644 -t ${S}/arch/arm64/boot/dts/freescale/ ${WORKDIR}/config/*.dts*
 }
 
 RDEPENDS:${KERNEL_PACKAGE_NAME}-base:remove:imx8mp-summitsom = "${KERNEL_PACKAGE_NAME}-image"
+
+# Fixes menuconfig
+KCONFIG_CONFIG_COMMAND:append = " -C ${B}"
+
+DEPENDS:append:imx8mp-summitsom = " firmware-imx"
+do_compile:prepend:imx8mp-summitsom () {
+	cp -a ${WORKDIR}/recipe-sysroot/usr/lib/firmware ${S}/firmware
+}

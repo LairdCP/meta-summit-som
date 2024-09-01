@@ -75,7 +75,7 @@
 	"bootm7_ddr=imxtract ${loadaddr} firmware-1 ${m7_bootaddr_ddr}; dcache flush; bootaux ${m7_bootaddr_ddr}\0" \
 	"bootm7_qspi=sf probe; sf read ${m7_ddr_temp} 0 0x100000; bootaux ${m7_bootaddr_qspi}\0" \
 	"splashimage=0x50000000\0"                      \
-	"conf=conf-freescale_imx8mp-summitsom-dvk-pcie-uart.dtb\0" \
+	"conf=conf-imx8mp-summitsom-dvk-pcie-uart.dtb\0" \
 	"loadimage=load mmc ${mmcdev}:${bootvol} ${loadaddr} fitImage\0" \
 	"loadverity=load mmc ${mmcdev}:${bootvol} ${loadaddr} fitImageVerity.bin\0" \
 	"loadm7=load mmc ${mmcdev}:${bootvol} ${loadaddr} fitImageMcu.bin\0" \
@@ -85,7 +85,8 @@
 	"else "                                         \
 	"setenv bootvol 4; "                            \
 	"fi; "                                          \
-	"setexpr rootvol ${bootvol} + 1\0"              \
+	"setexpr rootvol ${bootvol} + 1; "              \
+	"setenv boot_dev /dev/mmcblk${mmcdev}p${rootvol}\0" \
 	"prepare_mcore="                                \
 	"setexpr bootm7 sub m7-rpmsg '' $conf; "        \
 	"if test -n \"${bootm7}\"; then "               \
