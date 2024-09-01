@@ -7,5 +7,3 @@ SRC_URI += "\
         "
 
 DEPENDS:remove = "zlib"
-
-INSANE_SKIP:${PN} += "patch-status"

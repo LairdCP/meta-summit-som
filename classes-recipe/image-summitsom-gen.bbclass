@@ -127,4 +127,4 @@ do_backup_runtime () {
 	ln -sf /run/media ${IMAGE_ROOTFS}/media
 }
 
-ROOTFS_POSTPROCESS_COMMAND:append:summit-secure = "; do_backup_runtime"
+ROOTFS_POSTPROCESS_COMMAND:append:summit-secure = " do_backup_runtime;"
