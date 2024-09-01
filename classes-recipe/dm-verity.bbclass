@@ -1,7 +1,7 @@
 inherit custom-fit-gen
 
 verity_setup() {
-    local INPUT=${IMAGE_NAME}.${1}
+    local INPUT=${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.${1}
     local OUTPUT=${INPUT}.verity
     local SIZE=$(stat --printf="%s" ${INPUT})
 
@@ -31,7 +31,6 @@ verity_boot_script() {
     # Add partition size
     local HASH_BLOCK=$(expr ${DATA_BLOCKS} + 1)
     local DATA_SECT=$(expr ${DATA_BLOCKS} \* ${DATA_BLOCK_SIZE} / 512)
-    #local BOOT_DEV='/dev/mmcblk${mmcdev}p${rootvol}'
 
     {
         printf 'dm_table="vroot,%s,,ro,0 %s verity 1 ${boot_dev} ${boot_dev} %s %s %s %s %s %s %s"\n' \
