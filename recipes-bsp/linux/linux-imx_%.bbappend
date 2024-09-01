@@ -13,6 +13,7 @@ SRC_URI += " \
 	file://0014-phy-fsl-samsung-hdmi.patch \
 	file://0015-imx8mp-hdmi-pavi.patch \
 	file://0016-gpio-regulator-off-delay.patch \
+	file://0019-dm-verity-partition-wait-fix.patch \
 	"
 
 SRC_URI:append:imx8mp-summitsom = " \

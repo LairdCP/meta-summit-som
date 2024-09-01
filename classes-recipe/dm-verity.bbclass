@@ -26,8 +26,6 @@ verity_boot_script() {
     local scrl=${DM_VERITY_IMAGE_FNAME}.scr
     local img_type=${DM_VERITY_IMAGE_TYPE}
 
-    #cd "${IMGDEPLOYDIR}"
-
     while read -r line; do eval ${line}; done < ${env}
 
     # Add partition size
@@ -48,19 +46,12 @@ verity_boot_script() {
 
     ln -sf ${scr}.bin ${scrl}.bin
     ln -sf ${scr}.bin fitImageVerity.bin
-
-    #cd -
 }
 
 IMAGE_TYPES += "verity"
 CONVERSIONTYPES += "verity"
 CONVERSION_CMD:verity = "verity_setup ${type}"
 CONVERSION_DEPENDS_verity = "cryptsetup-native"
-
-#IMAGE_CMD:scr.bin = "verity_boot_script"
-#IMAGE_TYPEDEP:scr.bin = "verity"
-#IMAGE_TYPES_MASKED += "verity"
-#IMAGE_FSTYPES += "scr.bin"
 
 python __anonymous() {
     image_fstypes = d.getVar('IMAGE_FSTYPES')
