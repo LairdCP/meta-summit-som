@@ -1,32 +1,25 @@
 inherit custom-fit-gen
 
 verity_setup() {
-    local INPUT=${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.${1}
-    local OUTPUT=${INPUT}.verity
-    local SIZE=$(stat --printf="%s" ${INPUT})
+    local type=${1}
+    local input=${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.${type}
+    local output=${input}.verity
+    local output_link=${IMAGE_LINK_NAME}.${type}.verity
+    local size=$(stat --printf="%s" ${input})
 
-    cp -a ${INPUT} ${OUTPUT} || return 1
+    cp -a ${input} ${output} || return 1
 
     # Let's drop the first line of output (doesn't contain any useful info)
     # and feed the rest to another function.
-    veritysetup --hash-offset=${SIZE} format ${OUTPUT} ${OUTPUT} | \
-        sed -r '1d; s/^([^:]+):\s+(.+)/\U\1=\E\2/; s/ /_/g' > ${OUTPUT}.env
+    veritysetup --hash-offset=${size} format ${output} ${output} | \
+        sed -r '1d; s/^([^:]+):\s+(.+)/\U\1=\E\2/; s/ /_/g' > ${output}.env
 
-    ln -sf ${OUTPUT}.env ${IMAGE_LINK_NAME}.${1}.verity.env
+    ln -sf ${output}.env ${output_link}.env
 
-    fallocate -d ${OUTPUT}
+    fallocate -d ${output}
 
-    verity_boot_script
-}
-
-verity_boot_script() {
-    set -x
-    local env=${DM_VERITY_IMAGE_FNAME}.env
-    local scr=${IMAGE_NAME}.${DM_VERITY_IMAGE_TYPE}.verity.scr
-    local scrl=${DM_VERITY_IMAGE_FNAME}.scr
-    local img_type=${DM_VERITY_IMAGE_TYPE}
-
-    while read -r line; do eval ${line}; done < ${env}
+    # Read values from file
+    while read -r line; do eval ${line}; done < ${output}.env
 
     # Add partition size
     local HASH_BLOCK=$(expr ${DATA_BLOCKS} + 1)
@@ -38,13 +31,13 @@ verity_boot_script() {
             ${DATA_BLOCKS} ${HASH_BLOCK} ${HASH_ALGORITHM} ${ROOT_HASH} ${SALT}
         printf 'setenv bootargs "${bootargs} dm-mod.create=\"${dm_table}\" '
         printf 'dm-mod.waitfor=${boot_dev} root=/dev/dm-0 rootwait rootfstype=%s ro"\n' \
-            ${img_type%%-*}
-    } > ${scr}
+            ${type%%-*}
+    } > ${output}.scr
 
-    fitimage_script ${scr}.its ${scr} ${scr}.bin
+    fitimage_script ${output}.scr.its ${output}.scr ${output}.scr.bin
 
-    ln -sf ${scr}.bin ${scrl}.bin
-    ln -sf ${scr}.bin fitImageVerity.bin
+    ln -sf ${output}.scr.bin ${output_link}.scr.bin
+    ln -sf ${output}.scr.bin fitImageVerity.bin
 }
 
 IMAGE_TYPES += "verity"
