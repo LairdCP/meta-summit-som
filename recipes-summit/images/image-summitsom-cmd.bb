@@ -1,5 +1,7 @@
 DESCRIPTION = "Summit SOM Command Line Image"
 
+FILESEXTRAPATHS:prepend := "${THISDIR}/files/mcu:"
+
 inherit image-summitsom-gen image-summitsom-sd-gen image-summitsom-swu-gen
 
 CORE_IMAGE_EXTRA_INSTALL += "\

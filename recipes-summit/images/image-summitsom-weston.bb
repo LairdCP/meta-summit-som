@@ -1,5 +1,7 @@
 DESCRIPTION = "Summit SOM Weston Image"
 
+FILESEXTRAPATHS:prepend := "${THISDIR}/files/mcu:"
+
 inherit image-summitsom-gen image-summitsom-sd-gen image-summitsom-swu-gen
 
 IMAGE_FEATURES += "splash hwcodecs weston"
