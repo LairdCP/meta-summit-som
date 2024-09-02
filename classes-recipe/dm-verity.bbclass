@@ -37,7 +37,6 @@ verity_setup() {
     fitimage_script ${output}.scr.its ${output}.scr ${output}.scr.bin
 
     ln -sf ${output}.scr.bin ${output_link}.scr.bin
-    ln -sf ${output}.scr.bin fitImageVerity.bin
 }
 
 IMAGE_TYPES += "verity"

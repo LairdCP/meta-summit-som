@@ -61,13 +61,13 @@ software =
 					sha256 = "$swupdate_get_sha256(fitImageMcu.bin)";
 				},
 				{
-					filename = "fitImageVerity.bin";
+					filename = "@@DM_VERITY_IMAGE_FNAME@@.scr.bin";
 					path = "fitImageVerity.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
 					type = "rawfile";
 					filesystem = "vfat";
 					installed-directly = true;
-					sha256 = "$swupdate_get_sha256(fitImageVerity.bin)";
+					sha256 = "$swupdate_get_sha256(@@DM_VERITY_IMAGE_FNAME@@.scr.bin)";
 				},
 				{
 					filename = "@@DM_VERITY_IMAGE_FNAME@@";
@@ -150,13 +150,13 @@ software =
 					sha256 = "$swupdate_get_sha256(fitImageMcu.bin)";
 				},
 				{
-					filename = "fitImageVerity.bin";
+					filename = "@@DM_VERITY_IMAGE_FNAME@@.scr.bin";
 					path = "fitImageVerity.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
 					type = "rawfile";
 					filesystem = "vfat";
 					installed-directly = true;
-					sha256 = "$swupdate_get_sha256(fitImageVerity.bin)";
+					sha256 = "$swupdate_get_sha256(@@DM_VERITY_IMAGE_FNAME@@.scr.bin)";
 				},
 				{
 					filename = "@@DM_VERITY_IMAGE_FNAME@@";
@@ -291,12 +291,12 @@ software =
 					sha256 = "$swupdate_get_sha256(fitImageMcu.bin)";
 				},
 				{
-					filename = "fitImageVerity.bin";
+					filename = "@@DM_VERITY_IMAGE_FNAME@@.scr.bin";
 					path = "fitImageVerity.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
 					type = "rawfile";
 					filesystem = "vfat";
-					sha256 = "$swupdate_get_sha256(fitImageVerity.bin)";
+					sha256 = "$swupdate_get_sha256(@@DM_VERITY_IMAGE_FNAME@@.scr.bin)";
 				},
 				{
 					filename = "@@DM_VERITY_IMAGE_FNAME@@";
@@ -321,12 +321,12 @@ software =
 					sha256 = "$swupdate_get_sha256(fitImageMcu.bin)";
 				},
 				{
-					filename = "fitImageVerity.bin";
+					filename = "@@DM_VERITY_IMAGE_FNAME@@.scr.bin";
 					path = "fitImageVerity.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
 					type = "rawfile";
 					filesystem = "vfat";
-					sha256 = "$swupdate_get_sha256(fitImageVerity.bin)";
+					sha256 = "$swupdate_get_sha256(@@DM_VERITY_IMAGE_FNAME@@.scr.bin)";
 				},
 				{
 					filename = "@@DM_VERITY_IMAGE_FNAME@@";
