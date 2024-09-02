@@ -11,14 +11,10 @@
 #include <asm/arch/imx-regs.h>
 #include "imx_env.h"
 
-#define CFG_SYS_UBOOT_BASE   (QSPI0_AMBA_BASE + CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR * 512)
+#define CFG_SYS_UBOOT_BASE	(QSPI0_AMBA_BASE + CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR * 512)
 
-/* ENET Config */
-/* ENET1 */
 #if defined(CONFIG_CMD_NET)
-//#define CFG_ETHPRIME                 "eth1" /* Set eqos to primary since we use its MDIO */
-
-//#define CFG_FEC_XCV_TYPE             RGMII
+#define CFG_FEC_MXC_PHYADDR          1
 
 #define PHY_ANEG_TIMEOUT 20000
 

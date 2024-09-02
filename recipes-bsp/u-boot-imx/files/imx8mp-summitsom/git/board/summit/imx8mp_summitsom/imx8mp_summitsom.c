@@ -115,7 +115,7 @@ static int setup_charger(uint8_t i2c_bus, uint8_t addr)
 	ret = dm_i2c_probe(bus, addr, 0, &i2c_dev);
 	if (ret) {
 		printf("%s: Can't find device id=0x%x\n",
-		       __func__, addr);
+			__func__, addr);
 		return -ENODEV;
 	}
 
@@ -398,20 +398,10 @@ static bool wbx3;
 int board_init(void)
 {
 	wbx3 = setup_charger(1, 0x6b) < 0;
-	printf("Board Type: %s\n", wbx3 ? "WBx3" : "DVK");
 
 #ifdef CONFIG_USB_TCPC
 	if (!wbx3)
 		setup_typec();
-#endif
-
-#if CONFIG_IS_ENABLED(FEC_MXC)
-	setup_fec();
-#endif
-
-#if CONFIG_IS_ENABLED(DWC_ETH_QOS)
-	if (!wbx3)
-		setup_eqos();
 #endif
 
 #if defined(CONFIG_USB_DWC3) || defined(CONFIG_USB_XHCI_IMX8M)
@@ -431,7 +421,6 @@ int board_late_init(void)
 	env_set("board_rev", "iMX8MP");
 #endif
 
-	printf("board_late_init\n");
 	if (wbx3)
 		update_dts("dvk", "wbx");
 	else
