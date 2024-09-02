@@ -26,13 +26,18 @@
 #include <imx_sip.h>
 #include <linux/arm-smccc.h>
 #include <mmc.h>
-#include <fuse.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
 #include "imx8mp_common.c"
 
+#define UART_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_FSEL1)
 #define WDOG_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_ODE | PAD_CTL_PUE | PAD_CTL_PE)
+
+static iomux_v3_cfg_t const uart_pads[] = {
+	MX8MP_PAD_UART2_RXD__UART2_DCE_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
+	MX8MP_PAD_UART2_TXD__UART2_DCE_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
+};
 
 static iomux_v3_cfg_t const wdog_pads[] = {
 	MX8MP_PAD_GPIO1_IO02__WDOG1_WDOG_B  | MUX_PAD_CTRL(WDOG_PAD_CTRL),
@@ -46,7 +51,9 @@ int board_early_init_f(void)
 
 	set_wdog_reset(wdog);
 
-	early_uart_init();
+	imx_iomux_v3_setup_multiple_pads(uart_pads, ARRAY_SIZE(uart_pads));
+
+	init_uart_clk(1);
 
 	return 0;
 }
@@ -63,17 +70,6 @@ int ft_board_setup(void *blob, struct bd_info *bd)
 	}
 
 #ifdef CONFIG_IMX8M_DRAM_INLINE_ECC
-#ifdef CONFIG_TARGET_IMX8MP_DDR4_EVK
-	int rc;
-	phys_addr_t ecc_start = 0x120000000;
-	size_t ecc_size = 0x20000000;
-
-	rc = add_res_mem_dt_node(blob, "ecc", ecc_start, ecc_size);
-	if (rc < 0) {
-		printf("Could not create ecc reserved-memory node.\n");
-		return rc;
-	}
-#else
 	int rc;
 	phys_addr_t ecc0_start = 0xb0000000;
 	phys_addr_t ecc1_start = 0x130000000;
@@ -97,7 +93,6 @@ int ft_board_setup(void *blob, struct bd_info *bd)
 		printf("Could not create ecc2 reserved-memory node.\n");
 		return rc;
 	}
-#endif
 #endif
 
 	return 0;
@@ -201,6 +196,7 @@ int pd_switch_snk_enable(struct tcpc_port *port)
 	return setup_pd_switch(1, 0x72);
 }
 
+/* Port2 is the power supply, port 1 does not support power */
 struct tcpc_port_config port1_config = {
 	.i2c_bus = 1, /*i2c2*/
 	.addr = 0x50,
@@ -426,28 +422,6 @@ int board_init(void)
 	return 0;
 }
 
-static void update_dts(const char *oldn, const char *newn)
-{
-	char buf[64], *dvk;
-
-	char *dtb = env_get("conf");
-	printf("Current conf: %s\n", dtb);
-
-	if (!strstr(dtb, oldn))
-		return;
-
-	strncpy(buf, dtb, sizeof(buf));
-	buf[sizeof(buf) - 1] = 0;
-	dvk = strstr(buf, oldn);
-	if (!dvk)
-		return;
-
-	memcpy(dvk, newn, 3);
-
-	env_set("conf", buf);
-	env_save();
-}
-
 int board_late_init(void)
 {
 	set_bootside();
@@ -472,8 +446,7 @@ int board_late_init(void)
 }
 
 #ifdef CONFIG_ANDROID_SUPPORT
-bool is_power_key_pressed(void)
-{
+bool is_power_key_pressed(void) {
 	return (bool)(!!(readl(SNVS_HPSR) & (0x1 << 6)));
 }
 #endif

@@ -6,9 +6,9 @@ SRC_URI:append:imx8mp-summitsom = " \
     file://0003-Fixed-uboot-environment-saved-every-boot.patch \
     "
 
-#do_deploy:append:mx8m-nxp-bsp() {
-#	ln -rsf ${DEPLOYDIR}/${UBOOT_DTB_IMAGE} ${DEPLOYDIR}/${BOOT_TOOLS}/${UBOOT_DTB_NAME}
-#}
+do_deploy:append:mx8m-nxp-bsp() {
+    ln -rsf ${DEPLOYDIR}/${UBOOT_DTB_IMAGE} ${DEPLOYDIR}/${BOOT_TOOLS}/${UBOOT_DTB_NAME}
+}
 
 DEPENDS += "u-boot-mkenvimage-native"
 
@@ -17,7 +17,7 @@ UBOOT_INITIAL_ENV = "u-boot-initial-env"
 # Env binary size
 ENV_SIZE = "0x4000"
 
-#Env base Name
+# Env base Name
 ENV_BASE_NAME ??= "${UBOOT_INITIAL_ENV}-${UBOOT_CONFIG}"
 
 do_compile:append:summitsom() {

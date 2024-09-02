@@ -16,23 +16,26 @@ SRC_URI += " \
 	file://0019-dm-verity-partition-wait-fix.patch \
 	"
 
-SRC_URI:append:imx8mp-summitsom = " \
+SRC_URI:append:summitsom = " \
 	file://config/ \
 	file://config/summitsom_defconfig \
 	"
 
-KBUILD_DEFCONFIG:remove:imx8mp-summitsom = "${IMX_KERNEL_CONFIG_AARCH64}"
+# Use our defconfig
+KBUILD_DEFCONFIG:remove:summitsom = "${IMX_KERNEL_CONFIG_AARCH64}"
 
-do_copy_defconfig:imx8mp-summitsom () {
-	install -D -m 0644 -t ${S}/arch/arm64/boot/dts/freescale/ ${WORKDIR}/config/*.dts*
+# Use our device trees
+do_copy_defconfig:summitsom () {
+   install -D -m 0644 -t ${S}/arch/arm64/boot/dts/freescale/ ${WORKDIR}/config/*.dts*
 }
 
-RDEPENDS:${KERNEL_PACKAGE_NAME}-base:remove:imx8mp-summitsom = "${KERNEL_PACKAGE_NAME}-image"
+# Remove kernel binary from rootfs
+RDEPENDS:${KERNEL_PACKAGE_NAME}-base:remove:summitsom = "${KERNEL_PACKAGE_NAME}-image"
 
 # Fixes menuconfig
 KCONFIG_CONFIG_COMMAND:append = " -C ${B}"
 
-DEPENDS:append:imx8mp-summitsom = " firmware-imx"
-do_compile:prepend:imx8mp-summitsom () {
+DEPENDS:append:summitsom = " firmware-imx"
+do_compile:prepend:summitsom () {
 	cp -a ${WORKDIR}/recipe-sysroot/usr/lib/firmware ${S}/firmware
 }

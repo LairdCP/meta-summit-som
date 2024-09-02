@@ -1,16 +1,5 @@
-#define UART_PAD_CTRL   (PAD_CTL_DSE6 | PAD_CTL_FSEL1)
-
-static iomux_v3_cfg_t const uart_pads[] = {
-	MX8MP_PAD_UART2_RXD__UART2_DCE_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
-	MX8MP_PAD_UART2_TXD__UART2_DCE_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
-};
-
-static void early_uart_init(void)
-{
-	imx_iomux_v3_setup_multiple_pads(uart_pads, ARRAY_SIZE(uart_pads));
-
-	init_uart_clk(1);
-}
+#ifndef CONFIG_TARGET_IMX8MP_EVK_RDVK
+#include <fuse.h>
 
 int board_phys_sdram_size(phys_size_t *memsize)
 {
@@ -42,6 +31,7 @@ int board_phys_sdram_size(phys_size_t *memsize)
 
 	return 0;
 }
+#endif
 
 static int get_boot_side(int dev)
 {
@@ -114,4 +104,25 @@ static void set_bootside(void)
 	default:
 		break;
 	}
+}
+
+static void update_dts(const char *oldn, const char *newn)
+{
+	char buf[64], *dvk;
+
+	char *dtb = env_get("conf");
+
+	if (!strstr(dtb, oldn))
+		return;
+
+	strncpy(buf, dtb, sizeof(buf));
+	buf[sizeof(buf) - 1] = 0;
+	dvk = strstr(buf, oldn);
+	if (!dvk)
+		return;
+
+	memcpy(dvk, newn, 3);
+
+	env_set("conf", buf);
+	env_save();
 }
