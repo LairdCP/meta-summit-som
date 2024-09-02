@@ -1,9 +1,12 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
+SRC_URI:append = " \
+    file://0003-Fixed-uboot-environment-saved-every-boot.patch \
+    "
+
 SRC_URI:append:imx8mp-summitsom = " \
     file://git \
     file://0001-bsp-integ.patch \
-    file://0003-Fixed-uboot-environment-saved-every-boot.patch \
     "
 
 do_deploy:append:mx8m-nxp-bsp() {
