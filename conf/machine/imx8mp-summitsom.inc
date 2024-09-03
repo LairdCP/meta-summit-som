@@ -14,7 +14,10 @@ DEFAULTTUNE:mx8m-nxp-bsp ?= "armv8a-crc-crypto"
 
 MACHINE_FEATURES += "pci usbhost alsa rtc optee"
 
+SOC_DEFAULT_IMAGE_FSTYPES = ""
+
 IMAGE_BOOT_FILES = "${KERNEL_IMAGETYPE}"
+SWUPDATE_IMAGES = "${IMAGE_BOOTLOADER} u-boot.env ${KERNEL_IMAGETYPE}"
 
 IMX_DEFAULT_BOOTLOADER = "u-boot-imx"
 

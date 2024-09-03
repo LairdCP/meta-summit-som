@@ -9,11 +9,14 @@ EXTRA_USERS_PARAMS = "usermod -p '${PASSWD}' root;"
 export IMAGE_BASENAME = "${PN}"
 export IMAGE_BASENAME:summit-secure = "${PN}-secure"
 
+IMAGE_ROOTFS_VERITY_TYPE = "squashfs-zst.verity"
+IMAGE_ROOTFS_VERITY_NAME = "${IMAGE_LINK_NAME}.${IMAGE_ROOTFS_VERITY_TYPE}"
+IMAGE_FSTYPES += "${IMAGE_ROOTFS_VERITY_TYPE}"
 
-IMAGE_FSTYPES = "squashfs-zst.verity"
-IMAGE_BOOT_FILES += "${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.${DM_VERITY_IMAGE_TYPE}.verity.scr.bin;fitImageVerity.bin"
-#IMAGE_BOOT_FILES += "${IMGDEPLOYDIR}/fitImageVerity.bin"
-IMAGE_NAME_SUFFIX = ""
+IMAGE_BOOT_FILES += "${IMGDEPLOYDIR}/${IMAGE_ROOTFS_VERITY_NAME}.scr.bin;fitImageVerity.bin"
+
+IMAGE_MACHINE_SUFFIX ?= ""
+IMAGE_NAME_SUFFIX ?= ""
 
 IMAGE_ROOTFS_EXTRA_SPACE = "0"
 
@@ -66,22 +69,23 @@ IMAGE_INSTALL_DIAG = "\
 
 ROOTFS_POSTPROCESS_COMMAND += "rootfs_os_release; "
 
-SUMMIT_VERSION ?= "0.0.0.0"
-
 rootfs_os_release() {
+	ver=${IMAGE_VERSION_SUFFIX}
+	ver=${ver#-}
 	sed -i -e 's,ID=os-release,ID=${IMAGE_BASENAME},g' ${IMAGE_ROOTFS}${libdir}/os-release
-	echo 'Summit SOM ${IMAGE_BASENAME} ${SUMMIT_VERSION} \\n \l' > ${IMAGE_ROOTFS}${sysconfdir}/issue
-	echo 'Summit SOM ${IMAGE_BASENAME} ${SUMMIT_VERSION} %h' > ${IMAGE_ROOTFS}${sysconfdir}/issue.net
+	sed -i -e "s,0.0.0.0,${ver},g" ${IMAGE_ROOTFS}${libdir}/os-release
+	echo "Summit SOM ${IMAGE_BASENAME} ${ver} \\\n \l" > ${IMAGE_ROOTFS}${sysconfdir}/issue
+	echo "Summit SOM ${IMAGE_BASENAME} ${ver} %h" > ${IMAGE_ROOTFS}${sysconfdir}/issue.net
 }
 
-ARCHIVE_NAME ?= "${IMAGE_BASENAME}-summit-${SUMMIT_VERSION}"
+ARCHIVE_NAME ?= "${IMAGE_BASENAME}-summit${IMAGE_VERSION_SUFFIX}"
 ARCHIVE_WILDCARD ?= ""
 
 addtask create_archive after do_image_complete before do_build
 
 do_create_archive() {
-	if [ "${SUMMIT_VERSION}" != "0.0.0.0" ]; then
-		tar --transform='s,.*/,,' -cjf ${DEPLOY_DIR_IMAGE}/${ARCHIVE_NAME}.tar.bz2 ${ARCHIVE_WILDCARD}
+	if echo "${IMAGE_VERSION_SUFFIX}" | grep -xEq '\-[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' ; then
+		tar --transform='s,.*/,,' -cjhf ${DEPLOY_DIR_IMAGE}/${ARCHIVE_NAME}.tar.bz2 ${ARCHIVE_WILDCARD}
 	fi
 }
 

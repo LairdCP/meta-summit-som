@@ -2,7 +2,7 @@ inherit custom-fit-gen
 
 verity_setup() {
     local type=${1}
-    local input=${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.${type}
+    local input=${IMAGE_NAME}.${type}
     local output=${input}.verity
     local output_link=${IMAGE_LINK_NAME}.${type}.verity
     local size=$(stat --printf="%s" ${input})
@@ -24,6 +24,8 @@ verity_setup() {
     # Add partition size
     local HASH_BLOCK=$(expr ${DATA_BLOCKS} + 1)
     local DATA_SECT=$(expr ${DATA_BLOCKS} \* ${DATA_BLOCK_SIZE} / 512)
+
+    printf "HASH_BLOCK=${HASH_BLOCK}\nDATA_SECT=${DATA_SECT}\n" >> ${output}.env
 
     {
         printf 'dm_table="vroot,%s,,ro,0 %s verity 1 ${boot_dev} ${boot_dev} %s %s %s %s %s %s %s"\n' \
@@ -60,7 +62,4 @@ python __anonymous() {
             f = fst[:fst.index(".verity")]
             dep = ' %s:do_image_%s' % (pn, f.replace('-', '_'))
             d.appendVarFlag('do_image_wic', 'depends', dep)
-            d.setVar('DM_VERITY_IMAGE_TYPE', f)
-            link_name=d.getVar('IMAGE_LINK_NAME')
-            d.setVar('DM_VERITY_IMAGE_FNAME', '%s.%s' % (link_name, fst))
 }

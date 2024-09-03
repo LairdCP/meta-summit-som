@@ -43,10 +43,19 @@ software =
 					sha256 = "$swupdate_get_sha256(u-boot.env)";
 				},
 				{
+					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@p2";
+					type = "raw";
+					installed-directly = true;
+					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@)";
+				},
+			);
+
+			files: (
+				{
 					filename = "fitImage";
 					path = "fitImage";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
-					type = "rawfile";
 					filesystem = "vfat";
 					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(fitImage)";
@@ -55,26 +64,17 @@ software =
 					filename = "fitImageMcu.bin";
 					path = "fitImageMcu.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
-					type = "rawfile";
 					filesystem = "vfat";
 					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(fitImageMcu.bin)";
 				},
 				{
-					filename = "@@DM_VERITY_IMAGE_FNAME@@.scr.bin";
+					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin";
 					path = "fitImageVerity.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
-					type = "rawfile";
 					filesystem = "vfat";
 					installed-directly = true;
-					sha256 = "$swupdate_get_sha256(@@DM_VERITY_IMAGE_FNAME@@.scr.bin)";
-				},
-				{
-					filename = "@@DM_VERITY_IMAGE_FNAME@@";
-					device = "/dev/mmcblk@@EMMC_DEVICE@@p2";
-					type = "raw";
-					installed-directly = true;
-					sha256 = "$swupdate_get_sha256(@@DM_VERITY_IMAGE_FNAME@@)";
+					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin)";
 				},
 			);
 
@@ -132,10 +132,19 @@ software =
 					sha256 = "$swupdate_get_sha256(u-boot.env)";
 				},
 				{
+					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@p5";
+					type = "raw";
+					installed-directly = true;
+					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@)";
+				},
+			);
+
+			files: (
+				{
 					filename = "fitImage";
 					path = "fitImage";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
-					type = "rawfile";
 					filesystem = "vfat";
 					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(fitImage)";
@@ -144,26 +153,17 @@ software =
 					filename = "fitImageMcu.bin";
 					path = "fitImageMcu.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
-					type = "rawfile";
 					filesystem = "vfat";
 					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(fitImageMcu.bin)";
 				},
 				{
-					filename = "@@DM_VERITY_IMAGE_FNAME@@.scr.bin";
+					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin";
 					path = "fitImageVerity.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
-					type = "rawfile";
 					filesystem = "vfat";
 					installed-directly = true;
-					sha256 = "$swupdate_get_sha256(@@DM_VERITY_IMAGE_FNAME@@.scr.bin)";
-				},
-				{
-					filename = "@@DM_VERITY_IMAGE_FNAME@@";
-					device = "/dev/mmcblk@@EMMC_DEVICE@@p5";
-					type = "raw";
-					installed-directly = true;
-					sha256 = "$swupdate_get_sha256(@@DM_VERITY_IMAGE_FNAME@@)";
+					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin)";
 				},
 			);
 
@@ -275,40 +275,45 @@ software =
 					sha256 = "$swupdate_get_sha256(u-boot.env)";
 				},
 				{
-					filename = "fitImage";
-					path = "fitImage";
-					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
-					type = "rawfile";
-					filesystem = "vfat";
-					sha256 = "$swupdate_get_sha256(fitImage)";
-				},
-				{
-					filename = "fitImageMcu.bin";
-					path = "fitImageMcu.bin";
-					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
-					type = "rawfile";
-					filesystem = "vfat";
-					sha256 = "$swupdate_get_sha256(fitImageMcu.bin)";
-				},
-				{
-					filename = "@@DM_VERITY_IMAGE_FNAME@@.scr.bin";
-					path = "fitImageVerity.bin";
-					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
-					type = "rawfile";
-					filesystem = "vfat";
-					sha256 = "$swupdate_get_sha256(@@DM_VERITY_IMAGE_FNAME@@.scr.bin)";
-				},
-				{
-					filename = "@@DM_VERITY_IMAGE_FNAME@@";
+					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p2";
 					type = "raw";
-					sha256 = "$swupdate_get_sha256(@@DM_VERITY_IMAGE_FNAME@@)";
+					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@)";
+				},
+				{
+					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@p5";
+					type = "raw";
+					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@)";
+				},
+			);
+
+			files: (
+				{
+					filename = "fitImage";
+					path = "fitImage";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
+					filesystem = "vfat";
+					sha256 = "$swupdate_get_sha256(fitImage)";
+				},
+				{
+					filename = "fitImageMcu.bin";
+					path = "fitImageMcu.bin";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
+					filesystem = "vfat";
+					sha256 = "$swupdate_get_sha256(fitImageMcu.bin)";
+				},
+				{
+					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin";
+					path = "fitImageVerity.bin";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
+					filesystem = "vfat";
+					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin)";
 				},
 				{
 					filename = "fitImage";
 					path = "fitImage";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
-					type = "rawfile";
 					filesystem = "vfat";
 					sha256 = "$swupdate_get_sha256(fitImage)";
 				},
@@ -316,23 +321,15 @@ software =
 					filename = "fitImageMcu.bin";
 					path = "fitImageMcu.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
-					type = "rawfile";
 					filesystem = "vfat";
 					sha256 = "$swupdate_get_sha256(fitImageMcu.bin)";
 				},
 				{
-					filename = "@@DM_VERITY_IMAGE_FNAME@@.scr.bin";
+					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin";
 					path = "fitImageVerity.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
-					type = "rawfile";
 					filesystem = "vfat";
-					sha256 = "$swupdate_get_sha256(@@DM_VERITY_IMAGE_FNAME@@.scr.bin)";
-				},
-				{
-					filename = "@@DM_VERITY_IMAGE_FNAME@@";
-					device = "/dev/mmcblk@@EMMC_DEVICE@@p5";
-					type = "raw";
-					sha256 = "$swupdate_get_sha256(@@DM_VERITY_IMAGE_FNAME@@)";
+					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin)";
 				},
 			);
 
