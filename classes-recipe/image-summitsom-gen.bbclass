@@ -30,7 +30,7 @@ IMAGE_FEATURES:append:summit-secure = "\
 	"
 
 IMAGE_INSTALL_BASIC = "\
-	pac193x \
+	kernel-module-pac193x \
 	packagegroup-radio-stack \
 	ca-certificates \
 	tzdata-core \
