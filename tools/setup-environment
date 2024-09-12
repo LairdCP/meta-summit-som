@@ -76,7 +76,7 @@ setup_devel=false
 setup_summit=false
 setup_vigiles=false
 
-ARGS=$(getopt -o "hirv" -l "help," --name ${PROGNAME} -- "$@" )
+ARGS=$(getopt -o "hirva" -l "help," --name ${PROGNAME} -- "$@" )
 # Print the usage menu if invalid options are specified
 if [ $? != 0 ] || [ $# -lt 1 ]; then
    usage && clean_up
