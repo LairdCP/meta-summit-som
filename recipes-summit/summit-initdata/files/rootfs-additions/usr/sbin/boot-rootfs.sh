@@ -46,8 +46,13 @@ case "${rootDevActual}" in
 		;;
 
 	ubiblock*)
-		read -r rootDevName < "/sys/block/${rootDevActual}/device/name"
-		rootDevActual=$(find_ubi_device "${rootDevName}")
+		if [ -e "/sys/block/${rootDevActual}/device/name" ]; then
+			read -r rootDevName < "/sys/block/${rootDevActual}/device/name"
+			rootDevActual=$(find_ubi_device "${rootDevName}")
+		else
+			rootDevActual=ubi${rootDevActual#ubiblock}
+		fi
+
 		rootDevType=ubi
 		mountFsType=ubifs
 		;;
@@ -127,4 +132,25 @@ getSide() {
 	esac
 
 	[ -n "${bootside}" ] || bootside=a
+}
+
+nextSide() {
+	case "${rootDevActual}" in
+	mmcblk*)
+		read -r soc_id < /sys/devices/soc0/soc_id
+		case "${soc_id}" in
+		sama5d3*)
+			echo a
+			;;
+		*)
+			mmc extcsd read "${rootDevActual%%p*}" | \
+				grep -qm 1 'Boot Partition 2 enabled' && echo b || echo a
+			;;
+		esac
+		;;
+
+	ubi*)
+		fw_printenv -n bootside
+		;;
+	esac
 }
