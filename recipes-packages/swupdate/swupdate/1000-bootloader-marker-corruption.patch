@@ -9,6 +9,6 @@ diff -ruN a/include/swupdate.h b/include/swupdate.h
 -	bool bootloader_state_marker;
 +	int bootloader_transaction_marker;
 +	int bootloader_state_marker;
-	char output[SWUPDATE_GENERAL_STRING_SIZE];
+ 	char output[SWUPDATE_GENERAL_STRING_SIZE];
  	char output_swversions[SWUPDATE_GENERAL_STRING_SIZE];
-	char publickeyfname[SWUPDATE_GENERAL_STRING_SIZE];
+ 	char publickeyfname[SWUPDATE_GENERAL_STRING_SIZE];
