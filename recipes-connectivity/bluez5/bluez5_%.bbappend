@@ -3,7 +3,6 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI += "\
     file://1001-bluetooth-get_conn_info-auto_connect-disconnect_reason.patch \
-    file://1002-add-support-for-using-libedit.patch \
     "
 
 PACKAGECONFIG:summitsom ?= "\
@@ -17,8 +16,6 @@ PACKAGECONFIG:summitsom ?= "\
     tools \
     udev \
 "
-
-PACKAGECONFIG[readline] = "--enable-client,--disable-client,libedit,"  
 
 do_install:append() {
    install -D -m 0644 ${S}/src/main.conf ${D}${sysconfdir}/bluetooth/main.conf
