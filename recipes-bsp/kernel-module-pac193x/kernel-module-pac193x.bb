@@ -6,10 +6,9 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/GPL-2.0-or-lat
 inherit module
 
 SRC_URI = " \
-        file://Makefile \
-        file://pac193x.c \
+        file://pac193x/Makefile \
+        file://pac193x/pac193x.c \
         "
 
-S = "${WORKDIR}"
-
-MAKE_TARGETS = "modules"
+# The kernel module MUST NOT be built in WORKDIR, otherwise clean will break it
+S = "${WORKDIR}/pac193x"
