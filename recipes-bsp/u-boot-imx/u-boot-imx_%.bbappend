@@ -4,6 +4,15 @@ SRC_URI:append = " \
     file://0003-Fixed-uboot-environment-saved-every-boot.patch \
     "
 
+SRC_URI:append:summit-secure-hab = " \
+    file://0004-skip-uboot-image-auth.patch \
+    file://u-boot-enable-hab.cfg \
+    "
+
+SRC_URI:append:wbx3 = " \
+    file://wbx3/u-boot-increase-boot-delay.cfg \
+    "
+
 SRC_URI:append:imx8mp-summitsom = " \
     file://git \
     file://0001-bsp-integ.patch \
