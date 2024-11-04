@@ -9,7 +9,7 @@ SRC_URI = " \
     file://90-usbmount.rules \
     file://91-mmcmount.rules \
     file://usb-mount.sh \
- 	"
+    "
 
 MMC_USER ?= ""
 USB_USER ?= ""
@@ -25,11 +25,13 @@ S = "${WORKDIR}"
 FILES:${PN} += "${sysconfdir}/udev/rules.d ${sysconfdir}/default"
 
 do_install () {
-	install -D -m 0755 -t ${D}${bindir} ${S}/usb-mount.sh
-	install -D -m 0644 -t ${D}${sysconfdir}/udev/rules.d \
-		${S}/90-usbmount.rules ${S}/91-mmcmount.rules
+    install -D -m 0755 -t "${D}${bindir}" "${S}/usb-mount.sh"
+    install -D -m 0644 -t "${D}${sysconfdir}/udev/rules.d" \
+        "${S}/90-usbmount.rules" "${S}/91-mmcmount.rules"
 
-	install -d ${D}${sysconfdir}/default
-	echo "MOUNT_USER_MMC=${MMC_USER}" >>${D}${sysconfdir}/default/usb-mount
-	echo "MOUNT_USER_USB=${USB_USER}" >>${D}${sysconfdir}/default/usb-mount
+    install -d "${D}${sysconfdir}/default"
+    {
+        echo "MOUNT_USER_MMC=${MMC_USER}"
+        echo "MOUNT_USER_USB=${USB_USER}"
+    } > "${D}${sysconfdir}/default/usb-mount"
 }

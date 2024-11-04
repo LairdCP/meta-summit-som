@@ -56,39 +56,39 @@ export SUMMIT_RCM_EXTRA_PACKAGES = "\
     "
 
 do_install:append() {
-    install -D -m 644 -t ${D}${sysconfdir}/ ${S}/summit-rcm.ini
-    install -D -m 644 -t ${D}${sysconfdir}/summit-rcm/ssl \
-        ${WORKDIR}/server.key ${WORKDIR}/server.crt ${WORKDIR}/ca.crt
+    install -D -m 644 -t "${D}${sysconfdir}/" "${S}/summit-rcm.ini"
+    install -D -m 644 -t "${D}${sysconfdir}/summit-rcm/ssl" \
+        "${WORKDIR}/server.key" "${WORKDIR}/server.crt" "${WORKDIR}/ca.crt"
 
-    sed -i -e '/^default_/d' ${D}${sysconfdir}/summit-rcm.ini
-    sed -i -e '/\[summit-rcm\]/a default_password: \"${PASSWORD}\"' ${D}${sysconfdir}/summit-rcm.ini
-    sed -i -e '/\[summit-rcm\]/a default_username: \"${USERNAME}\"' ${D}${sysconfdir}/summit-rcm.ini
+    sed -i -e '/^default_/d' "${D}${sysconfdir}/summit-rcm.ini"
+    sed -i -e '/\[summit-rcm\]/a default_password: \"${PASSWORD}\"' "${D}${sysconfdir}/summit-rcm.ini"
+    sed -i -e '/\[summit-rcm\]/a default_username: \"${USERNAME}\"' "${D}${sysconfdir}/summit-rcm.ini"
 
-    sed -i -e '/^managed_software_devices/d' ${D}${sysconfdir}/summit-rcm.ini
-    sed -i -e '/\[summit-rcm\]/a managed_software_devices: ${MANAGED_SOFTWARE_DEVICES}' ${D}${sysconfdir}/summit-rcm.ini
+    sed -i -e '/^managed_software_devices/d' "${D}${sysconfdir}/summit-rcm.ini"
+    sed -i -e '/\[summit-rcm\]/a managed_software_devices: ${MANAGED_SOFTWARE_DEVICES}' "${D}${sysconfdir}/summit-rcm.ini"
 
-    sed -i -e '/^unmanaged_hardware_devices/d' ${D}${sysconfdir}/summit-rcm.ini
-    sed -i -e '/\[summit-rcm\]/a unmanaged_hardware_devices: ${UNMANAGED_HARDWARE_DEVICES}' ${D}${sysconfdir}/summit-rcm.ini
+    sed -i -e '/^unmanaged_hardware_devices/d' "${D}${sysconfdir}/summit-rcm.ini"
+    sed -i -e '/\[summit-rcm\]/a unmanaged_hardware_devices: ${UNMANAGED_HARDWARE_DEVICES}' "${D}${sysconfdir}/summit-rcm.ini"
 
-    sed -i -e '/^enable_allow_unauthenticated_reboot_reset/d' ${D}${sysconfdir}/summit-rcm.ini
-    sed -i -e '/\[summit-rcm\]/a enable_allow_unauthenticated_reboot_reset: ${@bb.utils.contains('PACKAGECONFIG','unauthenticated-reboot-reset','True','False',d)}' ${D}${sysconfdir}/summit-rcm.ini
+    sed -i -e '/^enable_allow_unauthenticated_reboot_reset/d' "${D}${sysconfdir}/summit-rcm.ini"
+    sed -i -e '/\[summit-rcm\]/a enable_allow_unauthenticated_reboot_reset: ${@bb.utils.contains('PACKAGECONFIG','unauthenticated-reboot-reset','True','False',d)}' "${D}${sysconfdir}/summit-rcm.ini"
 
-    sed -i -e '/^allow_multiple_user_sessions/d' ${D}${sysconfdir}/summit-rcm.ini
-    sed -i -e '/\[summit-rcm\]/a allow_multiple_user_sessions: ${@bb.utils.contains('PACKAGECONFIG','multiple-user-sessions','True','False',d)}' ${D}${sysconfdir}/summit-rcm.ini
+    sed -i -e '/^allow_multiple_user_sessions/d' "${D}${sysconfdir}/summit-rcm.ini"
+    sed -i -e '/\[summit-rcm\]/a allow_multiple_user_sessions: ${@bb.utils.contains('PACKAGECONFIG','multiple-user-sessions','True','False',d)}' "${D}${sysconfdir}/summit-rcm.ini"
 
-    sed -i -e 's,^tools.sessions.on:.*,tools.sessions.on: ${@bb.utils.contains('PACKAGECONFIG','login-sessions','True','False',d)},' ${D}${sysconfdir}/summit-rcm.ini
+    sed -i -e 's,^tools.sessions.on:.*,tools.sessions.on: ${@bb.utils.contains('PACKAGECONFIG','login-sessions','True','False',d)},' "${D}${sysconfdir}/summit-rcm.ini"
 
-    sed -i -e '/^enable_client_auth/d' ${D}${sysconfdir}/summit-rcm.ini
-    sed -i -e '/\[summit-rcm\]/a enable_client_auth: ${@bb.utils.contains('PACKAGECONFIG','client-authentication','True','False',d)}' ${D}${sysconfdir}/summit-rcm.ini
+    sed -i -e '/^enable_client_auth/d' "${D}${sysconfdir}/summit-rcm.ini"
+    sed -i -e '/\[summit-rcm\]/a enable_client_auth: ${@bb.utils.contains('PACKAGECONFIG','client-authentication','True','False',d)}' "${D}${sysconfdir}/summit-rcm.ini"
 
     if ${@bb.utils.contains('PACKAGECONFIG','client-authentication','true','false',d)}; then
-        sed -i -e 's,^server.ssl_certificate_chain:.*,server.ssl_certificate_chain: \"${CA_CERT_CHAIN_PATH}\",' ${D}${sysconfdir}/summit-rcm.ini
+        sed -i -e 's,^server.ssl_certificate_chain:.*,server.ssl_certificate_chain: \"${CA_CERT_CHAIN_PATH}\",' "${D}${sysconfdir}/summit-rcm.ini"
     fi
 
-    sed -i -e '/\[summit-rcm\]/a serial_port: \"${SUMMIT_RCM_SERIAL_PORT}\"' ${D}${sysconfdir}/summit-rcm.ini
-    sed -i -e '/\[summit-rcm\]/a baud_rate: ${SUMMIT_RCM_BAUD_RATE}' ${D}${sysconfdir}/summit-rcm.ini
+    sed -i -e '/\[summit-rcm\]/a serial_port: \"${SUMMIT_RCM_SERIAL_PORT}\"' "${D}${sysconfdir}/summit-rcm.ini"
+    sed -i -e '/\[summit-rcm\]/a baud_rate: ${SUMMIT_RCM_BAUD_RATE}' "${D}${sysconfdir}/summit-rcm.ini"
 
     if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
-        install -D -m 644 -t ${D}${systemd_system_unitdir} ${S}/summit-rcm.service
+        install -D -m 644 -t "${D}${systemd_system_unitdir}" "${S}/summit-rcm.service"
     fi
 }

@@ -17,5 +17,5 @@ do_compile () {
 } 
 
 do_install () {
-    install -D -m 755 ${S}/examples/register_rw/out/register_rw  ${D}${bindir}/register_rw
+    install -D -m 755 "${S}/examples/register_rw/out/register_rw"  "${D}${bindir}/register_rw"
 }

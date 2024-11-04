@@ -20,5 +20,5 @@ SRC_URI[sha256sum] = "470fc10c7060e002f71c2bc513be428dfe0dd01529e8f1edcd650c1e6d
 S = "${WORKDIR}/mint-${PV}"
 
 do_install() {
-    install -D -m 755 mint ${D}${bindir}/mint
+    install -D -m 755 mint "${D}${bindir}/mint"
 }

@@ -34,11 +34,11 @@ do_compile () {
 }
 
 do_install () {
-   install -m 0644 -D -t ${D}${nonarch_base_libdir}/firmware ${S}/${MCU_ELF}
+   install -m 0644 -D -t "${D}${nonarch_base_libdir}/firmware" "${S}/${MCU_ELF}"
 }
 
 do_deploy () {
-   install -m 0644 -D -t ${DEPLOYDIR} ${S}/fitImageMcu.bin
+   install -m 0644 -D -t "${DEPLOYDIR}" "${S}/fitImageMcu.bin"
 }
 
 addtask deploy after do_compile
