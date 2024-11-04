@@ -23,5 +23,5 @@ export SUMMIT_RCM_AWM_PLUGIN_EXTRA_PACKAGES = "\
 
 do_install:append() {
     mkdir -p ${D}${sysconfdir}
-    echo "[summit-rcm]\nawm_cfg: \"${ADAPTIVE_WW_CFG_FILE}\"" > ${D}${sysconfdir}/summit-rcm-awm.ini
+    echo "[summit-rcm]\nawm_cfg: \"${ADAPTIVE_WW_CFG_FILE}\"" > "${D}${sysconfdir}/summit-rcm-awm.ini"
 }

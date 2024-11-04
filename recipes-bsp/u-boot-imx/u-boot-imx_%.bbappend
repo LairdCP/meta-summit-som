@@ -10,7 +10,7 @@ SRC_URI:append:imx8mp-summitsom = " \
     "
 
 do_deploy:append:mx8m-nxp-bsp() {
-    ln -rsf ${DEPLOYDIR}/${UBOOT_DTB_IMAGE} ${DEPLOYDIR}/${BOOT_TOOLS}/${UBOOT_DTB_NAME}
+    ln -rsf "${DEPLOYDIR}/${UBOOT_DTB_IMAGE}" "${DEPLOYDIR}/${BOOT_TOOLS}/${UBOOT_DTB_NAME}"
 }
 
 DEPENDS += "u-boot-mkenvimage-native"
@@ -25,19 +25,19 @@ ENV_BASE_NAME ??= "${UBOOT_INITIAL_ENV}-${UBOOT_CONFIG}"
 
 do_compile:append:summitsom() {
     for config in ${UBOOT_MACHINE}; do
-        mkenvimage -s ${ENV_SIZE} -o ${B}/${config}/${ENV_BASE_NAME}.bin ${B}/${config}/${ENV_BASE_NAME}
+        mkenvimage -s "${ENV_SIZE}" -o "${B}/${config}/${ENV_BASE_NAME}.bin" "${B}/${config}/${ENV_BASE_NAME}"
     done
 }
 
 do_install:append:summitsom() {
     for config in ${UBOOT_MACHINE}; do
-        install -D -m 644 ${B}/${config}/${ENV_BASE_NAME}.bin ${D}/boot/u-boot.env
+        install -D -m 644 "${B}/${config}/${ENV_BASE_NAME}.bin" "${D}/boot/u-boot.env"
     done
 }
 
 do_deploy:append:summitsom() {
     for config in ${UBOOT_MACHINE}; do
-        install -D -m 644 ${B}/${config}/${ENV_BASE_NAME}.bin ${DEPLOYDIR}/u-boot-${UBOOT_CONFIG}.env
-        ln -sf u-boot-${UBOOT_CONFIG}.env ${DEPLOYDIR}/u-boot.env
+        install -D -m 644 "${B}/${config}/${ENV_BASE_NAME}.bin" "${DEPLOYDIR}/u-boot-${UBOOT_CONFIG}.env"
+        ln -sf "u-boot-${UBOOT_CONFIG}.env" "${DEPLOYDIR}/u-boot.env"
     done
 }

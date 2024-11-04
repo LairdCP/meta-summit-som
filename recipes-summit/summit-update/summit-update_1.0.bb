@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/MIT;md5=0835ad
 
 inherit allarch
 
-KEY_LOCATION_VALUE:${PN} ?= ""
+KEY_LOCATION_VALUE ?= ""
 
 SRC_URI = " \
     file://10-swupdate.conf \
@@ -27,13 +27,14 @@ S = "${WORKDIR}"
 FILES:${PN} += "${systemd_unitdir} ${sysconfdir}"
 
 do_install () {
-    install -D -m 0755 -t ${D}${bindir} ${S}/fw_update ${S}/update_ubi_support.sh ${S}/erase_som_nand
-    install -D -m 0644 -t ${D}${sysconfdir}/swupdate/conf.d ${S}/10-swupdate.conf
+    install -D -m 0755 -t "${D}${bindir}" "${S}/fw_update" "${S}/update_ubi_support.sh" "${S}/erase_som_nand"
+    install -D -m 0644 -t "${D}${sysconfdir}/swupdate/conf.d" "${S}/10-swupdate.conf"
 
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
-        install -D -m 0644 -t ${D}${systemd_system_unitdir}/swupdate.d ${S}/01-capability.conf
+        install -D -m 0644 -t "${D}${systemd_system_unitdir}/swupdate.d" "${S}/01-capability.conf"
     fi
 
-    [ -z "${KEY_LOCATION_VALUE:${PN}}" ] || \
-	    echo "SWUPDATE_ARGS=\"\${SWUPDATE_ARGS} -k ${KEY_LOCATION_VALUE:${PN}}\"" > ${D}${sysconfdir}/swupdate/conf.d/11-signing.conf
+    if [ -n "${KEY_LOCATION_VALUE}" ]; then
+	    echo "SWUPDATE_ARGS=\"\${SWUPDATE_ARGS} -k ${KEY_LOCATION_VALUE}\"" > "${D}${sysconfdir}/swupdate/conf.d/11-signing.conf"
+    fi
 }
