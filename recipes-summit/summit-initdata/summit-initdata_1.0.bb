@@ -16,20 +16,19 @@ S = "${WORKDIR}"
 
 FILES:${PN} += "${sbindir} ${libdir} ${systemd_system_unitdir} ${sysconfdir} /perm /data"
 
-DEPENDS += "rsync-native"
-
-RDEPENDS:${PN} = "util-linux-lsblk util-linux-blkid summit-fwenv iptables"
+RDEPENDS:${PN} = "util-linux-lsblk summit-fwenv iptables"
 
 do_install () {
-    rsync -rlpDWK --no-perms --delete --exclude=.empty "${S}/rootfs-additions/" "${D}/"
+    cp -dR --preserve=mode "${S}/rootfs-additions"/* "${D}"
+    find "${D}" -type f -name .empty -delete
     chmod 600 "${D}/usr/lib/NetworkManager/system-connections/"*
-    install -d "${D}${sysconfdir}/NetworkManager/certs"
 }
 
 SYSTEMD_SERVICE:${PN}:summit-secure = "mount_data.service var-lib-bluetooth.mount var-log-journal.mount"
 SYSTEMD_AUTO_ENABLE:summit-secure = "enable"
 
 do_install:append:summit-secure () {
-    rsync -rlpDWK --no-perms --exclude=.empty "${S}/rootfs-additions-secure" "${D}"
+    cp -dR --preserve=mode "${S}/rootfs-additions-secure"/* "${D}"
+    find "${D}" -type f -name .empty -delete
     rm -f "${D}${sbindir}/overlayRoot.sh"
 }
