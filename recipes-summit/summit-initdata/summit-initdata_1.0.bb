@@ -9,6 +9,9 @@ inherit allarch systemd
 SRC_URI = " \
     file://LICENSE.ezurio \
     file://rootfs-additions \
+    "
+
+SRC_URI:append:summit-secure = " \
     file://rootfs-additions-secure \
     "
 
