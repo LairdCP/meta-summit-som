@@ -24,6 +24,8 @@ SRC_URI:append:summitsom = " \
 # Use our defconfig
 KBUILD_DEFCONFIG:remove:summitsom = "${IMX_KERNEL_CONFIG_AARCH64}"
 
+SCMVERSION:summitsom = "n"
+
 # Use our device trees
 do_copy_defconfig:summitsom () {
    install -D -m 0644 -t ${S}/arch/arm64/boot/dts/freescale/ ${WORKDIR}/config/*.dts*
