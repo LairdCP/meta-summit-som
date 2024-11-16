@@ -66,6 +66,18 @@ case "${rootDevActual}" in
 		;;
 esac
 
+getSocId() {
+	if [ -f /sys/devices/soc0/soc_id ]; then
+		# Get the SoC ID
+		read -r soc_id < /sys/devices/soc0/soc_id
+	elif [ -f /sys/devices/soc0/family ]; then
+		# Get the SoC family
+		read -r soc_id < /sys/devices/soc0/family
+	else
+		soc_id="unknown"
+	fi
+}
+
 getPart() {
 	part="${1}"
 
@@ -84,7 +96,7 @@ getPart() {
 
 	case "${rootDevActual}" in
 	mmcblk*)
-		read -r soc_id < /sys/devices/soc0/soc_id
+		getSocId
 		case "${soc_id}" in
 		sama5d3*)
 			case "${part}" in
@@ -113,7 +125,7 @@ getSide() {
 
 	case "${rootDevActual}" in
 	mmcblk*)
-		read -r soc_id < /sys/devices/soc0/soc_id
+		getSocId
 		case "${soc_id}" in
 		sama5d3*)
 			bootside=a
@@ -137,7 +149,7 @@ getSide() {
 nextSide() {
 	case "${rootDevActual}" in
 	mmcblk*)
-		read -r soc_id < /sys/devices/soc0/soc_id
+		getSocId
 		case "${soc_id}" in
 		sama5d3*)
 			echo a
@@ -173,7 +185,7 @@ getBaseHwPartNumber() {
 	MEM_2GB_IN_KB=2097152
 	MEM_4GB_IN_KB=4194304
 
-	read -r soc_id < /sys/devices/soc0/soc_id
+	getSocId
 	case "${soc_id}" in
 	sama5d31*)
 		# WB50
