@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: LicenseRef-Ezurio-Clause
 # Copyright (C) 2024 Ezurio
 
-[ "${1}" = b ] && part=1 || part=0
+[ "${1}" = b ] && part=2 || part=1
 
-mmc bootpart enable $((part + 1)) 1 "${2}"
-sync
+mmc bootpart enable "${part}" 1 "${2}"
+sleep 1
