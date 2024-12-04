@@ -2,8 +2,6 @@
 # SPDX-License-Identifier: LicenseRef-Ezurio-Clause
 # Copyright (C) 2024 Ezurio
 
-set -x
-
 DATA_DEV_SRC=${1}
 DATA_DEV_TGT=${2}
 MOUNT_POINT=/tmp/transfer_mount_point
