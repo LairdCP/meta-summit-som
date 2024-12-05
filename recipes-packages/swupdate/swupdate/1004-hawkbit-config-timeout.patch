@@ -1,9 +1,9 @@
 diff -Naur a/suricatta/common.c b/suricatta/common.c
 --- a/corelib/server_utils.c	2019-11-29 13:47:39.000000000 +0000
 +++ b/corelib/server_utils.c	2020-04-06 15:52:01.880000000 +0000
-@@ -24,6 +24,8 @@
+@@ -25,6 +25,8 @@
  	GET_FIELD_INT(LIBCFG_PARSER, elem, "retry",
- 		&chan->retries);
+ 		(int *)&chan->retries);
  
 +	GET_FIELD_INT(LIBCFG_PARSER, elem, "timeout", &chan->low_speed_timeout);
 +

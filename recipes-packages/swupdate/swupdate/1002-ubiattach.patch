@@ -20,15 +20,15 @@
  int scan_mtd_devices (void)
 --- a/handlers/ubivol_handler.c	2021-12-08 09:17:17.000000000 
 +++ b/handlers/ubivol_handler.c	2022-03-28 10:29:02.000000000 
-@@ -291,6 +291,7 @@
- 	int mtdnum, req_vol_type;
+@@ -213,6 +213,7 @@
+ 	int req_vol_id = UBI_VOL_NUM_AUTO;
  	char node[64];
  	int err;
 +	int dev_num;
  	struct flash_description *flash = get_flash_info();
  
  	/* determine the requested volume type */
-@@ -312,6 +313,15 @@
+@@ -335,6 +336,15 @@
  		ERROR("%s does not exist: partitioning not possible",
  			cfg->device);
  		return -ENODEV;
