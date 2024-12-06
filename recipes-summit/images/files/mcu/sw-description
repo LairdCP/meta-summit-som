@@ -40,6 +40,7 @@ software =
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot0";
 					type = "raw";
 					offset = "4032K";
+					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(u-boot.env)";
 				},
 				{
@@ -129,6 +130,7 @@ software =
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot1";
 					type = "raw";
 					offset = "4032K";
+					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(u-boot.env)";
 				},
 				{
