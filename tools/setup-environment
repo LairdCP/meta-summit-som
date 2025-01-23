@@ -52,7 +52,7 @@ $(basename -as .conf sources/meta-summit-som/conf/machine/*.conf | sed '/^\*/d; 
 
 Supported distros:
 $(basename -as .conf sources/meta-summit-som/conf/distro/*.conf | sed '/^\*/d; s/^/\t/g')
-    
+
 Examples:
 
 - To create a new Yocto build directory:
@@ -68,11 +68,10 @@ clean_up()
    unset EULA REPLY
    unset CWD ARGS PROGNAME
    unset MACHINE DISTRO OEROOT
-   unset build_dir_setup_enabled setup_radio setup_summit setup_vigiles setup_devel
+   unset build_dir_setup_enabled setup_radio setup_summit setup_vigiles
 }
 
 setup_radio=false
-setup_devel=false
 setup_summit=false
 setup_vigiles=false
 
@@ -96,7 +95,6 @@ do
            setup_radio=true
            ;;
         -a)
-           setup_devel=true
            setup_radio=true
            setup_summit=true
            setup_vigiles=true
@@ -156,15 +154,15 @@ fi
 TEMPLATECONF=${TEMPLATECONF:-${CWD}/sources/meta-summit-som/conf/templates/default} \
     . "${OEROOT}/oe-init-build-env" "${CWD}/${1}"
 
-if ${build_dir_setup_enabled}; then 
+if ${build_dir_setup_enabled}; then
     # Change settings according environment
     [ -n "${MACHINE}" ] && sed -e "s,MACHINE ??=.*,MACHINE ??= '${MACHINE}',g" -i conf/local.conf
     [ -n "${DISTRO}"  ] && sed -e "s,DISTRO ?=.*,DISTRO ?= '${DISTRO}',g" -i conf/local.conf
 
     {
-        ${setup_summit} || ! ${setup_devel} || printf '# '
+        ${setup_summit} || printf '# '
         echo 'OVERRIDES .= ":summit-internal"'
-        
+
         ${setup_vigiles} || printf '# '
         echo 'INHERIT += "vigiles"'
     } >> conf/local.conf
@@ -173,7 +171,7 @@ if ${build_dir_setup_enabled}; then
         ${setup_summit} || printf '# '
         # shellcheck disable=SC2016
         echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-radio-mfg"'
-        
+
         ${setup_radio} || printf '# '
         # shellcheck disable=SC2016
         echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-rdvk"'
