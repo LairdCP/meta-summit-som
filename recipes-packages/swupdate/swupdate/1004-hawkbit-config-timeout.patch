@@ -5,7 +5,7 @@ diff -Naur a/suricatta/common.c b/suricatta/common.c
  	GET_FIELD_INT(LIBCFG_PARSER, elem, "retry",
  		(int *)&chan->retries);
  
-+	GET_FIELD_INT(LIBCFG_PARSER, elem, "timeout", &chan->low_speed_timeout);
++	GET_FIELD_INT(LIBCFG_PARSER, elem, "timeout", (int *)&chan->low_speed_timeout);
 +
  	GET_FIELD_STRING_RESET(LIBCFG_PARSER, elem, "max-download-speed", tmp);
  	if (strlen(tmp)) {
