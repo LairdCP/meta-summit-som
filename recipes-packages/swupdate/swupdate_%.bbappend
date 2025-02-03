@@ -18,6 +18,8 @@ SRC_URI:append = "\
         file://1016-fat-format.patch \
         file://1020-hw-compatibility.patch \
         file://1022-fix-offset-type.patch \
+        file://1023-emmc_csd_handler-Fix-warning-active-my-be-used.patch \
+        file://1024-support-legacy-raw-file-path.patch \
         "
 
 SYSTEMD_SERVICE:${PN}:summitsom = "swupdate.socket"
