@@ -4,7 +4,7 @@ LIC_FILES_CHKSUM = "\
     file://LICENSE.ezurio;md5=fd3dd0630b215465b6f50540642d5b93 \
     "
 
-inherit setuptools3
+inherit python_setuptools_build_meta
 require summit-platform-version.inc
 
 SRC_URI = "git://github.com/Ezurio/summit-rcm.git;protocol=https;nobranch=1"
