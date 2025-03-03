@@ -5,24 +5,57 @@
 set -e
 
 DATA_MOUNT=/data
+DATA_SECRET=${DATA_MOUNT}/secret
 
-case "${1}" in
-start)
-	# shellcheck source=/dev/null
-	. /usr/sbin/boot-rootfs.sh
+mount_ubi() {
+	FSCRYPT_KEY=ffffffffffffffff
 
-	DATA_DEVICE=/dev/$(getPart rootfs_data)
-	DATA_SIZE=$(/usr/bin/lsblk -ndbo SIZE "${DATA_DEVICE}")
+	/usr/bin/mount -o noatime,nodev,nosuid,noexec -t "${mountFsType:?}" \
+		"${DATA_DEVICE}" "${DATA_MOUNT}"
 
-	{ [ -f /perm/caam/datakey ] &&
-		caam-keygen import /perm/caam/datakey.bb datakey; } ||
-		caam-keygen create datakey ecb -s 16
+	# Create encrypted data directory
+	mkdir -p ${DATA_SECRET}
 
-	/usr/bin/keyctl padd logon logkey: @s < /perm/caam/datakey
+	/usr/bin/keyctl search %:_builtin_fs_keys logon fscrypt:${FSCRYPT_KEY} @us || \
+		{ /usr/bin/umount ${DATA_MOUNT}; exit 1; }
 
-	/usr/sbin/dmsetup -v create data_enc --table "0 $((DATA_SIZE / 512)) \
-		crypt capi:tk(cbc(aes))-plain :36:logon:logkey: 0 ${DATA_DEVICE} \
-		0 1 sector_size:512"
+	/usr/bin/fscryptctl set_policy ${FSCRYPT_KEY} ${DATA_SECRET} >/dev/null || \
+		{ /usr/bin/umount ${DATA_MOUNT}; exit 1; }
+}
+
+umount_ubi() {
+	/usr/bin/umount ${DATA_MOUNT}
+	echo 3 >/proc/sys/vm/drop_caches
+}
+
+mount_emmc() {
+	if [ -x /usr/sbin/blockdev ]; then 
+		DATA_SIZE=$(blockdev --getsz "${DATA_DEVICE}")
+	else
+		DATA_SIZE=$(/usr/bin/lsblk -ndbo SIZE "${DATA_DEVICE}")
+		DATA_SIZE=$((DATA_SIZE / 512))
+	fi
+
+	if [ -x /usr/bin/caam-keygen ]; then
+		if [ ! -f /perm/caam/datakey ] ||
+			! /usr/bin/caam-keygen import /perm/caam/datakey.bb datakey
+		then
+			/usr/bin/caam-keygen create datakey ecb -s 16
+		fi
+		/usr/bin/keyctl padd logon datakey: @s < /perm/caam/datakey
+		CRYPTO_STR="capi:tk(cbc(aes))-plain :36:logon:datakey:"
+	else
+		[ -f /perm/caam/datakey ] && 
+			KEY_ID=$(/usr/bin/keyctl add trusted datakey "load $(cat /perm/caam/datakey)" @s) ||
+		{
+			KEY_ID=$(/usr/bin/keyctl add trusted datakey "new 32" @s)
+			/usr/bin/keyctl pipe "${KEY_ID}" > /perm/caam/datakey
+		}
+		CRYPTO_STR="crypt aes-cbc-plain :32:trusted:datakey"
+	fi
+
+	/usr/sbin/dmsetup -v create data_enc --table "0 ${DATA_SIZE} \
+		crypt ${CRYPTO_STR} 0 ${DATA_DEVICE} 0 1 sector_size:512"
 
 	[ "$(/usr/bin/lsblk -ndo FSTYPE /dev/mapper/data_enc)" = "ext4" ] || \
 		/usr/sbin/mkfs.ext4 /dev/mapper/data_enc
@@ -34,22 +67,43 @@ start)
 	}
 
 	# Create encrypted data directory
-	DATA_SECRET=${DATA_MOUNT}/secret
 	mkdir -p ${DATA_SECRET}
+}
+
+umount_emmc() {
+	/usr/bin/umount ${DATA_MOUNT}
+	/usr/sbin/dmsetup remove data_enc
+	echo 3 >/proc/sys/vm/drop_caches
+}
+
+# shellcheck source=/dev/null
+. /usr/sbin/boot-rootfs.sh
+
+case "${1}" in
+start)
+	DATA_DEVICE=/dev/$(getPart rootfs_data)
+
+	case "${rootDevType:?}" in
+		ubi) mount_ubi ;;
+		*) mount_emmc ;;
+	esac
 
 	/usr/sbin/do_factory_reset.sh check || {
-		/usr/bin/umount ${DATA_MOUNT}
-		/usr/sbin/dmsetup remove data_enc
-		echo 3 >/proc/sys/vm/drop_caches
+		case "${rootDevType}" in
+			ubi) umount_ubi ;;
+			*) umount_emmc ;;
+		esac
+		exit 1 
 	}
 
 	echo "Secure Boot Cycle Complete" >/dev/console
 	;;
 
 stop)
-	/usr/bin/umount ${DATA_MOUNT}
-	/usr/sbin/dmsetup remove data_enc
-	echo 3 >/proc/sys/vm/drop_caches
+	case "${rootDevType}" in
+		ubi) umount_ubi ;;
+		*) umount_emmc ;;
+	esac
 	;;
 
 *)

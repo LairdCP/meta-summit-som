@@ -36,12 +36,12 @@ software =
 					sha256 = "$swupdate_get_sha256(imx-boot)";
 				},
 				{
-					filename = "u-boot.env";
+					filename = "uboot.env";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot0";
 					type = "raw";
 					offset = "4032K";
 					installed-directly = true;
-					sha256 = "$swupdate_get_sha256(u-boot.env)";
+					sha256 = "$swupdate_get_sha256(uboot.env)";
 				},
 				{
 					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@";
@@ -118,12 +118,12 @@ software =
 					sha256 = "$swupdate_get_sha256(imx-boot)";
 				},
 				{
-					filename = "u-boot.env";
+					filename = "uboot.env";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot1";
 					type = "raw";
 					offset = "4032K";
 					installed-directly = true;
-					sha256 = "$swupdate_get_sha256(u-boot.env)";
+					sha256 = "$swupdate_get_sha256(uboot.env)";
 				},
 				{
 					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@";
@@ -247,18 +247,18 @@ software =
 					sha256 = "$swupdate_get_sha256(imx-boot)";
 				},
 				{
-					filename = "u-boot.env";
+					filename = "uboot.env";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot0";
 					type = "raw";
 					offset = "4032K";
-					sha256 = "$swupdate_get_sha256(u-boot.env)";
+					sha256 = "$swupdate_get_sha256(uboot.env)";
 				},
 				{
-					filename = "u-boot.env";
+					filename = "uboot.env";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot1";
 					type = "raw";
 					offset = "4032K";
-					sha256 = "$swupdate_get_sha256(u-boot.env)";
+					sha256 = "$swupdate_get_sha256(uboot.env)";
 				},
 				{
 					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@";

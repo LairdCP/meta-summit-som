@@ -1,1 +1,1 @@
-BT_SERIAL_PORT:summitsom = "/dev/ttymxc2"
+BT_SERIAL_PORT:imx8mp-summitsom = "/dev/ttymxc2"

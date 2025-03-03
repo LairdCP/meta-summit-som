@@ -70,7 +70,9 @@ create_gadget() {
 		echo "${USB_GADGET_PRODUCT_ID}" > idProduct
 
 		mkdir -p strings/0x409
-		if [ -e /sys/devices/soc0/soc_uid ]; then
+		if [ -f /etc/wifi_mac ]; then
+			cat /etc/wifi_mac > strings/0x409/serialnumber
+		elif [ -e /sys/devices/soc0/soc_uid ]; then
 			cat /sys/devices/soc0/soc_uid > strings/0x409/serialnumber
 		elif [ -f /sys/class/net/eth1/address ]; then
 			sed 's/://g' /sys/class/net/eth1/address > strings/0x409/serialnumber
@@ -104,13 +106,23 @@ create_gadget() {
 }
 
 create_gadgets() {
-	test -r /etc/default/usb-gadget && . /etc/default/usb-gadget
+	# shellcheck source=/dev/null
+	[ -r /etc/default/usb-gadget ] && . /etc/default/usb-gadget
 
 	[ "${USB_GADGET_ETHER_PORTS:-0}"  -gt 0 ] || \
 	[ "${USB_GADGET_SERIAL_PORTS:-0}" -gt 0 ] || \
 		die "No usb-gadget specified"
 
-	read -r soc_id < /sys/devices/soc0/soc_id
+	if [ -f /sys/devices/soc0/soc_id ]; then
+		# Get the SoC ID
+		read -r soc_id < /sys/devices/soc0/soc_id
+	elif [ -f /sys/devices/soc0/family ]; then
+		# Get the SoC family
+		read -r soc_id < /sys/devices/soc0/family
+	else
+		soc_id="unknown"
+	fi
+
 	case "${soc_id}" in
 		at91sam9g20)
 			modprobe at91_udc

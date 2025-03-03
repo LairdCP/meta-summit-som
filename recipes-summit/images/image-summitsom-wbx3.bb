@@ -1,5 +1,8 @@
 DESCRIPTION = "Summit SOM WBx3 Line Image"
 
+FILESEXTRAPATHS:prepend:imx8mp-summitsom := "${THISDIR}/files/mcu:"
+FILESEXTRAPATHS:prepend:am62xx-carbon := "${THISDIR}/files/carbon:"
+
 inherit image-summitsom-gen image-summitsom-sd-gen
 
 IMAGE_FEATURES += "\
@@ -13,7 +16,6 @@ CORE_IMAGE_EXTRA_INSTALL += "\
 	iproute2 \
 	summit-initdata \
 	summit-update \
-	summit-fwenv \
 	less \
 	"
 

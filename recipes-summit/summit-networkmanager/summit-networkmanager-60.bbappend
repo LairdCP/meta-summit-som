@@ -1,0 +1,1 @@
+PACKAGECONFIG:append:imx8mp-summitsom = " modemmanager"

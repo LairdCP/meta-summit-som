@@ -6,10 +6,20 @@ python () {
 
 inherit swupdate-image
 
-SRC_URI += "file://update_support.sh file://erase_data.sh"
+INHIBIT_SWUPDATE_ADD_SRC_URI = "1"
 
-SWUPDATE_IMAGES += "${IMAGE_ROOTFS_VERITY_NAME}.scr.bin"
+SRC_URI += "file://update_support.sh file://erase_data.sh file://mksdcard.sh"
 
-ARCHIVE_WILDCARD += "${SWUDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.swu"
+SWUPDATE_IMAGES += "\
+    ${IMAGE_ROOTFS_VERITY_NAME}.scr.bin \
+    ${WORKDIR}/update_support.sh \
+    ${WORKDIR}/erase_data.sh \
+    "
 
-addtask create_archive after do_swuimage before do_build
+ARCHIVE_WILDCARD += "${SWUDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.swu ${WORKDIR}/mksdcard.sh"
+
+do_create_archive[depends] += "${PN}:do_swuimage"
+
+do_create_archive:prepend() {
+    install -D -m 0755 -t "${DEPLOY_DIR_IMAGE}" "${WORKDIR}/mksdcard.sh"
+}

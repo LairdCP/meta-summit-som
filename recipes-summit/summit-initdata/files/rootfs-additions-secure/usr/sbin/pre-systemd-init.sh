@@ -12,8 +12,16 @@ set -e
 
 PERM_MOUNT=/perm
 
-# shellcheck source=/dev/null
-. /usr/sbin/boot-rootfs.sh
+[ -z "${rootDevActual}" ] && STANDALONE=true || STANDALONE=false
+
+if ${STANDALONE}; then
+	die() {
+	    echo "${1}" >&2; exit 1
+	}
+
+	# shellcheck source=/dev/null
+	. /usr/sbin/boot-rootfs.sh || die
+fi
 
 PERM_DEVICE=/dev/$(getPart perm)
 
@@ -22,21 +30,21 @@ PERM_DEVICE=/dev/$(getPart perm)
 [ ! -r /etc/default/perm-mount-opts ] || . /etc/default/perm-mount-opts
 [ -n "${PERM_MOUNT_OPTS}" ] || PERM_MOUNT_OPTS="noatime,nosuid,noexec"
 
-/usr/bin/mount -t "${mountFsType:?}" -o "${PERM_MOUNT_OPTS}" "${PERM_DEVICE}" ${PERM_MOUNT} || {
-	echo "Failed to mount ${PERM_DEVICE} on ${PERM_MOUNT}"
-	exit 1
-}
+/usr/bin/mount -t "${mountFsType:?}" -o "${PERM_MOUNT_OPTS}" "${PERM_DEVICE}" ${PERM_MOUNT} ||
+	die "Failed to mount ${PERM_DEVICE} on ${PERM_MOUNT}"
 
 # Make sure there is at least an empty machine-id file
 # (Referenced from symlink on the rootfs)
 if [ ! -f "${PERM_MOUNT}/etc/machine-id" ]; then
 	mkdir -p "${PERM_MOUNT}/etc"
-	touch "${PERM_MOUNT}/etc/machine-id"
+	/usr/bin/hexdump -n 16 -e '1/1 "%02x"' /dev/urandom > "${PERM_MOUNT}/etc/machine-id"
 fi
 
 mount --bind ${PERM_MOUNT}/etc/machine-id /etc/machine-id
 
 mkdir -p ${PERM_MOUNT}/log/journal
 
-# Start init
-exec /usr/sbin/init
+if ${STANDALONE}; then
+	# Start init
+	exec /usr/sbin/init
+fi

@@ -60,96 +60,40 @@ EOF
 };
 EOF
 	;;
+	imgend)
+		cat << EOF >> $1
+		};
+EOF
+	;;
 	esac
 }
 
 #
-# Emit the fitImage ITS firmware section
+# Emit the fitImage ITS bin section
 #
 # $1 ... .its filename
 # $2 ... Image counter
 # $3 ... Path to firmware image
-# $4 ... Compression type
-fitimage_emit_section_firmware() {
-
-	firmware_csum="${FIT_HASH_ALG}"
-	firmware_sign_algo="${FIT_SIGN_ALG}"
-	firmware_padding_algo="${FIT_PAD_ALG}"
-
-	if [ "${UBOOT_SIGN_ENABLE}" = "1" -a "${FIT_SIGN_INDIVIDUAL}" = "1" ]; then
-			firmware_sign_keyname="${UBOOT_SIGN_IMG_KEYNAME}"
-	else
-			firmware_sign_keyname=""
-	fi
+# $4 ... compression
+# $5 ... Type
+# $6 ... Description
+fitimage_emit_section_bin() {
 
 	cat << EOF >> $1
-		firmware-$2 {
-			description = "MCU firmware";
+		$5-$2 {
+			description = "$6";
 			data = /incbin/("$3");
-			type = "firmware";
-			compression = "none";
+			type = "$5";
+			compression = "$4";
 
 			hash-1 {
-				algo = "$firmware_csum";
-			};
-		};
-EOF
-
-	if [ "${UBOOT_ENCRYPT_ENABLE}" = "1" ]; then
-		cat << EOF >> $1
-		cipher {
-			algo = "${FIT_ENCRYPT_ALGO}";
-			key-name-hint = "${UBOOT_ENCRYPT_KEYNAME}";
-			iv-name-hint = "${UBOOT_ENCRYPT_IVNAME}";
-		};
-EOF
-	fi
-
-	if [ -n "$firmware_sign_keyname" ]; then
-		sed -i '$ d' $1
-		cat << EOF >> $1
-		signature-1 {
-			algo = "$firmware_csum,$firmware_sign_algo";
-			key-name-hint = "$firmware_sign_keyname";
-			padding = "$firmware_padding_algo";
-		};
-	};
-EOF
-	fi
-}
-
-#
-# Emit the fitImage ITS u-boot script section
-#
-# $1 ... .its filename
-# $2 ... Image counter
-# $3 ... Path to boot script image
-fitimage_emit_section_script() {
-
-	scr_csum="${FIT_HASH_ALG}"
-	scr_sign_algo="${FIT_SIGN_ALG}"
-	scr_padding_algo="${FIT_PAD_ALG}"
-
-        if [ "${UBOOT_SIGN_ENABLE}" = "1" -a "${FIT_SIGN_INDIVIDUAL}" = "1" ]; then
-			scr_sign_keyname="${UBOOT_SIGN_IMG_KEYNAME}"
-        else
-			scr_sign_keyname=""
-        fi
-
-        cat << EOF >> $1
-		script-$2 {
-			description = "Boot script";
-			data = /incbin/("$3");
-			type = "script";
-			compression = "none";
-
-			hash-1 {
-				algo = "$scr_csum";
+				algo = "${FIT_HASH_ALG}";
 			};
 EOF
 
 	if [ "${UBOOT_ENCRYPT_ENABLE}" = "1" ]; then
 		cat << EOF >> $1
+
 			cipher {
 				algo = "${FIT_ENCRYPT_ALGO}";
 				key-name-hint = "${UBOOT_ENCRYPT_KEYNAME}";
@@ -158,18 +102,18 @@ EOF
 EOF
 	fi
 
-	if [ -n "$scr_sign_keyname" ]; then
+	if [ "${UBOOT_SIGN_ENABLE}" = "1" ] && [ "${FIT_SIGN_INDIVIDUAL}" = "1" ]; then
 		cat << EOF >> $1
+
 			signature-1 {
-				algo = "$scr_csum,$scr_sign_algo";
-				key-name-hint = "$scr_sign_keyname";
-				padding = "$scr_padding_algo";
+				algo = "${FIT_HASH_ALG},${FIT_SIGN_ALG}";
+				key-name-hint = "${UBOOT_SIGN_IMG_KEYNAME}";
+				padding = "${FIT_PAD_ALG}";
 			};
 EOF
 	fi
-	cat << EOF >> $1
-		};
-EOF
+
+	fitimage_emit_section_maint $1 imgend
 }
 
 #
@@ -210,49 +154,52 @@ EOF
 EOF
 	fi
 
-	cat << EOF >> ${its_file}
-		};
-EOF
+	fitimage_emit_section_maint $1 imgend
+}
+
+#
+# Emit the fitImage ITS
+#
+# $1 ... .its filename
+# $2 ... Path to firmware image
+# $3 ... Output filename
+# $4 ... Type
+fitimage_bin() {
+	count=1
+
+	rm -rf $1
+
+	case $4 in
+	firmware)
+		FIT_DESC="Firmware Image"
+		FIT_PAYLOAD="loadables"
+		;;
+	script)
+		FIT_DESC="Boot Script"
+		FIT_PAYLOAD="script"
+		;;
+	esac
+
+	fitimage_emit_fit_header $1
+	fitimage_emit_section_maint $1 imagestart
+	fitimage_emit_section_bin $1 $count $2 "none" $4 "${FIT_DESC}"
+	fitimage_emit_section_maint $1 sectend
+	fitimage_emit_section_maint $1 confstart
+	fitimage_emit_section_config $1 "$4-$count" "${FIT_PAYLOAD}"
+	fitimage_emit_section_maint $1 sectend
+	fitimage_emit_section_maint $1 fitend
+
+	${UBOOT_MKIMAGE} -f $1 $3
+
+	if [ "${UBOOT_SIGN_ENABLE}" = "1" ]; then
+		${UBOOT_MKIMAGE_SIGN} -F -k "${UBOOT_SIGN_KEYDIR}" ${3}
+	fi
 }
 
 fitimage_firmware() {
-	count=1
-
-	rm -rf $1
-
-	fitimage_emit_fit_header $1
-	fitimage_emit_section_maint $1 imagestart
-	fitimage_emit_section_firmware $1 $count $2 "none"
-	fitimage_emit_section_maint $1 sectend
-	fitimage_emit_section_maint $1 confstart
-	fitimage_emit_section_config $1 "firmware-1" loadables
-	fitimage_emit_section_maint $1 sectend
-	fitimage_emit_section_maint $1 fitend
-
-	${UBOOT_MKIMAGE} -f $1 $3
-
-	if [ "${UBOOT_SIGN_ENABLE}" = "1" ]; then
-		${UBOOT_MKIMAGE_SIGN} -F -k "${UBOOT_SIGN_KEYDIR}" ${3}
-	fi
+	fitimage_bin $1 $2 "$3" "firmware"
 }
 
 fitimage_script() {
-	count=1
-
-	rm -rf $1
-
-	fitimage_emit_fit_header $1
-	fitimage_emit_section_maint $1 imagestart
-	fitimage_emit_section_script $1 $count $2 "none"
-	fitimage_emit_section_maint $1 sectend
-	fitimage_emit_section_maint $1 confstart
-	fitimage_emit_section_config $1 "script-1" script
-	fitimage_emit_section_maint $1 sectend
-	fitimage_emit_section_maint $1 fitend
-
-	${UBOOT_MKIMAGE} -f $1 $3
-
-	if [ "${UBOOT_SIGN_ENABLE}" = "1" ]; then
-		${UBOOT_MKIMAGE_SIGN} -F -k "${UBOOT_SIGN_KEYDIR}" ${3}
-	fi
+	fitimage_bin $1 $2 "$3" "script"
 }

@@ -19,7 +19,7 @@ S = "${WORKDIR}"
 
 FILES:${PN} += "${sbindir} ${libdir} ${systemd_system_unitdir} ${sysconfdir} /perm /data"
 
-RDEPENDS:${PN} = "util-linux-lsblk summit-fwenv iptables"
+RDEPENDS:${PN} = "libubootenv-bin util-linux-blkid util-linux-lsblk iptables ${PREFERRED_PROVIDER_virtual/bootloader}-env"
 
 do_install () {
     cp -dR --preserve=mode "${S}/rootfs-additions"/* "${D}"
@@ -27,8 +27,14 @@ do_install () {
     chmod 600 "${D}/usr/lib/NetworkManager/system-connections/"*
 }
 
-SYSTEMD_SERVICE:${PN}:summit-secure = "mount_data.service var-lib-bluetooth.mount var-log-journal.mount"
-SYSTEMD_AUTO_ENABLE:summit-secure = "enable"
+do_install:append:k3 () {
+    rm -rf "${D}${bindir}"
+}
+
+SYSTEMD_SERVICE:${PN} = "mount_boot.service fw_env.service"
+SYSTEMD_AUTO_ENABLE = "enable"
+
+SYSTEMD_SERVICE:${PN}:append:summit-secure = " mount_data.service var-lib-bluetooth.mount var-log-journal.mount"
 
 do_install:append:summit-secure () {
     cp -dR --preserve=mode "${S}/rootfs-additions-secure"/* "${D}"
