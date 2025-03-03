@@ -34,25 +34,3 @@ BBLAYERS = " \
   \
   ${BSPDIR}/sources/meta-summit-radio/meta-summit-radio \
 "
-
-REF_BBLAYERS ?= " \
-    ##OEROOT##/../meta-arago/meta-arago-distro
-    ##OEROOT##/../meta-arago/meta-arago-extras
-    ##OEROOT##/../meta-arago/meta-arago-demos
-    ##OEROOT##/../meta-arago/meta-arago-test
-    ##OEROOT##/../meta-qt5
-    ##OEROOT##/../meta-virtualization
-    ##OEROOT##/../meta-openembedded/meta-networking
-    ##OEROOT##/../meta-openembedded/meta-python
-    ##OEROOT##/../meta-openembedded/meta-oe
-    ##OEROOT##/../meta-openembedded/meta-gnome
-    ##OEROOT##/../meta-openembedded/meta-filesystems
-    ##OEROOT##/../meta-openembedded/meta-multimedia
-    ##OEROOT##/../meta-ti/meta-ti-extras
-    ##OEROOT##/../meta-ti/meta-ti-bsp
-    ##OEROOT##/../meta-arm/meta-arm
-    ##OEROOT##/../meta-arm/meta-arm-toolchain
-    ##OEROOT##/../meta-clang
-    ##OEROOT##/../oe-core/meta
-    ##OEROOT##/../oe-layersetup
-"
