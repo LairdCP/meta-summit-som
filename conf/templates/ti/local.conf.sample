@@ -1,4 +1,4 @@
-MACHINE ??= 'imx8mp-summitsom'
+MACHINE ??= 'am62xx-carbon'
 DISTRO ?= 'summitsom-wayland'
 
 BB_DISKMON_DIRS ??= "\
@@ -19,4 +19,3 @@ IMAGE_FEATURES ?= "debug-tweaks"
 USER_CLASSES ?= "buildstats"
 
 CONF_VERSION = "2"
-
