@@ -1,7 +1,6 @@
 DESCRIPTION = "Summit SOM Devel Image"
 
-FILESEXTRAPATHS:prepend:imx8mp-summitsom := "${THISDIR}/files/mcu:"
-FILESEXTRAPATHS:prepend:am62xx-carbon := "${THISDIR}/files/carbon:"
+FILESEXTRAPATHS:prepend:use-nxp-bsp:summitsom := "${THISDIR}/files/mcu:"
 
 inherit image-summitsom-gen image-summitsom-sd-gen
 
