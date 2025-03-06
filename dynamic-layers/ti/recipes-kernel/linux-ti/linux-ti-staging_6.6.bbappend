@@ -12,6 +12,8 @@ SRC_URI += " \
     file://dts;subdir=git/arch/arm64/boot \
     "
 
+KERNEL_DTBVENDORED = "0"
+
 SCMVERSION:summitsom = "n"
 
 # Remove kernel binary from rootfs

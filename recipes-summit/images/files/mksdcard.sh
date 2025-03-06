@@ -102,7 +102,7 @@ fi
 
 if ! ${boot_only}; then
 	# Calculate rootfs size
-	ROOTFS_SIZE=$(stat -c %s "${ROOTFS_PATH}")
+	ROOTFS_SIZE=$(stat -L -c %s "${ROOTFS_PATH}")
 	# Align rootfs size to 1MiB
 	ROOTFS_SIZE=$(( ROOTFS_SIZE / (1024 * 1024) + 1 ))
 
@@ -233,14 +233,14 @@ if ! check_format ; then
 			die "Failed to wipe 'gpt' partition table"
 	fi
 
-	[ -f "${SRCDIR}/imx-boot" ] && FS_OFFSET=8 || FS_OFFSET=0
-
 	# Create device partition table
 	if ${boot_only}; then
 		printf ',%sM,0xc,*\n' ${BOOT_SIZE} | \
 			/usr/sbin/sfdisk -q -W always "${TARGET}" 2> /dev/null
 	else
-		printf '%sM,%sM,0xc,*\n,%sM,S\n,%sM,L\n%sM,-,Ex\n,%sM,L\n,%s,L\n' \
+		[ -f "${SRCDIR}/imx-boot" ] && FS_OFFSET=8M || FS_OFFSET=
+
+		printf '%s,%sM,0xc,*\n,%sM,S\n,%sM,L\n%s,-,Ex\n,%sM,L\n,%s,L\n' \
 			"${FS_OFFSET}" ${BOOT_SIZE} ${SWAP_SIZE} ${PERM_SIZE} \
 			"${FS_OFFSET}" "${ROOTFS_SIZE}" "${ROOTFS_DATA_SIZE}" | \
 			/usr/sbin/sfdisk -q -W always "${TARGET}" 2> /dev/null
