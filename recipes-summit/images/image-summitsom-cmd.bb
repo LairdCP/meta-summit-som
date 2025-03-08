@@ -25,6 +25,8 @@ CORE_IMAGE_EXTRA_INSTALL += "\
     gstreamer1.0-plugins-good-meta \
     gstreamer1.0-plugins-bad-meta \
     ${@bb.utils.contains('LICENSE_FLAGS_ACCEPTED', 'commercial', 'gstreamer1.0-libav', '', d)} \
+    mpg123 \
+    fbida \
     "
 
 CORE_IMAGE_EXTRA_INSTALL:append:imx8mp-summitsom = " \
@@ -33,8 +35,6 @@ CORE_IMAGE_EXTRA_INSTALL:append:imx8mp-summitsom = " \
     kernel-module-pac193x \
     summit-mcu-demos \
     qfirehose \
-    mpg123 \
-    fbida \
     "
 
 IMAGE_BOOT_FILES:append:imx8mp-summitsom = " fitImageMcu.bin"

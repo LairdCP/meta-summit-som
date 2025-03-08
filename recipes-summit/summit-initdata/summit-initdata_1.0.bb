@@ -17,7 +17,7 @@ SRC_URI:append:summit-secure = " \
 
 S = "${WORKDIR}"
 
-FILES:${PN} += "${sbindir} ${libdir} ${systemd_system_unitdir} ${sysconfdir} /perm /data"
+FILES:${PN} += "${sbindir} ${libdir} ${systemd_system_unitdir} ${sysconfdir} ${datadir} /perm /data"
 
 RDEPENDS:${PN} = "libubootenv-bin util-linux-blkid util-linux-lsblk iptables ${PREFERRED_PROVIDER_virtual/bootloader}-env"
 

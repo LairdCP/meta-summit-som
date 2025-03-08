@@ -8,6 +8,9 @@ SRC_URI += " \
     file://0007-gpio-pca953x-pullup.patch \
     file://0008-hwmon-ina2xx-add-support-for-ina232.patch \
     file://0009-dt-bindings-hwmon-ina2xx-add-ina232.patch \
+    file://0010-tidss-probe.patch \
+    file://0011-lvds-codec-output-bridge.patch \
+    file://0012-lvds-codec-frequency-limit.patch \
     file://0019-dm-verity-partition-wait-fix.patch \
     file://dts;subdir=git/arch/arm64/boot \
     "
