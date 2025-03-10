@@ -30,7 +30,7 @@ PACKAGECONFIG:summitsom = " \
 "
 
 do_install:append:summitsom() {
-    rm -f ${D}${systemd_unitdir}/system-generators/systemd-gpt-auto-generator
-    install -D -m 644 -t ${D}${systemd_unitdir}/system/system-preset \
-        ${S}/../95-network-generator.preset
+    rm -f "${D}${systemd_unitdir}/system-generators/systemd-gpt-auto-generator"
+    install -D -m 644 -t "${D}${systemd_unitdir}/system/system-preset" \
+        "${S}/../95-network-generator.preset"
 }
