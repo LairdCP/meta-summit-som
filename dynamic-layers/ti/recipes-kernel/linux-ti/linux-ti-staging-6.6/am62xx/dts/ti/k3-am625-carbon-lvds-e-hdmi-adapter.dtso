@@ -12,7 +12,7 @@
 #include "k3-pinctrl.h"
 
 /* CAUTION: LVDS E channel on AM62x is the companion channel to the LVDS D 
-   it will not work when LVDS D is active and will function only as the mirror
+   it will work only when LVDS D is active and will function as the mirror
 
    The device tree provides only additions needed to LVDS D
  */
