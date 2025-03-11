@@ -149,3 +149,21 @@ See the links below from the Yocto Project documentation site for further inform
 * [Transitioning to a custom environment for systems development](https://docs.yoctoproject.org/transitioning-to-a-custom-environment.html)
 * [Yocto Project Software Overview](https://www.yoctoproject.org/software-overview/)
 * [Tips and Tricks Wiki](https://wiki.yoctoproject.org/wiki/TipsAndTricks)
+
+## TI BSP special notes
+
+TI BSP contains main DVK and overlay device trees. 
+Overlay adds following options:
+* LVDS port D to HDMI adapter (lvds-d-hdmi)
+* LVDS port E to HDMI adapter (lvds-e-hdmi) (it can only mirror port D)
+* RGB to HDMI adapter (rgb-hdmi)
+* RGB to LVDS adapter with (rgb-lvds)
+* Wi-Fi on M.2 slot - LWBxx/IFxx radio (m2-lwb-if)
+* Wi-Fi on M.2 slot - NX611 radio (m2-nx611)
+* Wi-Fi on M.2 slot - TI351 radio (m2-cc33xx)
+* Wi-Fi on M.2 slot - 60 radio (m2-60)
+
+To enable overlay execute command as following:
+```
+set-mode lvds-d-hdmi
+```

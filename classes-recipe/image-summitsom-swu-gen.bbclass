@@ -8,12 +8,12 @@ inherit swupdate-image
 
 INHIBIT_SWUPDATE_ADD_SRC_URI = "1"
 
-SRC_URI += "file://update_support.sh file://erase_data.sh file://mksdcard.sh"
+SRC_URI += "file://update_support.sh file://erase_data_emmc.sh file://mksdcard.sh"
 
 SWUPDATE_IMAGES += "\
     ${IMAGE_ROOTFS_VERITY_NAME}.scr.bin \
     ${WORKDIR}/update_support.sh \
-    ${WORKDIR}/erase_data.sh \
+    ${WORKDIR}/erase_data_emmc.sh \
     "
 
 ARCHIVE_WILDCARD += "${SWUDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.swu ${WORKDIR}/mksdcard.sh"

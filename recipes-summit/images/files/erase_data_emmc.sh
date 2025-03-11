@@ -24,14 +24,24 @@ warning() {
 migrate_data() {
 	[ -f /perm/caam/datakey ] && [ -n "${1}" ] || return
 
-	/usr/bin/caam-keygen import /perm/caam/datakey.bb datakey
-	/usr/bin/keyctl padd logon logkey: @s < /perm/caam/datakey
+	if [ -x /usr/sbin/caam-keygen ]; then
+		CRYPTO_STR="capi:tk(cbc(aes))-plain :36:logon:datakey:"
+		/usr/sbin/caam-keygen import /perm/caam/datakey.bb datakey
+		/usr/bin/keyctl padd logon datakey: @s < /perm/caam/datakey
+	else
+		CRYPTO_STR="crypt aes-cbc-plain :32:trusted:datakey"
+		/usr/bin/keyctl add trusted datakey "load $(cat /perm/caam/datakey)" @s
+	fi
 
-	DATA_SIZE=$(/usr/bin/lsblk -ndbo SIZE "${1}")
+	if [ -x /usr/sbin/blockdev ]; then 
+		DATA_SIZE=$(blockdev --getsz "${1}")
+	else
+		DATA_SIZE=$(/usr/bin/lsblk -ndbo SIZE "${1}")
+		DATA_SIZE=$((DATA_SIZE / 512))
+	fi
 
-	/usr/sbin/dmsetup -v create data_enc_o --table "0 $((DATA_SIZE / 512)) \
-		crypt capi:tk(cbc(aes))-plain :36:logon:logkey: 0 ${1} 0 1 \
-		sector_size:512" || \
+	/usr/sbin/dmsetup -v create data_enc_o --table "0 ${DATA_SIZE} \
+		crypt ${CRYPTO_STR} 0 ${1} 0 1 sector_size:512" || \
 		die "dm_crypt table creation for ${1} Failed"
 
 	# Wipe data patition
@@ -41,7 +51,7 @@ migrate_data() {
 	}
 
 	mkdir -p "${MOUNT_POINT}" || {
-		dmsetup remove data_enc_o
+		/usr/sbin/dmsetup remove data_enc_o
 		die "Directory Creation for ${MOUNT_POINT} Failed"
 	}
 
@@ -68,6 +78,25 @@ migrate_data() {
 	rmdir "${MOUNT_POINT}"
 }
 
+# Migrate conf setting
+fwenv=$(sed -rn 's,.*(/etc/fw_env_[^ ]+).*,\1,p' /proc/self/mountinfo)
+case "${fwenv}" in
+	*-a.config)
+		conf=$(fw_printenv -n conf)
+		if [ -n "${conf}" ]; then
+			fwenvn=$(echo "${fwenv}" | sed 's/-a/-b/')
+			fw_setenv -c "${fwenvn}" conf "${conf}"
+		fi
+		;;
+	*-b.config)
+		conf=$(fw_printenv -n conf)
+		if [ -n "${conf}" ]; then
+			fwenvn=$(echo "${fwenv}" | sed 's/-b/-a/')
+			fw_setenv -c "${fwenvn}" conf "${conf}"
+		fi
+		;;
+esac
+
 # Find location for /data
 DATA_MOUNT=$(awk "\$2 == \"${DATA_SRC}\" { print \$1 }" /proc/mounts)
 [ ! -L "${DATA_MOUNT}" ] || DATA_MOUNT=$(readlink -f "${DATA_MOUNT}")
@@ -87,5 +116,5 @@ esac
 if [ "${DATA_MOUNT}" = "${DATA_DEV_SRC##*/}" ]; then
 	migrate_data "${DATA_DEV_TGT}"
 else
-	echo "Data from ${DATA_SRC} not migrated, because it was not mounted." | systemd-cat -t "${0}" -p warning
+	warning "Data from ${DATA_SRC} not migrated, because it was not mounted."
 fi

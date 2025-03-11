@@ -15,7 +15,6 @@ BBLAYERS = " \
   ${BSPDIR}/sources/meta-openembedded/meta-python \
   \
   ${BSPDIR}/sources/meta-ti/meta-ti-bsp \
-  ${BSPDIR}/sources/meta-ti/meta-ti-extras \
   \
   ${BSPDIR}/sources/meta-arm/meta-arm \
   ${BSPDIR}/sources/meta-arm/meta-arm-toolchain \

@@ -1,6 +1,6 @@
-FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}-6.6:"
+FILESEXTRAPATHS:prepend:summitsom := "${THISDIR}/${PN}-6.6:"
 
-SRC_URI += " \
+SRC_URI:append:summitsom = " \
     file://0001-ts3a227-jack.patch \
     file://0002-ts3a227-irq.patch \
     file://0004-simple_card_ts3a227.patch \
@@ -12,13 +12,10 @@ SRC_URI += " \
     file://0011-lvds-codec-output-bridge.patch \
     file://0012-lvds-codec-frequency-limit.patch \
     file://0019-dm-verity-partition-wait-fix.patch \
-    "
-
-SRC_URI:append:summitsom = " \
     file://dts;subdir=git/arch/arm64/boot \
     "
 
-KERNEL_DTBVENDORED = "0"
+KERNEL_DTBVENDORED:summitsom = "0"
 
 SCMVERSION:summitsom = "n"
 
