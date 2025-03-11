@@ -8,6 +8,7 @@ inherit allarch systemd
 
 SRC_URI = " \
     file://LICENSE.ezurio \
+    file://rootfs-additions-common/ \
     file://rootfs-additions/ \
     "
 
@@ -18,7 +19,8 @@ FILES:${PN} += "${sbindir} ${libdir} ${systemd_system_unitdir} ${sysconfdir} ${d
 RDEPENDS:${PN} = "libubootenv-bin util-linux-blkid util-linux-lsblk iptables ${PREFERRED_PROVIDER_virtual/bootloader}-env"
 
 do_install () {
-    cp -dR --preserve=mode "${S}/rootfs-additions"/* "${D}"
+    cp -a --no-preserve=ownership -t "${D}" \
+        "${S}"/rootfs-additions-common/* "${S}"/rootfs-additions/*
     find "${D}" -type f -name .empty -delete
     chmod 600 "${D}/usr/lib/NetworkManager/system-connections/"*
 }
