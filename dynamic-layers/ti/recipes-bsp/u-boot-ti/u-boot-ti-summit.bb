@@ -9,7 +9,7 @@ UBOOT_GIT_URI:summit-internal = "git://git@github.com/rfpros/cp_linux-u-boot-som
 UBOOT_GIT_PROTOCOL:summit-internal = "ssh"
 UBOOT_GIT_BRANCH = "nobranch=1"
 
-SRCREV = "master"
+SRCREV = "5a7f318800e4a166866b257f009256ce32b1521d"
 PV = "master+git${SRCPV}"
 #SRCREV = "${SUMMIT_PLATFORM_VERSION}"
 #PV = "${SUMMIT_PLATFORM_VERSION}+git${SRCPV}"
