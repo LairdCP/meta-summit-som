@@ -26,7 +26,7 @@ CORE_IMAGE_EXTRA_INSTALL += "\
     gstreamer1.0-plugins-bad-meta \
     ${@bb.utils.contains('LICENSE_FLAGS_ACCEPTED', 'commercial', 'gstreamer1.0-libav', '', d)} \
     mpg123 \
-    fbida \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'opengl', 'fbida', '', d)} \
     "
 
 CORE_IMAGE_EXTRA_INSTALL:append:imx8mp-summitsom = " \
