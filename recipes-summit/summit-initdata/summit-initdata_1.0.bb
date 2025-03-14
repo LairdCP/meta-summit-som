@@ -16,7 +16,13 @@ S = "${WORKDIR}"
 
 FILES:${PN} += "${sbindir} ${libdir} ${systemd_system_unitdir} ${sysconfdir} ${datadir} /perm /data"
 
-RDEPENDS:${PN} = "libubootenv-bin util-linux-blkid util-linux-lsblk iptables ${PREFERRED_PROVIDER_virtual/bootloader}-env"
+RDEPENDS:${PN} = "\
+    libubootenv-bin \
+    util-linux-blkid \
+    util-linux-lsblk \
+    iptables \
+    ${PREFERRED_PROVIDER_virtual/bootloader}-env \
+    "
 
 do_install () {
     cp -a --no-preserve=ownership -t "${D}" \
