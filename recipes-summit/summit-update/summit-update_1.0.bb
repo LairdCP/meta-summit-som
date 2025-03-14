@@ -13,7 +13,8 @@ SRC_URI = " \
     file://10-swupdate.conf \
     file://01-capability.conf \
     file://fw_update \
-    file://update_ubi_support.sh \
+    file://ubi_update_support.sh \
+    file://emmc_update_support.sh \
     file://erase_som_nand \
     "
 
