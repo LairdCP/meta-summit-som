@@ -25,8 +25,10 @@ RDEPENDS:${PN} = "\
     "
 
 do_install () {
-    cp -a --no-preserve=ownership -t "${D}" \
-        "${S}"/rootfs-additions-common/* "${S}"/rootfs-additions/*
+    cp -a --no-preserve=ownership -t "${D}" "${S}"/rootfs-additions-common/* 
+    if ls "${S}"/rootfs-additions/* >/dev/null 2>&1; then
+        cp -a --no-preserve=ownership -t "${D}" "${S}"/rootfs-additions/* 
+    fi
     find "${D}" -type f -name .empty -delete
     chmod 600 "${D}/usr/lib/NetworkManager/system-connections/"*
 }
