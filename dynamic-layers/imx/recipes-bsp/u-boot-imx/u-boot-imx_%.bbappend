@@ -46,7 +46,7 @@ do_compile:append:summitsom() {
 
         echo "/dev/mmcblk${EMMC_DEVICE}boot0 ${ENV_OFFSET} ${ENV_SIZE}" > "${B}/${config}/fw_env_emmc-a.config"
         echo "/dev/mmcblk${EMMC_DEVICE}boot1 ${ENV_OFFSET} ${ENV_SIZE}" > "${B}/${config}/fw_env_emmc-b.config"
-        echo "/boot/uboot.env 0 ${ENV_SIZE}" > "${B}/fw_env_sd.config"
+        echo "/boot/uboot.env 0 ${ENV_SIZE}" > "${B}/${config}/fw_env_sd.config"
         echo > "${B}/${config}/fw_env.config"
     done
 }
