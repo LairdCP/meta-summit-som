@@ -394,7 +394,7 @@ int board_typec_get_mode(int index)
 #define DISPMIX                         13
 #define MIPI                            15
 
-static bool wbx3;
+static bool __section(".data") wbx3;
 
 int board_init(void)
 {

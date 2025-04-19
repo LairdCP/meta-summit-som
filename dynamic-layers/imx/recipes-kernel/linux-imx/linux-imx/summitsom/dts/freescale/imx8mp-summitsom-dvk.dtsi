@@ -318,14 +318,14 @@
 	phy-handle = <&ethphy0>;
 	status = "okay";
 
-	reset-gpios = <&gpio4 22 GPIO_ACTIVE_LOW>;
-	reset-delay-us = <10>;
-	reset-post-delay-us = <300>;
-
 	mdio {
 		compatible = "snps,dwmac-mdio";
 		#address-cells = <1>;
 		#size-cells = <0>;
+
+		reset-gpios = <&gpio4 22 GPIO_ACTIVE_LOW>;
+		reset-delay-us = <10>;
+		reset-post-delay-us = <300>;
 
 		ethphy0: ethernet-phy@1 {
 			compatible = "ethernet-phy-ieee802.3-c22";
@@ -352,13 +352,13 @@
 	fsl,magic-packet;
 	status = "okay";
 
-	reset-gpios = <&gpio4 2 GPIO_ACTIVE_LOW>;
-	reset-delay-us = <10>;
-	reset-post-delay-us = <300>;
-
 	mdio {
 		#address-cells = <1>;
 		#size-cells = <0>;
+
+		reset-gpios = <&gpio4 2 GPIO_ACTIVE_LOW>;
+		reset-delay-us = <10>;
+		reset-post-delay-us = <300>;
 
 		ethphy1: ethernet-phy@1 {
 			compatible = "ethernet-phy-ieee802.3-c22";
