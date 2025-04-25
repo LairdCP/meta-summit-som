@@ -47,7 +47,7 @@ the script prepares the calling shell for running bitbake on the build
 directory <build-dir>. The build directory configuration is unchanged.
 
 Supported machines:
-$(basename -as .conf sources/meta-summit-som/conf/machine/*.conf | sed '/^\*/d; s/^/\t/g')
+$(basename -as .conf sources/meta-summit-som/conf/machine/am*.conf | sed '/^\*/d; s/^/\t/g')
 
 Supported distros:
 $(basename -as .conf sources/meta-summit-som/conf/distro/*.conf | sed '/^\*/d; s/^/\t/g')
