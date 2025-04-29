@@ -29,7 +29,7 @@ umount_ubi() {
 }
 
 mount_emmc() {
-	if [ -x /usr/sbin/blockdev ]; then 
+	if [ -x /usr/sbin/blockdev ]; then
 		DATA_SIZE=$(blockdev --getsz "${DATA_DEVICE}")
 	else
 		DATA_SIZE=$(/usr/bin/lsblk -ndbo SIZE "${DATA_DEVICE}")
@@ -45,7 +45,7 @@ mount_emmc() {
 		/usr/bin/keyctl padd logon datakey: @s < /perm/caam/datakey
 		CRYPTO_STR="capi:tk(cbc(aes))-plain :36:logon:datakey:"
 	else
-		[ -f /perm/caam/datakey ] && 
+		[ -f /perm/caam/datakey ] &&
 			KEY_ID=$(/usr/bin/keyctl add trusted datakey "load $(cat /perm/caam/datakey)" @s) ||
 		{
 			KEY_ID=$(/usr/bin/keyctl add trusted datakey "new 32" @s)
@@ -93,7 +93,7 @@ start)
 			ubi) umount_ubi ;;
 			*) umount_emmc ;;
 		esac
-		exit 1 
+		exit 1
 	}
 
 	echo "Secure Boot Cycle Complete" >/dev/console
