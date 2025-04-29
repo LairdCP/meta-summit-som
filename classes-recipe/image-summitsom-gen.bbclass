@@ -48,16 +48,6 @@ IMAGE_INSTALL_BASIC = "\
     ${@bb.utils.contains('MACHINE_FEATURES', 'usbgadget', 'summit-usbgadget', '', d)} \
     "
 
-IMAGE_INSTALL_BASIC:append:summit-secure = "\
-    keyutils \
-    lvm2 \
-    e2fsprogs-mke2fs \
-"
-
-IMAGE_INSTALL_BASIC:append:imx-nxp-bsp:summit-secure = "\
-    keyctl-caam \
-    "
-
 # Diagnostic tools
 IMAGE_INSTALL_DIAG = "\
     iperf2 \

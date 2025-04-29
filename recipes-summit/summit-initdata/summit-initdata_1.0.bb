@@ -26,6 +26,14 @@ RDEPENDS:${PN} = "\
     ${PREFERRED_PROVIDER_virtual/bootloader}-env \
     "
 
+RDEPENDS:${PN}:append:summit-secure = "\
+    keyutils \
+    lvm2 \
+    e2fsprogs-mke2fs \
+    "
+
+RDEPENDS:${PN}:append:imx-generic-bsp:summit-secure = " keyctl-caam"
+
 do_install () {
     cp -a --no-preserve=ownership -t "${D}" "${S}"/rootfs-additions-common/* 
     if ls "${S}"/rootfs-additions/* >/dev/null 2>&1; then
