@@ -1,10 +1,10 @@
 
 MACHINEOVERRIDES =. "summitsom:"
 
-TI_PREFERRED_BSP = "ti-6_6"
+TI_PREFERRED_BSP = "ti-6_12"
 
-BSP_BOOTLOADER_PROVIDER:bsp-ti-6_6 = "u-boot-ti-summit"
-BSP_BOOTLOADER_VERSION:bsp-ti-6_6 = "%"
+BSP_BOOTLOADER_PROVIDER:bsp-ti-6_12 = "u-boot-ti-summit"
+BSP_BOOTLOADER_VERSION:bsp-ti-6_12 = "%"
 
 IMAGE_FSTYPES = ""
 
