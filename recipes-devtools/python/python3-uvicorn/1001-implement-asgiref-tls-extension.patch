@@ -1,6 +1,6 @@
 --- a/uvicorn/config.py	2020-02-01 19:00:00.000000000 -0500
 +++ b/uvicorn/config.py	2024-01-11 11:13:48.492675156 -0500
-@@ -259,6 +259,7 @@
+@@ -260,6 +260,7 @@
          self.callback_notify = callback_notify
          self.ssl_keyfile = ssl_keyfile
          self.ssl_certfile = ssl_certfile
@@ -8,7 +8,7 @@
          self.ssl_keyfile_password = ssl_keyfile_password
          self.ssl_version = ssl_version
          self.ssl_cert_reqs = ssl_cert_reqs
-@@ -406,6 +407,8 @@
+@@ -407,6 +408,8 @@
                  ca_certs=self.ssl_ca_certs,
                  ciphers=self.ssl_ciphers,
              )
@@ -48,7 +48,7 @@
          if self.logger.level <= TRACE_LOG_LEVEL:
              prefix = "%s:%d - " % self.client if self.client else ""
              self.logger.log(TRACE_LOG_LEVEL, "%sHTTP connection made", prefix)
-@@ -215,7 +227,12 @@
+@@ -212,7 +218,12 @@
                      "query_string": query_string,
                      "headers": self.headers,
                      "state": self.app_state.copy(),
@@ -72,7 +72,7 @@
  from uvicorn.server import ServerState
  
  HEADER_RE = re.compile(b'[\x00-\x1f\x7f()<>@,;:[]={} \t\\"]')
-@@ -79,6 +79,7 @@
+@@ -87,6 +87,7 @@
          self.client: tuple[str, int] | None = None
          self.scheme: Literal["http", "https"] | None = None
          self.pipeline: deque[tuple[RequestResponseCycle, ASGI3Application]] = deque()
@@ -80,7 +80,7 @@
  
          # Per-request state
          self.scope: HTTPScope = None  # type: ignore[assignment]
-@@ -98,6 +99,11 @@
+@@ -106,6 +107,11 @@
          self.client = get_remote_addr(transport)
          self.scheme = "https" if is_ssl(transport) else "http"
  
@@ -92,7 +92,7 @@
          if self.logger.level <= TRACE_LOG_LEVEL:
              prefix = "%s:%d - " % self.client if self.client else ""
              self.logger.log(TRACE_LOG_LEVEL, "%sHTTP connection made", prefix)
-@@ -222,8 +228,12 @@
+@@ -230,8 +236,12 @@
              "root_path": self.root_path,
              "headers": self.headers,
              "state": self.app_state.copy(),
