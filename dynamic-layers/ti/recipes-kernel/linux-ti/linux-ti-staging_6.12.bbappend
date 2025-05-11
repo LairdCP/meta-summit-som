@@ -10,6 +10,7 @@ SRC_URI:append:summitsom = " \
     file://0009-dt-bindings-hwmon-ina2xx-add-ina232.patch \
     file://0011-lvds-codec-output-bridge.patch \
     file://0012-lvds-codec-frequency-limit.patch \
+    file://0019-dm-verity-partition-wait-fix.patch \
     file://dts;subdir=git/arch/arm64/boot \
     "
 
