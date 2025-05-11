@@ -10,10 +10,12 @@ RDEPENDS:${PN} = " \
 	60-radio-firmware-sdio-uart \
 	if513-sdio-div-firmware \
 	if573-sdio-firmware \
-	nx611-firmware \
+	nx61x-firmware \
 	ti351-firmware \
-	summit-supplicant-lwb-if \
-	summit-supplicant-lwb-if-cli \
-	summit-networkmanager-lwb-if \
-	summit-networkmanager-lwb-if-nmcli \
+	summit-adaptive-ww \
+	summit-supplicant-60 \
+	summit-supplicant-60-cli \
+	summit-networkmanager-60 \
+	summit-networkmanager-60-nmcli \
+	summit-hostapd-60 \
 	"
