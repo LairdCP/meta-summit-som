@@ -15,7 +15,5 @@ SRC_URI:append:summitsom = " \
 
 KERNEL_DTBVENDORED:summitsom = "0"
 
-SCMVERSION:summitsom = "n"
-
 # Remove kernel binary from rootfs
 RDEPENDS:${KERNEL_PACKAGE_NAME}-base:remove:summitsom = "${KERNEL_PACKAGE_NAME}-image"

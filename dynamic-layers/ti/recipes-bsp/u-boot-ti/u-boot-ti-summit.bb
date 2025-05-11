@@ -1,5 +1,6 @@
 require recipes-bsp/u-boot/u-boot-ti.inc
-require summit-platform-version.inc
+
+inherit summit-platform-version
 
 SUMMARY = "Summit U-Boot for TI devices"
 
@@ -7,12 +8,7 @@ UBOOT_GIT_URI = "git://github.com/Ezurio/u-boot-som.git"
 UBOOT_GIT_URI:summit-internal = "git://git@github.com/rfpros/cp_linux-u-boot-som60.git"
 
 UBOOT_GIT_PROTOCOL:summit-internal = "ssh"
-UBOOT_GIT_BRANCH = "nobranch=1"
-
-SRCREV = "master"
-PV = "master+git${SRCPV}"
-#SRCREV = "${SUMMIT_PLATFORM_VERSION}"
-#PV = "${SUMMIT_PLATFORM_VERSION}+git${SRCPV}"
+UBOOT_GIT_BRANCH = "${SUMMIT_PLATFORM_BRANCH}"
 
 DEPENDS:append:k3 = " u-boot-mkenvimage-native"
 

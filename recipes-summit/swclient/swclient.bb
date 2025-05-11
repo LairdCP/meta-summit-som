@@ -6,16 +6,12 @@ LIC_FILES_CHKSUM = "\
     file://LICENSE.ezurio;md5=fd3dd0630b215465b6f50540642d5b93 \
     "
 
-inherit setuptools3
-require summit-platform-version.inc
+inherit setuptools3 summit-platform-version
 
 DEPENDS += "swupdate"
 
-SRC_URI = "git://github.com/Ezurio/lrd-userspace-examples.git;protocol=https;nobranch=1"
-SRC_URI:summit-internal = "git://git@github.com/rfpros/cp_linux-lrd-userspace-examples.git;protocol=ssh;nobranch=1"
-
-SRCREV = "${SUMMIT_PLATFORM_VERSION}"
-PV = "${SUMMIT_PLATFORM_VERSION}+git${SRCPV}"
+SRC_URI = "git://github.com/Ezurio/lrd-userspace-examples.git;protocol=https;${SUMMIT_PLATFORM_BRANCH}"
+SRC_URI:summit-internal = "git://git@github.com/rfpros/cp_linux-lrd-userspace-examples.git;protocol=ssh;${SUMMIT_PLATFORM_BRANCH}"
 
 S = "${WORKDIR}/git/swclient"
 
