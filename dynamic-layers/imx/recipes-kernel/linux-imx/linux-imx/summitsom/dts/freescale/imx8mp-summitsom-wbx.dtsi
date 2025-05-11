@@ -62,7 +62,7 @@
 	status = "okay";
 
 	reset-gpios = <&gpio4 2 GPIO_ACTIVE_LOW>;
-	reset-delay-us = <10>;
+	reset-delay-us = <150>;
 	reset-post-delay-us = <300>;
 
 	mdio {
