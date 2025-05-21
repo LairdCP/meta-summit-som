@@ -8,8 +8,8 @@ inherit packagegroup
 RDEPENDS:${PN} = " \
 	kernel-module-nx-backports \
 	nx611-firmware \
-	summit-supplicant-nx \
-	summit-supplicant-nx-cli \
-	summit-networkmanager-nx \
-	summit-networkmanager-nx-nmcli \
+	summit-supplicant \
+	summit-supplicant-cli \
+	summit-networkmanager \
+	summit-networkmanager-nmcli \
 	"

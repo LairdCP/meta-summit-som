@@ -12,10 +12,10 @@ RDEPENDS:${PN} = " \
 	kernel-module-60-backports \
 	${@bb.utils.contains('SOM8MP_RADIO_STACK', '1', 'som8mp-radio-firmware', '60-radio-firmware-sdio-uart', d)} \
 	${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'summit-adaptive-bt summit-bt-uart-scripts-60', '', d)} \
-	summit-supplicant-libs-60 \
-	summit-supplicant-60 \
-	summit-supplicant-60-cli \
+	summit-supplicant-libs \
+	summit-supplicant \
+	summit-supplicant-cli \
 	summit-adaptive-ww \
-	summit-networkmanager-60 \
-	summit-networkmanager-60-nmcli \
+	summit-networkmanager \
+	summit-networkmanager-nmcli \
 	"

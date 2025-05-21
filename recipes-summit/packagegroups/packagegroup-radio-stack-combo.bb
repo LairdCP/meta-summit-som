@@ -13,9 +13,9 @@ RDEPENDS:${PN} = " \
 	nx61x-firmware \
 	ti351-firmware \
 	summit-adaptive-ww \
-	summit-supplicant-60 \
-	summit-supplicant-60-cli \
-	summit-networkmanager-60 \
-	summit-networkmanager-60-nmcli \
-	summit-hostapd-60 \
+	summit-supplicant \
+	summit-supplicant-cli \
+	summit-networkmanager \
+	summit-networkmanager-nmcli \
+	summit-hostapd \
 	"

@@ -8,8 +8,8 @@ inherit packagegroup
 RDEPENDS:${PN} = " \
 	kernel-module-ti-backports \
 	ti351-firmware \
-	summit-supplicant-ti \
-	summit-supplicant-ti-cli \
-	summit-networkmanager-ti \
-	summit-networkmanager-ti-nmcli \
+	summit-supplicant \
+	summit-supplicant-cli \
+	summit-networkmanager \
+	summit-networkmanager-nmcli \
 	"
