@@ -45,6 +45,7 @@ IMAGE_INSTALL_BASIC = "\
     summit-automount \
     summit-initdata \
     summit-update \
+    summit-set-mode \
     ${@bb.utils.contains('MACHINE_FEATURES', 'usbgadget', 'summit-usbgadget', '', d)} \
     "
 

@@ -8,9 +8,10 @@
 /dts-v1/;
 
 #include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/input/input.h>
 #include <dt-bindings/net/ti-dp83867.h>
+
 #include "k3-am625.dtsi"
-#include "k3-am625-carbon-wifi.dtsi"
 
 / {
 	compatible = "ti,am625";
@@ -160,9 +161,9 @@
 		pinctrl-0 = <&vdd_sd_pins_default>;
 		regulator-min-microvolt = <1800000>;
 		regulator-max-microvolt = <3300000>;
-		regulator-ramp-delay = <750>;
-		gpios = <&main_gpio0 31 GPIO_ACTIVE_HIGH>;
-		states = <1800000 0x0>, <3300000 0x1>;
+		gpios = <&main_gpio0 31 GPIO_ACTIVE_LOW>;
+		/* initial state must be 3.3V */
+		states = <3300000 0x0>, <1800000 0x1>;
 	};
 
 	mmc0_pwrseq: pwrseq {
@@ -171,6 +172,47 @@
 
 		compatible = "mmc-pwrseq-emmc";
 		reset-gpios = <&main_gpio0 15 GPIO_ACTIVE_LOW>;
+	};
+
+	reg_slow_clock: regulator-slow-clock {
+		compatible = "regulator-fixed-clock";
+		regulator-name = "slow-clock-wifi";
+
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+
+		vin-supply = <&vcc_3v3_sys>;
+		clocks = <&rv3028>;
+
+		startup-delay-us = <1000>;
+
+		// Store the clock rate and enable in the EEPROM
+		// so it comes up on power up
+		//assigned-clocks = <&rv3028>;
+		//assigned-clock-rates = <32768>;
+	};
+
+	wifi_wakeup: wifi-wakeup {
+		compatible = "gpio-keys";
+
+		status = "disabled";
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&main_wifi_wake_default>, <&main_bt_wake_pins_default>;
+
+		wifi-wake {
+			label = "Wi-Fi Wake Up";
+			gpios = <&main_gpio0 16 GPIO_ACTIVE_LOW>;
+			linux,code = <KEY_WAKEUP>;
+			wakeup-source;
+		};
+
+		bt-wake {
+			label = "BT Wake Up";
+			gpios = <&main_gpio0 42 GPIO_ACTIVE_LOW>;
+			linux,code = <KEY_WAKEUP>;
+			wakeup-source;
+		};
 	};
 };
 
@@ -224,14 +266,30 @@
 	};
 };
 
+&main_rti1 {
+	status = "disabled";
+};
+
+&main_rti2 {
+	status = "disabled";
+};
+
+&main_rti3 {
+	status = "disabled";
+};
+
+&main_rti15 {
+	status = "disabled";
+};
+
 &main_gpio0 {
 	gpio-line-names = "","GPIO_A_2","GPIO_A_1","","", 	/* 0 - 4 */
 		"","","","","",
 		"","","","GPIO_A_0","GPIO_C_2",			/* 10 - 14 */
-		"EMMC_RESET#","WIFI_WAKE","GPIO_B_7","SDIO_A_PWR_EN","RGB_RESET#",
+		"EMMC_RESET#","WIFI_WAKE","GPIO_B_7","RGB_CS","RGB_RESET#",
 		"W_DISABLE1#","SDIO_RESET#","W_DISABLE2#","","",	/* 20 - 24 */
-		"RGB_CS","RGB_DISP","","","GPIO_C_7",
-		"GPIO_B_6","SDIO_A_IOPWR","","","",		/* 30 - 34 */
+		"SDIO_A_PWR_EN","RGB_DISP","","","GPIO_C_7",
+		"GPIO_B_6","SDIO_A_IOPWR","","GPIO_B_7","",		/* 30 - 34 */
 		"","GPIO_B_3","","GPIO_B_2","GPIO_C_0",
 		"","","BT_HOST_WAKE","GPIO_C_1","",		/* 40 - 44 */
 		"","","","","",
@@ -239,7 +297,7 @@
 		"","","","","",
 		"","","","","",					/* 60 - 64 */
 		"","","","","",
-		"","GPIO_C_3","","","",					/* 70 - 74 */
+		"","GPIO_C_3","","","",				/* 70 - 74 */
 		"","","","","",
 		"","","","","",					/* 80 - 84 */
 		"","","","","",
@@ -277,7 +335,7 @@
 		pinctrl-0 = <&mcu_rtc_pins_default>;
 		compatible = "microcrystal,rv3028";
 		reg = <0x52>;
-		interrupts-extended = <&mcu_gpio0 23 GPIO_ACTIVE_LOW>;
+		interrupts-extended = <&mcu_gpio0 23 IRQ_TYPE_EDGE_FALLING>;
 		wakeup-source;
 	};
 
@@ -633,13 +691,13 @@
 		>;
 	};
 
-	main_wifi_en_default: main-wifi-en-default-pins {
+	main_wifi_en_pins_default: main-wifi-en-default-pins {
 		pinctrl-single,pins = <
 			AM62X_IOPAD(0x050, PIN_INPUT, 7) /* W_DISABLE1# (P22) GPMC0_AD5.GPIO0_20 */
 		>;
 	};
 
-	main_wifi_en2_default: main-wifi-en2-default-pins {
+	main_wifi_en2_pins_default: main-wifi-en2-default-pins {
 		pinctrl-single,pins = <
 			AM62X_IOPAD(0x054, PIN_INPUT, 7) /* SDIO_RESET# (P21) GPMC0_AD6.GPIO0_21 */
 		>;
@@ -671,7 +729,7 @@
 
 	vdd_sd_pins_default: vdd-sd-default-pins {
 		pinctrl-single,pins = <
-			AM62X_IOPAD(0x07c, PIN_OUTPUT, 7) /* (P25) GPMC0_CLK.GPIO0_31 */
+			AM62X_IOPAD(0x07c, PIN_INPUT, 7) /* (P25) GPMC0_CLK.GPIO0_31 */
 		>;
 	};
 };
@@ -697,6 +755,7 @@
 	status = "reserved";
 	pinctrl-names = "default";
 	pinctrl-0 = <&main_uart1_pins_default>;
+	uart-has-rtscts;
 };
 
 &main_uart4 {
@@ -830,6 +889,24 @@
 &sdhci1 { /* SDIO_A */
 	pinctrl-names = "default";
 	pinctrl-0 = <&main_mmc1_pins_default>;
+
+	vqmmc-supply = <&vdd_sd>; /* VSEL_SD */
+
+	disable-wp;
+	ti,driver-strength-ohm = <50>;
+};
+
+&sdhci2 { /* SDIO_B  WIFI */
+	pinctrl-names = "default";
+	pinctrl-0 = <&main_mmc2_pins_default>;
+
+	vmmc-supply = <&reg_slow_clock>;
+	vqmmc-supply = <&buck2_reg>;
+
+	non-removable;
+	ti,fails-without-test-cd;
+	ti,driver-strength-ohm = <50>;
+	keep-power-in-suspend;
 };
 
 &wkup_uart0 {

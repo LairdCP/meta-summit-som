@@ -17,7 +17,7 @@
 		gpios = <&gpio2  8 GPIO_ACTIVE_HIGH>,
 		        <&gpio2  9 GPIO_ACTIVE_HIGH>,
 		        <&gpio2 10 GPIO_ACTIVE_HIGH>,
-				<&gpio2  7 GPIO_ACTIVE_HIGH>;
+		        <&gpio2  7 GPIO_ACTIVE_HIGH>;
 		states = <1800000 15>, <0 0>;
 		enable-active-high;
 
