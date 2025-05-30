@@ -786,7 +786,7 @@ fitimage_assemble() {
 	#
 	${UBOOT_MKIMAGE} \
 		${@'-D "${UBOOT_MKIMAGE_DTCOPTS}"' if len('${UBOOT_MKIMAGE_DTCOPTS}') else ''} \
-		-E -f $1 \
+		-E -B 0x200 -f $1 \
 		${KERNEL_OUTPUT_DIR}/$2
 
 	#
@@ -795,7 +795,7 @@ fitimage_assemble() {
 	if [ "x${UBOOT_SIGN_ENABLE}" = "x1" ] ; then
 		${UBOOT_MKIMAGE_SIGN} \
 			${@'-D "${UBOOT_MKIMAGE_DTCOPTS}"' if len('${UBOOT_MKIMAGE_DTCOPTS}') else ''} \
-			-E -F -k "${UBOOT_SIGN_KEYDIR}" \
+			-E -B 0x200 -F -k "${UBOOT_SIGN_KEYDIR}" \
 			-r ${KERNEL_OUTPUT_DIR}/$2 \
 			${UBOOT_MKIMAGE_SIGN_ARGS}
 	fi

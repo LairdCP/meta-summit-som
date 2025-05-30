@@ -189,10 +189,10 @@ fitimage_bin() {
 	fitimage_emit_section_maint $1 sectend
 	fitimage_emit_section_maint $1 fitend
 
-	${UBOOT_MKIMAGE} -f $1 $3
+	${UBOOT_MKIMAGE} -E -B 0x200 -f $1 $3
 
 	if [ "${UBOOT_SIGN_ENABLE}" = "1" ]; then
-		${UBOOT_MKIMAGE_SIGN} -F -k "${UBOOT_SIGN_KEYDIR}" ${3}
+		${UBOOT_MKIMAGE_SIGN} -E -B 0x200 -F -k "${UBOOT_SIGN_KEYDIR}" ${3}
 	fi
 }
 
