@@ -10,7 +10,8 @@ RDEPENDS:${PN} = " \
 	60-radio-firmware-sdio-uart \
 	if513-sdio-div-firmware \
 	if573-sdio-firmware \
-	nx61x-firmware \
+	nx61x-firmware-1216-serdev \
+	nx61x-firmware-1218-serdev \
 	ti351-firmware \
 	summit-adaptive-ww \
 	summit-supplicant \
