@@ -7,9 +7,10 @@ inherit packagegroup
 
 RDEPENDS:${PN} = " \
 	kernel-module-lwb-if-backports \
+	if513-sdio-div-firmware \
 	if573-sdio-firmware \
-	summit-supplicant-lwb-if \
-	summit-supplicant-lwb-if-cli \
-	summit-networkmanager-lwb-if \
-	summit-networkmanager-lwb-if-nmcli \
+	summit-supplicant \
+	summit-supplicant-cli \
+	summit-networkmanager \
+	summit-networkmanager-nmcli \
 	"
