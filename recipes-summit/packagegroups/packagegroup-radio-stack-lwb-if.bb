@@ -7,6 +7,8 @@ inherit packagegroup
 
 RDEPENDS:${PN} = " \
 	kernel-module-lwb-if-backports \
+	lwb5plus-sdio-sa-firmware \
+	lwb5plus-sdio-div-firmware \
 	if513-sdio-div-firmware \
 	if573-sdio-firmware \
 	summit-supplicant \

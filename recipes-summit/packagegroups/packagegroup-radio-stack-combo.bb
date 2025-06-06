@@ -8,6 +8,9 @@ inherit packagegroup
 RDEPENDS:${PN} = " \
 	kernel-module-combo-backports \
 	60-radio-firmware-sdio-uart \
+	60-radio-firmware-sdio-sdio \
+	lwb5plus-sdio-sa-firmware \
+	lwb5plus-sdio-div-firmware \
 	if513-sdio-div-firmware \
 	if573-sdio-firmware \
 	nx61x-firmware-1216-serdev \
