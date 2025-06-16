@@ -1,4 +1,4 @@
-SUMMARY = "Summit SOM Radio Stack TI"
+SUMMARY = "Summit SOM Radio Stack TI Radio"
 SECTION = "net/misc"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
@@ -12,4 +12,5 @@ RDEPENDS:${PN} = " \
 	summit-supplicant-cli \
 	summit-networkmanager \
 	summit-networkmanager-nmcli \
+	summit-hostapd \
 	"

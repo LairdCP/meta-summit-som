@@ -12,6 +12,7 @@ RDEPENDS:${PN} = " \
 	lwb5plus-sdio-sa-firmware \
 	lwb5plus-sdio-div-firmware \
 	if513-sdio-div-firmware \
+	if513-sdio-sa-firmware \
 	if573-sdio-firmware \
 	nx61x-firmware-1216-serdev \
 	nx61x-firmware-1218-serdev \
