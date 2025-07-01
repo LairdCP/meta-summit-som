@@ -18,7 +18,7 @@ SRC_URI = " \
 
 S = "${WORKDIR}"
 
-FILES:${PN} += "${sbindir} ${libdir} ${systemd_system_unitdir} ${sysconfdir} ${datadir} /perm /data"
+FILES:${PN} += "${sbindir} ${libdir} ${nonarch_libdir} ${systemd_system_unitdir} ${sysconfdir} ${datadir} /perm /data"
 
 RDEPENDS:${PN} = "\
     libubootenv-bin \
