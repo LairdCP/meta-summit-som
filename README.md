@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Developing a custom image with Yocto"
-category: Summit SOM 8M Plus DVK
+category: Summit SOM, Carbon
 order: 3
-product: Summit SOM 8M Plus
+product: Summit SOM, Carbon
 technology: soms
 ---
 
-The Summit SOM 8M Plus (and DVK) support the creation of custom images via the [Yocto](https://www.yoctoproject.org) Project, and the steps below document how to setup a Yocto build environment for the Summit SOM 8M Plus (and DVK) and build an image and also outline some next steps for integrating the SOM into a custom board image.
+The SOM (and DVK) and Carbon support the creation of custom images via the [Yocto](https://www.yoctoproject.org) Project, and the steps below document how to setup a Yocto build environment for the Summit SOM 8M Plus (and DVK) and build an image and also outline some next steps for integrating the SOM into a custom board image.
 
 ## Prerequisites
 
@@ -15,10 +15,10 @@ The Summit SOM 8M Plus (and DVK) support the creation of custom images via the [
 If completely new to the Yocto Project, the [documentation](https://docs.yoctoproject.org) site provides a [Quick Build](https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html) getting started guide focused on the Yocto Project reference distribution (Poky) and an emulated device (QEMU, or the Quick EMUlator); however, the steps below are tailored to the Summit SOM 8M Plus (and DVK) and assume that you have successfully setup a development PC for use with the Yocto Project (see the [system requirements](https://docs.yoctoproject.org/ref-manual/system-requirements.html#system-requirements) for more details).
 
 
-### Summit SOM 8M Plus (and DVK) Prerequisites
+### SOM (and DVK) Prerequisites
 In addition to the standard Yocto Project system requirements, the [`repo`](https://gerrit.googlesource.com/git-repo/) tool is needed to support cloning the necessary repositories at the proper revisions via Git, and the steps necessary to install the `repo` tool are listed in the ['Install'](https://gerrit.googlesource.com/git-repo/#install) section of the homepage.
 
-## Build the Default Summit SOM 8M Plus DVK Image
+## Build the Default DVK Image
 1. Create a working directory for the Yocto build environment and change directories to it:
 
     ```bash
@@ -36,20 +36,20 @@ In addition to the standard Yocto Project system requirements, the [`repo`](http
 3. Setup the Yocto build environment by sourcing the `setup-environment` script and passing the proper parameters.
 
     ```bash
-    [MACHINE=<machine>] [DISTRO=<distro>] source setup-environment [-h] <build-dir>
+    [MACHINE=<machine>] [DISTRO=<distro>] source setup-environment-xxx [-h] <build-dir>
     ```
 
     | Parameter     | Description |
     |---------------|-------------|
-    | `<machine>`   | Machine name - there is currently only one supported machine name for the Summit SOM 8M Plus DVK (imx8mp-summitsom) |
-    | `<distro>`    | Distro name - there are currently three supported distro names for the Summit SOM 8M Plus DVK:<ul><li>`summitsom-cmd`</li><li>`summitsom-wayland` (default)</li><li>`summitsom-xwayland`</li></ul> |
+    | `<machine>`   | Machine name - there is currently only one supported machine name for the Summit SOM 8M Plus DVK (imx8mp-summitsom), for the Carbon AM62 (carbon-am62)|
+    | `<distro>`    | Distro name - there are currently three supported distro names for the DVK:<ul><li>`summitsom-cmd`</li><li>`summitsom-wayland` (default)</li><li>`summitsom-xwayland`</li></ul> |
     | `-h`          | Show the script usage help info (optional) |
     | `<build-dir>` | Build directory |
 
-    For example, to setup the build environment for the Summit SOM 8M Plus DVK with Wayland support and use a build directory of `build`, use the following command:
+    For example, to setup the build environment for the DVK with Wayland support and use a build directory of `build`, use the following command:
 
     ```bash
-    MACHINE=imx8mp-summitsom DISTRO=summitsom-wayland source setup-environment build
+    MACHINE=carbon-am62 DISTRO=summitsom-wayland source setup-environment-xxx build
     ```
 
     **Note:** The first time the `setup-environment` script is run, the NXP Yocto BSP EULA is shown and must be read and accepted before continuing with development. On subsequent runs of the script, you do not need to specify the `MACHINE` and `DISTRO` parameters or accept the EULA. The settings can be specified at any time in the `<build-dir>/conf/local.conf` file.
@@ -58,14 +58,14 @@ In addition to the standard Yocto Project system requirements, the [`repo`](http
 
     | Image Name            | Description                                                      |
     |-----------------------|------------------------------------------------------------------|
-    | `image-summitsom-cmd` | Summit SOM 8M Plus command line image                            |
+    | `image-summitsom-cmd` | command line image                            |
 
     To start the build, use the following command replacing `<image-name>` with the target image name:
     ```bash
     bitbake <image-name>
     ```
 
-    For example, to build the Summit SOM 8M Plus command line image, use:
+    For example, to build the command line image, use:
 
     ```bash
     bitbake image-summitsom-cmd
@@ -76,17 +76,17 @@ In addition to the standard Yocto Project system requirements, the [`repo`](http
     <build-dir>/tmp/deploy/images/<machine-name>
     ```
 
-    Here, you will find a `.swu` file that can be used to securely update the Summit SOM 8M Plus that uses the following naming pattern:
+    Here, you will find a `.swu` file that can be used to securely update the that uses the following naming pattern:
     ```
     <image-name>-<machine-name>-<date-time>.swu
     ```
 
-    For example, the command line image for the Summit SOM 8M Plus would have a `.swu` file name like:
+    For example, the command line image would have a `.swu` file name like:
     ```
-    image-summitsom-cmd-imx8mp-summitsom-20220324205149.swu
+    image-summitsom-cmd-XXXXX-summitsom-20220324205149.swu
     ```
 
-6. There are a number of ways to flash the onboard eMMC of the Summit SOM 8M Plus:
+6. There are a number of ways to flash the onboard eMMC:
 
     * HTTP/FTP Server
 
@@ -102,7 +102,7 @@ In addition to the standard Yocto Project system requirements, the [`repo`](http
 
         Copy the `.swu` file onto a USB flash drive.
 
-        Boot the Summit SOM DVK from SD card and use the `fw_update` script (built around `swupdate`) to flash the image to both a/b sides:
+        Boot the DVK from SD card and use the `fw_update` script (built around `swupdate`) to flash the image to both a/b sides:
         ```
         fw_update -m complete /media/.../update.swu
         poweroff
@@ -112,9 +112,9 @@ In addition to the standard Yocto Project system requirements, the [`repo`](http
 
         Copy the `.swu` file onto a premade DVK SD card:
         ```
-        sudo cp image-summitsom-cmd-imx8mp-summitsom-20220324205149.swu /media/$USER/rootfs_data/upper/home/root/ && sync
+        sudo cp image-summitsom-cmd-XXXXX-summitsom-20220324205149.swu /media/$USER/rootfs_data/upper/home/root/ && sync
         ```
-        Boot the Summit SOM 8M Plus DVK from the SD card and use the `fw_update` script (built around `swupdate`) to flash the image to both a/b sides:
+        Boot the DVK from the SD card and use the `fw_update` script (built around `swupdate`) to flash the image to both a/b sides:
         ```
         fw_update </path/to/update.swu | url/to/swu>
         poweroff
@@ -123,13 +123,13 @@ In addition to the standard Yocto Project system requirements, the [`repo`](http
 	Change the boot mode select DIP switch positions from 0011 to 0010 to switch to internal eMMC and cycle power. The board should now boot from the Summit SOM' onboard eMMC.
 
 ## Updating the Image While Running From eMMC
-The standard Summit SOM DVK image utilizes an A/B update scheme when running from onboard eMMC which allows for built-in fallback support in the event of an update failure. To perform an image update, use one of the methods below once you have created a new `.swu` update file.
+The standard DVK image utilizes an A/B update scheme when running from onboard eMMC which allows for built-in fallback support in the event of an update failure. To perform an image update, use one of the methods below once you have created a new `.swu` update file.
 
 * HTTP/FTP Server
 
     Start a HTTP or FTP server on a development machine that is connected to a network which can be accessed by the Summit SOM 8M Plus DVK.
 
-    Boot the Summit SOM 8M Plus DVK from internal eMMC and use the `fw_update` script (built around `swupdate`) to flash the image. The script will automatically determine where flash the new image (i.e., side 'b' if running from side 'a' or side 'a' if running from side 'b'), toggle the proper environment variable to boot from the new bootside and reboot the board:
+    Boot the DVK from internal eMMC and use the `fw_update` script (built around `swupdate`) to flash the image. The script will automatically determine where flash the new image (i.e., side 'b' if running from side 'a' or side 'a' if running from side 'b'), toggle the proper environment variable to boot from the new bootside and reboot the board:
     ```
     fw_update <url>
     ```
@@ -138,7 +138,7 @@ The standard Summit SOM DVK image utilizes an A/B update scheme when running fro
 
     Copy the `.swu` file onto a USB flash drive.
 
-    Boot the Summit SOM 8M Plus DVK from internal eMMC and use the `fw_update` script (built around `swupdate`) to flash the image. The script will automatically determine where flash the new image (i.e., side 'b' if running from side 'a' or side 'a' if running from side 'b'), toggle the proper environment variable to boot from the new bootside and reboot the board:
+    Boot the DVK from internal eMMC and use the `fw_update` script (built around `swupdate`) to flash the image. The script will automatically determine where flash the new image (i.e., side 'b' if running from side 'a' or side 'a' if running from side 'b'), toggle the proper environment variable to boot from the new bootside and reboot the board:
     ```
     fw_update /media/.../update.swu
     ```
