@@ -7,12 +7,12 @@ product: Summit SOM, Carbon
 technology: soms
 ---
 
-The SOM (and DVK) and Carbon support the creation of custom images via the [Yocto](https://www.yoctoproject.org) Project, and the steps below document how to setup a Yocto build environment for the Summit SOM 8M Plus (and DVK) and build an image and also outline some next steps for integrating the SOM into a custom board image.
+The SOM (and DVK) and Carbon support the creation of custom images via the [Yocto](https://www.yoctoproject.org) Project, and the steps below document how to setup a Yocto build environment for the SOM (and DVK) and build an image and also outline some next steps for integrating the SOM into a custom board image.
 
 ## Prerequisites
 
 ### Yocto Project Prerequisites
-If completely new to the Yocto Project, the [documentation](https://docs.yoctoproject.org) site provides a [Quick Build](https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html) getting started guide focused on the Yocto Project reference distribution (Poky) and an emulated device (QEMU, or the Quick EMUlator); however, the steps below are tailored to the Summit SOM 8M Plus (and DVK) and assume that you have successfully setup a development PC for use with the Yocto Project (see the [system requirements](https://docs.yoctoproject.org/ref-manual/system-requirements.html#system-requirements) for more details).
+If completely new to the Yocto Project, the [documentation](https://docs.yoctoproject.org) site provides a [Quick Build](https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html) getting started guide focused on the Yocto Project reference distribution (Poky) and an emulated device (QEMU, or the Quick EMUlator); however, the steps below are tailored to the SOM (and DVK) and assume that you have successfully setup a development PC for use with the Yocto Project (see the [system requirements](https://docs.yoctoproject.org/ref-manual/system-requirements.html#system-requirements) for more details).
 
 
 ### SOM (and DVK) Prerequisites
@@ -41,7 +41,7 @@ In addition to the standard Yocto Project system requirements, the [`repo`](http
 
     | Parameter     | Description |
     |---------------|-------------|
-    | `<machine>`   | Machine name - there is currently only one supported machine name for the Summit SOM 8M Plus DVK (imx8mp-summitsom), for the Carbon AM62 (carbon-am62)|
+    | `<machine>`   | Machine name - there are supported machines are Summit SOM 8MP DVK (imx8mp-summitsom), for the Carbon AM62 (carbon-am62)|
     | `<distro>`    | Distro name - there are currently three supported distro names for the DVK:<ul><li>`summitsom-cmd`</li><li>`summitsom-wayland` (default)</li><li>`summitsom-xwayland`</li></ul> |
     | `-h`          | Show the script usage help info (optional) |
     | `<build-dir>` | Build directory |
@@ -54,7 +54,7 @@ In addition to the standard Yocto Project system requirements, the [`repo`](http
 
     **Note:** The first time the `setup-environment` script is run, the NXP Yocto BSP EULA is shown and must be read and accepted before continuing with development. On subsequent runs of the script, you do not need to specify the `MACHINE` and `DISTRO` parameters or accept the EULA. The settings can be specified at any time in the `<build-dir>/conf/local.conf` file.
 
-4. Build the image with `bitbake`. Presently, there are two supported images that can be built for the Summit SOM 8M Plus (and DVK):
+4. Build the image with `bitbake`. Presently, there are two supported images that can be built for the SOM (and DVK):
 
     | Image Name            | Description                                                      |
     |-----------------------|------------------------------------------------------------------|
@@ -92,7 +92,7 @@ In addition to the standard Yocto Project system requirements, the [`repo`](http
 
         Start a HTTP or FTP server on a development machine that is connected to a network which can be accessed by the Summit SOM.
 
-        Boot the Summit SOM 8M Plus DVK from the SD card and use the `fw_update` script (built around `swupdate`) to flash the image to both a/b sides:
+        Boot the DVK from the SD card and use the `fw_update` script (built around `swupdate`) to flash the image to both a/b sides:
         ```
         fw_update -m complete <url>
         poweroff
@@ -127,7 +127,7 @@ The standard DVK image utilizes an A/B update scheme when running from onboard e
 
 * HTTP/FTP Server
 
-    Start a HTTP or FTP server on a development machine that is connected to a network which can be accessed by the Summit SOM 8M Plus DVK.
+    Start a HTTP or FTP server on a development machine that is connected to a network which can be accessed by the SOM DVK.
 
     Boot the DVK from internal eMMC and use the `fw_update` script (built around `swupdate`) to flash the image. The script will automatically determine where flash the new image (i.e., side 'b' if running from side 'a' or side 'a' if running from side 'b'), toggle the proper environment variable to boot from the new bootside and reboot the board:
     ```
@@ -143,7 +143,7 @@ The standard DVK image utilizes an A/B update scheme when running from onboard e
     fw_update /media/.../update.swu
     ```
 ## Next Steps/Customizing the Image
-See the links below from the Yocto Project documentation site for further information and in depth guides to customize your image and integrate the Summit SOM 8M Plus into your custom design:
+See the links below from the Yocto Project documentation site for further information and in depth guides to customize your image and integrate the SOM into your custom design:
 
 * [What I wish I’d known about Yocto Project](https://docs.yoctoproject.org/what-i-wish-id-known.html)
 * [Transitioning to a custom environment for systems development](https://docs.yoctoproject.org/transitioning-to-a-custom-environment.html)
