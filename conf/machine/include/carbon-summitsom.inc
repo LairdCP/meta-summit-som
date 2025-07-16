@@ -26,9 +26,19 @@ UBOOT_SIGN_KEYNAME = "dev"
 UBOOT_SIGN_ENABLE:k3 = "1"
 KERNEL_IMAGETYPE:k3 = "fitImage"
 
+PREFERRED_RPROVIDER_wireless-regdb-static = "60-radio-firmware"
+
+PREFERRED_PROVIDER_wpa-supplicant = "summit-supplicant"
 PREFERRED_RPROVIDER_wpa-supplicant = "summit-supplicant"
 PREFERRED_RPROVIDER_wpa-supplicant-cli = "summit-supplicant"
 PREFERRED_RPROVIDER_wpa-supplicant-passphrase = "summit-supplicant"
+PREFERRED_RPROVIDER_wpa-supplicant-lib = "summit-supplicant"
+PREFERRED_RPROVIDER_wpa_supplicant-dev = "summit-supplicant-dev"
+
+PREFERRED_PROVIDER_hostapd = "summit-hostapd"
+PREFERRED_RPROVIDER_hostapd = "summit-hostapd"
+
+PREFERRED_PROVIDER_networkmanager = "summit-networkmanager"
 PREFERRED_RPROVIDER_networkmanager = "summit-networkmanager"
 PREFERRED_RPROVIDER_networkmanager = "summit-networkmanager-nmcli"
 
