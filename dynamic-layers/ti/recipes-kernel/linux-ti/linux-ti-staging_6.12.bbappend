@@ -18,6 +18,7 @@ SRC_URI:append:summitsom = " \
     file://0025-UPSTREAM-arm64-dts-ti-k3-pinctrl-Enable-Schmitt-Trig.patch \
     file://0026-dp83867-irq.patch \
     file://0027-davinci-mdio-missing-cpu.patch \
+    file://0028-tidss-rgb18-limit.patch \
     file://dts;subdir=git/arch/arm64/boot \
     "
 
