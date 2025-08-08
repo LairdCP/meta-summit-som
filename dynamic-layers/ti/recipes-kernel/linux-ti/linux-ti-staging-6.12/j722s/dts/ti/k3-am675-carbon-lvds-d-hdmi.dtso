@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-only OR MIT
 /*
- * LVDS D to HDMI Expansion Board for Carbon AM62xx
+ * LVDS D to HDMI Expansion Board for Carbon AM67x
  *
  * Copyright (C) 2024 Ezurio LLC
  */
@@ -20,7 +20,7 @@
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&main_lvds_d_pwr_default>;
-		ddc-en-gpios = <&main_gpio0 30 GPIO_ACTIVE_HIGH>;
+		ddc-en-gpios = <&main_gpio0 51 GPIO_ACTIVE_HIGH>;
 
 		ddc-i2c-bus = <&i2c_port_d>;
 
@@ -41,7 +41,7 @@
 
 		//pinctrl-names = "default";
 		//pinctrl-0 = <&main_lvds_d_pwr_default>;
-		//powerdown-gpios = <&main_gpio0 30 GPIO_ACTIVE_LOW>;
+		//powerdown-gpios = <&main_gpio0 51 GPIO_ACTIVE_LOW>;
 
 		port@0 {
 			reg = <0>;
@@ -91,7 +91,7 @@
 &main_pmx0 {
 	main_lvds_d_pwr_default: main-lvds-d-pwr-default-pins {
 		pinctrl-single,pins = <
-			AM62X_IOPAD(0x078, PIN_INPUT, 7) /* LVDS_D_VDD_EN (U24) GPMC0_AD15.GPIO0_30 */
+			J722S_IOPAD(0x0d0, PIN_INPUT, 7) /* LVDS_D_VDD_EN (Y26) VOUT0_DATA6.GPIO0_51 */
 		>;
 	};
 };
@@ -100,16 +100,16 @@
 	status = "okay";
 };
 
-&dss {
+&dss0 {
 	status = "okay";
 	/* OLDITX ports have no mux on them */
 };
 
-&oldi0 {
+&oldi0_dss0 {
 	status = "okay";
 };
 
-&oldi0_ports {
+&oldi0_dss0_ports {
 	#address-cells = <1>;
 	#size-cells = <0>;
 
@@ -128,7 +128,7 @@
 	};
 };
 
-&dss_ports {
+&dss0_ports {
 	#address-cells = <1>;
 	#size-cells = <0>;
 
@@ -143,8 +143,4 @@
 			remote-endpoint = <&oldi_0_in>;
 		};
 	};
-};
-
-&gpu {
-	status = "okay";
 };

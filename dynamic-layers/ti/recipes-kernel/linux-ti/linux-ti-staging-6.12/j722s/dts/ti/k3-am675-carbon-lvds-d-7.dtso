@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-only OR MIT
 /*
- * LVDS to LVDS Expansion Board with BD070LIC3 display for carbon AM62xx
+ * LVDS to LVDS Expansion Board with BD070LIC3 display for carbon AM67x
  *
  * Copyright (C) 2024 Ezurio LLC
  */
@@ -19,11 +19,11 @@
 
 		brightness-levels = <0 1 2 3 4 5 6 7 8 9 10>;
 		default-brightness-level = <8>;
-		pwms = <&epwm1 1 30000 0>; /* 33.3 kHz */
+		pwms = <&pwm2 0 30000 0>; /* 33.3 kHz */
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&main_lvds_d_backlight_en_default>;
-		enable-gpios = <&main_gpio0 33 GPIO_ACTIVE_HIGH>;
+		enable-gpios = <&main_gpio0 52 GPIO_ACTIVE_HIGH>;
 	};
 
 	vcc_lvds_d: regulator-vcc-lvds-d {
@@ -36,7 +36,7 @@
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&main_lvds_d_power_default>;
-		gpios = <&main_gpio0 30 GPIO_ACTIVE_HIGH>;
+		gpios = <&main_gpio0 51 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 		startup-delay-us = <10000>;
 	};
@@ -59,35 +59,39 @@
 &main_pmx0 {
 	main_lvds_d_power_default: main-lvds-d-power-default-pins {
 		pinctrl-single,pins = <
-			AM62X_IOPAD(0x078, PIN_INPUT, 7) /* LVDS_D_VDD_EN (U24) GPMC0_AD15.GPIO0_30 */
+			J722S_IOPAD(0x0d0, PIN_INPUT, 7) /* LVDS_D_VDD_EN (Y26) VOUT0_DATA6.GPIO0_51 */
 		>;
 	};
 
 	main_lvds_d_backlight_en_default: main-lvds-d-backlight-en-default-pins {
 		pinctrl-single,pins = <
-			AM62X_IOPAD(0x088, PIN_INPUT, 7) /* LVDS_D_BL_EN (L17) GPMC0_OEn_REn.GPIO0_33 */
+			J722S_IOPAD(0x0d4, PIN_INPUT, 7) /* LVDS_D_BL_EN (Y27) VOUT0_DATA7.GPIO0_52 */
 		>;
 	};
 };
 
-&epwm1 {
+&mcu_timer0 {
+	status = "okay";
+
+	/* Interrupt not provided by upstream dts */
+	interrupt-parent = <&main_gpio_intr>;
+	interrupts = <170 IRQ_TYPE_EDGE_RISING>;
+};
+
+&pwm2 {
 	status = "okay";
 };
 
-&gpu {
-	status = "okay";
-};
-
-&dss {
+&dss0 {
 	status = "okay";
 	/* OLDITX ports have no mux on them */
 };
 
-&oldi0 {
+&oldi0_dss0 {
 	status = "okay";
 };
 
-&oldi0_ports {
+&oldi0_dss0_ports {
 	#address-cells = <1>;
 	#size-cells = <0>;
 
@@ -106,7 +110,7 @@
 	};
 };
 
-&dss_ports {
+&dss0_ports {
 	#address-cells = <1>;
 	#size-cells = <0>;
 
@@ -127,7 +131,7 @@
 	#address-cells = <1>;
 	#size-cells = <0>;
 
-	touchscreen_lvds_d: touchscreen@14 {
+	touchscreen_lvds_d: touchscreen-lvds-d@14 {
 		compatible = "goodix,gt911";
 		reg = <0x14>;
 		AVDD28-supply = <&vcc_lvds_d>;

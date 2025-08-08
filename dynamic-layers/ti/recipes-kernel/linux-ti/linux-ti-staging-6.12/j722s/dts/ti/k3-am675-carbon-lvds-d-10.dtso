@@ -1,17 +1,17 @@
 // SPDX-License-Identifier: GPL-2.0-only OR MIT
 /*
- * RGB to LVDS Expansion Board with BD101LCC3 display for carbon AM62xx
+ * LVDS Expansion Board with BD101LCC3 display for carbon AM67xx
  *
  * Copyright (C) 2024 Ezurio LLC
  */
 
-#include "k3-am625-carbon-rgb-lvds-7.dtso"
+#include "k3-am675-carbon-lvds-d-7.dtso"
 
-&backlight_rgb {
-	pwms = <&epwm1 0 100000 0>;
+&backlight_lvds_d {
+	pwms = <&pwm2 0 100000 0>;
 };
 
-&display_rgb {
+&display_lvds_d {
 	/* BD101LCC3 */
 	compatible = "panel-lvds";
 	width-mm = <217>;
@@ -31,7 +31,7 @@
 	};
 };
 
-&touchscreen_rgb {
+&touchscreen_lvds_d {
 	compatible = "goodix,gt9271";
 	reg = <0x5d>;
 };

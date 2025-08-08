@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 /*
- * Copyright 2024 Ezurio LLC
+ * Copyright 2025 Ezurio LLC
  *
  */
 
@@ -8,15 +8,15 @@
 
 #include <dt-bindings/leds/common.h>
 
-#include "k3-am625-carbon-som.dtsi"
+#include "k3-am675-carbon-som.dtsi"
 
 / {
-	model = "Summit Carbon AM625 OSM Carrier Board";
-	compatible = "summit,am62-dev", "ti,am625";
+	model = "Summit Carbon AM675 OSM Carrier Board";
+	compatible = "summit,am675-dev", "ti,j722s";
 
 	aliases {
-		gpio3 = &exp1;
-		gpio4 = &exp2;
+		gpio4 = &exp1;
+		gpio5 = &exp2;
 	};
 
 	vdd_3v3_carrier: regulator-u4-sw2 {
@@ -117,7 +117,7 @@
 
 		led0 {
 			color = <LED_COLOR_ID_GREEN>;
-			gpios = <&main_gpio0 13 GPIO_ACTIVE_HIGH>;
+			gpios = <&main_gpio1 30 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 		};
 	};
@@ -148,11 +148,45 @@
 		regulator-name = "vcc_usb0_vbus";
 	};
 
+	reg_usb1_reset: regulator-usb1-reset {
+		compatible = "regulator-fixed";
+		vin-supply = <&vsys_5v>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&main_usb_c_reset_pins_default>;
+		enable-active-high;
+		gpios = <&main_gpio0 45 GPIO_ACTIVE_HIGH>;
+		regulator-max-microvolt = <5000000>;
+		regulator-min-microvolt = <5000000>;
+		regulator-name = "reg_usb1_reset";
+	};
+
+	reg_usb1_oe: regulator-usb1-oe {
+		compatible = "regulator-fixed";
+		vin-supply = <&vsys_5v>;
+		gpios = <&exp1 0 GPIO_ACTIVE_HIGH>;
+		regulator-max-microvolt = <5000000>;
+		regulator-min-microvolt = <5000000>;
+		regulator-name = "reg_usb1_oe";
+		regulator-always-on;
+	};
+
+	vcc_usb1_vbus: regulator-usb1-vbus {
+		compatible = "regulator-fixed";
+		vin-supply = <&reg_usb1_reset>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&main_usb1_pins_default>;
+		enable-active-high;
+		gpios = <&main_gpio1 51 GPIO_ACTIVE_HIGH>;
+		regulator-max-microvolt = <5000000>;
+		regulator-min-microvolt = <5000000>;
+		regulator-name = "vcc_usb1_vbus";
+	};
+
 	con_usb0: connector-usb0 {
 		compatible = "gpio-usb-b-connector", "usb-b-connector";
 		pinctrl-names = "default";
-		pinctrl-0 = <&mcu_usb_a_id_pins_default>;
-		id-gpios = <&mcu_gpio0 16 GPIO_ACTIVE_HIGH>;
+		pinctrl-0 = <&usb_a_id_pins_default>;
+		id-gpios = <&main_gpio0 23 GPIO_ACTIVE_HIGH>;
 		label = "USB_A";
 		self-powered;
 		vbus-supply = <&vcc_usb0_vbus>;
@@ -160,6 +194,22 @@
 		port {
 			usb0_dr_connector: endpoint {
 				remote-endpoint = <&usb0_ep>;
+			};
+		};
+	};
+
+	con_usb1: connector-usb1 {
+		compatible = "gpio-usb-b-connector", "usb-c-connector";
+		pinctrl-names = "default";
+		pinctrl-0 = <&usb_c_id_pins_default>;
+		id-gpios = <&main_gpio0 25 GPIO_ACTIVE_HIGH>;
+		label = "USB_C";
+		self-powered;
+		vbus-supply = <&vcc_usb1_vbus>;
+
+		port {
+			usb1_dr_connector: endpoint {
+				remote-endpoint = <&usb1_ep>;
 			};
 		};
 	};
@@ -188,8 +238,8 @@
 
 	cpsw3g_phy0: ethernet-phy@3 {
 		reg = <3>;
-		interrupts-extended = <&main_gpio0 1 IRQ_TYPE_EDGE_FALLING>;
-		reset-gpios = <&main_gpio0 2 GPIO_ACTIVE_LOW>;
+		interrupts-extended = <&main_gpio0 36 IRQ_TYPE_EDGE_FALLING>;
+		reset-gpios = <&main_gpio0 40 GPIO_ACTIVE_LOW>;
 		reset-assert-us = <150>;
 		reset-deassert-us = <300>;
 		ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
@@ -200,8 +250,8 @@
 
 	cpsw3g_phy1: ethernet-phy@1 {
 		reg = <1>;
-		interrupts-extended = <&main_gpio0 41 IRQ_TYPE_EDGE_FALLING>;
-		reset-gpios = <&main_gpio0 39 GPIO_ACTIVE_LOW>;
+		interrupts-extended = <&main_gpio0 48 IRQ_TYPE_EDGE_FALLING>;
+		reset-gpios = <&main_gpio0 47 GPIO_ACTIVE_LOW>;
 		reset-assert-us = <150>;
 		reset-deassert-us = <300>;
 		ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
@@ -211,7 +261,7 @@
 	};
 };
 
-&main_i2c1 { /* I2C_A */
+&main_i2c0 { /* I2C_A */
 	status = "okay";
 	clock-frequency = <400000>;
 
@@ -276,7 +326,7 @@
 
 		#interrupt-cells = <2>;
 		interrupt-controller;
-		interrupts-extended = <&main_gpio1 12 IRQ_TYPE_EDGE_FALLING>;
+		interrupts-extended = <&main_gpio0 46 IRQ_TYPE_EDGE_FALLING>;
 		interrupt-names = "irq";
 	};
 
@@ -310,11 +360,11 @@
 	status = "okay";
 };
 
-&main_i2c2 { /* I2C_B */
+&mcu_i2c0 { /* I2C_B */
 	status = "okay";
 };
 
-&main_i2c3 { /* I2C_CAM */
+&main_i2c2 { /* I2C_CAM */
 	status = "okay";
 
 	i2c-mux@73 {
@@ -358,32 +408,44 @@
 &main_pmx0 {
 	main_exp2_pins_default: main-exp2-default-pins {
 		pinctrl-single,pins = <
-			AM62X_IOPAD(0x1a8, PIN_INPUT_PULLUP, 7) /* GPIO_A_3 (D20) MCASP0_AFSX.GPIO1_12 */
+			J722S_IOPAD(0x0bc, PIN_INPUT_PULLUP, 7) /* GPIO_A_3 (W25) VOUT0_DATA1.GPIO0_46 */
 		>;
 	};
 
 	main_led_pins_default: main-led-default-pins {
 		pinctrl-single,pins = <
-			AM62X_IOPAD(0x034, PIN_OUTPUT, 7) /* (H21) OSPI0_CSN2.GPIO0_13 */
+			J722S_IOPAD(0x1f0, PIN_OUTPUT, 7) /* (A23) EXTREFCLK1.GPIO1_30 */
+		>;
+	};
+
+	main_usb_c_reset_pins_default: main-usb-c-reset-default-pins {
+		pinctrl-single,pins = <
+			J722S_IOPAD(0x0b8, PIN_INPUT, 7) /* USB_C_PD_RST (W27) VOUT0_DATA0.GPIO0_45 */
+		>;
+	};
+};
+
+&mcu_pmx0 {
+	mcu_wake_pins_default: mcu-wake-default-pins {
+		pinctrl-single,pins = <
+			J722S_MCU_IOPAD(0x004, PIN_INPUT_PULLUP, 7) /* WAKEUP (A10) MCU_SPI0_CS1.MCU_GPIO0_1 */
 		>;
 	};
 };
 
 &main_usb0_pins_default {
 	pinctrl-single,pins = <
-		AM62X_IOPAD(0x254, PIN_INPUT, 7) /* (C20) USB0_DRVVBUS.GPIO1_50 */
+		J722S_IOPAD(0x254, PIN_OUTPUT, 7) /* (E25) USB0_DRVVBUS.GPIO1_50 */
 	>;
 };
 
-&mcu_pmx0 {
-	mcu_wake_pins_default: mcu-wake-default-pins {
-		pinctrl-single,pins = <
-			AM62X_MCU_IOPAD(0x004, PIN_INPUT_PULLUP, 7) /* WAKEUP (B8) MCU_SPI0_CS1.MCU_GPIO0_1 */
-		>;
-	};
+&main_usb1_pins_default {
+	pinctrl-single,pins = <
+		J722S_IOPAD(0x258, PIN_OUTPUT, 7) /* (B27) USB1_DRVVBUS.GPIO1_51 */
+	>;
 };
 
-&main_spi0 { /* SPI_B */
+&main_spi0 { /* SPI_C */
 	status = "okay";
 
 	spidev@0 {
@@ -393,7 +455,7 @@
 	};
 };
 
-&main_uart4 { /* UART_D */
+&main_uart5 { /* UART_D */
 	status = "okay";
 };
 
@@ -447,7 +509,7 @@
 	status = "okay";
 };
 
-&wkup_i2c0 { /* I2C_C */
+&main_i2c4 { /* I2C_C */
 	status = "okay";
 
 	i2c-mux@72 {
@@ -506,8 +568,19 @@
 };
 
 &usb1 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&main_usb1_pins_default>;
+	usb-role-switch;
 
-	dr_mode = "host";
+	port {
+		usb1_ep: endpoint {
+			remote-endpoint = <&usb1_dr_connector>;
+		};
+	};
+};
+
+&serdes0 {
+	status = "okay";
+};
+
+&serdes_wiz0 {
+	status = "okay";
 };

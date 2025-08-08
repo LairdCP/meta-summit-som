@@ -5,9 +5,6 @@
  * Copyright (C) 2024 Ezurio LLC
  */
 
-/dts-v1/;
-/plugin/;
-
 #include <dt-bindings/interrupt-controller/irq.h>
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/input/input.h>
@@ -62,16 +59,23 @@
 	};
 };
 
+&exp2 {
+	wakeup-source;
+};
+
+&mcu_uart0 {
+	status = "okay";
+
+	uart-has-rtscts;
+};
+
+#ifndef M2_PCIE
 &exp1 {
 	sdio_a_sel_hog {
 		gpio-hog;
 		output-high;
 		gpios = <14 GPIO_ACTIVE_HIGH>;
 	};
-};
-
-&exp2 {
-	wakeup-source;
 };
 
 &sdhci1 { /* SDIO_A uSD / M.2_SDIO */
@@ -84,9 +88,4 @@
 	ti,fails-without-test-cd;
 	keep-power-in-suspend;
 };
-
-&mcu_uart0 {
-	status = "okay";
-
-	uart-has-rtscts;
-};
+#endif

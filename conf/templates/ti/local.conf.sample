@@ -1,4 +1,4 @@
-MACHINE ??= 'am62xx-carbon'
+MACHINE ??= 'am62-carbon'
 DISTRO ?= 'summitsom-wayland'
 
 BB_DISKMON_DIRS ??= "\
