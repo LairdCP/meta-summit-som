@@ -27,10 +27,14 @@ SRC_URI:append:summitsom = " \
     file://0032-PENDING-arm64-dts-ti-k3-am62p-j722s-common-main-Fix-.patch \
     file://0033-PENDING-arm64-dts-ti-k3-j722s-main-Fix-interrupts-pr.patch \
     file://0034-PENDING-arm64-dts-ti-k3-am62-main-Fix-interrupts-pro.patch \
+    file://0035-Revert-drm-bridge-cdns-dsi-core-Remove-empty-FIFO-ch.patch \
+    file://0036-drm-bridge-cdns-dsi-Make-it-work-a-bit-better.patch \
+    file://0037-phy-cdns-dphy-Store-hs_clk_rate-and-return-it.patch \
+    file://0038-phy-cdns-dphy-Remove-leftover-code.patch \
     "
 
 SRC_URI:append:summitsom = " \
-    file://dts;subdir=git/arch/arm64/boot \
+    file://dts;subdir=git/arch/arm64/boot/ti \
     "
 
 KERNEL_DTBVENDORED:summitsom = "0"
