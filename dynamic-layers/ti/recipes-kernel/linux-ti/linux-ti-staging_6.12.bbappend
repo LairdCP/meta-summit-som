@@ -21,7 +21,7 @@ SRC_URI:append:summitsom = " \
     file://0026-dp83867-irq.patch \
     file://0027-davinci-mdio-missing-cpu.patch \
     file://0028-tidss-rgb18-limit.patch \
-    file://0029-goodix_fix_inerrupt.patch \
+    file://0029-goodix-fix-interrupt.patch \
     file://0030-tps62519-trap.patch \
     file://0031-PENDING-arch-arm64-dts-ti-Move-the-companion-and-sec.patch \
     file://0032-PENDING-arm64-dts-ti-k3-am62p-j722s-common-main-Fix-.patch \
@@ -31,6 +31,7 @@ SRC_URI:append:summitsom = " \
     file://0036-drm-bridge-cdns-dsi-Make-it-work-a-bit-better.patch \
     file://0037-phy-cdns-dphy-Store-hs_clk_rate-and-return-it.patch \
     file://0038-phy-cdns-dphy-Remove-leftover-code.patch \
+    file://0039-goodix-i2c-addr-autodetect.patch \
     "
 
 SRC_URI:append:summitsom = " \

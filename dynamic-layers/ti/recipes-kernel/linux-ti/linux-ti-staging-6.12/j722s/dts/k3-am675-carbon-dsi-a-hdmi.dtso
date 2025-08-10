@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-only OR MIT
 /*
- * LVDS E to HDMI Expansion Board for Carbon AM67x
+ * DSI A to HDMI Expansion Board for Carbon AM67x
  *
  * Copyright (C) 2025 Ezurio LLC
  */
@@ -13,13 +13,13 @@
 #include "k3-pinctrl.h"
 
 &{/} {
-	hdmi-connector-dsi-a {
+	hdmi-connector-a {
 		compatible = "hdmi-connector";
 		label = "hdmi";
 		type = "a";
 
 		port {
-			hdmi_connector_dsi_a_in: endpoint {
+			hdmi_connector_a_in: endpoint {
 				remote-endpoint = <&adv7535_out>;
 			};
 		};
@@ -34,11 +34,65 @@
 		vin-supply = <&vdd_3v3_carrier>;
 
 		pinctrl-names = "default";
-		pinctrl-0 = <&main_dsi_a_pwr_default>;
+		pinctrl-0 = <&main_dsi_a_power_default>;
 		gpios = <&main_gpio0 28 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 		startup-delay-us = <10000>;
 		regulator-always-on;
+	};
+};
+
+&gpu {
+	status = "okay";
+};
+
+&dss1 {
+	status = "okay";
+};
+
+&dss1_ports {
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	/* Video Port 2 Output to DSI */
+	port@1 {
+		reg = <1>;
+
+		dss1_dpi1_out: endpoint {
+			remote-endpoint = <&dsi0_in>;
+		};
+	};
+};
+
+&dphy_tx0 {
+	status = "okay";
+};
+
+&dsi0 {
+	status = "okay";
+
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+
+			dsi0_out: endpoint {
+				remote-endpoint = <&adv7535_in>;
+			};
+		};
+
+		port@1 {
+			reg = <1>;
+
+			dsi0_in: endpoint {
+				remote-endpoint = <&dss1_dpi1_out>;
+			};
+		};
 	};
 };
 
@@ -72,70 +126,8 @@
 				reg = <1>;
 
 				adv7535_out: endpoint {
-					remote-endpoint = <&hdmi_connector_dsi_a_in>;
+					remote-endpoint = <&hdmi_connector_a_in>;
 				};
-			};
-
-		};
-	};
-};
-
-&main_pmx0 {
-	main_dsi_a_pwr_default: main-dsi-pwr-default-pins {
-		pinctrl-single,pins = <
-			J722S_IOPAD(0x070, PIN_INPUT, 7) /* DSI_VDD_EN (V24) GPMC0_AD13.GPIO0_28 */
-		>;
-	};
-};
-
-&gpu {
-	status = "okay";
-};
-
-&dss1 {
-	status = "okay";
-};
-
-&dss1_ports {
-	#address-cells = <1>;
-	#size-cells = <0>;
-
-	/* Video Port 1 Output to DSI */
-	port@1 {
-		reg = <1>;
-		dss1_dsi0_out: endpoint {
-			remote-endpoint = <&dsi0_in>;
-		};
-	};
-};
-
-&dphy_tx0 {
-	status = "okay";
-};
-
-&dsi0 {
-	status = "okay";
-
-	#address-cells = <1>;
-	#size-cells = <0>;
-
-	ports {
-		#address-cells = <1>;
-		#size-cells = <0>;
-
-		port@0 {
-			reg = <0>;
-
-			dsi0_out: endpoint {
-				remote-endpoint = <&adv7535_in>;
-			};
-		};
-
-		port@1 {
-			reg = <1>;
-
-			dsi0_in: endpoint {
-				remote-endpoint = <&dss1_dsi0_out>;
 			};
 		};
 	};
