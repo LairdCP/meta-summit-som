@@ -32,10 +32,13 @@ SRC_URI:append:summitsom = " \
     file://0037-phy-cdns-dphy-Store-hs_clk_rate-and-return-it.patch \
     file://0038-phy-cdns-dphy-Remove-leftover-code.patch \
     file://0039-goodix-i2c-addr-autodetect.patch \
+    file://0040-k3-am62p-j722s-remove-duplicate-dphy0.patch \
+    file://0041-PENDING-media-ti-j721e-csi2rx-Serialize-stream-stops.patch \
+    file://0042-PENDING-media-ti-j721e-csi2rx-Remove-word-size-align.patch \
     "
 
 SRC_URI:append:summitsom = " \
-    file://dts;subdir=git/arch/arm64/boot/ti \
+    file://dts;subdir=git/arch/arm64/boot \
     "
 
 KERNEL_DTBVENDORED:summitsom = "0"

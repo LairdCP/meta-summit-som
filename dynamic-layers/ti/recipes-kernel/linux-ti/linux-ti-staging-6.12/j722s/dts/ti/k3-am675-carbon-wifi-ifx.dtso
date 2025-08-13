@@ -36,11 +36,11 @@
 	status = "okay";
 
 	bluetooth {
-		compatible = "brcm,bcm4329-bt";
+		compatible = "infineon,cyw55572-bt";
 		vbat-supply = <&reg_slow_clock>;
 		vddio-supply = <&vdd_1v8>;
 		brcm,requires-autobaud-mode;
-		max-speed = <921600>;
+		max-speed = <3000000>;
 		shutdown-gpios = <&main_gpio0 18 GPIO_ACTIVE_HIGH>;
 	};
 };

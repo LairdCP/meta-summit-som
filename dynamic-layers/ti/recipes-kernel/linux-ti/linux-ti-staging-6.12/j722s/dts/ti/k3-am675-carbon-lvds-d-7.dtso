@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0-only OR MIT
 /*
- * LVDS to LVDS Expansion Board with BD070LIC3 display for carbon AM62x
+ * LVDS D to LVDS Expansion Board with BD070LIC3 display for Carbon AM67x
  *
- * Copyright (C) 2024 Ezurio LLC
+ * Copyright (C) 2025 Ezurio LLC
  */
 
 /dts-v1/;
@@ -19,11 +19,11 @@
 
 		brightness-levels = <0 1 2 3 4 5 6 7 8 9 10>;
 		default-brightness-level = <8>;
-		pwms = <&epwm1 1 30000 0>; /* 33.3 kHz */
+		pwms = <&pwm2 0 30000 0>; /* 33.3 kHz */
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&main_lvds_d_backlight_en_default>;
-		enable-gpios = <&main_gpio0 33 GPIO_ACTIVE_HIGH>;
+		enable-gpios = <&main_gpio0 52 GPIO_ACTIVE_HIGH>;
 	};
 
 	vcc_lvds_d: regulator-vcc-lvds-d {
@@ -36,7 +36,7 @@
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&main_lvds_d_power_default>;
-		gpios = <&main_gpio0 30 GPIO_ACTIVE_HIGH>;
+		gpios = <&main_gpio0 51 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 		startup-delay-us = <10000>;
 	};
@@ -52,28 +52,32 @@
 		height-mm = <94>;
 
 		panel-timing {
-			clock-frequency = <70000000>;
+			clock-frequency = <68000000>;
 			hactive = <1280>;
 			vactive = <800>;
 
-			hback-porch = <4>;
-			hfront-porch = <155>;
-			hsync-len = <5>;
+			hback-porch = <27>;
+			hfront-porch = <64>;
+			hsync-len = <4>;
 
-			vback-porch = <2>;
-			vfront-porch = <2>;
+			vback-porch = <4>;
+			vfront-porch = <16>;
 			vsync-len = <4>;
 		};
 
 		port {
-			lcd_in0: endpoint {
+			lcd_d_in: endpoint {
 				remote-endpoint = <&oldi_0_out>;
 			};
 		};
 	};
 };
 
-&epwm1 {
+&mcu_timer0 {
+	status = "okay";
+};
+
+&pwm2 {
 	status = "okay";
 };
 
@@ -81,11 +85,11 @@
 	status = "okay";
 };
 
-&dss {
+&dss0 {
 	status = "okay";
 };
 
-&dss_ports {
+&dss0_ports {
 	#address-cells = <1>;
 	#size-cells = <0>;
 
@@ -102,16 +106,17 @@
 	};
 };
 
-&oldi0 {
+&oldi0_dss0 {
 	status = "okay";
 };
 
-&oldi0_ports {
+&oldi0_dss0_ports {
 	#address-cells = <1>;
 	#size-cells = <0>;
 
 	port@0 {
 		reg = <0>;
+
 		oldi_0_in: endpoint {
 			remote-endpoint = <&dpi0_out0>;
 		};
@@ -119,8 +124,9 @@
 
 	port@1 {
 		reg = <1>;
+
 		oldi_0_out: endpoint {
-			remote-endpoint = <&lcd_in0>;
+			remote-endpoint = <&lcd_d_in>;
 		};
 	};
 };
@@ -137,7 +143,7 @@
 		interrupts-extended = <&exp2 10 IRQ_TYPE_EDGE_FALLING>;
 		interrupt-names = "irq";
 		irq-gpios = <&exp2 10 GPIO_ACTIVE_HIGH>;
-		//reset-gpios = <&exp2 11 GPIO_ACTIVE_HIGH>;
+		reset-gpios = <&exp2 11 GPIO_ACTIVE_HIGH>;
 		touchscreen-size-x = <1280>;
 		touchscreen-size-y = <800>;
 	};
