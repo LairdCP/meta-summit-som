@@ -60,6 +60,7 @@ IMAGE_INSTALL_DIAG = "\
     can-utils \
     stress-ng \
     mc-mint \
+    i2c-tools \
     "
 
 ROOTFS_POSTPROCESS_COMMAND += "rootfs_os_release; "

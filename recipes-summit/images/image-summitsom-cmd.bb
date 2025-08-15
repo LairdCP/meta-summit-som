@@ -41,7 +41,7 @@ IMAGE_BOOT_FILES:append:imx8mp-summitsom = " fitImageMcu.bin"
 SWUPDATE_IMAGES:append:imx8mp-summitsom = " fitImageMcu.bin"
 WKS_FILE_DEPENDS:append:imx8mp-summitsom = " summit-mcu-demos"
 
-CORE_IMAGE_EXTRA_INSTALL:append:am62xx-carbon = " \
+CORE_IMAGE_EXTRA_INSTALL:append:k3:summitsom = " \
     packagegroup-radio-stack-combo \
     kernel-module-tac5x1x \
     "
