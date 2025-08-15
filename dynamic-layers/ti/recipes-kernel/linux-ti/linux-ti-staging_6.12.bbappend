@@ -22,7 +22,7 @@ SRC_URI:append:summitsom = " \
     file://0027-davinci-mdio-missing-cpu.patch \
     file://0028-tidss-rgb18-limit.patch \
     file://0029-goodix-fix-interrupt.patch \
-    file://0030-tps62519-trap.patch \
+    file://0030-tps65219-trap.patch \
     file://0031-PENDING-arch-arm64-dts-ti-Move-the-companion-and-sec.patch \
     file://0032-PENDING-arm64-dts-ti-k3-am62p-j722s-common-main-Fix-.patch \
     file://0033-PENDING-arm64-dts-ti-k3-j722s-main-Fix-interrupts-pr.patch \
