@@ -37,6 +37,7 @@ SRC_URI:append:summitsom = " \
     file://0042-PENDING-media-ti-j721e-csi2rx-Remove-word-size-align.patch \
     file://0043-gpio-pca953x-fix-IRQ-storm-on-system-wake-up.patch \
     file://0044-gpio-pca953x-fix-wrong-error-probe-return-value.patch \
+    file://0045-mcan-suspend-crash.patch \
     "
 
 SRC_URI:append:summitsom = " \
