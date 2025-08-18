@@ -21,7 +21,8 @@
 	model = "Ezurio Carbon AM67x SOM";
 
 	aliases {
-		serial2 = &main_uart2; /* CONSOLE */
+		serial0 = &wkup_uart0; /* UART_C */
+		serial2 = &main_uart2; /* UART_CON */
 		serial3 = &main_uart1; /* BT */
 		serial4 = &main_uart5; /* UART_A */
 		serial5 = &mcu_uart0;  /* UART_B */
@@ -33,6 +34,8 @@
 		spi1 = &main_spi0;
 		ethernet0 = &cpsw_port1;
 		ethernet1 = &cpsw_port2;
+		can0 = &main_mcan0;
+		can1 = &mcu_mcan1;
 		usb0 = &usb0;
 		usb1 = &usb1;
 		gpio0 = &main_gpio0;
@@ -901,7 +904,7 @@
 
 	rtc_pins_default: rtc-default-pins {
 		pinctrl-single,pins = <
-			J722S_IOPAD(0x058, PIN_INPUT_PULLUP | PIN_DS_PULLUD_ENABLE | PIN_DS_PULL_UP, 7) /* RTC_INT (T22) GPMC0_AD7.GPIO0_22 */
+			J722S_IOPAD(0x058, PIN_INPUT_PULLUP, 7) /* RTC_INT (T22) GPMC0_AD7.GPIO0_22 */
 		>;
 	};
 
@@ -1070,7 +1073,6 @@
 	rx-num-evt = <0>;
 };
 
-/* mcu_gpio0 and mcu_gpio_intr are reserved for mcu firmware usage */
 &mcu_gpio0 {
 	status = "okay";
 	gpio-line-names = 
