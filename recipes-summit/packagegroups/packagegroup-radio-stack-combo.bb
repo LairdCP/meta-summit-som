@@ -9,12 +9,12 @@ RDEPENDS:${PN} = " \
 	kernel-module-combo-backports \
 	60-radio-firmware-sdio-uart \
 	60-radio-firmware-sdio-sdio \
-	60-radio-firmware-usb-usb \
+	${@bb.utils.contains('MACHINE_FEATURES', 'usbhost', '60-radio-firmware-usb-usb', '', d)} \
 	${@bb.utils.contains('MACHINE_FEATURES', 'pci', '60-radio-firmware-pcie-uart', '', d)} \
 	lwb5plus-sdio-sa-firmware \
 	lwb5plus-sdio-div-firmware \
-	lwb5plus-usb-div-firmware \
-	lwb5plus-usb-sa-firmware \
+	${@bb.utils.contains('MACHINE_FEATURES', 'usbhost', 'lwb5plus-usb-div-firmware', '', d)} \
+	${@bb.utils.contains('MACHINE_FEATURES', 'usbhost', 'lwb5plus-usb-sa-firmware', '', d)} \
 	if513-sdio-div-firmware \
 	if513-sdio-sa-firmware \
 	if573-sdio-firmware \
