@@ -15,7 +15,7 @@ IMAGE_FSTYPES += "${IMAGE_ROOTFS_VERITY_TYPE}"
 
 IMAGE_BOOT_FILES += "${IMGDEPLOYDIR}/${IMAGE_ROOTFS_VERITY_NAME}.scr.bin;fitImageVerity.bin"
 
-IMAGE_MACHINE_SUFFIX ?= ""
+#IMAGE_MACHINE_SUFFIX ?= ""
 IMAGE_NAME_SUFFIX ?= ""
 
 IMAGE_ROOTFS_EXTRA_SPACE = "0"
@@ -61,6 +61,8 @@ IMAGE_INSTALL_DIAG = "\
     stress-ng \
     mc-mint \
     i2c-tools \
+    libinput \
+    evtest \
     "
 
 ROOTFS_POSTPROCESS_COMMAND += "rootfs_os_release; "
@@ -70,11 +72,11 @@ rootfs_os_release() {
     ver=${ver#-}
     sed -i -e 's,ID=os-release,ID=${IMAGE_BASENAME},g' "${IMAGE_ROOTFS}${libdir}/os-release"
     sed -i -e "s,0.0.0.0,${ver},g" "${IMAGE_ROOTFS}${libdir}/os-release"
-    printf 'Summit SOM %s %s \\n \l\n' "${IMAGE_BASENAME}" "${ver}" > "${IMAGE_ROOTFS}${sysconfdir}/issue"
-    echo "Summit SOM ${IMAGE_BASENAME} ${ver} %h" > "${IMAGE_ROOTFS}${sysconfdir}/issue.net"
+    printf 'Summit SOM %s %s %s \\n \l\n' "${MACHINE}" "${IMAGE_BASENAME}" "${ver}" > "${IMAGE_ROOTFS}${sysconfdir}/issue"
+    echo "Summit SOM ${MACHINE} ${IMAGE_BASENAME} ${ver} %h" > "${IMAGE_ROOTFS}${sysconfdir}/issue.net"
 }
 
-ARCHIVE_NAME ?= "${IMAGE_BASENAME}-summit${IMAGE_VERSION_SUFFIX}"
+ARCHIVE_NAME ?= "${IMAGE_BASENAME}-${MACHINE}-summit${IMAGE_VERSION_SUFFIX}"
 ARCHIVE_WILDCARD ?= ""
 
 addtask create_archive after do_image_complete before do_build
