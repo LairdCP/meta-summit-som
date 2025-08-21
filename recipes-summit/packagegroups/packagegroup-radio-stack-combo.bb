@@ -23,10 +23,10 @@ RDEPENDS:${PN} = " \
 	nx61x-firmware-1218-serdev \
 	ti351-firmware \
 	summit-adaptive-ww \
-	summit-adaptive-bt \
 	summit-supplicant \
 	summit-supplicant-cli \
 	summit-networkmanager \
 	summit-networkmanager-nmcli \
 	summit-hostapd \
+	${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'summit-adaptive-bt summit-bt-uart-scripts-60', '', d)} \
 	"
