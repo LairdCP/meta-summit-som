@@ -13,7 +13,7 @@ MIRRORS:summit-internal = ""
 SUMMIT_URI ?= "https://github.com/Ezurio/Summit-SOM-Zephyr-Release-Packages/releases/download/SUMMIT-ZEPHYR-${PV}"
 SUMMIT_URI:summit-internal = "https://${RFPROS_FILESHARE_AUTH}files.devops.rfpros.com/builds/zephyr/summitsom/laird/${PV}"
 
-SRC_URI = "${SUMMIT_URI}/summit-mcu-demos-${PV}.tar.bz2"
+SRC_URI = "${SUMMIT_URI}/summit-mcu-demos-${PV}.tar.bz2;subdir=src"
 
 SRC_URI[sha256sum] = "c8443b9f1b60bb58a35afc546df3b650c74690f8fbe59005e5eaf7f134bddc81"
 
@@ -22,7 +22,7 @@ do_configure[noexec] = "1"
 # if elf files installed, yocto checks architecture, so disable this for the firmware blobs
 INSANE_SKIP:${PN} += "arch"
 
-S = "${WORKDIR}"
+S = "${WORKDIR}/src"
 
 FILES:${PN} += "${nonarch_base_libdir}"
 

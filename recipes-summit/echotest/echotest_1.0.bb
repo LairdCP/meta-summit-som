@@ -5,11 +5,11 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/MIT;md5=0835ad
 
 inherit setuptools3
 
-S = "${WORKDIR}"
+S = "${WORKDIR}/src"
 
 SRC_URI = " \
-        file://echotest.py \
-        file://setup.py \
+        file://echotest.py;subdir=src \
+        file://setup.py;subdir=src \
         "
 
 RDEPENDS:${PN} = "\

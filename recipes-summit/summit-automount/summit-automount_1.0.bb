@@ -7,10 +7,10 @@ LIC_FILES_CHKSUM = "file://LICENSE.ezurio;md5=fd3dd0630b215465b6f50540642d5b93"
 inherit allarch
 
 SRC_URI = " \
-    file://LICENSE.ezurio \
-    file://90-usbmount.rules \
-    file://91-mmcmount.rules \
-    file://usb-mount.sh \
+    file://LICENSE.ezurio;subdir=src \
+    file://90-usbmount.rules;subdir=src \
+    file://91-mmcmount.rules;subdir=src \
+    file://usb-mount.sh;subdir=src \
     "
 
 MMC_USER ?= ""
@@ -22,7 +22,7 @@ do_compile[noexec] = "1"
 ALLOW_EMPTY:${PN}-dev = "0"
 ALLOW_EMPTY:${PN}-dbg = "0"
 
-S = "${WORKDIR}"
+S = "${WORKDIR}/src"
 
 FILES:${PN} += "${sysconfdir}/udev/rules.d ${sysconfdir}/default"
 
