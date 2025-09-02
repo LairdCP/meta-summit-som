@@ -11,7 +11,7 @@ IMAGE_FEATURES += "\
 
 EXTRA_USERS_PARAMS = ""
 
-CORE_IMAGE_EXTRA_INSTALL += "\
+IMAGE_INSTALL += "\
 	iproute2 \
 	summit-initdata \
 	summit-update \

@@ -28,5 +28,5 @@ RDEPENDS:${PN} = " \
 	summit-networkmanager \
 	summit-networkmanager-nmcli \
 	summit-hostapd \
-	${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'summit-adaptive-bt summit-bt-uart-scripts-60', '', d)} \
+	${@bb.utils.contains('COMBINED_FEATURES', 'bluetooth', 'summit-adaptive-bt summit-bt-uart-scripts-60', '', d)} \
 	"
