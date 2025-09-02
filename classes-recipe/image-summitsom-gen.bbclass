@@ -32,39 +32,6 @@ IMAGE_FEATURES:append:summit-secure = "\
     read-only-rootfs \
     "
 
-IMAGE_INSTALL_BASIC = "\
-    kernel-modules \
-    ca-certificates \
-    tzdata-core \
-    tzdata-posix \
-    iproute2 \
-    chrony \
-    chronyc \
-    gptfdisk \
-    optee-client \
-    summit-automount \
-    summit-initdata \
-    summit-update \
-    summit-set-mode \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'usbgadget', 'summit-usbgadget', '', d)} \
-    "
-
-# Diagnostic tools
-IMAGE_INSTALL_DIAG = "\
-    iperf2 \
-    iperf3 \
-    htop \
-    tcpdump \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'usbhost', 'usbutils', '', d)} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'pci', 'pciutils', '', d)} \
-    can-utils \
-    stress-ng \
-    mc-mint \
-    i2c-tools \
-    libinput \
-    evtest \
-    "
-
 ROOTFS_POSTPROCESS_COMMAND += "rootfs_os_release; "
 
 rootfs_os_release() {
