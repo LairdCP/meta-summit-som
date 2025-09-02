@@ -16,7 +16,6 @@ SRC_URI:append:summitsom = " \
     file://0021-tps6287x-regulator.patch \
     file://0022-usb-common-usb-conn-gpio-use-a-unique-name-for-usb-c.patch \
     file://0023-am67-add-peripherals.patch \
-    file://0024-arducam-pivariety.patch \
     file://0025-UPSTREAM-arm64-dts-ti-k3-pinctrl-Enable-Schmitt-Trig.patch \
     file://0026-dp83867-irq.patch \
     file://0027-davinci-mdio-missing-cpu.patch \
@@ -38,6 +37,9 @@ SRC_URI:append:summitsom = " \
     file://0043-gpio-pca953x-fix-IRQ-storm-on-system-wake-up.patch \
     file://0044-gpio-pca953x-fix-wrong-error-probe-return-value.patch \
     file://0045-mcan-suspend-crash.patch \
+    file://0046-gpio-keys-resume-error.patch \
+    file://0047-media-ov5645-Add-support-for-streams.patch \
+    file://0048-media-ov5640-digient-rc-delay-compensation.patch \
     "
 
 SRC_URI:append:summitsom = " \
