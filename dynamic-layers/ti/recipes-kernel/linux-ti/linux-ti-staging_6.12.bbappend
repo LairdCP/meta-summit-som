@@ -43,7 +43,7 @@ SRC_URI:append:summitsom = " \
     "
 
 SRC_URI:append:summitsom = " \
-    file://dts;subdir=git/arch/arm64/boot \
+    file://kernel-dts;subdir=git/arch/arm64/boot \
     "
 
 KERNEL_DTBVENDORED:summitsom = "0"
