@@ -17,7 +17,7 @@ SRC_URI += " \
     "
 
 SRC_URI:append:summitsom = " \
-    file://kernel-dts;subdir=git/arch/arm64/boot \
+    file://dts;subdir=git/arch/arm64/boot \
     file://summitsom_defconfig \
     "
 
