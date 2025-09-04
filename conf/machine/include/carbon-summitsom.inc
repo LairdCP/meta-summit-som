@@ -27,11 +27,12 @@ UBOOT_SIGN_KEYNAME = "dev"
 UBOOT_SIGN_ENABLE:k3 = "1"
 KERNEL_IMAGETYPE:k3 = "fitImage"
 KERNEL_IMAGETYPES:k3 = "fitImage"
+IMAGE_BOOT_FILES:k3 = "${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin"
 
 MACHINE_ESSENTIAL_EXTRA_RDEPENDS:remove = "kernel-image-image kernel-devicetree"
-MACHINE_FEATURES:remove = "efi"
 
-PREFERRED_RPROVIDER_wireless-regdb-static = "60-radio-firmware"
+MACHINE_FEATURES += "rtc"
+MACHINE_FEATURES:remove = "efi"
 
 PREFERRED_PROVIDER_wpa-supplicant = "summit-supplicant"
 PREFERRED_RPROVIDER_wpa-supplicant = "summit-supplicant"
@@ -49,3 +50,5 @@ PREFERRED_RPROVIDER_networkmanager = "summit-networkmanager-nmcli"
 
 EMMC_DEVICE = "0"
 SD_DEVICE = "1"
+
+SERIAL_CONSOLES = "115200;ttyS2"
