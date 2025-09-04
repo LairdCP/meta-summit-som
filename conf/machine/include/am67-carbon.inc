@@ -4,7 +4,7 @@ require conf/machine/include/carbon-summitsom.inc
 
 SOC_FAMILY:append = ":j722s"
 
-MACHINE_FEATURES += "screen gpu pci"
+MACHINE_FEATURES += "screen gpu rtc pci"
 
 require conf/machine/include/mesa-pvr.inc
 PREFERRED_PROVIDER_virtual/gpudriver ?= "${BSP_ROGUE_DRIVER_PROVIDER}"
@@ -14,6 +14,6 @@ TFA_K3_SYSTEM_SUSPEND = "1"
 
 OPTEEMACHINE = "k3-am62x"
 
-MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "cnm-wave-fw"
+MACHINE_ESSENTIAL_EXTRA_RDEPENDS += "cnm-wave-fw"
 
 SERIAL_CONSOLES = "115200;ttyS2"

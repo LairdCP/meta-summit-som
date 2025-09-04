@@ -57,4 +57,4 @@ do_configure:prepend:summitsom() {
 }
 
 # Remove kernel binary from rootfs
-RDEPENDS:${KERNEL_PACKAGE_NAME}-base:remove:summitsom = "${KERNEL_PACKAGE_NAME}-image"
+RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base:summitsom = ""
