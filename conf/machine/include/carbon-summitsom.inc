@@ -23,9 +23,10 @@ FIT_HASH_ALG = "sha256"
 FIT_SIGN_ALG = "rsa2048"
 UBOOT_SIGN_KEYNAME = "dev"
 
-UBOOT_SIGN_ENABLE = "1"
-KERNEL_IMAGETYPE = "fitImage"
-KERNEL_IMAGETYPES = "fitImage"
+# Do not set these for k3r5
+UBOOT_SIGN_ENABLE:k3 = "1"
+KERNEL_IMAGETYPE:k3 = "fitImage"
+KERNEL_IMAGETYPES:k3 = "fitImage"
 
 MACHINE_ESSENTIAL_EXTRA_RDEPENDS:remove = "kernel-image-image kernel-devicetree"
 MACHINE_FEATURES:remove = "efi"
