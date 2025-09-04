@@ -23,8 +23,12 @@ FIT_HASH_ALG = "sha256"
 FIT_SIGN_ALG = "rsa2048"
 UBOOT_SIGN_KEYNAME = "dev"
 
-UBOOT_SIGN_ENABLE:k3 = "1"
-KERNEL_IMAGETYPE:k3 = "fitImage"
+UBOOT_SIGN_ENABLE = "1"
+KERNEL_IMAGETYPE = "fitImage"
+KERNEL_IMAGETYPES = "fitImage"
+
+MACHINE_ESSENTIAL_EXTRA_RDEPENDS:remove = "kernel-image-image kernel-devicetree"
+MACHINE_FEATURES:remove = "efi"
 
 PREFERRED_RPROVIDER_wireless-regdb-static = "60-radio-firmware"
 
