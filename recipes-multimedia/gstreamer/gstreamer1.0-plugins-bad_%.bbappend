@@ -1,1 +1,1 @@
-PACKAGECONFIG:append:summitsom = "kms"
+PACKAGECONFIG:append:summitsom = " kms"
