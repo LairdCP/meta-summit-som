@@ -20,7 +20,6 @@ SRC_URI:append:summitsom = " \
     file://0026-dp83867-irq.patch \
     file://0027-davinci-mdio-missing-cpu.patch \
     file://0028-tidss-rgb18-limit.patch \
-    file://0029-goodix-fix-interrupt.patch \
     file://0030-tps65219-trap.patch \
     file://0031-PENDING-arch-arm64-dts-ti-Move-the-companion-and-sec.patch \
     file://0032-PENDING-arm64-dts-ti-k3-am62p-j722s-common-main-Fix-.patch \
@@ -30,7 +29,6 @@ SRC_URI:append:summitsom = " \
     file://0036-drm-bridge-cdns-dsi-Make-it-work-a-bit-better.patch \
     file://0037-phy-cdns-dphy-Store-hs_clk_rate-and-return-it.patch \
     file://0038-phy-cdns-dphy-Remove-leftover-code.patch \
-    file://0039-goodix-i2c-addr-autodetect.patch \
     file://0040-k3-am62p-j722s-remove-duplicate-dphy0.patch \
     file://0041-PENDING-media-ti-j721e-csi2rx-Serialize-stream-stops.patch \
     file://0042-PENDING-media-ti-j721e-csi2rx-Remove-word-size-align.patch \
@@ -40,6 +38,10 @@ SRC_URI:append:summitsom = " \
     file://0046-gpio-keys-resume-error.patch \
     file://0047-media-ov5645-Add-support-for-streams.patch \
     file://0048-media-ov5640-digient-rc-delay-compensation.patch \
+    file://0049-gpio-pca953x-Add-support-for-level-triggered-interru.patch \
+    file://0050-gpio-pca953x-use-regmap_update_bits-to-improve-perfo.patch \
+    file://0051-Input-goodix-add-support-for-polling-mode.patch \
+    file://0052-goodix-fix-lost-irqs.patch \
     "
 
 SRC_URI:append:summitsom = " \
