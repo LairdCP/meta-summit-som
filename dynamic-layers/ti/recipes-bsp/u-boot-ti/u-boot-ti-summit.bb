@@ -5,9 +5,8 @@ inherit summit-platform-version
 SUMMARY = "Summit U-Boot for TI devices"
 
 UBOOT_GIT_URI = "git://github.com/Ezurio/u-boot-som.git"
-UBOOT_GIT_URI:summit-internal = "git://git@github.com/rfpros/cp_linux-u-boot-som60.git"
+UBOOT_GIT_URI:summit-internal = "git://github.com/rfpros/cp_linux-u-boot-som60.git"
 
-UBOOT_GIT_PROTOCOL:summit-internal = "ssh"
 UBOOT_GIT_BRANCH = "${SUMMIT_PLATFORM_BRANCH}"
 
 DEPENDS:append:k3 = " u-boot-mkenvimage-native"
