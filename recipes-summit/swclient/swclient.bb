@@ -11,7 +11,7 @@ inherit setuptools3 summit-platform-version
 DEPENDS += "swupdate"
 
 SRC_URI = "git://github.com/Ezurio/lrd-userspace-examples.git;protocol=https;${SUMMIT_PLATFORM_BRANCH}"
-SRC_URI:summit-internal = "git://git@github.com/rfpros/cp_linux-lrd-userspace-examples.git;protocol=ssh;${SUMMIT_PLATFORM_BRANCH}"
+SRC_URI:summit-internal = "git://github.com/rfpros/cp_linux-lrd-userspace-examples.git;protocol=https;${SUMMIT_PLATFORM_BRANCH}"
 
 S = "${WORKDIR}/git/swclient"
 

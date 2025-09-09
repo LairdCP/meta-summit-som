@@ -1,6 +1,6 @@
 DESCRIPTION = "Summit SOM Command Line Image"
 
-FILESEXTRAPATHS:prepend:use-nxp-bsp:summitsom := "${THISDIR}/files/mcu:"
+FILESEXTRAPATHS:prepend:mx8mp-nxp-bsp:summitsom := "${THISDIR}/files/mcu:"
 
 inherit image-summitsom-gen image-summitsom-sd-gen image-summitsom-swu-gen
 
