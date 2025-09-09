@@ -1,3 +1,4 @@
+DEFAULTTUNE:k3 ?= "cortexa72-cortexa53-crypto"
 
 MACHINEOVERRIDES =. "summitsom:"
 

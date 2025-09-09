@@ -55,7 +55,7 @@ KERNEL_DEFCONFIG_SUMMIT:am62xx = "k3-am625-carbon_defconfig"
 KERNEL_DEFCONFIG_SUMMIT:j722s  = "k3-am675-carbon_defconfig"
 
 do_configure:prepend:summitsom() {
-    cp -f ${WORKDIR}/${KERNEL_DEFCONFIG_SUMMIT} ${WORKDIR}/defconfig
+    cp -f "${WORKDIR}/${KERNEL_DEFCONFIG_SUMMIT}" "${WORKDIR}/defconfig"
 }
 
 # Remove kernel binary from rootfs
