@@ -41,5 +41,5 @@ KCONFIG_CONFIG_COMMAND:append = " -C ${B}"
 # Build SDMA firmware into kernel
 DEPENDS:append:summitsom = " firmware-imx"
 do_compile:prepend:summitsom () {
-    cp -a "${WORKDIR}/recipe-sysroot/usr/lib/firmware" "${S}/firmware"
+    cp -a "${STAGING_LIBDIR}/firmware" "${S}/firmware"
 }
