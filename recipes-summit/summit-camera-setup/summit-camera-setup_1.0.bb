@@ -9,19 +9,19 @@ inherit allarch systemd
 SYSTEMD_SERVICE_${PN} = "camera-handler@.service"
 
 SRC_URI = " \
-    file://LICENSE.ezurio;subdir=src \
-    file://99-camera-devices.rules;subdir=src \
-    file://99-camera-devices-sysv.rules;subdir=src \
-    file://camera-display.sh;subdir=src \
-    file://camera-handler@.service;subdir=src \
-    file://camera-setup.sh;subdir=src \
+    file://LICENSE.ezurio \
+    file://99-camera-devices.rules \
+    file://99-camera-devices-sysv.rules \
+    file://camera-display.sh \
+    file://camera-handler@.service \
+    file://camera-setup.sh \
     "
 
 RDEPENDS:${PN} = "\
     v4l-utils \
-"
+    "
 
-S = "${WORKDIR}/src"
+S = "${WORKDIR}"
 
 FILES:${PN} += "${systemd_unitdir} ${sysconfdir}"
 
