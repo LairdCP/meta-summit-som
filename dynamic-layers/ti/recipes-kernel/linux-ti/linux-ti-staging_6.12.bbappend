@@ -42,6 +42,7 @@ SRC_URI:append:summitsom = " \
     file://0050-gpio-pca953x-use-regmap_update_bits-to-improve-perfo.patch \
     file://0051-Input-goodix-add-support-for-polling-mode.patch \
     file://0052-goodix-fix-lost-irqs.patch \
+    file://0053-loadpin-Fixed-auto-enable-config.patch \
     "
 
 SRC_URI:append:summitsom = " \
