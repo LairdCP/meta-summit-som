@@ -11,12 +11,12 @@ do_fetch[nostamp] = "1"
 do_install[nostamp] = "1"
 
 SRC_URI = " \
-    file://LICENSE.ezurio;subdir=src \
-    file://rootfs-additions-common/;subdir=src \
-    file://rootfs-additions/;subdir=src \
+    file://LICENSE.ezurio \
+    file://rootfs-additions-common/ \
+    file://rootfs-additions/ \
     "
 
-S = "${WORKDIR}/src"
+S = "${WORKDIR}"
 
 FILES:${PN} += "${sbindir} ${libdir} ${nonarch_libdir} ${systemd_system_unitdir} ${sysconfdir} ${datadir} /perm /data"
 
