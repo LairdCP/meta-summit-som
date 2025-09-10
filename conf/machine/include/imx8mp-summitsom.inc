@@ -7,10 +7,10 @@
 MACHINEOVERRIDES =. "mx8mp:"
 
 require conf/machine/include/imx-base.inc
-require conf/machine/include/arm/armv8a/tune-cortexa72-cortexa53.inc
+require conf/machine/include/arm/armv8a/tune-cortexa53.inc
 require conf/machine/include/summitsom.inc
 
-DEFAULTTUNE:mx8m-nxp-bsp ?= "cortexa72-cortexa53-crypto"
+DEFAULTTUNE:mx8m-nxp-bsp ?= "armv8a-crc-crypto"
 
 MACHINE_FEATURES += "pci usbhost alsa rtc optee"
 
