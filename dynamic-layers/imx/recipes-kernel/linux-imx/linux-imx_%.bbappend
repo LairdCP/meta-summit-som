@@ -1,9 +1,10 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI += " \
-    file://0002-gpio-add-gpio_of_helper.patch \
+    file://0001-ts3a227-jack.patch \
+    file://0002-ts3a227-irq.patch \
+    file://0003-gpio-add-gpio_of_helper.patch \
     file://0004-Introduce-the-BQ25790-charger-driver.patch \
-    file://0005-ts3a227.patch \
     file://0006-sound_ts3a227_support.patch \
     file://0008-fsl_aud2htx-probe.patch \
     file://0010-imx-sdma.patch \
