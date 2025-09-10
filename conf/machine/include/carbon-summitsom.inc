@@ -1,4 +1,4 @@
-DEFAULTTUNE:k3 ?= "cortexa72-cortexa53-crypto"
+DEFAULTTUNE:k3 ?= "armv8a-crc-crypto"
 
 MACHINEOVERRIDES =. "summitsom:"
 
