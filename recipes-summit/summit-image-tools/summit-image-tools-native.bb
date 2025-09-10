@@ -1,0 +1,18 @@
+SUMMARY = "Summit Image Tools"
+
+LICENSE = "Ezurio"
+NO_GENERIC_LICENSE[Ezurio] = "LICENSE.ezurio"
+LIC_FILES_CHKSUM = "file://LICENSE.ezurio;md5=fd3dd0630b215465b6f50540642d5b93"
+
+inherit native
+
+SRC_URI = " \
+    file://LICENSE.ezurio \
+    file://mksdcard.sh \
+    "
+
+S = "${WORKDIR}"
+
+do_install () {
+    install -D -m 0755 -t "${D}${bindir}" "${S}/mksdcard.sh"
+}
