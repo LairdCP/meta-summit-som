@@ -7,11 +7,11 @@ LIC_FILES_CHKSUM = "file://LICENSE.ezurio;md5=fd3dd0630b215465b6f50540642d5b93"
 inherit allarch systemd
 
 SRC_URI = " \
-    file://LICENSE.ezurio;subdir=src \
-    file://usb-gadget.sh;subdir=src \
-    file://usb-gadget.rules;subdir=src \
-    file://usb-gadget.service;subdir=src \
-    file://shared-usb0.nmconnection;subdir=src \
+    file://LICENSE.ezurio \
+    file://usb-gadget.sh \
+    file://usb-gadget.rules \
+    file://usb-gadget.service \
+    file://shared-usb0.nmconnection \
 	"
 
 SYSTEMD_SERVICE:${PN} = "usb-gadget.service"
@@ -31,7 +31,7 @@ SERIAL_PORTS ?= "0"
 VENDOR_ID ?= "0x1fa3"
 PRODUCT_ID ?= "0x0002"
 
-S = "${WORKDIR}/src"
+S = "${WORKDIR}"
 
 FILES:${PN} += "${systemd_system_unitdir} ${libdir}"
 

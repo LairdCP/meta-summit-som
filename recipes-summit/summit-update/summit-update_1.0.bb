@@ -9,13 +9,13 @@ inherit allarch
 KEY_LOCATION_VALUE ?= ""
 
 SRC_URI = " \
-    file://LICENSE.ezurio;subdir=src \
-    file://10-swupdate.conf;subdir=src \
-    file://01-capability.conf;subdir=src \
-    file://fw_update;subdir=src \
-    file://ubi_update_support.sh;subdir=src \
-    file://emmc_update_support.sh;subdir=src \
-    file://erase_som_nand;subdir=src \
+    file://LICENSE.ezurio \
+    file://10-swupdate.conf \
+    file://01-capability.conf \
+    file://fw_update \
+    file://ubi_update_support.sh \
+    file://emmc_update_support.sh \
+    file://erase_som_nand \
     "
 
 RDEPENDS:${PN} = "\
@@ -25,7 +25,7 @@ RDEPENDS:${PN} = "\
     curl \
 "
 
-S = "${WORKDIR}/src"
+S = "${WORKDIR}"
 
 FILES:${PN} += "${systemd_unitdir} ${sysconfdir}"
 
