@@ -1,3 +1,6 @@
+
+Upstream-Status: Inappropriate No time for upstreaming
+
 diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
 index 8e53c1949bdf..c6e494b4ffdf 100644
 --- a/drivers/dma/imx-sdma.c

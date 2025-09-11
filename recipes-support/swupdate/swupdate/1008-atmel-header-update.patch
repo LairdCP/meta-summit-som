@@ -1,3 +1,6 @@
+
+Upstream-Status: Inappropriate No time for upstreaming
+
 diff --git a/include/swupdate.h b/include/swupdate.h
 index fb54ace55c..d1d3517daf 100644
 --- a/include/swupdate_image.h

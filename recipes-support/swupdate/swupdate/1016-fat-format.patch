@@ -1,3 +1,6 @@
+
+Upstream-Status: Inappropriate No time for upstreaming
+
 diff --git a/fs/ff.c b/fs/ff.c
 index 9281ec8..ddd899a 100644
 --- a/fs/ff.c

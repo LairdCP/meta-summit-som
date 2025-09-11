@@ -46,7 +46,7 @@ SRC_URI:append:summitsom = " \
     "
 
 SRC_URI:append:summitsom = " \
-    file://dts;subdir=git/arch/arm64/boot \
+    file://dts \
     "
 
 KERNEL_DTBVENDORED:summitsom = "0"
@@ -55,8 +55,12 @@ KERNEL_DEFCONFIG:summitsom = "file://${KERNEL_DEFCONFIG_SUMMIT}"
 KERNEL_DEFCONFIG_SUMMIT:am62xx = "k3-am625-carbon_defconfig"
 KERNEL_DEFCONFIG_SUMMIT:j722s  = "k3-am675-carbon_defconfig"
 
+do_patch:append:summitsom () {
+    cp -a "${UNPACKDIR}/dts" "${S}/arch/arm64/boot"
+}
+
 do_configure:prepend:summitsom() {
-    cp -f "${WORKDIR}/${KERNEL_DEFCONFIG_SUMMIT}" "${WORKDIR}/defconfig"
+    cp -f "${UNPACKDIR}/${KERNEL_DEFCONFIG_SUMMIT}" "${UNPACKDIR}/defconfig"
 }
 
 # Remove kernel binary from rootfs

@@ -11,7 +11,7 @@ SRC_URI = " \
     file://mksdcard.sh \
     "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 do_install () {
     install -D -m 0755 -t "${D}${bindir}" "${S}/mksdcard.sh"

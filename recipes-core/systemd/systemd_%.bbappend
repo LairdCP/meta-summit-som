@@ -6,7 +6,7 @@ SRC_URI:append:summitsom = "\
     "
 
 PACKAGECONFIG:summitsom = " \
-    ${@bb.utils.filter('DISTRO_FEATURES', 'acl audit efi ldconfig pam selinux smack usrmerge polkit seccomp', d)} \
+    ${@bb.utils.filter('DISTRO_FEATURES', 'acl audit efi ldconfig pam selinux smack polkit seccomp', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', 'rfkill', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'xkbcommon', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'sysvinit', 'link-udev-shared', d)} \
@@ -32,5 +32,5 @@ PACKAGECONFIG:summitsom = " \
 do_install:append:summitsom() {
     rm -f "${D}${systemd_unitdir}/system-generators/systemd-gpt-auto-generator"
     install -D -m 644 -t "${D}${systemd_unitdir}/system/system-preset" \
-        "${S}/../95-network-generator.preset"
+        "${UNPACKDIR}/95-network-generator.preset"
 }

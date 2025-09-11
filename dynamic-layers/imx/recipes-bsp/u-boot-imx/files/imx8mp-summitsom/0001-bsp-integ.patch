@@ -1,13 +1,6 @@
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -1178,6 +1178,7 @@ dtb-$(CONFIG_ARCH_IMX8M) += \
- 	imx8mp-venice-gw74xx.dtb \
- 	imx8mp-venice-gw7905-2x.dtb \
- 	imx8mp-verdin-wifi-dev.dtb \
-+	imx8mp-summitsom-dvk.dtb \
- 	imx8mp-navqp.dtb \
- 	imx8mq-pico-pi.dtb \
- 	imx8mq-kontron-pitx-imx8m.dtb \
+
+Upstream-Status: Inappropriate No time for upstreaming
+
 --- a/arch/arm/mach-imx/imx8m/Kconfig
 +++ b/arch/arm/mach-imx/imx8m/Kconfig
 @@ -445,6 +445,17 @@ config TARGET_LIBREM5
@@ -28,11 +21,10 @@
  
  endchoice
  
-@@ -481,6 +492,7 @@ source "board/technexion/pico-imx8mq/Kconfig"
+@@ -481,5 +492,6 @@ source "board/technexion/pico-imx8mq/Kconfig"
  source "board/variscite/imx8mn_var_som/Kconfig"
  source "board/toradex/verdin-imx8mm/Kconfig"
  source "board/toradex/verdin-imx8mp/Kconfig"
 +source "board/summit/imx8mp_summitsom/Kconfig"
- source "board/voxelbotics/navqp/Kconfig"
  
  endif

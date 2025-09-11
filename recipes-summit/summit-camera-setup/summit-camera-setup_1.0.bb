@@ -21,7 +21,7 @@ RDEPENDS:${PN} = "\
     v4l-utils \
     "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 FILES:${PN} += "${systemd_unitdir} ${sysconfdir}"
 

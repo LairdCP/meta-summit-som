@@ -1,3 +1,6 @@
+
+Upstream-Status: Inappropriate No time for upstreaming
+
 --- a/core/parser.c	2021-12-08 07:17:17.000000000 
 +++ b/core/parser.c	2022-12-07 17:19:55.000000000 
 @@ -43,7 +43,7 @@

@@ -1,3 +1,6 @@
+
+Upstream-Status: Inappropriate No time for upstreaming
+
 --- a/core/artifacts_versions.c	2023-05-23 15:06:34.000000000 
 +++ b/core/artifacts_versions.c	2023-06-03 05:42:52.000000000 
 @@ -174,7 +174,7 @@

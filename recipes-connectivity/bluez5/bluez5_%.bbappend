@@ -10,6 +10,14 @@ PACKAGECONFIG:summitsom ?= "\
     ${@bb.utils.filter('DISTRO_FEATURES', 'systemd', d)} \
     a2dp-profiles \
     avrcp-profiles \
+    bap-profiles \
+    bass-profiles \
+    mcp-profiles \
+    ccp-profiles \
+    vcp-profiles \
+    micp-profiles \
+    csip-profiles \
+    asha-profiles \
     network-profiles \
     hid-profiles \
     hog-profiles \

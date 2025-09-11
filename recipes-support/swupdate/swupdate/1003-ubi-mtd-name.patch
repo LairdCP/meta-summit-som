@@ -1,3 +1,6 @@
+
+Upstream-Status: Inappropriate No time for upstreaming
+
 diff --git a/parser/parser.c b/parser/parser.c
 index acac406..9ae9448 100644
 --- a/parser/parser.c
@@ -14,4 +17,3 @@ index acac406..9ae9448 100644
  			ERROR("Partition incompleted in description file");
 --
 2.7.4
-

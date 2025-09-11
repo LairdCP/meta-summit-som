@@ -11,14 +11,14 @@ SRC_URI += " \
     file://0011-fsl-sai.patch \
     file://0012-fsl-easrc.patch \
     file://0013-lcdifv3.patch \
-    file://0014-phy-fsl-samsung-hdmi.patch \
     file://0015-imx8mp-hdmi-pavi.patch \
     file://0016-gpio-regulator-off-delay.patch \
     file://0019-dm-verity-partition-wait-fix.patch \
+    file://0020-loadpin-Fixed-auto-enable-config.patch \
     "
 
 SRC_URI:append:summitsom = " \
-    file://dts;subdir=git/arch/arm64/boot \
+    file://dts \
     file://summitsom_defconfig \
     "
 
@@ -35,8 +35,9 @@ do_copy_defconfig:summitsom () {
 # Remove kernel binary from rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base:summitsom = ""
 
-# Fixes menuconfig
-KCONFIG_CONFIG_COMMAND:append = " -C ${B}"
+do_patch:append:summitsom () {
+    cp -a "${UNPACKDIR}/dts" "${S}/arch/arm64/boot"
+}
 
 # Build SDMA firmware into kernel
 DEPENDS:append:summitsom = " firmware-imx"

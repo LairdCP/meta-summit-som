@@ -3,7 +3,7 @@
 
 Upstream-Status: Inappropriate No time for upstreaming
 
-@@ -1203,18 +1203,23 @@ int libuboot_env_store(struct uboot_ctx *ctx)
+@@ -602,18 +602,23 @@ int libuboot_env_store(struct uboot_ctx *ctx)
  
  	copy = ctx->redundant ? (ctx->current ? 0 : 1) : 0;
  	ret = devwrite(ctx, copy, image);
@@ -14,7 +14,7 @@ Upstream-Status: Inappropriate No time for upstreaming
  
 -	if (ctx->redundant && !ret) {
 -		if (ctx->envdevs[ctx->current].flagstype == FLAGS_BOOLEAN)
--			ret = set_obsolete_flag(&ctx->envdevs[ctx->current]);
+-			ret = libubootenv_set_obsolete_flag(&ctx->envdevs[ctx->current]);
 +	if (ctx->redundant) {
 +		if (ret) {
 +			ret = devwrite(ctx, ctx->current, image);
@@ -22,7 +22,7 @@ Upstream-Status: Inappropriate No time for upstreaming
 +				ret = 0;
 +		} else {
 +			if (ctx->envdevs[ctx->current].flagstype == FLAGS_BOOLEAN)
-+				ret = set_obsolete_flag(&ctx->envdevs[ctx->current]);
++				ret = libubootenv_set_obsolete_flag(&ctx->envdevs[ctx->current]);
 +
 +			ctx->current = copy;
 +		}
@@ -34,7 +34,7 @@ Upstream-Status: Inappropriate No time for upstreaming
  
  	return ret;
  }
-@@ -1258,8 +1263,8 @@ static int libuboot_load(struct uboot_ctx *ctx)
+@@ -657,8 +662,8 @@ static int libuboot_load(struct uboot_ctx *ctx)
  		dev = &ctx->envdevs[i];
  		ret = devread(ctx, i, buf[i]);
  		if (ret != ctx->size) {

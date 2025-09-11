@@ -1,3 +1,6 @@
+
+Upstream-Status: Inappropriate No time for upstreaming
+
 diff --git a/drivers/regulator/gpio-regulator.c b/drivers/regulator/gpio-regulator.c
 index 5927d4f3eabd..7cd6cacf6e58 100644
 --- a/drivers/regulator/gpio-regulator.c

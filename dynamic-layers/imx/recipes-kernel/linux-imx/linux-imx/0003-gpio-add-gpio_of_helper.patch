@@ -28,6 +28,8 @@ Signed-off-by: Jiri Prchal <jiri.prchal@aksignal.cz>
  3 files changed, 258 insertions(+)
  create mode 100644 drivers/gpio/gpio-of-helper.c
 
+Upstream-Status: Inappropriate No time for upstreaming
+
 diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
 --- a/drivers/gpio/Kconfig
 +++ b/drivers/gpio/Kconfig
@@ -67,7 +69,7 @@ diff --git a/drivers/gpio/gpio-of-helper.c b/drivers/gpio/gpio-of-helper.c
 new file mode 100644
 --- /dev/null
 +++ b/drivers/gpio/gpio-of-helper.c
-@@ -0,0 +1,243 @@
+@@ -0,0 +1,241 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
 + * GPIO OF based helper
@@ -262,7 +264,7 @@ new file mode 100644
 +	return 0;
 +}
 +
-+static int gpio_of_helper_remove(struct platform_device *pdev)
++static void gpio_of_helper_remove(struct platform_device *pdev)
 +{
 +	struct device *dev = &pdev->dev;
 +	struct gpio_helper_info *info = platform_get_drvdata(pdev);
@@ -274,8 +276,6 @@ new file mode 100644
 +	}
 +
 +	device_remove_file(dev, &dev_attr_status);
-+
-+	return 0;
 +}
 +
 +#ifdef CONFIG_PM_SLEEP

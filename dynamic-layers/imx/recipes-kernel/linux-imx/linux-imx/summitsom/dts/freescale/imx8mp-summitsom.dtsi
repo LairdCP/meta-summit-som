@@ -19,6 +19,12 @@
 		stdout-path = &uart2;
 	};
 
+	reserved-memory {
+		linux,cma {
+			size = <0 0x12000000>;
+		};
+	};
+
  	reg_usdhc2_vmmc: regulator-usdhc2 {
 		compatible = "regulator-fixed";
 		status = "disabled";
@@ -52,12 +58,6 @@
 			linux,code = <KEY_WAKEUP>;
 			wakeup-source;
 		};
-	};
-};
-
-&resmem {
-	linux,cma {
-		size = <0 0x12000000>;
 	};
 };
 
