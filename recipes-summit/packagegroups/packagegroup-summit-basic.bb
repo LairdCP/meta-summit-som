@@ -25,7 +25,3 @@ RDEPENDS:${PN} = " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'usbgadget', 'summit-usbgadget', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'alsa', 'alsa-utils-alsamixer alsa-utils-aplay', '', d)} \
     "
-
-RDEPENDS:${PN}:append:imx8mp-summitsom = " \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', '  packagegroup-summit-radio-stack-60', '', d)} \
-    "
