@@ -25,7 +25,7 @@ RDEPENDS:${PN} = "\
     curl \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 FILES:${PN} += "${systemd_unitdir} ${sysconfdir}"
 

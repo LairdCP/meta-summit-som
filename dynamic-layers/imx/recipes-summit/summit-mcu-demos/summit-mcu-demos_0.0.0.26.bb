@@ -22,7 +22,7 @@ do_configure[noexec] = "1"
 # if elf files installed, yocto checks architecture, so disable this for the firmware blobs
 INSANE_SKIP:${PN} += "arch"
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 FILES:${PN} += "${nonarch_base_libdir}"
 

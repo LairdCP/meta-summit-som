@@ -28,6 +28,8 @@ Signed-off-by: Jared McArthur <j-mcarthur@ti.com>
  arch/arm64/boot/dts/ti/k3-j722s-main.dtsi | 12 ++++++------
  1 file changed, 6 insertions(+), 6 deletions(-)
 
+Upstream-Status: Pending
+
 diff --git a/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi b/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
 index 25287bb68e86..b0386913c932 100644
 --- a/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
@@ -67,4 +69,3 @@ index 25287bb68e86..b0386913c932 100644
  				 <&k3_clks 249 0>, <&k3_clks 249 4>, <&k3_clks 249 4>;
 -- 
 2.50.1
-

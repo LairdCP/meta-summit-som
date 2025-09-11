@@ -26,6 +26,8 @@ Signed-off-by: Swamil Jain <s-jain1@ti.com>
  .../boot/dts/ti/k3-j722s-evm-microtips-mf101hie-panel.dtso      | 2 ++
  4 files changed, 6 insertions(+), 2 deletions(-)
 
+Upstream-Status: Pending
+
 diff --git a/arch/arm64/boot/dts/ti/k3-am62p-j722s-common-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62p-j722s-common-main.dtsi
 index 47a772d7cfe6..7a4c0a758496 100644
 --- a/arch/arm64/boot/dts/ti/k3-am62p-j722s-common-main.dtsi
@@ -99,4 +101,3 @@ index d5c74fac3d91..d37cf0a6692d 100644
  &oldi0_dss0_ports {
 -- 
 2.50.1
-

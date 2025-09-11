@@ -18,6 +18,8 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  drivers/gpio/gpio-pca953x.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
+Upstream-Status: Backport
+
 diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
 index ef3aee1cabcf..bb7c1bf5f856 100644
 --- a/drivers/gpio/gpio-pca953x.c
@@ -33,4 +35,3 @@ index ef3aee1cabcf..bb7c1bf5f856 100644
  }
 -- 
 2.50.1
-

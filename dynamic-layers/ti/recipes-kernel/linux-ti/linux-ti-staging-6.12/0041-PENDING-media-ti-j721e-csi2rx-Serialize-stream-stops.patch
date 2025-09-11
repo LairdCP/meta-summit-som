@@ -21,6 +21,8 @@ Signed-off-by: Rishikesh Donadkar <r-donadkar@ti.com>
  .../media/platform/ti/j721e-csi2rx/j721e-csi2rx.c | 15 +++++++--------
  1 file changed, 7 insertions(+), 8 deletions(-)
 
+Upstream-Status: Pending
+
 diff --git a/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c b/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
 index 04db64cd783e..fcbd57830bb4 100644
 --- a/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
@@ -68,4 +70,3 @@ index 04db64cd783e..fcbd57830bb4 100644
  static const struct v4l2_subdev_pad_ops ti_csi2rx_subdev_pad_ops = {
 -- 
 2.50.1
-

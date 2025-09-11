@@ -22,7 +22,7 @@ do_compile[noexec] = "1"
 ALLOW_EMPTY:${PN}-dev = "0"
 ALLOW_EMPTY:${PN}-dbg = "0"
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 FILES:${PN} += "${sysconfdir}/udev/rules.d ${sysconfdir}/default"
 

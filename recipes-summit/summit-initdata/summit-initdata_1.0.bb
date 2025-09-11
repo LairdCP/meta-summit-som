@@ -16,7 +16,7 @@ SRC_URI = " \
     file://rootfs-additions/ \
     "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 FILES:${PN} += "${sbindir} ${libdir} ${nonarch_libdir} ${systemd_system_unitdir} ${sysconfdir} ${datadir} /perm /data"
 

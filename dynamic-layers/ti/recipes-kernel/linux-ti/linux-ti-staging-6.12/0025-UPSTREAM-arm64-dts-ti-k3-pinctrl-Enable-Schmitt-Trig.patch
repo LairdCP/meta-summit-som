@@ -27,6 +27,8 @@ Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
  arch/arm64/boot/dts/ti/k3-pinctrl.h | 15 ++++++++++++---
  1 file changed, 12 insertions(+), 3 deletions(-)
 
+Upstream-Status: Backport
+
 diff --git a/arch/arm64/boot/dts/ti/k3-pinctrl.h b/arch/arm64/boot/dts/ti/k3-pinctrl.h
 index f1d15bcf056d..4cdebdc018ef 100644
 --- a/arch/arm64/boot/dts/ti/k3-pinctrl.h
@@ -69,4 +71,3 @@ index f1d15bcf056d..4cdebdc018ef 100644
  #define PIN_DEBOUNCE_CONF1	(1 << DEBOUNCE_SHIFT)
 -- 
 2.50.1
-

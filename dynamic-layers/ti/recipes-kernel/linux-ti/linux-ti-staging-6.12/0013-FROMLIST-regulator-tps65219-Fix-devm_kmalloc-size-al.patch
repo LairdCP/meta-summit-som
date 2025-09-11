@@ -25,6 +25,8 @@ Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
  drivers/regulator/tps65219-regulator.c | 28 +++++++++++++-------------
  1 file changed, 14 insertions(+), 14 deletions(-)
 
+Upstream-Status: Backport
+
 diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
 index 241a7e841d35..d578c51ec340 100644
 --- a/drivers/regulator/tps65219-regulator.c
@@ -92,4 +94,3 @@ index 241a7e841d35..d578c51ec340 100644
  					     "Failed to request %s IRQ %d: %d\n",
 -- 
 2.50.1
-

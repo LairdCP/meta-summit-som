@@ -2398,6 +2398,8 @@ Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
  drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 4 ----
  1 file changed, 4 deletions(-)
 
+Upstream-Status: Pending
+
 diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
 index 114d883c65dc..09b289f0fcbf 100644
 --- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c

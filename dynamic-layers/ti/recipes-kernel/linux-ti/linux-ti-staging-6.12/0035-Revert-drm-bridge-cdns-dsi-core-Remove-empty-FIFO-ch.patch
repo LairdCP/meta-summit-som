@@ -14,6 +14,9 @@ Signed-off-by: Harikrishna Shenoy <h-shenoy@ti.com>
  drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 11 +++++++++++
  1 file changed, 11 insertions(+)
 
+
+Upstream-Status: Backport
+
 diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
 index ee867b69a9d1..ae7da8098416 100644
 --- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
@@ -38,4 +41,3 @@ index ee867b69a9d1..ae7da8098416 100644
  
 -- 
 2.50.1
-

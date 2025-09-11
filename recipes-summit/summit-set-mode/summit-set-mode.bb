@@ -11,7 +11,7 @@ SRC_URI = " \
     file://set-mode \
     "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 RDEPENDS:${PN} = "\
     libubootenv-bin \
@@ -19,5 +19,5 @@ RDEPENDS:${PN} = "\
     "
 
 do_install () {
-    install -D -m 0755 "${S}"/set-mode "${D}"/usr/bin/set-mode
+    install -D -m 0755 -t "${D}${bindir}" "${S}/set-mode"
 }

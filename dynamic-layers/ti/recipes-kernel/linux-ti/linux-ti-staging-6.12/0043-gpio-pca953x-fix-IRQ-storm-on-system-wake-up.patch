@@ -36,6 +36,8 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  drivers/gpio/gpio-pca953x.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
+Upstream-Status: Backport
+
 diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
 index d764a3af6346..ef3aee1cabcf 100644
 --- a/drivers/gpio/gpio-pca953x.c
@@ -62,4 +64,3 @@ index d764a3af6346..ef3aee1cabcf 100644
  
 -- 
 2.50.1
-

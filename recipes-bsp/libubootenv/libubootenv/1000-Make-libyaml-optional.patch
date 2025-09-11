@@ -12,7 +12,7 @@ fw_env.config in the U-Boot format.
 There are no functional changes in this patch - function depending on
 YML are moved in a separate file, and some functions are factorized.
 
-Upstream-Status: Inappropriate No time for upstreaming
+Upstream-Status: Backport next
 
 Signed-off-by: Stefano Babic <stefano.babic@swupdate.org>
 ---

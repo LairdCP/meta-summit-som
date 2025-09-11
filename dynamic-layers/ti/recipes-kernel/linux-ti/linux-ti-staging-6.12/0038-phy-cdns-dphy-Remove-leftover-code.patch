@@ -104,6 +104,8 @@ Acked-by: Vinod Koul <vkoul@kernel.org>
  drivers/phy/cadence/cdns-dphy.c | 19 ++++---------------
  1 file changed, 4 insertions(+), 15 deletions(-)
 
+Upstream-Status: Pending
+
 diff --git a/drivers/phy/cadence/cdns-dphy.c b/drivers/phy/cadence/cdns-dphy.c
 index f79ec4fab409..33a42e72362e 100644
 --- a/drivers/phy/cadence/cdns-dphy.c

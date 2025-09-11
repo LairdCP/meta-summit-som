@@ -12,7 +12,7 @@ SRC_URI = " \
     file://usb-gadget.rules \
     file://usb-gadget.service \
     file://shared-usb0.nmconnection \
-	"
+    "
 
 SYSTEMD_SERVICE:${PN} = "usb-gadget.service"
 SYSTEMD_AUTO_ENABLE = "enable"
@@ -31,7 +31,7 @@ SERIAL_PORTS ?= "0"
 VENDOR_ID ?= "0x1fa3"
 PRODUCT_ID ?= "0x0002"
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 FILES:${PN} += "${systemd_system_unitdir} ${libdir}"
 

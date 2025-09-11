@@ -65,3 +65,5 @@ do_configure:prepend:summitsom() {
 
 # Remove kernel binary from rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base:summitsom = ""
+
+INSANE_SKIP += "patch-status"
