@@ -7,11 +7,11 @@ LIC_FILES_CHKSUM = "file://LICENSE.ezurio;md5=fd3dd0630b215465b6f50540642d5b93"
 inherit allarch
 
 SRC_URI = " \
-    file://LICENSE.ezurio;subdir=src \
-    file://set-mode;subdir=src \
+    file://LICENSE.ezurio \
+    file://set-mode \
     "
 
-S = "${WORKDIR}/src"
+S = "${WORKDIR}"
 
 RDEPENDS:${PN} = "\
     libubootenv-bin \
