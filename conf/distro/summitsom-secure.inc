@@ -4,4 +4,4 @@ DISTRO_NAME .= " Secure"
 
 DISTROOVERRIDES .= ":summit-secure"
 
-VOLATILE_LOG_DIR = "no"
+FILESYSTEM_PERMS_TABLES:remove = "files/fs-perms-volatile-log.txt"

@@ -30,6 +30,7 @@ IMAGE_FEATURES = "\
 
 IMAGE_FEATURES:append:summit-secure = "\
     read-only-rootfs \
+    read-only-rootfs-delayed-postinsts \
     "
 
 ROOTFS_POSTPROCESS_COMMAND += "rootfs_os_release; "
