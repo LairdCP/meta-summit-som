@@ -22,10 +22,10 @@ RDEPENDS:${PN} = " \
     evtest \
     linuxptp \
     mpg123 \
-    fbida \
     con2fbmap \
     ${@bb.utils.contains('MACHINE_FEATURES', 'usbhost', 'usbutils', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'pci', 'pciutils', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'alsa', 'alsa-utils-speakertest', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'systemd-analyze', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'opengl', 'fbida', '', d)} \
     "
