@@ -1,3 +1,6 @@
+
+Upstream-Status: Inappropriate No time for upstreaming
+
 diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
 index 8e50d6654e6f..72ae9fc6d227 100644
 --- a/sound/soc/fsl/fsl_easrc.c

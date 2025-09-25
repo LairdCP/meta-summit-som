@@ -1,3 +1,6 @@
+
+Upstream-Status: Inappropriate No time for upstreaming
+
 --- a/cmd/bootm.c	2024-10-29 10:06:00.756089449 -0400
 +++ b/cmd/bootm.c	2024-10-29 10:08:14.606577708 -0400
 @@ -209,8 +209,7 @@

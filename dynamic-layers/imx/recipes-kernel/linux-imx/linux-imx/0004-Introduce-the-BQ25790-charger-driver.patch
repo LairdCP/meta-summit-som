@@ -16,6 +16,8 @@ Signed-off-by: Dan Murphy <dmurphy@ti.com>
  create mode 100644 drivers/power/supply/bq25790_charger.c
  create mode 100644 drivers/power/supply/bq25790_charger.h
 
+Upstream-Status: Inappropriate No time for upstreaming
+
 diff --git a/Documentation/devicetree/bindings/power/supply/bq25790.yaml b/Documentation/devicetree/bindings/power/supply/bq25790.yaml
 new file mode 100644
 index 000000000000..6d9178ce5a2b

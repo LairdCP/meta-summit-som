@@ -1,3 +1,6 @@
+
+Upstream-Status: Inappropriate No time for upstreaming
+
 diff --git a/sound/soc/fsl/fsl_aud2htx.c b/sound/soc/fsl/fsl_aud2htx.c
 index 38f3863739f4..fe1aa6827c42 100644
 --- a/sound/soc/fsl/fsl_aud2htx.c

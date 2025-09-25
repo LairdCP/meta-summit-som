@@ -1,3 +1,6 @@
+
+Upstream-Status: Inappropriate No time for upstreaming
+
 diff --git a/drivers/gpu/drm/imx/imx8mp-hdmi-pavi.c b/drivers/gpu/drm/imx/imx8mp-hdmi-pavi.c
 index d93694d80334..95c39b7149bf 100644
 --- a/drivers/gpu/drm/imx/imx8mp-hdmi-pavi.c

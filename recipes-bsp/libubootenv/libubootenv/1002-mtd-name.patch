@@ -1,8 +1,8 @@
---- a/src/uboot_env.c
-+++ b/src/uboot_env.c
 
 Upstream-Status: Inappropriate No time for upstreaming
 
+--- a/src/uboot_env.c
++++ b/src/uboot_env.c
 @@ -41,6 +41,7 @@
  #define UBI_MAX_VOLUME			128
  

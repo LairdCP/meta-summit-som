@@ -1,3 +1,6 @@
+
+Upstream-Status: Inactive-Upstream
+
 diff -Naur a/src/mint.c b/src/mint.c
 --- a/src/mint.c	2022-02-03 15:41:48.000000000 -0500
 +++ b/src/mint.c	2022-02-03 15:42:32.321246021 -0500
