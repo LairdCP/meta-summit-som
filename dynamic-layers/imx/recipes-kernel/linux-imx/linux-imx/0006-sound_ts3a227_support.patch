@@ -1,3 +1,6 @@
+
+Upstream-Status: Inappropriate No time for upstreaming
+
 diff --git a/include/sound/wm8960.h b/include/sound/wm8960.h
 index 275fd5b201ce..0bae14d24bcf 100644
 --- a/include/sound/wm8960.h

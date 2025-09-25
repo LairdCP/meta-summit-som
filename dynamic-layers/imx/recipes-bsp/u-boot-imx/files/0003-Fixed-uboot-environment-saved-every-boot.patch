@@ -8,6 +8,8 @@ Bug 23970
  env/env.c | 1 +
  1 file changed, 1 insertion(+)
 
+Upstream-Status: Inappropriate No time for upstreaming
+
 diff --git a/env/env.c b/env/env.c
 index ad774f4117..144812fecf 100644
 --- a/env/env.c
@@ -22,4 +24,3 @@ index ad774f4117..144812fecf 100644
  		} else if (ret == -ENOMSG) {
 -- 
 2.46.0
-

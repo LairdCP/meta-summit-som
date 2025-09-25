@@ -12,7 +12,7 @@ SRC_URI = " \
     file://usb-gadget.rules \
     file://usb-gadget.service \
     file://shared-usb0.nmconnection \
-	"
+    "
 
 SYSTEMD_SERVICE:${PN} = "usb-gadget.service"
 SYSTEMD_AUTO_ENABLE = "enable"

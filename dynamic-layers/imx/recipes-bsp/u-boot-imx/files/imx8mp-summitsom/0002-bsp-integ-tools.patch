@@ -1,3 +1,6 @@
+
+Upstream-Status: Inappropriate No time for upstreaming
+
 --- a/arch/arm/dts/Makefile	2021-02-15 20:22:38.000000000 
 +++ b/arch/arm/dts/Makefile	2021-02-15 20:34:33.000000000 
 @@ -875,6 +875,7 @@ dtb-$(CONFIG_ARCH_IMX8M) += \

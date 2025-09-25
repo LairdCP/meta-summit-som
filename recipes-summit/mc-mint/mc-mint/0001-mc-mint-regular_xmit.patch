@@ -1,3 +1,6 @@
+
+Upstream-Status: Inactive-Upstream
+
 diff --git a/src/ipv4_net.c b/src/ipv4_net.c
 --- a/src/ipv4_net.c
 +++ b/src/ipv4_net.c

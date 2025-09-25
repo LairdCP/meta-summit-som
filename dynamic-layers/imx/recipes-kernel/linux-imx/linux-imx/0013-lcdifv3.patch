@@ -1,3 +1,6 @@
+
+Upstream-Status: Inappropriate No time for upstreaming
+
 diff --git a/drivers/gpu/imx/lcdifv3/lcdifv3-common.c b/drivers/gpu/imx/lcdifv3/lcdifv3-common.c
 index 7bdb00e2ecc7..dfe95675085b 100644
 --- a/drivers/gpu/imx/lcdifv3/lcdifv3-common.c

@@ -23,3 +23,5 @@ SRC_URI:append = "\
         "
 
 SYSTEMD_SERVICE:${PN}:summitsom = "swupdate.socket"
+
+INSANE_SKIP:${PN} += "buildpaths"
