@@ -7,6 +7,6 @@ do_install:append:summitsom() {
         "${S}/examples/chrony.nm-dispatcher.dhcp" \
         "${S}/examples/chrony.nm-dispatcher.onoffline"
 
-    install -D  -m 644 -t "${D}${sysconfdir}/chrony" \
+    install -D -m 644 -t "${D}${sysconfdir}/chrony" \
         "${UNPACKDIR}/supplemental.sources"
 }
