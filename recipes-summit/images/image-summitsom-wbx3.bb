@@ -1,8 +1,8 @@
 DESCRIPTION = "Summit SOM WBx3 Line Image"
 
-FILESEXTRAPATHS:prepend:use-nxp-bsp:summitsom := "${THISDIR}/files/mcu:"
+FILESEXTRAPATHS:prepend:mx8mp-nxp-bsp:summitsom := "${THISDIR}/files/nomcu:"
 
-inherit image-summitsom-gen image-summitsom-sd-gen
+inherit image-summitsom-gen image-summitsom-sd-gen image-summitsom-swu-gen
 
 IMAGE_FEATURES += "\
 	allow-empty-password \
@@ -16,6 +16,7 @@ IMAGE_INSTALL += "\
 	summit-initdata \
 	summit-update \
 	less \
+	busybox-udhcpc \
 	"
 
 ROOTFS_POSTPROCESS_COMMAND += "rootfs_auto_login; "

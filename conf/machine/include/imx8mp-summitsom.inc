@@ -63,5 +63,5 @@ PREFERRED_PROVIDER_u-boot-mkenvimage-native = "u-boot-imx-tools-native"
 
 IMX_DEFAULT_BSP = "nxp"
 
-MACHINE_FIRMWARE:mx8-nxp-bsp:remove = "linux-firmware-ath10k"
+MACHINE_FIRMWARE:remove = "linux-firmware-ath10k"
 MACHINE_EXTRA_RRECOMMENDS:remove = "imx-m7-demos"

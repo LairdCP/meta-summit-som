@@ -154,7 +154,8 @@
 
 		wake-up {
 			label = "Wake Up";
-			gpios = <&gpio3 25 GPIO_ACTIVE_LOW>;
+			interrupts-extended = <&gpio3 25 IRQ_TYPE_EDGE_FALLING>;
+			interrupt-names = "irq";
 			linux,code = <KEY_WAKEUP>;
 			wakeup-source;
 		};
@@ -301,8 +302,7 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_max14830>;
 
-		interrupt-parent = <&gpio1>;
-		interrupts = <7 IRQ_TYPE_LEVEL_LOW>;
+		interrupts-extended = <&gpio1 7 IRQ_TYPE_LEVEL_LOW>;
 
 		gpio-controller;
 		#gpio-cells = <2>;
@@ -398,14 +398,13 @@
 	pinctrl-0 = <&pinctrl_i2c2>;
 	status = "okay";
 
-
 	ptn5110: tcpc@50 {
 		compatible = "nxp,ptn5110";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_typec>;
 		reg = <0x50>;
-		interrupt-parent = <&gpio4>;
-		interrupts = <18 IRQ_TYPE_LEVEL_LOW>;
+		interrupts-extended = <&gpio4 18 IRQ_TYPE_LEVEL_LOW>;
+		interrupt-names = "irq";
 
 		port {
 			typec_dr_sw: endpoint {
@@ -476,27 +475,28 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_pca6416>;
 
-		interrupt-parent = <&gpio1>;
-		interrupts = <12 IRQ_TYPE_EDGE_RISING>;
+		interrupts-extended = <&gpio1 12 IRQ_TYPE_EDGE_FALLING>;
+		interrupt-names = "irq";
 	};
 
 	pac193x@10 {
 		compatible = "microchip,pac1932";
 		reg = <0x10>;
-		samp-rate = <8>;
-		status = "okay";
+
+		#address-cells = <1>;
+		#size-cells = <0>;
 
 		ch1: channel1 {
-			uohms-shunt-res = <33000>; /* shunt resistor is 33 mOhm */
-			rail-name = "MODULE";
-			channel_enabled;
+			reg = <1>;
+			shunt-resistor-micro-ohms = <33000>; /* shunt resistor is 33 mOhm */
+			label = "MODULE";
 		};
 
 		ch2: channel2 {
-			uohms-shunt-res = <33000>; /* shunt resistor is 33 mOhm */
-			rail-name = "BATTERY";
-			channel_enabled;
-			bi-dir;
+			reg = <2>;
+			shunt-resistor-micro-ohms = <33000>; /* shunt resistor is 33 mOhm */
+			label = "BATTERY";
+			bipolar;
 		};
 	};
 };

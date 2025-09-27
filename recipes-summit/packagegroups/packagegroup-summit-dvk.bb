@@ -11,7 +11,6 @@ RDEPENDS:${PN} = " \
 
 RDEPENDS:${PN}:append:imx8mp-summitsom = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', 'packagegroup-summit-radio-stack-60', '', d)} \
-    kernel-module-pac193x \
     qfirehose \
     "
 

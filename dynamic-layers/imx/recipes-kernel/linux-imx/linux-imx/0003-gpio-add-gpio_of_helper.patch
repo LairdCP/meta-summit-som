@@ -297,7 +297,7 @@ new file mode 100644
 +
 +struct platform_driver gpio_of_helper_driver = {
 +	.probe		= gpio_of_helper_probe,
-+	.remove		= gpio_of_helper_remove,
++	.remove_new	= gpio_of_helper_remove,
 +	.driver = {
 +		.name		= "gpio-of-helper",
 +		.pm		= &gpio_of_helper_pm_ops,

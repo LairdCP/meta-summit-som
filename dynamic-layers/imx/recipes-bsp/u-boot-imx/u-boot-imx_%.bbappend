@@ -27,6 +27,7 @@ do_deploy:append:mx8m-nxp-bsp() {
 }
 
 DEPENDS += "u-boot-mkenvimage-native"
+DEPENDS:remove:summitsom = "efitools-native gnutls-native"
 
 UBOOT_INITIAL_ENV = "u-boot-initial-env"
 
