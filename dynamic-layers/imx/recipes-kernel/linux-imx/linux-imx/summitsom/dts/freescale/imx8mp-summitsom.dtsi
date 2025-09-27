@@ -41,14 +41,16 @@
 
 		wifi_wake: wake_on_wifi {
 			label = "Wake On Wi-Fi";
-			gpios = <&gpio5 21 GPIO_ACTIVE_LOW>;
+			interrupts-extended = <&gpio5 21 IRQ_TYPE_EDGE_FALLING>;
+			//gpios = <&gpio5 21 GPIO_ACTIVE_LOW>;
 			linux,code = <KEY_WAKEUP>;
 			wakeup-source;
 		};
 
 		wake_on_bt {
 			label = "Wake On Bluetooth";
-			gpios = <&gpio2 11 GPIO_ACTIVE_LOW>;
+			interrupts-extended = <&gpio2 11 IRQ_TYPE_EDGE_FALLING>;
+			//gpios = <&gpio2 11 GPIO_ACTIVE_LOW>;
 			linux,code = <KEY_WAKEUP>;
 			wakeup-source;
 		};
