@@ -6,8 +6,8 @@ LIC_FILES_CHKSUM = "\
 
 inherit python_setuptools_build_meta summit-platform-version
 
-SRC_URI = "git://github.com/Ezurio/summit-rcm.git;protocol=https;${SUMMIT_PLATFORM_BRANCH}"
-SRC_URI:summit-internal = "git://github.com/rfpros/cp_apps-summit-rcm.git;protocol=https;${SUMMIT_PLATFORM_BRANCH}"
+SRC_URI = "${SUMMIT_EXTERNAL_GIT_URI}/summit-rcm.git;${SUMMIT_EXTERNAL_GIT_SUFFIX}"
+SRC_URI:summit-internal = "${SUMMIT_INTERNAL_GIT_URI}/cp_apps-summit-rcm.git;${SUMMIT_INTERNAL_GIT_SUFFIX}"
 
 DEPENDS += "${PYTHON_PN}-cython-native"    
 
