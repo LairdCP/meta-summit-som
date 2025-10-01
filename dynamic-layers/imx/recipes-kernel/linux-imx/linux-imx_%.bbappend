@@ -23,9 +23,7 @@ SRC_URI:append:summitsom = " \
     "
 
 # Use our defconfig
-KBUILD_DEFCONFIG:remove:summitsom = "${IMX_KERNEL_CONFIG_AARCH64}"
-
-SCMVERSION:summitsom = "n"
+KBUILD_DEFCONFIG:imx8mp-summitsom = ""
 
 # Use our device trees
 do_copy_defconfig:summitsom () {
