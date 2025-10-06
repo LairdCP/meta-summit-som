@@ -7,6 +7,8 @@ inherit packagegroup
 
 RDEPENDS:${PN} = " \
     summit-set-mode \
+    python3 \
+    python3-dbus-fast \
     "
 
 RDEPENDS:${PN}:append:imx8mp-summitsom = " \
