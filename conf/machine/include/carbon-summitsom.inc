@@ -35,7 +35,7 @@ MACHINE_ESSENTIAL_EXTRA_RDEPENDS:remove = "kernel-image-image kernel-devicetree"
 MACHINE_FEATURES += "rtc"
 MACHINE_FEATURES:remove = "efi"
 
-PREFERRED_RPROVIDER_wireless-regdb-static = "wireless-regdb"
+PREFERRED_RPROVIDER_wireless-regdb-static = "60-radio-firmware"
 
 PREFERRED_PROVIDER_wpa-supplicant = "summit-supplicant"
 PREFERRED_RPROVIDER_wpa-supplicant = "summit-supplicant"
