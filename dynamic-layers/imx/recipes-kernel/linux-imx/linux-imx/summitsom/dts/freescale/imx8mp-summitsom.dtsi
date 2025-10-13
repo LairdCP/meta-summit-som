@@ -42,7 +42,7 @@
 		wifi_wake: wake_on_wifi {
 			label = "Wake On Wi-Fi";
 			interrupts-extended = <&gpio5 21 IRQ_TYPE_EDGE_FALLING>;
-			interrupt-names = "wakeup";
+			interrupt-names = "irq";
 			//gpios = <&gpio5 21 GPIO_ACTIVE_LOW>;
 			linux,code = <KEY_WAKEUP>;
 			wakeup-source;
@@ -51,7 +51,7 @@
 		wake_on_bt {
 			label = "Wake On Bluetooth";
 			interrupts-extended = <&gpio2 11 IRQ_TYPE_EDGE_FALLING>;
-			interrupt-names = "wakeup";
+			interrupt-names = "irq";
 			//gpios = <&gpio2 11 GPIO_ACTIVE_LOW>;
 			linux,code = <KEY_WAKEUP>;
 			wakeup-source;
