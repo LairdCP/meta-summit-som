@@ -46,7 +46,8 @@
 };
 
 &wifi_wake {
-	gpios = <&gpio3 14 GPIO_ACTIVE_LOW>;
+	interrupts-extended = <&gpio3 14 IRQ_TYPE_EDGE_FALLING>;
+	//gpios = <&gpio3 14 GPIO_ACTIVE_LOW>;
 };
 
 &pinctrl_wifi_pmu {
