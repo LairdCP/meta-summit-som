@@ -155,7 +155,7 @@
 		wake-up {
 			label = "Wake Up";
 			interrupts-extended = <&gpio3 25 IRQ_TYPE_EDGE_FALLING>;
-			interrupt-names = "irq";
+			interrupt-names = "wakeup";
 			linux,code = <KEY_WAKEUP>;
 			wakeup-source;
 		};
