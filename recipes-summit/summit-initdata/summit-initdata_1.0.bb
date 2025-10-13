@@ -34,7 +34,7 @@ RDEPENDS:${PN}:append:summit-secure = "\
     e2fsprogs-mke2fs \
     "
 
-RDEPENDS:${PN}:append:imx-generic-bsp:summit-secure = " keyctl-caam"
+RDEPENDS:${PN}:append:imx8mp-summitsom:summit-secure = " keyctl-caam"
 
 do_install () {
     cp -r --preserve=links,timestamps -t "${D}" "${S}"/rootfs-additions-common/*
