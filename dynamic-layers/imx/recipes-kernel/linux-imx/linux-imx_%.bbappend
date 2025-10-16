@@ -22,8 +22,13 @@ SRC_URI:append:summitsom = " \
     file://summitsom_defconfig \
     "
 
+SSTATE_SKIP_CREATION = "1"
+
+LOCALVERSION:summitsom = "-summit"
+SCMVERSION:summitsom = "n"
+
 # Use our defconfig
-KBUILD_DEFCONFIG:imx8mp-summitsom = ""
+KBUILD_DEFCONFIG:remove:imx8mp-summitsom = "imx_v8_defconfig"
 
 # Use our device trees
 do_copy_defconfig:summitsom () {
