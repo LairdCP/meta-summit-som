@@ -11,8 +11,6 @@ IMAGE_CLASSES += "dm-verity"
 UBOOT_DTB_LOADADDRESS = "0x43000000"
 UBOOT_ENTRYPOINT:mx8m-generic-bsp = "0x40400000"
 
-PREFERRED_RPROVIDER_wireless-regdb-static = "wireless-regdb"
-
 PREFERRED_PROVIDER_wpa-supplicant = "summit-supplicant"
 PREFERRED_RPROVIDER_wpa-supplicant = "summit-supplicant"
 PREFERRED_RPROVIDER_wpa-supplicant-cli = "summit-supplicant"
