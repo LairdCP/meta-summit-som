@@ -14,9 +14,6 @@ IMAGE_CLASSES += "dm-verity"
 IMAGE_BOOT_FILES += "uboot.env ${KERNEL_IMAGETYPE}"
 SWUPDATE_IMAGES = "${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin uboot.env ${KERNEL_IMAGETYPE}"
 
-UBOOT_DTB_LOADADDRESS = "0x83800000"
-UBOOT_DTBO_LOADADDRESS = "0x83880000"
-
 FIT_KERNEL_COMP_ALG = "zstd"
 FIT_KERNEL_COMP_ALG_EXTENSION = ".zst"
 FIT_PAD_ALG = "pss"
@@ -32,8 +29,7 @@ IMAGE_BOOT_FILES:k3 = "${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin"
 
 MACHINE_ESSENTIAL_EXTRA_RDEPENDS:remove = "kernel-image-image kernel-devicetree"
 
-MACHINE_FEATURES += "rtc"
-MACHINE_FEATURES:remove = "efi"
+MACHINE_FEATURES = "usbgadget usbhost vfat ext2 alsa optee rtc wifi bluetooth" 
 
 PREFERRED_PROVIDER_wpa-supplicant = "summit-supplicant"
 PREFERRED_RPROVIDER_wpa-supplicant = "summit-supplicant"

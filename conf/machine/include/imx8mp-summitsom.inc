@@ -12,7 +12,7 @@ require conf/machine/include/summitsom.inc
 
 DEFAULTTUNE:mx8m-generic-bsp = "armv8a-crc-crypto"
 
-MACHINE_FEATURES += "pci usbhost alsa rtc optee"
+MACHINE_FEATURES += "pci usbhost alsa rtc optee wifi bluetooth"
 
 SOC_DEFAULT_IMAGE_FSTYPES = ""
 

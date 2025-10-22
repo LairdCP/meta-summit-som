@@ -22,6 +22,6 @@ RDEPENDS:${PN} = " \
     summit-automount \
     summit-initdata \
     summit-update \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'usbgadget', 'summit-usbgadget', '', d)} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'alsa', 'alsa-utils-alsamixer alsa-utils-aplay', '', d)} \
+    ${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget', 'summit-usbgadget', '', d)} \
+    ${@bb.utils.contains('COMBINED_FEATURES', 'alsa', 'alsa-utils-alsamixer alsa-utils-aplay', '', d)} \
     "
