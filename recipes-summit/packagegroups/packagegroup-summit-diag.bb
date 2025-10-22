@@ -24,8 +24,8 @@ RDEPENDS:${PN} = " \
     mpg123 \
     fbida \
     con2fbmap \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'usbhost', 'usbutils', '', d)} \
+    ${@bb.utils.contains('COMBINED_FEATURES', 'usbhost', 'usbutils', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'pci', 'pciutils', '', d)} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'alsa', 'alsa-utils-speakertest', '', d)} \
+    ${@bb.utils.contains('COMBINED_FEATURES', 'alsa', 'alsa-utils-speakertest', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'systemd-analyze', '', d)} \
     "
