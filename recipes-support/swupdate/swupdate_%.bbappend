@@ -20,6 +20,7 @@ SRC_URI:append = "\
         file://1022-fix-offset-type.patch \
         file://1023-emmc_csd_handler-Fix-warning-active-my-be-used.patch \
         file://1024-support-legacy-raw-file-path.patch \
+        file://1025-disable-emmc-boot-change-on-failure.patch \
         "
 
 SYSTEMD_SERVICE:${PN}:summitsom = "swupdate.socket"
