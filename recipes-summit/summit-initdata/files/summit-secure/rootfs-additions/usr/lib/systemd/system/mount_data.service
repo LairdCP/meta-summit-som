@@ -11,4 +11,3 @@ Type=oneshot
 RemainAfterExit=yes
 ExecStart=/usr/sbin/mount_data.sh start
 ExecStop=/usr/sbin/mount_data.sh stop
-CapabilityBoundingSet=CAP_SYS_ADMIN
