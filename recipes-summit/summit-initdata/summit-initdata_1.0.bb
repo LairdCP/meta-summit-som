@@ -13,7 +13,14 @@ do_install[nostamp] = "1"
 SRC_URI = " \
     file://LICENSE.ezurio \
     file://rootfs-additions-common/ \
-    file://rootfs-additions/ \
+    "
+
+SRC_URI:append:summit-secure = " \
+    file://summit-secure/rootfs-additions/ \
+    "
+
+SRC_URI:append:imx8mp-summitsom = " \
+    file://imx8mp-summitsom/rootfs-additions/ \
     "
 
 S = "${UNPACKDIR}"
@@ -38,11 +45,16 @@ RDEPENDS:${PN}:append:imx8mp-summitsom:summit-secure = " keyctl-caam"
 
 do_install () {
     cp -r --preserve=links,timestamps -t "${D}" "${S}"/rootfs-additions-common/*
-    if ls "${S}"/rootfs-additions/* >/dev/null 2>&1; then
-        cp -r --preserve=links,timestamps -t "${D}" "${S}"/rootfs-additions/*
-    fi
     find "${D}" -type f -name .empty -delete
     find "${D}${libdir}/NetworkManager/system-connections" -type f -exec chmod 600 {} \;
+}
+
+do_install:prepend:summit-secure () {
+    cp -r --preserve=links,timestamps -t "${D}" "${S}"/summit-secure/rootfs-additions/*
+}
+
+do_install:prepend:imx8mp-summitsom () {
+    cp -r --preserve=links,timestamps -t "${D}" "${S}"/imx8mp-summitsom/rootfs-additions/*
 }
 
 SYSTEMD_SERVICE:${PN} = "mount_boot.service fw_env.service"
