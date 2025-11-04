@@ -18,25 +18,26 @@ SRC_URI += " \
     "
 
 SRC_URI:append:summitsom = " \
-    file://dts;subdir=git/arch/arm64/boot \
+    file://dts \
     file://summitsom_defconfig \
     "
 
-# Use our defconfig
-KBUILD_DEFCONFIG:remove:summitsom = "${IMX_KERNEL_CONFIG_AARCH64}"
-
+LOCALVERSION:summitsom = ""
 SCMVERSION:summitsom = "n"
 
-# Use our device trees
-do_copy_defconfig:summitsom () {
-    echo
-}
+# Use our defconfig
+IMX_KERNEL_CONFIG_AARCH64:summitsom = ""
+
+NOCOPY_DEFCONFIG = "0"
+NOCOPY_DEFCONFIG:summitsom = "1"
+do_copy_defconfig[noexec] = "${NOCOPY_DEFCONFIG}"
 
 # Remove kernel binary from rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base:summitsom = ""
 
-# Fixes menuconfig
-KCONFIG_CONFIG_COMMAND:append = " -C ${B}"
+do_patch:append:summitsom () {
+    cp -a "${UNPACKDIR}/dts" "${S}/arch/arm64/boot"
+}
 
 # Build SDMA firmware into kernel
 DEPENDS:append:summitsom = " firmware-imx"
