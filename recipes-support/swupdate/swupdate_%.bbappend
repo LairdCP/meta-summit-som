@@ -17,7 +17,7 @@ SRC_URI:append = "\
         file://1020-hw-compatibility.patch \
         file://1022-fix-offset-type.patch \
         file://1024-support-legacy-raw-file-path.patch \
-        file://1025-fix-uboot-env-size-check.patch \
+        file://1025-disable-emmc-boot-change-on-failure.patch \
         "
 
 #        file://1008-atmel-header-update.patch \
