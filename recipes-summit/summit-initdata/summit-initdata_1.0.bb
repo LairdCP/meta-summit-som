@@ -37,7 +37,7 @@ RDEPENDS:${PN} = "\
 
 RDEPENDS:${PN}:append:summit-secure = "\
     keyutils \
-    lvm2 \
+    libdevmapper \
     e2fsprogs-mke2fs \
     "
 
