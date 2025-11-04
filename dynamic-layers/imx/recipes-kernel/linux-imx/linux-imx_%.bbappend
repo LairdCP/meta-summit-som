@@ -22,18 +22,15 @@ SRC_URI:append:summitsom = " \
     file://summitsom_defconfig \
     "
 
-SSTATE_SKIP_CREATION = "1"
-
-LOCALVERSION:summitsom = "-summit"
+LOCALVERSION:summitsom = ""
 SCMVERSION:summitsom = "n"
 
 # Use our defconfig
-KBUILD_DEFCONFIG:remove:imx8mp-summitsom = "imx_v8_defconfig"
+IMX_KERNEL_CONFIG_AARCH64:summitsom = ""
 
-# Use our device trees
-do_copy_defconfig:summitsom () {
-    echo
-}
+NOCOPY_DEFCONFIG = "0"
+NOCOPY_DEFCONFIG:summitsom = "1"
+do_copy_defconfig[noexec] = "${NOCOPY_DEFCONFIG}"
 
 # Remove kernel binary from rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base:summitsom = ""
