@@ -91,7 +91,7 @@ do_backup_runtime () {
     ln -sf /data/misc/adjtime "${IMAGE_ROOTFS}/etc/adjtime"
 
     # Needed to satisfy preset_all on some rebuilds
-    rm -rf "${IMAGE_ROOTFS}/etc/machine-id"
+    #rm -rf "${IMAGE_ROOTFS}/etc/machine-id"
 
     rm -rf "${IMAGE_ROOTFS}/media"
     ln -sf /run/media "${IMAGE_ROOTFS}/media"
