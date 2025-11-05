@@ -36,7 +36,7 @@ do_copy_defconfig[noexec] = "${NOCOPY_DEFCONFIG}"
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base:summitsom = ""
 
 do_patch:append:summitsom () {
-    cp -a "${UNPACKDIR}/dts" "${S}/arch/arm64/boot"
+    cp -a "${WORKDIR}/dts" "${S}/arch/arm64/boot"
 }
 
 # Build SDMA firmware into kernel
