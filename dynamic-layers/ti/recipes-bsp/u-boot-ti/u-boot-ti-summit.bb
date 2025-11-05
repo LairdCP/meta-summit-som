@@ -18,6 +18,16 @@ FILES:${PN}-env:append:k3:summitsom = " \
     ${sysconfdir}/fw_env*.config \
     "
 
+UBOOT_KEY_PATH = "${UBOOT_SIGN_KEYDIR}/${UBOOT_SIGN_KEYNAME}.key"
+
+do_compile:prepend:summitsom() {
+    export KEY_PATH="${UBOOT_KEY_PATH}"
+}
+
+do_uboot_assemble_fitimage:prepend:k3:summitsom() {
+    export KEY_PATH="${UBOOT_KEY_PATH}"
+}
+
 do_compile:append:k3:summitsom() {
     ENV_SIZE=$(sed -rn 's,^CONFIG_ENV_SIZE=(.*),\1,p' "${B}/.config")
     ENV_OFFSET=$(sed -rn 's,^CONFIG_ENV_OFFSET=(.*),\1,p' "${B}/.config")
