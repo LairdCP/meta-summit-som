@@ -18,5 +18,5 @@ RDEPENDS:${PN}:append:imx8mp-summitsom = " \
 RDEPENDS:${PN}:append:k3:summitsom = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', 'packagegroup-summit-radio-stack-combo', '', d)} \
     kernel-module-tac5x1x \
-    kernel-module-arducam-pivariety \
+    kernel-module-pivariety \
     "
