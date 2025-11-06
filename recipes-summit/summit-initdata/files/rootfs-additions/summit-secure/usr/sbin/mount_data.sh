@@ -29,6 +29,9 @@ umount_fscrypt() {
 }
 
 mount_dmcrypt() {
+	[ ! -e /dev/mapper/data_enc ] || \
+		die "/dev/mapper/data_enc already exists"
+
 	if [ -x /usr/sbin/blockdev ]; then
 		DATA_SIZE=$(blockdev --getsz "${DATA_DEVICE}")
 	else
@@ -45,7 +48,7 @@ mount_dmcrypt() {
 		/usr/bin/keyctl padd logon datakey: @s < /perm/caam/datakey
 		CRYPTO_STR="capi:tk(cbc(aes))-plain :36:logon:datakey:"
 	else
-		[ -f /perm/caam/datakey ] &&
+		[ -f /perm/caam/datakey ] && \
 			KEY_ID=$(/usr/bin/keyctl add trusted datakey \
 				"load $(cat /perm/caam/datakey)" @s) ||
 		{
