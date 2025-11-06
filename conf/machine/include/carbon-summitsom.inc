@@ -11,7 +11,6 @@ IMAGE_FSTYPES = ""
 
 IMAGE_CLASSES += "dm-verity"
 
-IMAGE_BOOT_FILES += "uboot.env ${KERNEL_IMAGETYPE}"
 SWUPDATE_IMAGES = "${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin uboot.env ${KERNEL_IMAGETYPE}"
 
 FIT_KERNEL_COMP_ALG = "zstd"
@@ -25,7 +24,7 @@ UBOOT_SIGN_KEYNAME = "dev"
 UBOOT_SIGN_ENABLE:k3 = "1"
 KERNEL_IMAGETYPE:k3 = "fitImage"
 KERNEL_IMAGETYPES:k3 = "fitImage"
-IMAGE_BOOT_FILES:k3 = "${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin"
+IMAGE_BOOT_FILES:k3 = "${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin uboot.env ${KERNEL_IMAGETYPE}"
 
 MACHINE_ESSENTIAL_EXTRA_RDEPENDS:remove = "kernel-image-image kernel-devicetree"
 
@@ -36,14 +35,20 @@ PREFERRED_RPROVIDER_wpa-supplicant = "summit-supplicant"
 PREFERRED_RPROVIDER_wpa-supplicant-cli = "summit-supplicant"
 PREFERRED_RPROVIDER_wpa-supplicant-passphrase = "summit-supplicant"
 PREFERRED_RPROVIDER_wpa-supplicant-lib = "summit-supplicant"
-PREFERRED_RPROVIDER_wpa_supplicant-dev = "summit-supplicant-dev"
+PREFERRED_RPROVIDER_wpa_supplicant-dev = "summit-supplicant"
 
 PREFERRED_PROVIDER_hostapd = "summit-hostapd"
 PREFERRED_RPROVIDER_hostapd = "summit-hostapd"
 
 PREFERRED_PROVIDER_networkmanager = "summit-networkmanager"
 PREFERRED_RPROVIDER_networkmanager = "summit-networkmanager"
-PREFERRED_RPROVIDER_networkmanager = "summit-networkmanager-nmcli"
+PREFERRED_RPROVIDER_networkmanager-nmcli = "summit-networkmanager"
+PREFERRED_RPROVIDER_networkmanager-wifi = "summit-networkmanager"
+PREFERRED_RPROVIDER_networkmanager-wwan = "summit-networkmanager"
+PREFERRED_RPROVIDER_networkmanager-ppp = "summit-networkmanager"
+PREFERRED_RPROVIDER_networkmanager-bluetooth = "summit-networkmanager"
+PREFERRED_RPROVIDER_networkmanager-adsl = "summit-networkmanager"
+PREFERRED_RPROVIDER_networkmanager-dev = "summit-networkmanager"
 
 EMMC_DEVICE = "0"
 SD_DEVICE = "1"
