@@ -1,0 +1,21 @@
+PREFERRED_PROVIDER_wpa-supplicant = "summit-supplicant"
+PREFERRED_RPROVIDER_wpa-supplicant = "summit-supplicant"
+PREFERRED_RPROVIDER_wpa-supplicant-cli = "summit-supplicant"
+PREFERRED_RPROVIDER_wpa-supplicant-passphrase = "summit-supplicant"
+PREFERRED_RPROVIDER_wpa-supplicant-lib = "summit-supplicant"
+PREFERRED_RPROVIDER_wpa_supplicant-dev = "summit-supplicant"
+
+PREFERRED_PROVIDER_hostapd = "summit-hostapd"
+PREFERRED_RPROVIDER_hostapd = "summit-hostapd"
+
+PREFERRED_PROVIDER_networkmanager = "summit-networkmanager"
+PREFERRED_RPROVIDER_networkmanager = "summit-networkmanager"
+PREFERRED_RPROVIDER_networkmanager-nmcli = "summit-networkmanager"
+PREFERRED_RPROVIDER_networkmanager-wifi = "summit-networkmanager"
+PREFERRED_RPROVIDER_networkmanager-wwan = "summit-networkmanager"
+PREFERRED_RPROVIDER_networkmanager-ppp = "summit-networkmanager"
+PREFERRED_RPROVIDER_networkmanager-bluetooth = "summit-networkmanager"
+PREFERRED_RPROVIDER_networkmanager-adsl = "summit-networkmanager"
+PREFERRED_RPROVIDER_networkmanager-dev = "summit-networkmanager"
+
+WIRELESS_DAEMON = "summit-supplicant"
