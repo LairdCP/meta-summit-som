@@ -4,11 +4,12 @@
 #@DESCRIPTION: Machine configuration for Summit SOM i.MX8M Plus
 #@MAINTAINER: Boris Krasnovskiy <Boris.Krasnovskiy@ezurio.com>
 
-MACHINEOVERRIDES =. "mx8mp:"
+MACHINEOVERRIDES =. "mx8mp:summitsom:"
 
 require conf/machine/include/imx-base.inc
 require conf/machine/include/arm/armv8a/tune-cortexa53.inc
-require conf/machine/include/summitsom.inc
+
+include ${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'conf/machine/include/radio-stack.inc', '', d)}
 
 DEFAULTTUNE:mx8m-generic-bsp = "armv8a-crc-crypto"
 
@@ -63,5 +64,25 @@ PREFERRED_PROVIDER_u-boot-mkenvimage-native = "u-boot-imx-tools-native"
 
 IMX_DEFAULT_BSP = "nxp"
 
-MACHINE_FIRMWARE:remove = "linux-firmware-ath10k"
 MACHINE_EXTRA_RRECOMMENDS:remove = "imx-m7-demos"
+
+KERNEL_CLASSES  = "kernel-fitimage"
+KERNEL_IMAGETYPES = "fitImage"
+
+KERNEL_IMAGETYPE = "fitImage"
+KERNEL_IMAGETYPE:mx8-generic-bsp = "fitImage"
+KERNEL_IMAGETYPE:mx9-generic-bsp = "fitImage"
+IMAGE_CLASSES += "dm-verity"
+
+UBOOT_DTB_LOADADDRESS = "0x43000000"
+UBOOT_ENTRYPOINT:mx8m-generic-bsp = "0x40400000"
+
+FIT_KERNEL_COMP_ALG = "zstd"
+FIT_KERNEL_COMP_ALG_EXTENSION = ".zst"
+
+UBOOT_SIGN_ENABLE = "1"
+UBOOT_SIGN_KEYNAME = "dev"
+FIT_PAD_ALG = "pss"
+
+EMMC_DEVICE = "2"
+SD_DEVICE = "0"

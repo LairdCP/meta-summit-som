@@ -1,3 +1,5 @@
+include ${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'conf/machine/include/radio-stack.inc', '', d)}
+
 DEFAULTTUNE:k3 ?= "armv8a-crc-crypto"
 
 MACHINEOVERRIDES =. "summitsom:"
@@ -30,26 +32,6 @@ IMAGE_BOOT_FILES:k3 = "${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin uboo
 MACHINE_ESSENTIAL_EXTRA_RDEPENDS:remove = "kernel-image-image kernel-devicetree"
 
 MACHINE_FEATURES = "usbgadget usbhost vfat ext2 alsa optee rtc wifi bluetooth" 
-
-PREFERRED_PROVIDER_wpa-supplicant = "summit-supplicant"
-PREFERRED_RPROVIDER_wpa-supplicant = "summit-supplicant"
-PREFERRED_RPROVIDER_wpa-supplicant-cli = "summit-supplicant"
-PREFERRED_RPROVIDER_wpa-supplicant-passphrase = "summit-supplicant"
-PREFERRED_RPROVIDER_wpa-supplicant-lib = "summit-supplicant"
-PREFERRED_RPROVIDER_wpa_supplicant-dev = "summit-supplicant"
-
-PREFERRED_PROVIDER_hostapd = "summit-hostapd"
-PREFERRED_RPROVIDER_hostapd = "summit-hostapd"
-
-PREFERRED_PROVIDER_networkmanager = "summit-networkmanager"
-PREFERRED_RPROVIDER_networkmanager = "summit-networkmanager"
-PREFERRED_RPROVIDER_networkmanager-nmcli = "summit-networkmanager"
-PREFERRED_RPROVIDER_networkmanager-wifi = "summit-networkmanager"
-PREFERRED_RPROVIDER_networkmanager-wwan = "summit-networkmanager"
-PREFERRED_RPROVIDER_networkmanager-ppp = "summit-networkmanager"
-PREFERRED_RPROVIDER_networkmanager-bluetooth = "summit-networkmanager"
-PREFERRED_RPROVIDER_networkmanager-adsl = "summit-networkmanager"
-PREFERRED_RPROVIDER_networkmanager-dev = "summit-networkmanager"
 
 EMMC_DEVICE = "0"
 SD_DEVICE = "1"
