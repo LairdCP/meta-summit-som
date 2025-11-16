@@ -1,0 +1,54 @@
+// SPDX-License-Identifier: LicenseRef-Ezurio-Clause
+/*
+ * Copyright 2021 Ezurio
+ */
+
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/gpio/gpio.h>
+
+&gpio2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_wifibs>, <&pinctrl_pcie_disable>;
+
+	pcie-disable {
+		gpio-hog;
+		gpios = <7 GPIO_ACTIVE_HIGH>;
+		output-high;
+		line-name = "pcie_disable";
+	};
+
+	wifi_bs0: wifi-bs0 {
+		gpio-hog;
+		gpios = <8 GPIO_ACTIVE_HIGH>;
+		output-high;
+		line-name = "wifi_bs0";
+	};
+
+	wifi_bs1: wifi-bs1 {
+		gpio-hog;
+		gpios = <9 GPIO_ACTIVE_HIGH>;
+		output-high;
+		line-name = "wifi_bs1";
+	};
+};
+
+&pcie {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_pcie_reset &pinctrl_pcie_clkreq>;
+
+	reset-gpio = <&gpio2 6 GPIO_ACTIVE_LOW>;
+	vpcie-supply = <&reg_pmu_enable>;
+
+	status = "okay";
+};
+
+&pcie_phy {
+	status = "okay";
+};
+
+&uart3 {
+	/* BT */
+	status = "okay";
+};
