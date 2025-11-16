@@ -13,6 +13,7 @@ BBLAYERS = " \
   ${BSPDIR}/sources/meta-openembedded/meta-oe \
   ${BSPDIR}/sources/meta-openembedded/meta-multimedia \
   ${BSPDIR}/sources/meta-openembedded/meta-python \
+  ${BSPDIR}/sources/meta-openembedded/meta-perl \
   \
   ${BSPDIR}/sources/meta-freescale \
   ${BSPDIR}/sources/meta-freescale-3rdparty \
@@ -35,4 +36,3 @@ BBLAYERS = " \
   \
   ${BSPDIR}/sources/meta-summit-radio/meta-summit-radio \
 "
-

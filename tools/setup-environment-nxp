@@ -168,10 +168,6 @@ if ${build_dir_setup_enabled}; then
     } >> conf/local.conf
 
     {
-        ${setup_summit} || printf '# '
-        # shellcheck disable=SC2016
-        echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-radio-mfg"'
-
         ${setup_radio} || printf '# '
         # shellcheck disable=SC2016
         echo 'BBLAYERS += "${BSPDIR}/sources/meta-summit-rdvk"'

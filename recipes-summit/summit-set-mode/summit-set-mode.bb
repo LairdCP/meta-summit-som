@@ -15,7 +15,7 @@ S = "${UNPACKDIR}"
 
 RDEPENDS:${PN} = "\
     libubootenv-bin \
-    u-boot-tools-mkimage \
+    u-boot-mkimage \
     "
 
 do_install () {

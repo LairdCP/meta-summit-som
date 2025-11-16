@@ -1,8 +1,0 @@
-// SPDX-License-Identifier: LicenseRef-Ezurio-Clause
-/*
- * Copyright 2021 Ezurio
- */
-
-/dts-v1/;
-
-#include "imx8mp-summitsom-dvk.dtsi"

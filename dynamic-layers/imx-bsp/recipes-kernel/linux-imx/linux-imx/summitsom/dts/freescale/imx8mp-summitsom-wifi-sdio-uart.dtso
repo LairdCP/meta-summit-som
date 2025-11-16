@@ -1,0 +1,73 @@
+// SPDX-License-Identifier: LicenseRef-Ezurio-Clause
+/*
+ * Copyright 2021 Ezurio
+ */
+
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/interrupt-controller/irq.h>
+
+#include "imx8mp-pinfunc.h"
+
+&gpio2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_wifibs>, <&pinctrl_pcie_disable>,
+		<&pinctrl_pcie_reset>;
+
+	pcie-reset {
+		gpio-hog;
+		gpios = <6 GPIO_ACTIVE_HIGH>;
+		output-low;
+		line-name = "pcie_reset";
+	};
+
+	pcie-disable {
+		gpio-hog;
+		gpios = <7 GPIO_ACTIVE_HIGH>;
+		output-low;
+		line-name = "pcie_disable";
+	};
+
+	wifi_bs0: wifi-bs0 {
+		gpio-hog;
+		gpios = <8 GPIO_ACTIVE_HIGH>;
+		output-low;
+		line-name = "wifi_bs0";
+	};
+
+	wifi_bs1: wifi-bs1 {
+		gpio-hog;
+		gpios = <9 GPIO_ACTIVE_HIGH>;
+		output-low;
+		line-name = "wifi_bs1";
+	};
+};
+
+&uart3 {
+	/* BT */
+ 	status = "okay";
+};
+
+&usdhc1 {
+	status = "okay";
+
+	vmmc-supply = <&reg_pmu_enable>;
+
+	non-removable;
+	keep-power-in-suspend;
+
+	wifi: wifi {
+		compatible = "marvell,sd8997";
+		fwtype = "sdio-uart";
+		//interrupts-extended = <&gpio3 14 GPIO_ACTIVE_LOW>;
+		//reset-gpios = <&gpio2 10 GPIO_ACTIVE_HIGH>;
+		//remove-power-on-link-down;
+	};
+};
+
+&wifi_wake {
+	interrupts-extended = <&gpio3 14 IRQ_TYPE_EDGE_FALLING>;
+	//gpios = <&gpio3 14 GPIO_ACTIVE_LOW>;
+};

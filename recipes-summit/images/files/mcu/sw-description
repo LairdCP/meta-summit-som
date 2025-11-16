@@ -29,11 +29,11 @@ software =
 
 			images: (
 				{
-					filename = "imx-boot";
+					filename = "flash.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot0";
 					type = "raw";
 					installed-directly = true;
-					sha256 = "$swupdate_get_sha256(imx-boot)";
+					sha256 = "$swupdate_get_sha256(flash.bin)";
 				},
 				{
 					filename = "uboot.env";
@@ -119,11 +119,11 @@ software =
 
 			images: (
 				{
-					filename = "imx-boot";
+					filename = "flash.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot1";
 					type = "raw";
 					installed-directly = true;
-					sha256 = "$swupdate_get_sha256(imx-boot)";
+					sha256 = "$swupdate_get_sha256(flash.bin)";
 				},
 				{
 					filename = "uboot.env";
@@ -251,16 +251,16 @@ software =
 
 			images: (
 				{
-					filename = "imx-boot";
+					filename = "flash.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot0";
 					type = "raw";
-					sha256 = "$swupdate_get_sha256(imx-boot)";
+					sha256 = "$swupdate_get_sha256(flash.bin)";
 				},
 				{
-					filename = "imx-boot";
+					filename = "flash.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot1";
 					type = "raw";
-					sha256 = "$swupdate_get_sha256(imx-boot)";
+					sha256 = "$swupdate_get_sha256(flash.bin)";
 				},
 				{
 					filename = "uboot.env";

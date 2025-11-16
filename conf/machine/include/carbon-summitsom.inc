@@ -1,3 +1,4 @@
+require conf/machine/include/u-boot-summit.inc
 include ${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'conf/machine/include/radio-stack.inc', '', d)}
 
 DEFAULTTUNE:k3 ?= "armv8a-crc-crypto"

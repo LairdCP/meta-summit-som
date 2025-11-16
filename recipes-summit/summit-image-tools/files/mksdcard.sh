@@ -118,7 +118,7 @@ else
 	maxpart=1
 fi
 
-[ -f "${SRCDIR}/imx-boot" ] && FS_OFFSET=8 || FS_OFFSET=1
+[ -f "${SRCDIR}/flash.bin" ] && FS_OFFSET=8 || FS_OFFSET=1
 
 if ! ${boot_only}; then
 	# Calculate rootfs size
@@ -212,9 +212,9 @@ create_boot_partition() {
 			"${SRCDIR}/tiboot3.bin" \
 			"${SRCDIR}/u-boot.img" \
 			"${SRCDIR}/uboot.env"
-	elif [ -f "${SRCDIR}/imx-boot" ]; then
+	elif [ -f "${SRCDIR}/flash.bin" ]; then
 		cp -t "${BOOT_PART}" "${SRCDIR}/uboot.env"
-		/usr/bin/dd if="${SRCDIR}/imx-boot" of="${TARGET}" bs=1k seek=32 status=none
+		/usr/bin/dd if="${SRCDIR}/flash.bin" of="${TARGET}" bs=1k seek=32 status=none
 	fi
 
 	if ! ${boot_only}; then

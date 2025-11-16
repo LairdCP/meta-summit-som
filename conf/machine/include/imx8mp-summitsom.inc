@@ -9,6 +9,7 @@ MACHINEOVERRIDES =. "mx8mp:summitsom:"
 require conf/machine/include/imx-base.inc
 require conf/machine/include/arm/armv8a/tune-cortexa53.inc
 
+require conf/machine/include/u-boot-summit.inc
 include ${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'conf/machine/include/radio-stack.inc', '', d)}
 
 DEFAULTTUNE:mx8m-generic-bsp = "armv8a-crc-crypto"
@@ -18,21 +19,17 @@ MACHINE_FEATURES += "pci usbhost alsa rtc optee wifi bluetooth"
 SOC_DEFAULT_IMAGE_FSTYPES = ""
 
 IMAGE_BOOT_FILES = "uboot.env ${KERNEL_IMAGETYPE}"
-SWUPDATE_IMAGES = "imx-boot uboot.env ${KERNEL_IMAGETYPE}"
+SWUPDATE_IMAGES = "flash.bin uboot.env ${KERNEL_IMAGETYPE}"
 
-IMX_DEFAULT_BOOTLOADER = "u-boot-imx"
+IMX_DEFAULT_BOOTLOADER:mx8m-generic-bsp = "u-boot-imx-summit"
+IMX_DEFAULT_UBOOTTOOLS:imx-generic-bsp = "u-boot-summit-tools"
 
-UBOOT_CONFIG ??= "sd"
-UBOOT_CONFIG[sd] = "${UBOOT_CONFIG_BASENAME}_defconfig,sdcard"
-UBOOT_CONFIG[mfgtool] = "${UBOOT_CONFIG_BASENAME}_defconfig"
-
-# Set DDR FIRMWARE
 DDR_FIRMWARE_VERSION = "202006"
 DDR_FIRMWARE_NAME = " \
-	lpddr4_pmu_train_1d_dmem_${DDR_FIRMWARE_VERSION}.bin \
-	lpddr4_pmu_train_1d_imem_${DDR_FIRMWARE_VERSION}.bin \
-	lpddr4_pmu_train_2d_dmem_${DDR_FIRMWARE_VERSION}.bin \
-	lpddr4_pmu_train_2d_imem_${DDR_FIRMWARE_VERSION}.bin \
+    lpddr4_pmu_train_1d_dmem_${DDR_FIRMWARE_VERSION}.bin \
+    lpddr4_pmu_train_1d_imem_${DDR_FIRMWARE_VERSION}.bin \
+    lpddr4_pmu_train_2d_dmem_${DDR_FIRMWARE_VERSION}.bin \
+    lpddr4_pmu_train_2d_imem_${DDR_FIRMWARE_VERSION}.bin \
 "
 
 SPL_BINARY = "spl/u-boot-spl.bin"
@@ -40,16 +37,11 @@ SPL_BINARY = "spl/u-boot-spl.bin"
 ATF_PLATFORM = "imx8mp"
 ATF_LOAD_ADDR = "0x970000"
 
-IMXBOOT_TARGETS = \
-    "${@bb.utils.contains('UBOOT_CONFIG', 'fspi', '${IMXBOOT_TARGETS_BASENAME}_flexspi', \
-                                                  '${IMXBOOT_TARGETS_BASENAME}', d)}"
-
-IMX_BOOT_SOC_TARGET = "iMX8MP"
-
 SERIAL_CONSOLES = "115200;ttymxc1"
 
 LOADADDR = ""
 UBOOT_SUFFIX = "bin"
+UBOOT_BINARY = "flash.${UBOOT_SUFFIX}"
 UBOOT_MAKE_TARGET = "all"
 IMX_BOOT_SEEK = "32"
 
@@ -57,10 +49,6 @@ OPTEE_BIN_EXT = "8mp"
 TEE_LOAD_ADDR = "0x56000000"
 
 MACHINE_EXTRA_RDEPENDS += "${MACHINE_FIRMWARE} kernel-modules"
-
-IMXBOOT_TARGETS_BASENAME = "flash_evk"
-
-PREFERRED_PROVIDER_u-boot-mkenvimage-native = "u-boot-imx-tools-native"
 
 IMX_DEFAULT_BSP = "nxp"
 
@@ -71,7 +59,6 @@ KERNEL_IMAGETYPES = "fitImage"
 
 KERNEL_IMAGETYPE = "fitImage"
 KERNEL_IMAGETYPE:mx8-generic-bsp = "fitImage"
-KERNEL_IMAGETYPE:mx9-generic-bsp = "fitImage"
 IMAGE_CLASSES += "dm-verity"
 
 UBOOT_DTB_LOADADDRESS = "0x43000000"

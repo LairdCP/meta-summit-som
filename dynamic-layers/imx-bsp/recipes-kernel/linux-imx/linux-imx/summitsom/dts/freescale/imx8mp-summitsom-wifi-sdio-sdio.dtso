@@ -1,0 +1,20 @@
+// SPDX-License-Identifier: LicenseRef-Ezurio-Clause
+/*
+ * Copyright 2021 Ezurio
+ */
+
+#include "imx8mp-summitsom-wifi-sdio-uart.dtso"
+
+&uart3 {
+	/* BT */
+ 	status = "disabled";
+};
+
+&wifi {
+	fwtype = "sdio-sdio";
+};
+
+&wifi_bs0 {
+	/delete-property/ output-low;
+	output-high;
+};
