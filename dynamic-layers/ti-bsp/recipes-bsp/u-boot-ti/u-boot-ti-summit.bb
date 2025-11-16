@@ -18,3 +18,5 @@ ENV_INCLUDE:k3 = "recipes-bsp/u-boot-summit/u-boot-summit-env.inc"
 require ${ENV_INCLUDE}
 
 EXTRA_OEMAKE:append:k3 = " KEY_PATH=${UBOOT_SIGN_KEYDIR}/${UBOOT_SIGN_KEYNAME}.key"
+
+COMPATIBLE_MACHINE = "ti-soc"
