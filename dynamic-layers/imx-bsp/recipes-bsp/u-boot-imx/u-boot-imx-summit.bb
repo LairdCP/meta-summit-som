@@ -20,10 +20,6 @@ DEPENDS += "\
     bison-native \
     python3-setuptools-native \
     python3-pyelftools-native \
-    u-boot-mkenvimage-native \
-    "
-
-DEPENDS:append:imx-generic-bsp = " \
     ${IMX_EXTRA_FIRMWARE} \
     imx-atf \
     ${@bb.utils.contains('MACHINE_FEATURES', 'optee', 'optee-os', '', d)} \
@@ -31,11 +27,13 @@ DEPENDS:append:imx-generic-bsp = " \
 
 ATF_MACHINE_NAME ?= "${@bb.utils.contains('MACHINE_FEATURES', 'optee', "bl31-${ATF_PLATFORM}.bin-optee", "bl31-${ATF_PLATFORM}.bin", d)}"
 
-EXTRA_OEMAKE:append:imx-generic-bsp = " \
+EXTRA_OEMAKE += " \
     BL31=${DEPLOY_DIR_IMAGE}/${ATF_MACHINE_NAME} \
     BINMAN_INDIRS=${DEPLOY_DIR_IMAGE} \
     "
 
-EXTRA_OEMAKE:append:imx-generic-bsp = " \
+EXTRA_OEMAKE += " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'optee', "TEE=${STAGING_LIBDIR}/firmware/tee-pager_v2.bin", '', d)} \
     "
+
+COMPATIBLE_MACHINE = "imx-generic-bsp"
