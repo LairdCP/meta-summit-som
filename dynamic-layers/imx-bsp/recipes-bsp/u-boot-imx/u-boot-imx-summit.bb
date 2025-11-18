@@ -23,7 +23,12 @@ DEPENDS += "\
     ${IMX_EXTRA_FIRMWARE} \
     imx-atf \
     ${@bb.utils.contains('MACHINE_FEATURES', 'optee', 'optee-os', '', d)} \
-"
+    "
+
+do_compile[depends] += " \
+    ${@' '.join('%s:do_deploy' % r for r in '${IMX_EXTRA_FIRMWARE}'.split() )} \
+    imx-atf:do_deploy \
+    "
 
 ATF_MACHINE_NAME ?= "${@bb.utils.contains('MACHINE_FEATURES', 'optee', "bl31-${ATF_PLATFORM}.bin-optee", "bl31-${ATF_PLATFORM}.bin", d)}"
 
