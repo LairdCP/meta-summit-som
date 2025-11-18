@@ -36,4 +36,4 @@ EXTRA_OEMAKE += " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'optee', "TEE=${STAGING_LIBDIR}/firmware/tee-pager_v2.bin", '', d)} \
     "
 
-COMPATIBLE_MACHINE = "imx-generic-bsp"
+COMPATIBLE_MACHINE = "(imx-generic-bsp)"

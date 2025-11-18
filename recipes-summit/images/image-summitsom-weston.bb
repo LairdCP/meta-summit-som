@@ -1,6 +1,6 @@
 DESCRIPTION = "Summit SOM Weston Image"
 
-FILESEXTRAPATHS:prepend:mx8mp-generic-bsp:summitsom := "${THISDIR}/files/mcu:"
+FILESEXTRAPATHS:prepend:use-nxp-bsp:summitsom := "${THISDIR}/files/nomcu:"
 
 inherit image-summitsom-gen image-summitsom-sd-gen image-summitsom-swu-gen
 
@@ -13,7 +13,4 @@ IMAGE_INSTALL += "\
     packagegroup-summit-camera \
     "
 
-IMAGE_INSTALL:append:imx8mp-summitsom = "summit-mcu-demos"
-IMAGE_BOOT_FILES:append:imx8mp-summitsom = " fitImageMcu.bin"
-SWUPDATE_IMAGES:append:imx8mp-summitsom = " fitImageMcu.bin"
-WKS_FILE_DEPENDS:append:imx8mp-summitsom = " summit-mcu-demos"
+include image-summitsom-demo-mcu.inc
