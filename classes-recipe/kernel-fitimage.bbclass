@@ -542,9 +542,6 @@ fitimage_emit_section_config() {
                         $ramdisk_line
                         $bootscr_line
                         $setup_line
-                        hash-1 {
-                                algo = "$conf_csum";
-                        };
 EOF
 
 	if [ -n "$conf_sign_keyname" ] ; then
