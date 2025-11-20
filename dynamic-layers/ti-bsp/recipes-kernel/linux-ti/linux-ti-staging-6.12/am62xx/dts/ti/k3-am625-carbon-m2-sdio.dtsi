@@ -2,7 +2,7 @@
 /*
  * M.2 SDIO Wi-Fi common functions
  *
- * Copyright (C) 2025 Ezurio LLC
+ * Copyright (C) 2024 Ezurio LLC
  */
 
 #include <dt-bindings/interrupt-controller/irq.h>
@@ -44,9 +44,11 @@
 	wifi_wakeup_m2: wifi_wakeup_m2 {
 		compatible = "gpio-keys";
 
+		status = "disabled";
+
 		wifi-wake-up-m2 {
 			label = "Wi-Fi Wake Up M2";
-			gpios = <&exp2 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+			gpios = <&exp2 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 			linux,code = <KEY_WAKEUP>;
 			wakeup-event-action = <EV_ACT_ASSERTED>;
 			wakeup-source;
@@ -54,16 +56,12 @@
 
 		bt-wake-up-m2 {
 			label = "BT Wake Up M2";
-			gpios = <&exp2 1 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+			gpios = <&exp2 9 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 			linux,code = <KEY_WAKEUP>;
 			wakeup-event-action = <EV_ACT_ASSERTED>;
 			wakeup-source;
 		};
 	};
-};
-
-&exp2 {
-	wakeup-source;
 };
 
 &mcu_uart0 {
@@ -72,7 +70,6 @@
 	uart-has-rtscts;
 };
 
-#ifndef M2_PCIE
 &exp1 {
 	sdio_a_sel_hog {
 		gpio-hog;
@@ -91,4 +88,3 @@
 	ti,fails-without-test-cd;
 	keep-power-in-suspend;
 };
-#endif
