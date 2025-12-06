@@ -8,6 +8,7 @@ inherit packagegroup
 RADIO_SUPPORT ?= ""
 RADIO_SUPPORT:imx8mp-summitsom = "${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'packagegroup-summit-radio-stack-60', '', d)}"
 RADIO_SUPPORT:k3:summitsom = "${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'packagegroup-summit-radio-stack-combo', '', d)}"
+RADIO_SUPPORT:mx9-generic-bsp:summitsom = "${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'packagegroup-summit-radio-stack-combo', '', d)}"
 
 RDEPENDS:${PN} = " \
     summit-set-mode \
@@ -22,5 +23,9 @@ RDEPENDS:${PN}:append:imx8mp-summitsom = " \
 
 RDEPENDS:${PN}:append:k3:summitsom = " \
     kernel-module-tac5x1x \
+    kernel-module-pivariety \
+    "
+
+RDEPENDS:${PN}:append:mx9-generic-bsp:summitsom = " \
     kernel-module-pivariety \
     "

@@ -18,6 +18,7 @@ BBLAYERS = " \
   ${BSPDIR}/sources/meta-freescale \
   ${BSPDIR}/sources/meta-freescale-3rdparty \
   ${BSPDIR}/sources/meta-freescale-distro \
+  ${BSPDIR}/sources/meta-freescale-ml \
   \
   ${BSPDIR}/sources/meta-imx/meta-imx-bsp \
   ${BSPDIR}/sources/meta-imx/meta-imx-sdk \

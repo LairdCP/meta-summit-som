@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://Licenses/README;md5=2ca5f2c35c8cc335f0a19756634782f1"
 require recipes-bsp/u-boot/u-boot.inc
 require recipes-bsp/u-boot-summit/u-boot-summit-env.inc
 
-inherit summit-platform-version
+inherit summit-platform-version use-imx-security-controller-firmware
 
 SRC_URI = "${SUMMIT_EXTERNAL_GIT_URI}/u-boot-som.git;${SUMMIT_EXTERNAL_GIT_SUFFIX}"
 SRC_URI:summit-internal = "${SUMMIT_INTERNAL_GIT_URI}/cp_linux-u-boot-som60.git;${SUMMIT_INTERNAL_GIT_SUFFIX}"
@@ -35,10 +35,19 @@ ATF_MACHINE_NAME ?= "${@bb.utils.contains('MACHINE_FEATURES', 'optee', "bl31-${A
 EXTRA_OEMAKE += " \
     BL31=${DEPLOY_DIR_IMAGE}/${ATF_MACHINE_NAME} \
     BINMAN_INDIRS=${DEPLOY_DIR_IMAGE} \
+    BINMAN_VERBOSE=3 \
     "
 
 EXTRA_OEMAKE += " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'optee', "TEE=${STAGING_LIBDIR}/firmware/tee-pager_v2.bin", '', d)} \
     "
+
+do_compile:prepend:mx9-generic-bsp() {
+    if ${@bb.utils.contains('MACHINE_FEATURES', 'optee', 'true', 'false', d)}; then
+        ln -sf "${STAGING_LIBDIR}/firmware/tee-pager_v2.bin" "${B}/tee.bin"
+    fi
+    ln -sf "${DEPLOY_DIR_IMAGE}/${ATF_MACHINE_NAME}" "${B}/bl31.bin"
+    ln -sf "${DEPLOY_DIR_IMAGE}/${SECO_FIRMWARE_NAME}" "${B}/${SECO_FIRMWARE_NAME}"
+}
 
 COMPATIBLE_MACHINE = "(imx-generic-bsp)"

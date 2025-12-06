@@ -1,6 +1,6 @@
 DESCRIPTION = "Summit SOM Weston Image"
 
-FILESEXTRAPATHS:prepend:use-nxp-bsp:summitsom := "${THISDIR}/files/nomcu:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files/nomcu:"
 
 inherit image-summitsom-gen image-summitsom-sd-gen image-summitsom-swu-gen
 
