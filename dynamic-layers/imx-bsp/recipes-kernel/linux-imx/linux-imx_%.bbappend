@@ -18,6 +18,8 @@ SRC_URI:append:summitsom = " \
     file://0049-gpio-pca953x-Add-support-for-level-triggered-interru.patch \
     file://0050-gpio-pca953x-use-regmap_update_bits-to-improve-perfo.patch \
     file://0053-loadpin-Fixed-auto-enable-config.patch\
+    file://0054-media-i2c-ov5645-Report-streams-using-frame-descript.patch \
+    file://0055-media-nxp-dwc-mipi-csi2.patch \
     file://dts \
     file://${KERNEL_DEFCONFIG_SUMMIT} \
     "

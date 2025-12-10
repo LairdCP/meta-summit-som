@@ -16,4 +16,5 @@ RDEPENDS:${PN} = " \
     gstreamer1.0-plugins-bad-meta \
     ${@bb.utils.contains('LICENSE_FLAGS_ACCEPTED', 'commercial', 'gstreamer1.0-libav', '', d)} \
     summit-camera-setup \
+    libcamera \
     "
