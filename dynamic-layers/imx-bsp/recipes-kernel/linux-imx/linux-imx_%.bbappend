@@ -24,6 +24,8 @@ SRC_URI:append:summitsom = " \
 LOCALVERSION:summitsom = ""
 SCMVERSION:summitsom = "n"
 
+KERNEL_DTC_FLAGS:append:summitsom = "${@' -@' if d.getVar('KERNEL_DEVICETREE').find('.dtbo') else ''}"
+
 # Use our defconfig
 IMX_KERNEL_CONFIG_AARCH64:summitsom = ""
 
