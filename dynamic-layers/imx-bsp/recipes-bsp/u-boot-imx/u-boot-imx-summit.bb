@@ -50,4 +50,8 @@ do_compile:prepend:mx9-generic-bsp() {
     ln -sf "${DEPLOY_DIR_IMAGE}/${SECO_FIRMWARE_NAME}" "${B}/${SECO_FIRMWARE_NAME}"
 }
 
+do_compile:prepend:mx95-generic-bsp() {
+    ln -sf "${DEPLOY_DIR_IMAGE}/${SYSTEM_MANAGER_FIRMWARE_NAME}.bin" "${B}/m33_image.bin"
+}
+
 COMPATIBLE_MACHINE = "(imx-generic-bsp)"

@@ -11,16 +11,16 @@ export IMAGE_BASENAME:summit-secure = "${PN}-secure"
 
 IMAGE_ROOTFS_VERITY_TYPE = "squashfs-zst.verity"
 IMAGE_ROOTFS_VERITY_NAME = "${IMAGE_LINK_NAME}.${IMAGE_ROOTFS_VERITY_TYPE}"
-IMAGE_FSTYPE:summitsom:append = " ${IMAGE_ROOTFS_VERITY_TYPE}"
+IMAGE_FSTYPES:append:summitsom = " ${IMAGE_ROOTFS_VERITY_TYPE}"
 
-IMAGE_BOOT_FILES:append = " ${IMGDEPLOYDIR}/${IMAGE_ROOTFS_VERITY_NAME}.scr.bin;fitImageVerity.bin"
+IMAGE_BOOT_FILES:append:summitsom = " ${IMGDEPLOYDIR}/${IMAGE_ROOTFS_VERITY_NAME}.scr.bin;fitImageVerity.bin"
 
 #IMAGE_MACHINE_SUFFIX ?= ""
 IMAGE_NAME_SUFFIX ?= ""
 
 IMAGE_ROOTFS_EXTRA_SPACE = "0"
 
-IMAGE_BOOTSTR = "bootside=\${bootside} init=/usr/sbin/overlayRoot.sh"
+IMAGE_BOOTSTR = "bootside=\${bootside} quiet init=/usr/sbin/overlayRoot.sh"
 IMAGE_BOOTSTR:summit-secure = "bootside=\${bootside} quiet init=/usr/sbin/pre-systemd-init.sh"
 
 IMAGE_FEATURES = "\
