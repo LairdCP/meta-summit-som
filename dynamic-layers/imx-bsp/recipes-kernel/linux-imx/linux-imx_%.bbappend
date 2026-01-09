@@ -24,6 +24,7 @@ SRC_URI:append:summitsom = " \
     file://0057-media-nxp-dwc-mipi-csi2.patch \
     file://dts \
     file://${KERNEL_DEFCONFIG_SUMMIT} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'file://disable_framebuffer_console.cfg', '', d)} \
     "
 
 SRC_URI:append:imx8mp-summitsom = " \
