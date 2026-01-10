@@ -13,10 +13,7 @@ BB_DISKMON_DIRS ??= "\
 
 BB_NICE_LEVEL ??= "10"
 
-PACKAGECONFIG:append:pn-qemu-system-native = " sdl"
-
 IMAGE_FEATURES ?= "debug-tweaks"
 USER_CLASSES ?= "buildstats"
 
 CONF_VERSION = "2"
-
