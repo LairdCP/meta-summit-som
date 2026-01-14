@@ -15,9 +15,9 @@
 	reg = <0x3c>;
 
 	DOVDD-supply = <&vdd_cam_a>;
-	VDDA-supply = <&vdd_cam_a>;
-	VDDD-supply = <&vdd_cam_a>;
+	AVDD-supply = <&vdd_cam_a>;
+	DVDD-supply = <&vdd_cam_a>;
 
-	reset-gpios = <&exp0 12 GPIO_ACTIVE_LOW>; /* CAM_A_RST */
-	powerdown-gpios = <&exp0 13 GPIO_ACTIVE_LOW>; /* CAM_A_PWR */
+	reset-gpios = <&main_gpio0 6 GPIO_ACTIVE_LOW>; /* CAM_A_RST */
+	powerdown-gpios = <&main_gpio0 0 GPIO_ACTIVE_LOW>; /* CAM_A_PWR */
 };

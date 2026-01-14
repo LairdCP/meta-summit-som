@@ -21,7 +21,7 @@
 
 		brightness-levels = <0 1 2 3 4 5 6 7 8 9 10>;
 		default-brightness-level = <8>;
-		pwms = <&epwm2 1 30000 0>; /* 33.3 kHz */
+		pwms = <&epwm1 0 30000 0>; /* 33.3 kHz */
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&main_lvds_e_backlight_en_default>;
@@ -65,7 +65,7 @@
 	};
 };
 
-&epwm2 {
+&epwm1 {
 	status = "okay";
 };
 
@@ -135,9 +135,9 @@
 	#address-cells = <1>;
 	#size-cells = <0>;
 
-	touchscreen_lvds_e: touchscreen-lvds-e@14 {
+	touchscreen_lvds_e: touchscreen-lvds-e@5d {
 		compatible = "goodix,gt911";
-		reg = <0x14>;
+		reg = <0x5d>;
 
 		AVDD28-supply = <&vcc_lvds_e>;
 		VDDIO-supply = <&vcc_lvds_e>;
