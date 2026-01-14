@@ -354,12 +354,17 @@
 	pinctrl-0 = <&main_mdio0_pins_default>;
 };
 
-&epwm1 {
+&epwm0 { /* PWM_0 */
+	pinctrl-names = "default";
+	pinctrl-0 = <&main_epwm0_pins_default>;
+};
+
+&epwm1 { /* PWM_1 and PWM_2 */
 	pinctrl-names = "default";
 	pinctrl-0 = <&main_epwm1_pins_default>;
 };
 
-&ecap2 {
+&ecap2 { /* CAM_A_MCK */
 	/* ECAP in APWM mode */
 	pinctrl-names = "default";
 	pinctrl-0 = <&main_ecap2_pins_default>;
@@ -509,8 +514,8 @@
 		regulators {
 			vdd_core: buck1 {
 				regulator-name = "vdd_core";
-				regulator-min-microvolt = <750000>;
-				regulator-max-microvolt = <750000>;
+				regulator-min-microvolt = <850000>;
+				regulator-max-microvolt = <850000>;
 				regulator-boot-on;
 				regulator-always-on;
 			};
@@ -613,10 +618,16 @@
 		>;
 	};
 
+	main_epwm0_pins_default: main-epwm0-default-pins {
+		pinctrl-single,pins = <
+			AM62X_IOPAD(0x1b8, PIN_OUTPUT, 2) /* PWM_0 (C13) SPI0_CS1.EHRPWM0_B */
+		>;
+	};
+
 	main_epwm1_pins_default: main-epwm1-default-pins {
 		pinctrl-single,pins = <
-			AM62X_IOPAD(0x19c, PIN_OUTPUT, 6) /* PWM_1 (B18) MCASP0_AXR1.EHRPWM1_A */
-			AM62X_IOPAD(0x1a0, PIN_OUTPUT, 6) /* PWM_2 (E18) MCASP0_AXR0.EHRPWM1_B */
+			AM62X_IOPAD(0x19c, PIN_OUTPUT, 6) /* LVDS_D_BL_PWM/PWM_1 (B18) MCASP0_AXR1.EHRPWM1_A */
+			AM62X_IOPAD(0x1a0, PIN_OUTPUT, 6) /* RGB_BL_PWM/LVDS_E_BL_PWM/PWM_2 (E18) MCASP0_AXR0.EHRPWM1_B */
 		>;
 	};
 
@@ -662,9 +673,9 @@
 
 	main_mmc0_pins_default: main-mmc0-default-pins {
 		pinctrl-single,pins = <
-			AM62X_IOPAD(0x220, PIN_INPUT, 0) /* (Y3) MMC0_CMD */
+			AM62X_IOPAD(0x220, PIN_INPUT_PULLUP, 0) /* (Y3) MMC0_CMD */
 			AM62X_IOPAD(0x218, PIN_OUTPUT, 0) /* (AB1) MMC0_CLK */
-			AM62X_IOPAD(0x214, PIN_INPUT, 0) /* (AA2) MMC0_DAT0 */
+			AM62X_IOPAD(0x214, PIN_INPUT_PULLUP, 0) /* (AA2) MMC0_DAT0 */
 			AM62X_IOPAD(0x210, PIN_INPUT_PULLUP, 0) /* (AA1) MMC0_DAT1 */
 			AM62X_IOPAD(0x20c, PIN_INPUT_PULLUP, 0) /* (AA3) MMC0_DAT2 */
 			AM62X_IOPAD(0x208, PIN_INPUT_PULLUP, 0) /* (Y4) MMC0_DAT3 */
@@ -678,9 +689,9 @@
 
 	main_mmc1_pins_default: main-mmc1-default-pins {
 		pinctrl-single,pins = <
-			AM62X_IOPAD(0x23c, PIN_INPUT, 0) /* SDIO_A_CMD (A21) MMC1_CMD */
+			AM62X_IOPAD(0x23c, PIN_INPUT_PULLUP, 0) /* SDIO_A_CMD (A21) MMC1_CMD */
 			AM62X_IOPAD(0x234, PIN_OUTPUT, 0) /* SDIO_A_CLK (B22) MMC1_CLK */
-			AM62X_IOPAD(0x230, PIN_INPUT, 0) /* SDIO_A_D0 (A22) MMC1_DAT0 */
+			AM62X_IOPAD(0x230, PIN_INPUT_PULLUP, 0) /* SDIO_A_D0 (A22) MMC1_DAT0 */
 			AM62X_IOPAD(0x22c, PIN_INPUT_PULLUP, 0) /* SDIO_A_D1 (B21) MMC1_DAT1 */
 			AM62X_IOPAD(0x228, PIN_INPUT_PULLUP, 0) /* SDIO_A_D2 (C21) MMC1_DAT2 */
 			AM62X_IOPAD(0x224, PIN_INPUT_PULLUP, 0) /* SDIO_A_D3 (D22) MMC1_DAT3 */
@@ -691,9 +702,9 @@
 
 	main_mmc2_pins_default: main-mmc2-default-pins {
 		pinctrl-single,pins = <
-			AM62X_IOPAD(0x120, PIN_INPUT, 0) /* (C24) MMC2_CMD */
+			AM62X_IOPAD(0x120, PIN_INPUT_PULLUP, 0) /* (C24) MMC2_CMD */
 			AM62X_IOPAD(0x118, PIN_OUTPUT, 0) /* (D25) MMC2_CLK */
-			AM62X_IOPAD(0x114, PIN_INPUT, 0) /* (B24) MMC2_DAT0 */
+			AM62X_IOPAD(0x114, PIN_INPUT_PULLUP, 0) /* (B24) MMC2_DAT0 */
 			AM62X_IOPAD(0x110, PIN_INPUT_PULLUP, 0) /* (C25) MMC2_DAT1 */
 			AM62X_IOPAD(0x10c, PIN_INPUT_PULLUP, 0) /* (E23) MMC2_DAT2 */
 			AM62X_IOPAD(0x108, PIN_INPUT_PULLUP, 0) /* (D24) MMC2_DAT3 */

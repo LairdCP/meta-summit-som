@@ -175,7 +175,7 @@
 
 		led0 {
 			color = <LED_COLOR_ID_GREEN>;
-			gpios = <&main_gpio1 30 GPIO_ACTIVE_HIGH>;
+			gpios = <&main_gpio0 71 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 		};
 	};
@@ -404,6 +404,56 @@
 	};
 };
 
+&main_gpio0 {
+	cam_a_rst_hog: cam-a-rst-hog {
+		gpio-hog;
+		gpios = <6 GPIO_ACTIVE_HIGH>;
+		output-low;
+	};
+
+	cam_a_pwr_hog: cam-a-pwr-hog {
+		gpio-hog;
+		gpios = <0 GPIO_ACTIVE_HIGH>;
+		output-low;
+	};
+
+	cam_b_rst_hog: cam-b-rst-hog {
+		gpio-hog;
+		gpios = <12 GPIO_ACTIVE_HIGH>;
+		output-low;
+	};
+
+	cam_b_pwr_hog: cam-b-pwr-hog {
+		gpio-hog;
+		gpios = <11 GPIO_ACTIVE_HIGH>;
+		output-low;
+	};
+
+	cam_c_rst_hog: cam-c-rst-hog {
+		gpio-hog;
+		gpios = <4 GPIO_ACTIVE_HIGH>;
+		output-low;
+	};
+
+	cam_c_pwr_hog: cam-c-pwr-hog {
+		gpio-hog;
+		gpios = <3 GPIO_ACTIVE_HIGH>;
+		output-low;
+	};
+
+	cam_d_rst_hog: cam-d-rst-hog {
+		gpio-hog;
+		gpios = <72 GPIO_ACTIVE_HIGH>;
+		output-low;
+	};
+
+	cam_d_pwr_hog: cam-d-pwr-hog {
+		gpio-hog;
+		gpios = <5 GPIO_ACTIVE_HIGH>;
+		output-low;
+	};
+};
+
 &mcasp1 {
 	status = "okay";
 };
@@ -465,7 +515,7 @@
 	>;
 };
 
-&main_spi0 { /* SPI_C */
+&main_spi0 { /* SPI_A */
 	status = "okay";
 
 	spidev@0 {
@@ -475,11 +525,11 @@
 	};
 };
 
-&main_uart5 { /* UART_D */
+&main_uart5 { /* UART_A */
 	status = "okay";
 };
 
-&main_uart6 { /* UART_A */
+&main_uart6 { /* UART_D */
 	status = "okay";
 };
 
@@ -487,35 +537,6 @@
 	status = "okay";
 	phys = <&transceiver2>;
 	/delete-property/ wakeup-source;
-};
-
-&ospi0 { /* SPI_A Used as a qSPI */
-	status = "okay";
-
-	flash@0 {
-		compatible = "winbond,w25q64jwz", "jedec,spi-nor";
-		reg = <0>;
-		spi-rx-bus-width = <4>;
-		spi-tx-bus-width = <4>;
-		spi-max-frequency = <25000000>;
-		cdns,tshsl-ns = <60>;
-		cdns,tsd2d-ns = <60>;
-		cdns,tchsh-ns = <60>;
-		cdns,tslch-ns = <60>;
-		cdns,read-delay = <4>;
-
-		partitions {
-			compatible = "fixed-partitions";
-			#address-cells = <1>;
-			#size-cells = <1>;
-
-			/* Sample  partition occupies full size of the device */
-			partition@0 {
-				label = "qspi.part0";
-				reg = <0x0 0>;
-			};
-		};
-	};
 };
 
 &vsel_mmc1 {
