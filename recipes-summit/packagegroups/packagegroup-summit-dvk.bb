@@ -8,7 +8,7 @@ inherit packagegroup
 RADIO_SUPPORT ?= ""
 RADIO_SUPPORT:imx8mp-summitsom = "${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'packagegroup-summit-radio-stack-60', '', d)}"
 RADIO_SUPPORT:k3:summitsom = "${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'packagegroup-summit-radio-stack-combo', '', d)}"
-RADIO_SUPPORT:mx9-generic-bsp:summitsom = "${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'packagegroup-summit-radio-stack-combo', '', d)}"
+RADIO_SUPPORT:imx-generic-bsp:summitsom ?= "${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'packagegroup-summit-radio-stack-combo', '', d)}"
 
 RDEPENDS:${PN} = " \
     summit-set-mode \

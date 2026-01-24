@@ -22,6 +22,8 @@ SRC_URI:append:summitsom = " \
     file://0055-rtc-rv3028-fix-name-collisions.patch \
     file://0056-media-i2c-ov5645-Report-streams-using-frame-descript.patch \
     file://0057-media-nxp-dwc-mipi-csi2.patch \
+    file://0058-sn65dsi83-ignore-pll-lock-failure.patch \
+    file://0059-imx-mipi-csis-enable-camera-link.patch \
     file://dts \
     file://${KERNEL_DEFCONFIG_SUMMIT} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'file://disable_framebuffer_console.cfg', '', d)} \
@@ -34,9 +36,10 @@ SRC_URI:append:imx8mp-summitsom = " \
 
 KERNEL_DTC_FLAGS:append:summitsom = "${@' -@' if d.getVar('KERNEL_DEVICETREE').find('.dtbo') else ''}"
 
+KERNEL_DEFCONFIG_SUMMIT:imx8mm-nitrogen-smarc ?= "nitrogen_imx8mm_defconfig"
 KERNEL_DEFCONFIG_SUMMIT:imx8mp-summitsom ?= "summitsom_defconfig"
-KERNEL_DEFCONFIG_SUMMIT:imx93-nitrogen ?= "nitrogen_imx93_defconfig"
-KERNEL_DEFCONFIG_SUMMIT:imx95-nitrogen ?= "nitrogen_imx95_defconfig"
+KERNEL_DEFCONFIG_SUMMIT:imx93-nitrogen-smarc ?= "nitrogen_imx93_defconfig"
+KERNEL_DEFCONFIG_SUMMIT:imx95-nitrogen-smarc ?= "nitrogen_imx95_defconfig"
 
 LOCALVERSION:summitsom = ""
 SCMVERSION:summitsom = "n"
@@ -44,9 +47,10 @@ SCMVERSION:summitsom = "n"
 # Use our defconfig
 IMX_KERNEL_CONFIG_AARCH64:summitsom = ""
 
-NOCOPY_DEFCONFIG = ""
-NOCOPY_DEFCONFIG:summitsom = "1"
-do_copy_defconfig[noexec] = "${NOCOPY_DEFCONFIG}"
+python __anonymous() {
+    if 'summitsom' in d.getVar('OVERRIDES', True).split(':'):
+        d.setVarFlag('do_copy_defconfig', 'noexec', '1')
+}
 
 # Remove kernel binary from rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base:summitsom = ""
@@ -58,5 +62,5 @@ do_patch:append:summitsom () {
 # Build SDMA firmware into kernel
 DEPENDS:append:summitsom:mx8m-generic-bsp = " firmware-imx"
 do_compile:prepend:summitsom:mx8m-generic-bsp () {
-    cp -af -t "${S}/firmware" "${STAGING_LIBDIR}/firmware"
+    cp -af -t "${S}" "${STAGING_LIBDIR}/firmware"
 }

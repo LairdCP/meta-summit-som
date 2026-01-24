@@ -213,8 +213,14 @@ create_boot_partition() {
 			"${SRCDIR}/u-boot.img" \
 			"${SRCDIR}/uboot.env"
 	elif [ -f "${SRCDIR}/flash.bin" ]; then
+		if strings "${SRCDIR}/flash.bin" | grep -xq 'fsl,imx8m[mq]'; then
+			IMX_BOOT_SEEK=33
+		else
+			IMX_BOOT_SEEK=32
+		fi
 		cp -t "${BOOT_PART}" "${SRCDIR}/uboot.env"
-		/usr/bin/dd if="${SRCDIR}/flash.bin" of="${TARGET}" bs=1k seek=32 status=none
+		/usr/bin/dd if="${SRCDIR}/flash.bin" of="${TARGET}" bs=1k \
+			seek=${IMX_BOOT_SEEK} status=none
 	fi
 
 	if ! ${boot_only}; then

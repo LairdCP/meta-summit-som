@@ -4,7 +4,7 @@ LICENSE = "Ezurio"
 NO_GENERIC_LICENSE[Ezurio] = "LICENSE.ezurio"
 LIC_FILES_CHKSUM = "file://LICENSE.ezurio;md5=fd3dd0630b215465b6f50540642d5b93"
 
-inherit allarch
+inherit allarch systemd
 
 KEY_LOCATION_VALUE ?= ""
 
@@ -16,6 +16,8 @@ SRC_URI = " \
     file://ubi_update_support.sh \
     file://emmc_update_support.sh \
     file://erase_som_nand \
+    file://fw_update@.service \
+    file://fw_update.socket \
     "
 
 RDEPENDS:${PN} = "\
@@ -25,9 +27,17 @@ RDEPENDS:${PN} = "\
     curl \
 "
 
+PACKAGES += "${PN}-push"
+
+RRECOMMENDS:${PN} += "${PN}-push"
+
+SYSTEMD_PACKAGES = "${PN}-push"
+SYSTEMD_SERVICE:${PN}-push += "fw_update.socket fw_update@.service"
+
 S = "${UNPACKDIR}"
 
-FILES:${PN} += "${systemd_unitdir} ${sysconfdir}"
+FILES:${PN} += "${systemd_unitdir}/system/swupdate.d ${sysconfdir}"
+FILES:${PN}-push += "${systemd_unitdir}/system"
 
 do_install () {
     install -D -m 0755 -t "${D}${bindir}" \
@@ -43,5 +53,10 @@ do_install () {
     if [ -n "${KEY_LOCATION_VALUE}" ]; then
 	    echo "SWUPDATE_ARGS=\"\${SWUPDATE_ARGS} -k ${KEY_LOCATION_VALUE}\"" > \
             "${D}${sysconfdir}/swupdate/conf.d/11-signing.conf"
+    fi
+
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
+        install -D -m 0644 -t "${D}${systemd_unitdir}/system" \
+            "${S}/fw_update@.service" "${S}/fw_update.socket"
     fi
 }
