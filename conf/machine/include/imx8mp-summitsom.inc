@@ -35,7 +35,6 @@ DDR_FIRMWARE_NAME = " \
 SPL_BINARY = "spl/u-boot-spl.bin"
 
 ATF_PLATFORM = "imx8mp"
-ATF_LOAD_ADDR = "0x970000"
 
 SERIAL_CONSOLES = "115200;ttymxc1"
 

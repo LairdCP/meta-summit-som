@@ -36,8 +36,9 @@ SRC_URI:append:imx8mp-summitsom = " \
 
 KERNEL_DTC_FLAGS:append:summitsom = "${@' -@' if d.getVar('KERNEL_DEVICETREE').find('.dtbo') else ''}"
 
-KERNEL_DEFCONFIG_SUMMIT:imx8mm-nitrogen-smarc ?= "nitrogen_imx8mm_defconfig"
 KERNEL_DEFCONFIG_SUMMIT:imx8mp-summitsom ?= "summitsom_defconfig"
+KERNEL_DEFCONFIG_SUMMIT:imx8mm-nitrogen-smarc ?= "nitrogen_imx8mm_defconfig"
+KERNEL_DEFCONFIG_SUMMIT:imx8mp-nitrogen-smarc ?= "nitrogen_imx8mp_defconfig"
 KERNEL_DEFCONFIG_SUMMIT:imx93-nitrogen-smarc ?= "nitrogen_imx93_defconfig"
 KERNEL_DEFCONFIG_SUMMIT:imx95-nitrogen-smarc ?= "nitrogen_imx95_defconfig"
 
