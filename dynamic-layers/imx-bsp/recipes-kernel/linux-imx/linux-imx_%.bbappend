@@ -25,7 +25,7 @@ SRC_URI:append:summitsom = " \
     file://0058-sn65dsi83-ignore-pll-lock-failure.patch \
     file://0059-imx-mipi-csis-enable-camera-link.patch \
     file://dts \
-    file://${KERNEL_DEFCONFIG_SUMMIT} \
+    ${KERNEL_DEFCONFIG_SUMMIT} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'file://disable_framebuffer_console.cfg', '', d)} \
     "
 
@@ -34,13 +34,14 @@ SRC_URI:append:imx8mp-summitsom = " \
     file://0004-Introduce-the-BQ25790-charger-driver.patch \
     "
 
-KERNEL_DTC_FLAGS:append:summitsom = "${@' -@' if d.getVar('KERNEL_DEVICETREE').find('.dtbo') else ''}"
+KERNEL_DTC_FLAGS:append:summitsom = " ${@' -@' if d.getVar('KERNEL_DEVICETREE').find('.dtbo') else ''}"
 
-KERNEL_DEFCONFIG_SUMMIT:imx8mp-summitsom ?= "summitsom_defconfig"
-KERNEL_DEFCONFIG_SUMMIT:imx8mm-nitrogen-smarc ?= "nitrogen_imx8mm_defconfig"
-KERNEL_DEFCONFIG_SUMMIT:imx8mp-nitrogen-smarc ?= "nitrogen_imx8mp_defconfig"
-KERNEL_DEFCONFIG_SUMMIT:imx93-nitrogen-smarc ?= "nitrogen_imx93_defconfig"
-KERNEL_DEFCONFIG_SUMMIT:imx95-nitrogen-smarc ?= "nitrogen_imx95_defconfig"
+KERNEL_DEFCONFIG_SUMMIT:imx8mp-summitsom ?= "file://summitsom_defconfig"
+KERNEL_DEFCONFIG_SUMMIT:imx8mm-nitrogen-smarc ?= "file://nitrogen_imx8mm_defconfig"
+KERNEL_DEFCONFIG_SUMMIT:imx8mp-nitrogen-smarc ?= "file://nitrogen_imx8mp_defconfig"
+KERNEL_DEFCONFIG_SUMMIT:imx93-nitrogen-smarc ?= "file://nitrogen_imx93_defconfig"
+KERNEL_DEFCONFIG_SUMMIT:imx95-nitrogen-smarc ?= "file://nitrogen_imx95_defconfig"
+KERNEL_DEFCONFIG_SUMMIT ?= ""
 
 LOCALVERSION:summitsom = ""
 SCMVERSION:summitsom = "n"
