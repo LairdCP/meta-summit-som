@@ -27,3 +27,7 @@ RDEPENDS:${PN} = " \
     ${@bb.utils.contains('COMBINED_FEATURES', 'alsa', 'alsa-utils-alsamixer alsa-utils-aplay', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'less', '', d)} \
     "
+
+RDEPENDS:${PN}:append:k3 = " \
+    summit-prov \
+    "

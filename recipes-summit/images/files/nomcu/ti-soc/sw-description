@@ -85,6 +85,14 @@ software =
 					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin)";
 				},
+				{
+					filename = "prov_data.tar.zst_sign_enc.bin";
+					path = "prov_data.tar.zst_sign_enc.bin";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
+					filesystem = "vfat";
+					installed-directly = true;
+					sha256 = "$swupdate_get_sha256(prov_data.tar.zst_sign_enc.bin)";
+				},
 			);
 
 			scripts: (
@@ -180,6 +188,14 @@ software =
 					filesystem = "vfat";
 					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin)";
+				},
+				{
+					filename = "prov_data.tar.zst_sign_enc.bin";
+					path = "prov_data.tar.zst_sign_enc.bin";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
+					filesystem = "vfat";
+					installed-directly = true;
+					sha256 = "$swupdate_get_sha256(prov_data.tar.zst_sign_enc.bin)";
 				},
 			);
 
@@ -346,6 +362,13 @@ software =
 					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin)";
 				},
 				{
+					filename = "prov_data.tar.zst_sign_enc.bin";
+					path = "prov_data.tar.zst_sign_enc.bin";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
+					filesystem = "vfat";
+					sha256 = "$swupdate_get_sha256(prov_data.tar.zst_sign_enc.bin)";
+				},
+				{
 					filename = "fitImage";
 					path = "fitImage";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
@@ -358,6 +381,13 @@ software =
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
 					filesystem = "vfat";
 					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin)";
+				},
+				{
+					filename = "prov_data.tar.zst_sign_enc.bin";
+					path = "prov_data.tar.zst_sign_enc.bin";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
+					filesystem = "vfat";
+					sha256 = "$swupdate_get_sha256(prov_data.tar.zst_sign_enc.bin)";
 				},
 			);
 

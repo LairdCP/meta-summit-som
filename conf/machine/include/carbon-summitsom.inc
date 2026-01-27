@@ -14,7 +14,14 @@ IMAGE_FSTYPES = ""
 
 IMAGE_CLASSES += "dm-verity"
 
-SWUPDATE_IMAGES = "${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin uboot.env ${KERNEL_IMAGETYPE}"
+SWUPDATE_IMAGES = "\
+    ${SPL_BINARYNAME} \
+    u-boot.${UBOOT_SUFFIX} \
+    tiboot3.bin \
+    uboot.env \
+    ${KERNEL_IMAGETYPE} \
+    prov_data.tar.zst_sign_enc.bin \
+    "
 
 FIT_KERNEL_COMP_ALG = "zstd"
 FIT_KERNEL_COMP_ALG_EXTENSION = ".zst"
