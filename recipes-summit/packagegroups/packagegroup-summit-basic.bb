@@ -33,4 +33,5 @@ RDEPENDS:${PN} = " \
 
 RDEPENDS:${PN}:append:k3 = " \
     iproute2-devlink \
+    summit-prov \
     "
