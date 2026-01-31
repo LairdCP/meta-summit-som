@@ -1,0 +1,16 @@
+[Unit]
+Description=Start psplash-systemd progress communication helper
+DefaultDependencies=no
+After=psplash-start.service
+BindsTo=psplash-start.service
+RequiresMountsFor=/tmp
+ConditionFileIsExecutable=/usr/bin/psplash
+ConditionFileIsExecutable=/usr/bin/psplash-systemd
+ConditionPathExists=/tmp/psplash_fifo
+
+[Service]
+ExecStart=/usr/bin/psplash-systemd
+Environment="PSPLASH_FIFO_DIR=/tmp"
+
+[Install]
+WantedBy=sysinit.target
