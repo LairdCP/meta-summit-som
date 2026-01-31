@@ -20,8 +20,10 @@ IMAGE_NAME_SUFFIX ?= ""
 
 IMAGE_ROOTFS_EXTRA_SPACE = "0"
 
-IMAGE_BOOTSTR = "bootside=\${bootside} quiet init=/usr/sbin/overlayRoot.sh"
-IMAGE_BOOTSTR:summit-secure = "bootside=\${bootside} quiet init=/usr/sbin/pre-systemd-init.sh"
+SUMMIT_CONSOLE_LOGGING ?= "quiet"
+
+IMAGE_BOOTSTR = "bootside=\${bootside} ${SUMMIT_CONSOLE_LOGGING} init=/usr/sbin/overlayRoot.sh"
+IMAGE_BOOTSTR:summit-secure = "bootside=\${bootside} ${SUMMIT_CONSOLE_LOGGING} init=/usr/sbin/pre-systemd-init.sh"
 
 IMAGE_FEATURES = "\
     ssh-server-dropbear \
