@@ -1,18 +1,16 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SPLASH_IMAGES = "file://ezurio-logo-img.h;outsuffix=default"
+SPLASH_IMAGES:summitsom = "file://ezurio-logo-img.h;outsuffix=default"
 
-SRC_URI += " \
+SRC_URI:append:summitsom = " \
     file://0001-double-buffering.patch \
     file://psplash-start.service \
     file://psplash-systemd.service \
     "
 
-FILES:${PN} += "${systemd_system_unitdir}"
+SYSTEMD_SERVICE:${PN}:summitsom = "psplash-start.service psplash-systemd.service"
 
-SYSTEMD_SERVICE:${PN} = "psplash-start.service psplash-systemd.service"
-
-do_install:append() {
+do_install:append:summitsom() {
 	if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
         rm  "${D}${systemd_system_unitdir}/psplash-start@.service" \
             "${D}${systemd_system_unitdir}/psplash-systemd.service" \
