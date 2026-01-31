@@ -5,9 +5,12 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384
 
 inherit packagegroup
 
-PACKAGECONFIG ?= "${SUMMIT_SOM_RADIO_TYPE}"
-PACKAGECONFIG:imx8mp-summitsom = "60-som8mp"
+SUMMIT_SOM_RADIO_TYPE ?= "none"
+SUMMIT_SOM_RADIO_TYPE:imx8mp-summitsom = "60-som8mp"
 
+PACKAGECONFIG ?= "${SUMMIT_SOM_RADIO_TYPE}"
+
+PACKAGECONFIG[none] = ""
 PACKAGECONFIG[60-sdio-uart] = ",,,60-radio-firmware-sdio-uart ${RADIO_60_PACKAGES}"
 PACKAGECONFIG[60-sdio-sdio] = ",,,60-radio-firmware-sdio-sdio ${RADIO_60_PACKAGES}"
 PACKAGECONFIG[60-som8mp] = ",,,som8mp-radio-firmware ${RADIO_60_PACKAGES}"
