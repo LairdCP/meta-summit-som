@@ -50,7 +50,7 @@ MACHINE_EXTRA_RDEPENDS += "${MACHINE_FIRMWARE} kernel-modules"
 
 IMX_DEFAULT_BSP = "nxp"
 
-MACHINE_EXTRA_RRECOMMENDS:remove = "imx-m7-demos"
+MACHINE_EXTRA_RRECOMMENDS:remove = "imx-m4-demos"
 
 KERNEL_CLASSES  = "kernel-fitimage"
 KERNEL_IMAGETYPES = "fitImage"
