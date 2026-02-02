@@ -5,13 +5,10 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384
 
 inherit packagegroup
 
-RADIO_SUPPORT ?= ""
-RADIO_SUPPORT:imx8mp-summitsom = "${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'packagegroup-summit-radio-stack-60', '', d)}"
-RADIO_SUPPORT:k3:summitsom = "${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'packagegroup-summit-radio-stack-combo', '', d)}"
-
 RDEPENDS:${PN} = " \
     summit-set-mode \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', "${RADIO_SUPPORT}", '', d)} \
+    python3 \
+    python3-dbus-fast \
     "
 
 RDEPENDS:${PN}:append:imx8mp-summitsom = " \

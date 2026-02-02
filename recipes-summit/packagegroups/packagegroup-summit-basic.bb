@@ -22,6 +22,7 @@ RDEPENDS:${PN} = " \
     summit-automount \
     summit-initdata \
     summit-update \
+    packagegroup-summit-radio-stack-som \
     ${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget', 'summit-usbgadget', '', d)} \
     ${@bb.utils.contains('COMBINED_FEATURES', 'alsa', 'alsa-utils-alsamixer alsa-utils-aplay', '', d)} \
     "

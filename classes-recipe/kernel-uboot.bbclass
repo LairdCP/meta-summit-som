@@ -44,7 +44,7 @@ uboot_prep_kimage() {
 		elif [ "${linux_comp}" = "lzo" ] ; then
 			lzop -9 linux.bin
 		elif [ "${linux_comp}" = "zstd" ] ; then
-			zstd -9 linux.bin -o linux.bin.zst
+			zstd -9 linux.bin
 		fi
 		mv -f "linux.bin${linux_suffix}" linux.bin
 	fi
