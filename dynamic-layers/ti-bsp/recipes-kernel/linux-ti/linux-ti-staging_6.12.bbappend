@@ -32,32 +32,30 @@ SRC_URI:append:summitsom = " \
     file://0054-rv3028-fix-eeprom-device-tree-support.patch \
     file://0055-mcp23s08-allow-edge-trigger.patch \
     file://0056-ti-arm64-dts-ti-k3-am62-move-wakeup-source.patch \
+    file://dts \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'file://disable_framebuffer_console.cfg', '', d)} \
     "
 
-SRC_URI:append:summitsom = " \
-    file://dts \
-    "
+KERNEL_DTC_FLAGS:append:summitsom = " ${@' -@' if d.getVar('KERNEL_DEVICETREE').find('.dtbo') else ''}"
 
-KERNEL_DTC_FLAGS:append:summitsom = "${@' -@' if d.getVar('KERNEL_DEVICETREE').find('.dtbo') else ''}"
+KERNEL_CONFIG_SUMMIT:am62xx = "k3-am625-carbon_defconfig"
+KERNEL_CONFIG_SUMMIT:j722s  = "k3-am675-carbon_defconfig"
+KERNEL_CONFIG_SUMMIT ?= ""
+
 KERNEL_DTBVENDORED:summitsom = "0"
-KERNEL_DEFCONFIG:summitsom = "file://${KERNEL_DEFCONFIG_SUMMIT}"
-KERNEL_DEFCONFIG_SUMMIT:am62xx = "k3-am625-carbon_defconfig"
-KERNEL_DEFCONFIG_SUMMIT:j722s  = "k3-am675-carbon_defconfig"
+KERNEL_DEFCONFIG:summitsom = "file://${KERNEL_CONFIG_SUMMIT}"
+
+# Remove kernel binary from rootfs
+RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base:summitsom = ""
 
 python do_patch:append:summitsom () {
     bb.build.exec_func('do_copy_dts', d)
 }
 
 do_copy_dts () {
-    cp -af "${UNPACKDIR}/dts" "${S}/arch/arm64/boot"
+    cp -af -t "${S}/arch/arm64/boot" "${UNPACKDIR}/dts"
 }
 
 do_configure:prepend:summitsom() {
-    cp -f "${UNPACKDIR}/${KERNEL_DEFCONFIG_SUMMIT}" "${UNPACKDIR}/defconfig"
+    cp -f "${UNPACKDIR}/${KERNEL_CONFIG_SUMMIT}" "${UNPACKDIR}/defconfig"
 }
-
-# Remove kernel binary from rootfs
-RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base:summitsom = ""
-
-INSANE_SKIP += "patch-status"

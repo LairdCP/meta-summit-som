@@ -3,7 +3,7 @@ DESCRIPTION = "Enable certificate provisioning support for Summit-RCM"
 
 require summit-rcm.inc
 
-S = "${WORKDIR}/git/summit_rcm/plugins/provisioning"
+S = "${UNPACKDIR}/git/summit_rcm/plugins/provisioning"
 
 SRC_URI:append = "\
     file://ca.crt \
@@ -29,9 +29,9 @@ export SUMMIT_RCM_CERTIFICATE_PROVISIONING_PLUGIN_EXTRA_PACKAGES = "\
     "
 
 do_install:append() {
-    install -D -m 644 "${WORKDIR}/server.crt" "${D}${sysconfdir}/summit-rcm/ssl/provisioning.crt"
-    install -D -m 644 "${WORKDIR}/server.key" "${D}${sysconfdir}/summit-rcm/ssl/provisioning.key"
-    install -D -m 644 "${WORKDIR}/ca.crt" "${D}${sysconfdir}/summit-rcm/ssl/provisioning.ca.crt"
+    install -D -m 644 "${UNPACKDIR}/server.crt" "${D}${sysconfdir}/summit-rcm/ssl/provisioning.crt"
+    install -D -m 644 "${UNPACKDIR}/server.key" "${D}${sysconfdir}/summit-rcm/ssl/provisioning.key"
+    install -D -m 644 "${UNPACKDIR}/ca.crt" "${D}${sysconfdir}/summit-rcm/ssl/provisioning.ca.crt"
 }
 
 do_install:append:summit-secure () {

@@ -3,7 +3,7 @@ DESCRIPTION = "AWM (Adaptive Worldwide Mode) configuration support to Summit RCM
 
 require summit-rcm.inc
 
-S = "${WORKDIR}/git/summit_rcm/plugins/awm"
+S = "${UNPACKDIR}/git/summit_rcm/plugins/awm"
 
 RDEPENDS:${PN} += "summit-rcm"
 

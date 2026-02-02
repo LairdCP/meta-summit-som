@@ -3,7 +3,7 @@ DESCRIPTION = "Enable support to control stunnel"
 
 require summit-rcm.inc
 
-S = "${WORKDIR}/git/summit_rcm/plugins/stunnel"
+S = "${UNPACKDIR}/git/summit_rcm/plugins/stunnel"
 
 RDEPENDS:${PN} += "\
     summit-rcm \

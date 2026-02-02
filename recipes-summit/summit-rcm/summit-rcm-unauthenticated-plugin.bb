@@ -7,7 +7,7 @@ public/external zone interface."
 
 require summit-rcm.inc
 
-S = "${WORKDIR}/git/summit_rcm/plugins/unauthenticated"
+S = "${UNPACKDIR}/git/summit_rcm/plugins/unauthenticated"
 
 RDEPENDS:${PN} += "summit-rcm"
 

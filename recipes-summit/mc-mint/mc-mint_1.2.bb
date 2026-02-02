@@ -17,7 +17,7 @@ SRC_URI = "http://downloads.sourceforge.net/project/mc-mint/mc-mint/Mint%201.2/m
 SRC_URI[md5sum] = "75d513fff571d283c407608c4bcbe2c5"
 SRC_URI[sha256sum] = "470fc10c7060e002f71c2bc513be428dfe0dd01529e8f1edcd650c1e6d90d773"
 
-S = "${WORKDIR}/mint-${PV}"
+S = "${UNPACKDIR}/mint-${PV}"
 
 do_install() {
     install -D -m 755 mint "${D}${bindir}/mint"

@@ -26,6 +26,7 @@ SRC_URI:append:summitsom = " \
     file://0059-imx-mipi-csis-enable-camera-link.patch \
     file://0060-sec_mipi_dsim-imx-probe.patch \
     file://0061-mxc-viv-disable-vg-fix.patch \
+    file://dts \
     ${KERNEL_CONFIG_SUMMIT} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'file://disable_framebuffer_console.cfg', '', d)} \
     "
@@ -37,11 +38,11 @@ SRC_URI:append:imx8mp-summitsom = " \
 
 KERNEL_DTC_FLAGS:append:summitsom = " ${@' -@' if d.getVar('KERNEL_DEVICETREE').find('.dtbo') else ''}"
 
-KERNEL_CONFIG_SUMMIT:imx8mp-summitsom ?= "file://summitsom_defconfig file://dts"
-KERNEL_CONFIG_SUMMIT:imx8mm-nitrogen-smarc ?= "file://nitrogen_imx8mm_defconfig file://dts"
-KERNEL_CONFIG_SUMMIT:imx8mp-nitrogen-smarc ?= "file://nitrogen_imx8mp_defconfig file://dts"
-KERNEL_CONFIG_SUMMIT:imx93-nitrogen-smarc ?= "file://nitrogen_imx93_defconfig file://dts"
-KERNEL_CONFIG_SUMMIT:imx95-nitrogen-smarc ?= "file://nitrogen_imx95_defconfig file://dts"
+KERNEL_CONFIG_SUMMIT:imx8mp-summitsom ?= "file://summitsom_defconfig"
+KERNEL_CONFIG_SUMMIT:mx8mm-generic-bsp = "file://nitrogen_imx8mm_defconfig"
+KERNEL_CONFIG_SUMMIT:mx8mp-generic-bsp ?= "file://nitrogen_imx8mp_defconfig"
+KERNEL_CONFIG_SUMMIT:mx93-generic-bsp ?= "file://nitrogen_imx93_defconfig"
+KERNEL_CONFIG_SUMMIT:mx95-generic-bsp ?= "file://nitrogen_imx95_defconfig"
 KERNEL_CONFIG_SUMMIT ?= ""
 
 LOCALVERSION:summitsom = ""
@@ -50,13 +51,13 @@ SCMVERSION:summitsom = "n"
 # Use our defconfig
 IMX_KERNEL_CONFIG_AARCH64:summitsom = ""
 
+# Remove kernel binary from rootfs
+RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base:summitsom = ""
+
 python __anonymous() {
     if 'summitsom' in d.getVar('OVERRIDES', True).split(':'):
         d.setVarFlag('do_copy_defconfig', 'noexec', '1')
 }
-
-# Remove kernel binary from rootfs
-RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base:summitsom = ""
 
 do_patch:append:summitsom () {
     cp -af -t "${S}/arch/arm64/boot" "${UNPACKDIR}/dts"

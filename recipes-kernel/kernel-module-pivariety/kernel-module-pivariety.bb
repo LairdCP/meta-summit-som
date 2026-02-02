@@ -9,5 +9,5 @@ SRC_URI = " \
         file://pivariety \
         "
 
-# The kernel module MUST NOT be built in WORKDIR, otherwise clean will break it
-S = "${WORKDIR}/pivariety"
+# The kernel module MUST NOT be built in UNPACKDIR, otherwise clean will break it
+S = "${UNPACKDIR}/pivariety"

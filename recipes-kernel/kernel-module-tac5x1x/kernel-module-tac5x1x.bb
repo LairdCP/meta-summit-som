@@ -9,5 +9,5 @@ SRC_URI = " \
         file://tac5x1x \
         "
 
-# The kernel module MUST NOT be built in WORKDIR, otherwise clean will break it
-S = "${WORKDIR}/tac5x1x"
+# The kernel module MUST NOT be built in UNPACKDIR, otherwise clean will break it
+S = "${UNPACKDIR}/tac5x1x"

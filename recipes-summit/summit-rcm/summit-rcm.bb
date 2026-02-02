@@ -4,7 +4,7 @@ require summit-rcm.inc
 
 inherit systemd
 
-S = "${WORKDIR}/git"
+S = "${UNPACKDIR}/git"
 
 SRC_URI:append = "\
     file://ca.crt \
@@ -58,7 +58,7 @@ export SUMMIT_RCM_EXTRA_PACKAGES = "\
 do_install:append() {
     install -D -m 644 -t "${D}${sysconfdir}/" "${S}/summit-rcm.ini"
     install -D -m 644 -t "${D}${sysconfdir}/summit-rcm/ssl" \
-        "${WORKDIR}/server.key" "${WORKDIR}/server.crt" "${WORKDIR}/ca.crt"
+        "${UNPACKDIR}/server.key" "${UNPACKDIR}/server.crt" "${UNPACKDIR}/ca.crt"
 
     sed -i -e '/^default_/d' "${D}${sysconfdir}/summit-rcm.ini"
     sed -i -e '/\[summit-rcm\]/a default_password: \"${PASSWORD}\"' "${D}${sysconfdir}/summit-rcm.ini"

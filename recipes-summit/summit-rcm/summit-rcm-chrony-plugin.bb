@@ -3,7 +3,7 @@ DESCRIPTION = "Enable chrony wrapper for NTP configuration"
 
 require summit-rcm.inc
 
-S = "${WORKDIR}/git/summit_rcm/plugins/chrony"
+S = "${UNPACKDIR}/git/summit_rcm/plugins/chrony"
 
 RDEPENDS:${PN} += "\
     summit-rcm \
