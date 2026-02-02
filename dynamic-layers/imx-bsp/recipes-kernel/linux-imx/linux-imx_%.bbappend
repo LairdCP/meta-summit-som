@@ -38,11 +38,11 @@ SRC_URI:append:imx8mp-summitsom = " \
 
 KERNEL_DTC_FLAGS:append:summitsom = " ${@' -@' if d.getVar('KERNEL_DEVICETREE').find('.dtbo') else ''}"
 
-KERNEL_CONFIG_SUMMIT:imx8mp-summitsom ?= "file://summitsom_defconfig"
 KERNEL_CONFIG_SUMMIT:mx8mm-generic-bsp = "file://nitrogen_imx8mm_defconfig"
-KERNEL_CONFIG_SUMMIT:mx8mp-generic-bsp ?= "file://nitrogen_imx8mp_defconfig"
-KERNEL_CONFIG_SUMMIT:mx93-generic-bsp ?= "file://nitrogen_imx93_defconfig"
-KERNEL_CONFIG_SUMMIT:mx95-generic-bsp ?= "file://nitrogen_imx95_defconfig"
+KERNEL_CONFIG_SUMMIT:mx8mp-generic-bsp = "file://nitrogen_imx8mp_defconfig"
+KERNEL_CONFIG_SUMMIT:mx93-generic-bsp = "file://nitrogen_imx93_defconfig"
+KERNEL_CONFIG_SUMMIT:mx95-generic-bsp = "file://nitrogen_imx95_defconfig"
+KERNEL_CONFIG_SUMMIT:imx8mp-summitsom = "file://summitsom_defconfig"
 KERNEL_CONFIG_SUMMIT ?= ""
 
 LOCALVERSION:summitsom = ""
