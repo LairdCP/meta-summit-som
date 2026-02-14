@@ -26,6 +26,8 @@ SRC_URI:append:summitsom = " \
     file://0059-imx-mipi-csis-enable-camera-link.patch \
     file://0060-sec_mipi_dsim-imx-probe.patch \
     file://0061-mxc-viv-disable-vg-fix.patch \
+    file://0062-gpio-Add-GPIO-fanout-driver.patch \
+    file://0063-phy-freescale-imx8mq-usb-set-vbus-depending-on-mode.patch \
     file://dts \
     ${KERNEL_CONFIG_SUMMIT} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'file://disable_framebuffer_console.cfg', '', d)} \

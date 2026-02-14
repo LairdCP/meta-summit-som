@@ -17,7 +17,6 @@ SRC_URI:append:summitsom = " \
     file://0023-am67-add-peripherals.patch \
     file://0026-dp83867-irq.patch \
     file://0027-davinci-mdio-missing-cpu.patch \
-    file://0028-tidss-rgb18-limit.patch \
     file://0030-tps65219-trap.patch \
     file://0040-k3-am62p-j722s-remove-duplicate-dphy0.patch \
     file://0045-mcan-suspend-crash.patch \
@@ -33,6 +32,9 @@ SRC_URI:append:summitsom = " \
     file://0055-rtc-rv3028-fix-name-collisions.patch \
     file://0056-mcp23s08-allow-edge-trigger.patch \
     file://0057-ti-arm64-dts-ti-k3-am62-move-wakeup-source.patch \
+    file://0057-cpsw-probe.patch \
+    file://0058-drm-bridge-Add-simple-format-bridge-driver.patch \
+    file://0059-gpio-Add-GPIO-fanout-driver.patch \
     file://dts \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'file://disable_framebuffer_console.cfg', '', d)} \
     "
