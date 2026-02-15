@@ -10,12 +10,13 @@ SRC_URI = " \
     file://LICENSE.ezurio \
     file://usb-gadget.sh \
     file://usb-gadget.rules \
-    file://usb-gadget.service \
+    file://usb-gadget.rules.systemd \
+    file://usb-gadget@.service \
     file://shared-usb0.nmconnection \
+    file://shared-usb1.nmconnection \
     "
 
-SYSTEMD_SERVICE:${PN} = "usb-gadget.service"
-SYSTEMD_AUTO_ENABLE = "enable"
+SYSTEMD_SERVICE:${PN} = "usb-gadget@.service"
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
@@ -38,7 +39,7 @@ FILES:${PN} += "${systemd_system_unitdir} ${libdir}"
 do_install() {
     install -D -m 0755 -t "${D}${bindir}" "${S}/usb-gadget.sh"
     install -D -m 0600 -t "${D}${libdir}/NetworkManager/system-connections/" \
-        "${S}/shared-usb*.nmconnection"
+        "${S}"/shared-usb*.nmconnection
 
     install -d "${D}${sysconfdir}/default"
     {
