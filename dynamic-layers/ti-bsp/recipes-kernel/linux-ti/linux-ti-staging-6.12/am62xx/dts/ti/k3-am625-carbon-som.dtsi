@@ -154,7 +154,7 @@
 		/* output of U4 */
 		compatible = "regulator-fixed";
 		regulator-name = "reg_3v3";
-		vin-supply = <&reg_3v3>;
+		vin-supply = <&reg_5v0>;
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 		regulator-always-on;
@@ -186,7 +186,7 @@
 		regulator-max-microvolt = <3300000>;
 
 		pinctrl-names = "default";
-		pinctrl-0 = <&vsel_mmc1_pins_default>;
+		pinctrl-0 = <&main_vsel_mmc1_pins_default>;
 		gpios = <&main_gpio0 31 GPIO_ACTIVE_LOW>;
 
 		/* initial state must be 3.3V */
@@ -414,7 +414,7 @@
 		"","ETH_A_INT","ETH_A_RST","","", 		/* 0 - 4 */
 		"","","","","",
 		"","","","GPIO_A_0","RGB_VDD_EN",			/* 10 - 14 */
-		"EMMC_RESET#","WIFI_WAKE","USB_B_EN","RGB_CS","RGB_RESET#",
+		"EMMC_RESET#","WIFI_WAKE","USB_B_ID","RGB_CS","RGB_RESET#",
 		"W_DISABLE1#","W_DISABLE2#","VPP_EN","","",	/* 20 - 24 */
 		"SDIO_A_PWR_EN","","","","CAM_A_RST",
 		"LVDS_D_VDD_EN","SDIO_A_IOPWR","","LVDS_D_BL_EN","",		/* 30 - 34 */
@@ -440,11 +440,11 @@
 		"","","","","",
 		"","","","","",					/* 20 - 24 */
 		"","","","","",
-		"","","","","",					/* 30 - 34 */
-		"USB_B_ID","","","","",
+		"USB_A_ID","","","","",					/* 30 - 34 */
+		"","","","","",
 		"","","","","",					/* 40 - 44 */
 		"","","","SDIO_A_CD#","",
-		"USB_A_EN","USB_A_ID";						/* 50 - 51 */
+		"USB_A_EN","USB_B_EN";						/* 50 - 51 */
 };
 
 &main_i2c0 {
@@ -790,15 +790,27 @@
 		>;
 	};
 
-	main_usb0_pins_default: main-usb0-default-pins {
+	main_usb0_en_pins_default: main-usb0-en-default-pins {
 		pinctrl-single,pins = <
 			AM62X_IOPAD(0x254, PIN_OUTPUT, 0) /* USB_A_EN (C20) USB0_DRVVBUS */
 		>;
 	};
 
-	main_usb1_pins_default: main-usb1-default-pins {
+	main_usb1_en_pins_default: main-usb1-en-default-pins {
 		pinctrl-single,pins = <
-			AM62X_IOPAD(0x044, PIN_OUTPUT, 7) /* USB_B_EN (N24) GPMC0_AD2.GPIO0_17 */
+			AM62X_IOPAD(0x258, PIN_OUTPUT, 0) /* USB_B_EN (F18) USB1_DRVVBUS */
+		>;
+	};
+
+	main_usb0_id_pins_default: main-usb0-id-default-pins {
+		pinctrl-single,pins = <
+			AM62X_IOPAD(0x1f0, PIN_INPUT_PULLUP, 7) /* USB_A_ID (A18) EXT_REFCLK1.GPIO1_30 */
+		>;
+	};
+
+	main_usb1_id_pins_default: main-usb1-id-default-pins {
+		pinctrl-single,pins = <
+			AM62X_IOPAD(0x044, PIN_INPUT_PULLUP, 7) /* USB_B_ID (N24) GPMC0_AD2.GPIO0_17 */
 		>;
 	};
 
@@ -917,7 +929,7 @@
 		>;
 	};
 
-	ospi0_pins_default: ospi0-default-pins {
+	main_ospi0_pins_default: main-ospi0-default-pins {
 		pinctrl-single,pins = <
 			AM62X_IOPAD(0x000, PIN_OUTPUT, 0) /* SPI_A_SCK (H24) OSPI0_CLK */
 			AM62X_IOPAD(0x02c, PIN_OUTPUT, 0) /* SPI_A_CS0 (F23) OSPI0_CSn0 */
@@ -929,7 +941,7 @@
 		>;
 	};
 
-	vsel_mmc1_pins_default: vsel-mmc1-default-pins {
+	main_vsel_mmc1_pins_default: main-vsel-mmc1-default-pins {
 		pinctrl-single,pins = <
 			AM62X_IOPAD(0x07c, PIN_INPUT, 7) /* VSEL_SD (P25) GPMC0_CLK.GPIO0_31 */
 		>;
@@ -941,7 +953,7 @@
 		>;
 	};
 
-	main_cam_a_default: main-cam-a-default-pins {
+	main_cam_a_pins_default: main-cam-a-default-pins {
 		pinctrl-single,pins = <
 			AM62X_IOPAD(0x128, PIN_INPUT, 7) /* CAM_A_PWR (B23) MMC2_SDWP.GPIO0_72 */
 			AM62X_IOPAD(0x074, PIN_INPUT, 7) /* CAM_A_RST# (U25) GPMC0_AD14.GPIO0_29 */
@@ -975,18 +987,6 @@
 	main_lvds_d_backlight_en_default: main-lvds-d-backlight-en-default-pins {
 		pinctrl-single,pins = <
 			AM62X_IOPAD(0x088, PIN_INPUT, 7) /* LVDS_D_BL_EN (L17) GPMC0_OEn_REn.GPIO0_33 */
-		>;
-	};
-
-	main_usb_a_id_pins_default: main-usb-a-id-default-pins {
-		pinctrl-single,pins = <
-			AM62X_IOPAD(0x258, PIN_INPUT_PULLUP, 7) /* USB_A_ID (F18) USB1_DRVVBUS.GPIO1_51 */
-		>;
-	};
-
-	main_usb_b_id_pins_default: main-usb-b-id-default-pins {
-		pinctrl-single,pins = <
-			AM62X_IOPAD(0x1f0, PIN_INPUT_PULLUP, 7) /* USB_B_ID (A18) EXT_REFCLK1.GPIO1_30 */
 		>;
 	};
 
@@ -1268,7 +1268,7 @@
 &ospi0 {
 	/* SPI_A Only 4 bits are routed out */
 	pinctrl-names = "default";
-	pinctrl-0 = <&ospi0_pins_default>;
+	pinctrl-0 = <&main_ospi0_pins_default>;
 };
 
 &sdhci0 {
