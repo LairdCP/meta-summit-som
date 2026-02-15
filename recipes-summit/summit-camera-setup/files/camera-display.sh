@@ -22,18 +22,34 @@ done
 FORMAT="$(media-ctl -d "${ID}" -p -e "${SENSOR}" | sed -rn 's/.*fmt:(.*)\/([0-9]+)x([0-9]+).*/\1 \2 \3/p')"
 CAM_DEV=$(media-ctl -d "${ID}" -p -e "${NODE}" | sed -rn 's/\s+device node name ([^ ]+)/\1/p')
 
-format=$(v4l2-ctl -d "${CAM_DEV}" --list-formats-ext | sed -rn "s/\s+\[0\]: '([A-Z0-9]+)'.*/\1/p")
-case "${format}" in
-    YU12) format=UYVY ;;
-    YUYV) format=YUY2 ;;
-esac
+if v4l2-ctl -d "${CAM_DEV}" --list-formats | grep -q UYVY ; then
+    format=UYVY
+else
+    format=YUY2
+fi
 
 if pgrep wayland >/dev/null 2>&1; then
     SINK=waylandsink
-elif [ -r /sys/devices/soc0/soc_id ]; then
-    read -r soc_id < /sys/devices/soc0/soc_id || soc_id=
+else
+	if [ -f /sys/devices/soc0/soc_id ]; then
+		# Get the SoC ID
+		read -r soc_id < /sys/devices/soc0/soc_id
+	elif [ -f /sys/devices/soc0/family ]; then
+		# Get the SoC family
+		read -r soc_id < /sys/devices/soc0/family
+	else
+		soc_id="unknown"
+	fi
 
     case "${soc_id}" in
+        AM6*|J722S)
+            if media-ctl -d "${ID}" -p | grep -q 'pivariety'; then
+                SINK="kmssink can-scale=false"
+            else
+                SINK="kmssink"
+            fi
+            formatstr=",format=UYVY"
+            ;;
         i.MX95)
             formatstr=",format=${format},framerate=5/1"
             SINK="videoconvert ! fbdevsink"
@@ -55,9 +71,6 @@ elif [ -r /sys/devices/soc0/soc_id ]; then
             formatstr=",format=${format}"
             ;;
     esac
-else
-    SINK="kmssink can-scale=false"
-    formatstr=",format=${format}"
 fi
 
 set -- ${FORMAT}
