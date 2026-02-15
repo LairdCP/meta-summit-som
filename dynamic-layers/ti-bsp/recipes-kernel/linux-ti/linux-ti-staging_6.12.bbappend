@@ -36,7 +36,7 @@ SRC_URI:append:summitsom = " \
     file://0058-drm-bridge-Add-simple-format-bridge-driver.patch \
     file://0059-gpio-Add-GPIO-fanout-driver.patch \
     file://0060-arm64-dts-ti-k3-j722s-main-Add-audio-refclk0-node.patch \
-    file://0061-arm64-dts-ti-k3-j722s-main-fix-the-audio-refclk-source.patch \
+    file://0061-arm64-dts-ti-k3-j722s-main-fix-the-audio-refclk-sour.patch \
     file://dts \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'file://disable_framebuffer_console.cfg', '', d)} \
     "
