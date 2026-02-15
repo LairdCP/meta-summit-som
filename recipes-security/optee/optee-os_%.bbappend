@@ -4,6 +4,7 @@ EXTRA_OEMAKE:append:summitsom:mx8mm-generic-bsp = " \
     CFG_CORE_LARGE_PHYS_ADDR=y \
     CFG_CORE_ARM64_PA_BITS=36 \
     CFG_DDR_SIZE=0x100000000 \
+    CFG_TZDRAM_START=0x56000000 \
 "
 
 EXTRA_OEMAKE:append:summitsom:mx8mp-generic-bsp = " \
