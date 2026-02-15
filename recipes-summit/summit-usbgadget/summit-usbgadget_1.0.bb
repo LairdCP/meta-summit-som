@@ -36,10 +36,9 @@ S = "${WORKDIR}"
 FILES:${PN} += "${systemd_system_unitdir} ${libdir}"
 
 do_install() {
-    install -D -m 0755 "${S}/usb-gadget.sh" \
-        "${D}${bindir}/usb-gadget.sh"
-    install -D -m 0600 "${S}/shared-usb0.nmconnection" \
-        "${D}${libdir}/NetworkManager/system-connections/shared-usb0.nmconnection"
+    install -D -m 0755 -t "${D}${bindir}" "${S}/usb-gadget.sh"
+    install -D -m 0600 -t "${D}${libdir}/NetworkManager/system-connections/" \
+        "${S}/shared-usb*.nmconnection"
 
     install -d "${D}${sysconfdir}/default"
     {
@@ -53,8 +52,10 @@ do_install() {
     } > "${D}${sysconfdir}/default/usb-gadget"
 
     if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
-        install -D -m 0644 "${S}/usb-gadget.service" \
-            "${D}${systemd_system_unitdir}/usb-gadget.service"
+        install -D -m 0644 -t "${D}${systemd_system_unitdir}" \
+            "${S}/usb-gadget@.service"
+        install -D -m 0644 "${S}/usb-gadget.rules.systemd" \
+            "${D}${libdir}/udev/rules.d/usb-gadget.rules"
     else
         install -D -m 0644 "${S}/usb-gadget.rules" \
             "${D}${libdir}/udev/rules.d/usb-gadget.rules"
