@@ -55,17 +55,16 @@ cd ${ROOT_NEW_MOUNT} || die "ERROR: could not change to new root"
 /sbin/pivot_root . ${OVERLAY_ROOT#/}
 
 exec /usr/sbin/chroot . /bin/sh -c "
-# Move read-only and read-write root file system into the overlay file system
 for i in dev proc sys; do
 	/bin/mount --move ${OVERLAY_ROOT}/\${i} /\${i}
 done
 
-# unmount old read-only root
 /bin/umount ${OVERLAY_ROOT}${OVERLAY_ROOT}
 /bin/umount ${OVERLAY_ROOT}
 
 if [ -x /usr/bin/psplash ]; then
-	PSPLASH_FIFO_DIR=/tmp /usr/bin/psplash -n &
+	mount /run || true
+	/usr/bin/psplash -n &
 fi
 
 if ${STANDALONE}; then

@@ -1,15 +1,17 @@
 [Unit]
 Description=Starts Psplash Boot screen
 DefaultDependencies=no
-RequiresMountsFor=/tmp
+RequiresMountsFor=/run
 Before=systemd-journald.service local-fs-pre.target systemd-udevd.service
 StandardOutput=file:/dev/kmsg
 StandardError=file:/dev/kmsg
+ConditionFileIsExecutable=/usr/bin/psplash
+ConditionPathExists=!/run/psplash_fifo
 
 [Service]
-Type=simple
+Type=notify
 ExecStart=/usr/bin/psplash
-Environment="PSPLASH_FIFO_DIR=/tmp"
+RemainAfterExit=yes
 
 [Install]
 WantedBy=sysinit.target
