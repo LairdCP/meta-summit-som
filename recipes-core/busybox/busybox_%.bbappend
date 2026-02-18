@@ -6,4 +6,4 @@ SRC_URI += "\
         file://ps.cfg \
         "
 
-RRECOMMENDS:${PN}:remove:summitsom = "${PN}-udhcpc"
+#RRECOMMENDS:${PN}:remove:summitsom = "${PN}-udhcpc"

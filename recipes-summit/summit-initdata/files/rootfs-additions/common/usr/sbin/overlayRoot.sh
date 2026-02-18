@@ -64,6 +64,10 @@ done
 /bin/umount ${OVERLAY_ROOT}${OVERLAY_ROOT}
 /bin/umount ${OVERLAY_ROOT}
 
+if [ -x /usr/bin/psplash ]; then
+	PSPLASH_FIFO_DIR=/tmp /usr/bin/psplash -n &
+fi
+
 if ${STANDALONE}; then
 	# continue with regular init
 	exec /sbin/init
