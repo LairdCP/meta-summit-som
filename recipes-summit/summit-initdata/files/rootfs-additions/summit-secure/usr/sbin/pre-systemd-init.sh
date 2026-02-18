@@ -24,7 +24,8 @@ if ${STANDALONE}; then
 fi
 
 if [ -x /usr/bin/psplash ]; then
-	PSPLASH_FIFO_DIR=/tmp /usr/bin/psplash -n &
+	mount /run || true
+	/usr/bin/psplash -n &
 fi
 
 PERM_DEVICE=/dev/$(getPart perm)
