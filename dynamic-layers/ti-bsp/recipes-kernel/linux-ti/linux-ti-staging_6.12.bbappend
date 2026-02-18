@@ -13,7 +13,6 @@ SRC_URI:append:summitsom = " \
     file://0019-dm-verity-partition-wait-fix.patch \
     file://0020-gpio-pca953x-Add-support-for-TI-TCA6418-GPIO-chip.patch \
     file://0021-tps6287x-regulator.patch \
-    file://0022-usb-common-usb-conn-gpio-use-a-unique-name-for-usb-c.patch \
     file://0023-am67-add-peripherals.patch \
     file://0026-dp83867-irq.patch \
     file://0027-davinci-mdio-missing-cpu.patch \
@@ -31,7 +30,6 @@ SRC_URI:append:summitsom = " \
     file://0054-rv3028-fix-eeprom-device-tree-support.patch \
     file://0055-rtc-rv3028-fix-name-collisions.patch \
     file://0056-mcp23s08-allow-edge-trigger.patch \
-    file://0057-ti-arm64-dts-ti-k3-am62-move-wakeup-source.patch \
     file://0057-cpsw-probe.patch \
     file://0058-drm-bridge-Add-simple-format-bridge-driver.patch \
     file://0059-gpio-Add-GPIO-fanout-driver.patch \
@@ -40,6 +38,10 @@ SRC_URI:append:summitsom = " \
     file://dts \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'file://disable_framebuffer_console.cfg', '', d)} \
     "
+
+KERNEL_CONFIG_FRAGMENTS:append:summitsom = " \
+   ${WORKDIR}/disable_framebuffer_console.cfg \
+   "
 
 KERNEL_DTC_FLAGS:append:summitsom = " ${@' -@' if d.getVar('KERNEL_DEVICETREE').find('.dtbo') else ''}"
 
