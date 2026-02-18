@@ -40,7 +40,7 @@ SRC_URI:append:summitsom = " \
     "
 
 KERNEL_CONFIG_FRAGMENTS:append:summitsom = " \
-   ${WORKDIR}/disable_framebuffer_console.cfg \
+   ${UNPACKDIR}/disable_framebuffer_console.cfg \
    "
 
 KERNEL_DTC_FLAGS:append:summitsom = " ${@' -@' if d.getVar('KERNEL_DEVICETREE').find('.dtbo') else ''}"

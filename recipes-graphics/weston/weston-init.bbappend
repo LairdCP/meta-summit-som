@@ -10,7 +10,7 @@ FILES:${PN}:append:summitsom = " \
 
 do_install:append:summitsom() {
     install -D -m 0644 -t "${D}${datadir}" \
-        "${WORKDIR}/Ezurio_logo-White_Red.png"
+        "${UNPACKDIR}/Ezurio_logo-White_Red.png"
 
     sed -i -E -e '/^#?\[shell\]/ s/^#//' \
         -e "/\[shell\]/a\background-image=${datadir}/Ezurio_logo-White_Red.png\nbackground-type=centered\nbackground-color=0xFF000000" \
