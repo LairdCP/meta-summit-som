@@ -35,6 +35,11 @@ SRC_URI:append:summitsom = " \
     file://0059-gpio-Add-GPIO-fanout-driver.patch \
     file://0060-arm64-dts-ti-k3-j722s-main-Add-audio-refclk0-node.patch \
     file://0061-arm64-dts-ti-k3-j722s-main-fix-the-audio-refclk-sour.patch \
+    file://0062-PENDING-mmc-sdhci_am654-AM62-Limit-DDR52-mode-to-40M.patch \
+    file://0063-PENDING-mmc-sdhci_am654-Fix-DLL-FRQSEL.patch \
+    file://0064-PENDING-mmc-sdhci_am654-Enable-DLL-based-on-mmc-actu.patch \
+    file://0065-PENDING-mmc-sdhci_am654-Allow-defaults-for-DLL-prope.patch \
+    file://0066-PENDING-mmc-sdhci_am654-Add-SDHCI_QUIRK_CAP_CLOCK_BA.patch \
     file://dts \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'file://disable_framebuffer_console.cfg', '', d)} \
     "
