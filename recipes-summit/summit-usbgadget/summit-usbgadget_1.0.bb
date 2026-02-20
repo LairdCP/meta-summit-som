@@ -56,9 +56,9 @@ do_install() {
         install -D -m 0644 -t "${D}${systemd_system_unitdir}" \
             "${S}/usb-gadget@.service"
         install -D -m 0644 "${S}/usb-gadget.rules.systemd" \
-            "${D}${libdir}/udev/rules.d/usb-gadget.rules"
+            "${D}${sysconfdir}/udev/rules.d/usb-gadget.rules"
     else
         install -D -m 0644 "${S}/usb-gadget.rules" \
-            "${D}${libdir}/udev/rules.d/usb-gadget.rules"
+            "${D}${sysconfdir}/udev/rules.d/usb-gadget.rules"
     fi
 }
