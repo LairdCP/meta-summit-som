@@ -23,9 +23,9 @@ if ${STANDALONE}; then
 	. /usr/sbin/boot-rootfs.sh || die
 fi
 
-if [ -x /usr/bin/psplash ]; then
+if [ -x /usr/bin/psplash ] && [ -e /dev/fb0 ]; then
 	mount /run || true
-	/usr/bin/psplash -n &
+	/usr/bin/psplash &
 fi
 
 PERM_DEVICE=/dev/$(getPart perm)

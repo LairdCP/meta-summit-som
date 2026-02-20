@@ -1,6 +1,7 @@
 RPMB_FS_DEV_ID ?= "2"
 
 EXTRA_OEMAKE:append:summitsom = " \
+    CFG_TEE_CORE_LOG_LEVEL=1 \
     CFG_IN_TREE_EARLY_TAS='trusted_keys/f04a0fe7-1f5d-4b9b-abf7-619b85b4ce8c' \
     "
 

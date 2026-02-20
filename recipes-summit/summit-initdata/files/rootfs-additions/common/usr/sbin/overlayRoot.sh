@@ -62,9 +62,9 @@ done
 /bin/umount ${OVERLAY_ROOT}${OVERLAY_ROOT}
 /bin/umount ${OVERLAY_ROOT}
 
-if [ -x /usr/bin/psplash ]; then
+if [ -x /usr/bin/psplash ] && [ -e /dev/fb0 ]; then
 	mount /run || true
-	/usr/bin/psplash -n &
+	PSPLASH_FIFO_DIR=/run /usr/bin/psplash &
 fi
 
 if ${STANDALONE}; then
