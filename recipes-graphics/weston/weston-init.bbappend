@@ -2,6 +2,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI:append:summitsom = "\
     file://Ezurio_logo-White_Red.png \
+    file://weston-init-require-display.patch \
 "
 
 FILES:${PN}:append:summitsom = " \
