@@ -1,0 +1,13 @@
+
+Upstream-Status: Inappropriate Custom feature
+
+--- a/weston.service
++++ b/weston.service
+@@ -29,6 +29,7 @@
+ # Prevent starting on systems without virtual consoles, Weston requires one
+ # for now.
+ ConditionPathExists=/dev/tty0
++ConditionPathExists=/dev/fb0
+ 
+ [Service]
+ # Requires systemd-notify.so Weston plugin.
