@@ -5,13 +5,13 @@ SUMMIT_PLATFORM_VERSION ?= "master"
 
 OVERRIDES =. "${@ "summit-pv:" if d.getVar('SUMMIT_PLATFORM_VERSION', False).startswith('LRD-REL-') else ''}"
 
-PV ?= "${SUMMIT_PLATFORM_VERSION}+git"
+PV = "${SUMMIT_PLATFORM_VERSION}+git"
 PV:summit-pv = "${@ d.getVar('SUMMIT_PLATFORM_VERSION').split('-')[2]}"
 
-SUMMIT_PLATFORM_BRANCH ?= "branch=${SUMMIT_PLATFORM_VERSION}"
+SUMMIT_PLATFORM_BRANCH = "branch=${SUMMIT_PLATFORM_VERSION}"
 SUMMIT_PLATFORM_BRANCH:summit-pv = "nobranch=1"
 
-SRCREV ?= "${AUTOREV}"
+SRCREV = "${AUTOREV}"
 SRCREV:summit-pv = "${SUMMIT_PLATFORM_VERSION}"
 
 SUMMIT_EXTERNAL_GIT_URI ?= "git://github.com/Ezurio"
