@@ -30,7 +30,6 @@ SRC_URI:append:summitsom = " \
     file://0063-phy-freescale-imx8mq-usb-set-vbus-depending-on-mode.patch \
     file://dts \
     ${KERNEL_CONFIG_SUMMIT} \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'file://disable_framebuffer_console.cfg', '', d)} \
     "
 
 SRC_URI:append:imx8mp-summitsom = " \
