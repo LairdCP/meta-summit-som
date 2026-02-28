@@ -1,0 +1,15 @@
+[Unit]
+Description=Initialize Summit GPIO helper lines
+After=systemd-udevd.service
+Wants=systemd-udevd.service
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/gpio-helper-init.sh
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
