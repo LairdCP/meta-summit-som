@@ -14,6 +14,9 @@
 
 	chosen {
 		stdout-path = &uart2;
+	};
+
+	aliases {
 		ethernet0 = &fec;
 		ethernet1 = &eqos;
 	};
