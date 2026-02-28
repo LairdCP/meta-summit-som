@@ -40,6 +40,7 @@ RDEPENDS:${PN}:append:summit-secure = "\
     "
 
 RDEPENDS:${PN}:append:imx8mp-summitsom:summit-secure = " keyctl-caam"
+RDEPENDS:${PN}:append:imx8mp-summitsom = " libgpiod-tools"
 
 CUSTOM_DIRS = "${S}/rootfs-additions/common/*"
 CUSTOM_DIRS:append:summit-secure = " ${S}/rootfs-additions/summit-secure/*"
@@ -53,6 +54,7 @@ do_install () {
 }
 
 SYSTEMD_SERVICE:${PN} = "mount_boot.service fw_env.service"
+SYSTEMD_SERVICE:${PN}:append:imx8mp-summitsom = " gpio-helper-init.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
 SYSTEMD_SERVICE:${PN}:append:summit-secure = "\

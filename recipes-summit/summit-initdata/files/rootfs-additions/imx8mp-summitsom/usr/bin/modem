@@ -1,18 +1,26 @@
 #! /bin/sh
+# SPDX-License-Identifier: LicenseRef-Ezurio-Clause
+# Copyright (c) 2026 Ezurio LLC.
+
+set -eu
+
+set_line() {
+    gpioset -t0 "${1}=${2}"
+}
 
 press_on_off() {
-        echo 1 > /sys/devices/platform/gpio/lte_on/value
+        set_line lte_on 1
         sleep 1
-        echo 0 > /sys/devices/platform/gpio/lte_on/value
+        set_line lte_on 0
 }
 
 is_on() {
-    [ "$(cat /sys/devices/platform/gpio/lte_power/value)" == 0 ] \
-        && return 1 || return 0
+    value="$(gpioget lte_power 2>/dev/null || true)"
+    [ "${value}" = "1" ]
 }
 
 power() {
-    echo ${1} > /sys/devices/platform/gpio/lte_power/value
+    set_line lte_power "${1}"
 }
 
 case "${1}" in
@@ -37,6 +45,9 @@ case "${1}" in
         ;;
 
     *)
-        echo "Usage: $0 [on | off]"
+        echo "Usage: $0 [on | off]" >&2
+        exit 2
         ;;
 esac
+
+exit 0
