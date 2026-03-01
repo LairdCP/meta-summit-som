@@ -54,7 +54,7 @@ do_install () {
 }
 
 SYSTEMD_SERVICE:${PN} = "mount_boot.service fw_env.service"
-SYSTEMD_SERVICE:${PN}:append:imx8mp-summitsom = " gpio-helper-init.service"
+SYSTEMD_SERVICE:${PN}:append:imx8mp-summitsom = " gpio-init.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
 SYSTEMD_SERVICE:${PN}:append:summit-secure = "\
