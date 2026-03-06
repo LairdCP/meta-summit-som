@@ -28,6 +28,8 @@ SRC_URI:append:summitsom = " \
     file://0061-mxc-viv-disable-vg-fix.patch \
     file://0062-gpio-Add-GPIO-fanout-driver.patch \
     file://0063-phy-freescale-imx8mq-usb-set-vbus-depending-on-mode.patch \
+    file://0064-input-touchscreen-exc3000-events.patch \
+    file://0065-input-touchscreen-exc3000-cleanup.patch \
     file://dts \
     ${KERNEL_CONFIG_SUMMIT} \
     "
