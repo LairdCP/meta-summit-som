@@ -1,0 +1,67 @@
+Properly cleanup driver on exit
+
+Upstream-Status: Inappropriate No time for upstreaming
+
+diff --git a/drivers/input/touchscreen/exc3000.c b/drivers/input/touchscreen/exc3000.c
+index 99253ad5abf9..9456e522c129 100644
+--- a/drivers/input/touchscreen/exc3000.c
++++ b/drivers/input/touchscreen/exc3000.c
+@@ -399,18 +399,18 @@ static int exc3000_probe(struct i2c_client *client)
+ 
+ 	error = input_register_device(input);
+ 	if (error)
+-		return error;
++		goto err_unregister_input;
+ 
+ 	error = devm_add_action_or_reset(&client->dev, exc3000_shutdown_timer,
+ 					 &data->timer);
+ 	if (error)
+-		return error;
++		goto err_unregister_input;
+ 
+ 	error = devm_request_threaded_irq(&client->dev, client->irq,
+ 					  NULL, exc3000_interrupt, IRQF_ONESHOT,
+ 					  client->name, data);
+ 	if (error)
+-		return error;
++		goto err_unregister_input;
+ 
+ 	/*
+ 	 * I²C does not have built-in recovery, so retry on failure. This
+@@ -435,11 +435,27 @@ static int exc3000_probe(struct i2c_client *client)
+ 	}
+ 
+ 	if (error)
+-		return error;
++		goto err_unregister_input;
+ 
+ 	i2c_set_clientdata(client, data);
+ 
+ 	return 0;
++
++err_unregister_input:
++	input_unregister_device(input);
++
++err_destroy_slots:
++	input_mt_destroy_slots(input);
++
++	return error;
++}
++
++void exc3000_remove(struct i2c_client *client)
++{
++	struct exc3000_data *data = i2c_get_clientdata(client);
++
++	input_unregister_device(data->input);
++	input_mt_destroy_slots(data->input);
+ }
+ 
+ static const struct i2c_device_id exc3000_id[] = {
+@@ -479,6 +495,7 @@ static struct i2c_driver exc3000_driver = {
+ 	},
+ 	.id_table	= exc3000_id,
+ 	.probe		= exc3000_probe,
++	.remove		= exc3000_remove,
+ };
+ 
+ module_i2c_driver(exc3000_driver);
