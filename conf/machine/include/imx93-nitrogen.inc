@@ -10,7 +10,7 @@ require conf/machine/include/imx-base.inc
 require conf/machine/include/arm/armv8-2a/tune-cortexa55.inc
 
 # for better sstate cache reuse
-DEFAULTTUNE:mx9-generic-bsp = "armv8a-crc-crypto"
+DEFAULTTUNE:mx93-generic-bsp = "armv8a-crc-crypto"
 
 require conf/machine/include/u-boot-summit.inc
 include ${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'conf/machine/include/radio-stack.inc', '', d)}
