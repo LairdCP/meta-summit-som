@@ -50,7 +50,7 @@ software =
 					type = "raw";
 					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@)";
-				},
+				}
 			);
 
 			files: (
@@ -69,7 +69,7 @@ software =
 					filesystem = "vfat";
 					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin)";
-				},
+				}
 			);
 
 			scripts: (
@@ -131,7 +131,7 @@ software =
 					type = "raw";
 					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@)";
-				},
+				}
 			);
 
 			files: (
@@ -150,7 +150,7 @@ software =
 					filesystem = "vfat";
 					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin)";
-				},
+				}
 			);
 
 			scripts: (
@@ -227,7 +227,7 @@ software =
 					properties: {
 						fstype = "ext4";
 						force = "true";
-					}
+					};
 				}
 			);
 
@@ -271,7 +271,7 @@ software =
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p5";
 					type = "raw";
 					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@)";
-				},
+				}
 			);
 
 			files: (
@@ -302,7 +302,7 @@ software =
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
 					filesystem = "vfat";
 					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin)";
-				},
+				}
 			);
 
 			scripts: (
@@ -311,6 +311,6 @@ software =
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot0";
 				}
 			);
-		}
-	}
-}
+		};
+	};
+};
