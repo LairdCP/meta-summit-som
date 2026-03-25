@@ -1,9 +1,10 @@
+Add notification message when installing flash images to show progress.
 
 Upstream-Status: Inappropriate No time for upstreaming
 
---- a/handlers/flash_handler.c	2022-07-12 15:37:32.000000000 
-+++ b/handlers/flash_handler.c	2022-07-12 15:50:59.000000000 
-@@ -356,6 +356,7 @@
+--- a/handlers/flash_handler.c
++++ b/handlers/flash_handler.c
+@@ -526,6 +526,7 @@ static int install_flash_image(struct img_type *img,
  	void __attribute__ ((__unused__)) *data)
  {
  	int ret, mtdnum;
@@ -11,7 +12,7 @@ Upstream-Status: Inappropriate No time for upstreaming
  
  	if (strlen(img->mtdname))
  		mtdnum = get_mtd_from_name(img->mtdname);
-@@ -366,6 +367,10 @@
+@@ -536,6 +537,10 @@ static int install_flash_image(struct img_type *img,
  			strlen(img->mtdname) ? img->mtdname : img->device);
  		return -EINVAL;
  	}
