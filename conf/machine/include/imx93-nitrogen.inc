@@ -73,8 +73,8 @@ FIT_PAD_ALG = "pss"
 FIT_HASH_ALG = "sha256"
 FIT_SIGN_ALG = "rsa2048"
 
-UBOOT_SIGN_KEYDIR = "${SUMMIT_SOM_KEYS_DIR}/nitrogen/nitrogen93/keys"
-SIG_DATA_PATH = "${SUMMIT_SOM_KEYS_DIR}/nitrogen/nitrogen93"
+UBOOT_SIGN_KEYDIR ?= "${SUMMIT_SOM_KEYS_DIR}/nitrogen/nitrogen93/keys"
+SIG_DATA_PATH ?= "${SUMMIT_SOM_KEYS_DIR}/nitrogen/nitrogen93"
 UBOOT_SIGN_KEYNAME = "dev"
 UBOOT_SIGN_ENABLE = "1"
 
