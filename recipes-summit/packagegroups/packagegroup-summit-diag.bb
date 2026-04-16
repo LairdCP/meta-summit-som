@@ -19,6 +19,7 @@ RDEPENDS:${PN} = " \
     spitools \
     mdio-tools \
     libinput \
+    libinput-bin \
     evtest \
     linuxptp \
     mpg123 \
