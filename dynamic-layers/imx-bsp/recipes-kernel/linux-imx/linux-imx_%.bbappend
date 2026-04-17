@@ -30,8 +30,6 @@ SRC_URI:append:summitsom = " \
     file://0063-phy-freescale-imx8mq-usb-set-vbus-depending-on-mode.patch \
     file://0064-media-imx-isi-cap-add-pivariety-workaround.patch \
     file://0065-media-imx-isi-cap-fix-subdev-stream-default-value.patch \
-    file://0066-input-touchscreen-exc3000-events.patch \
-    file://0067-input-touchscreen-exc3000-cleanup.patch \
     file://dts \
     ${KERNEL_CONFIG_SUMMIT} \
     "
