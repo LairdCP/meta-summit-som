@@ -11,6 +11,11 @@ SRC_URI = "${SUMMIT_EXTERNAL_GIT_URI}/u-boot-som.git;${SUMMIT_EXTERNAL_GIT_SUFFI
 SRC_URI:summit-internal = "${SUMMIT_INTERNAL_GIT_URI}/cp_linux-u-boot-som60.git;${SUMMIT_INTERNAL_GIT_SUFFIX}"
 SRC_URI:append:summit-secure:mx95-generic-bsp = " file://0001-imx8image-Set-signature-block-version-1-for-AHAB-V2.patch"
 
+SRC_URI:append:summitsom-wbx3-initramfs = " \
+    file://uboot-initramfs.cfg \
+    file://uboot-initramfs.env \
+"
+
 S = "${UNPACKDIR}/git"
 B = "${UNPACKDIR}/build"
 
@@ -56,6 +61,24 @@ EXTRA_OEMAKE += " \
 EXTRA_OEMAKE += " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'optee', "TEE=${STAGING_LIBDIR}/firmware/tee-pager_v2.bin", '', d)} \
     "
+
+python do_patch:append () {
+    bb.build.exec_func('do_copy_board_files', d)
+}
+
+do_copy_board_files () {
+    # placeholder for machine-specific board file copying, called from do_patch for relevant
+    # machines
+    true; 
+}
+
+do_copy_board_files:append:summitsom-wbx3-initramfs () {
+    board_dir="${UBOOT_MACHINE}"
+    board_dir="${board_dir%_defconfig}"
+    install -d "${S}/board/summit/${board_dir}"
+    install -m 0644 "${UNPACKDIR}/uboot-initramfs.env" \
+        "${S}/board/summit/${board_dir}/uboot-initramfs.env"
+}
 
 do_compile:prepend:mx9-generic-bsp() {
     if ${@bb.utils.contains('MACHINE_FEATURES', 'optee', 'true', 'false', d)}; then

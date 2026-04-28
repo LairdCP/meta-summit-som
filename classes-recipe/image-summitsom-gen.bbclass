@@ -37,6 +37,11 @@ IMAGE_FEATURES:append:summit-secure = "\
 
 ROOTFS_POSTPROCESS_COMMAND += "rootfs_os_release; "
 
+# Ensure os-release is available for rootfs_os_release.
+# When systemd is the init manager it provides this file;
+# with other init managers the standalone package is needed.
+IMAGE_INSTALL:append = " os-release"
+
 rootfs_os_release() {
     ver=${IMAGE_VERSION_SUFFIX}
     ver=${ver#-}

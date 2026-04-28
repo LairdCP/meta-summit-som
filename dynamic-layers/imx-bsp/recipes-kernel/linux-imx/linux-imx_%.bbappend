@@ -42,6 +42,20 @@ SRC_URI:append:imx8mp-summitsom = " \
     file://0004-Introduce-the-BQ25790-charger-driver.patch \
     "
 
+SRC_URI:append:summitsom-wbx3-initramfs = " \
+    file://kernel-initramfs.cfg \
+    "
+
+# Include initramfs as a separate ramdisk subimage in the fitImage.
+# U-Boot's bootm loads kernel and ramdisk independently, then sets linux,initrd-start/end
+# in the FDT so the kernel mounts it as root. This avoids embedding 150MB+ into the kernel
+# binary which would exceed U-Boot's decompression buffer (CONFIG_SYS_BOOTM_LEN).
+INITRAMFS_IMAGE:summitsom-wbx3-initramfs = "image-summitsom-wbx3-initramfs"
+
+# kernel-vmlinux is an unstripped ELF with DWARF debug info; build paths in
+# debug sections are expected and harmless — suppress the false-positive QA check.
+INSANE_SKIP:summitsom-wbx3-initramfs:kernel-vmlinux += "buildpaths"
+
 KERNEL_DTC_FLAGS:append:summitsom = " ${@' -@' if d.getVar('KERNEL_DEVICETREE').find('.dtbo') else ''}"
 
 KERNEL_CONFIG_SUMMIT:mx8mm-generic-bsp = "file://nitrogen_imx8mm_defconfig"
