@@ -10,6 +10,8 @@ SRC_URI:append:summitsom = " \
     file://psplash-start.service \
     "
 
+DEPENDS:append:summitsom = " libdrm"
+
 SYSTEMD_SERVICE:${PN}:summitsom = "psplash-start.service psplash-systemd.service"
 
 do_install:append:summitsom() {
