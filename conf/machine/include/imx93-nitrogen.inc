@@ -1,5 +1,5 @@
 #@TYPE: Machine
-#@NAME: Nitrogen i.MX93 Plus
+#@NAME: Nitrogen i.MX93
 #@SOC: i.MX93
 #@DESCRIPTION: Machine configuration for Nitrogen i.MX93
 #@MAINTAINER: Boris Krasnovskiy <Boris.Krasnovskiy@ezurio.com>
@@ -15,7 +15,7 @@ DEFAULTTUNE:mx93-generic-bsp = "armv8a-crc-crypto"
 require conf/machine/include/u-boot-summit.inc
 include ${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'conf/machine/include/radio-stack.inc', '', d)}
 
-MACHINE_FEATURES += "pci usbhost alsa rtc optee wifi bluetooth"
+MACHINE_FEATURES += "pci usbhost alsa rtc optee wifi bluetooth camera"
 MACHINE_FEATURES:append:use-nxp-bsp = " dpdk ethos-u-firmware"
 
 SOC_DEFAULT_IMAGE_FSTYPES = ""

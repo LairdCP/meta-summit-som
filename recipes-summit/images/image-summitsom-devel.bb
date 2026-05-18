@@ -11,8 +11,11 @@ IMAGE_INSTALL += "\
     packagegroup-summit-basic \
     packagegroup-summit-dvk \
     packagegroup-summit-diag \
-    packagegroup-summit-camera \
     packagegroup-core-buildessential \
+    "
+
+IMAGE_INSTALL:append:camera = " \
+    packagegroup-summit-camera \
     "
 
 include image-summitsom-demo-mcu.inc

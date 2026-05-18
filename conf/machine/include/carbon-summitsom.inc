@@ -35,7 +35,7 @@ IMAGE_BOOT_FILES:k3 = "${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin uboo
 
 MACHINE_ESSENTIAL_EXTRA_RDEPENDS:remove = "kernel-image-image kernel-devicetree"
 
-MACHINE_FEATURES = "usbgadget usbhost vfat ext2 alsa optee rtc screen wifi bluetooth"
+MACHINE_FEATURES = "usbgadget usbhost vfat ext2 alsa optee rtc screen wifi bluetooth camera"
 
 EMMC_DEVICE = "0"
 SD_DEVICE = "1"

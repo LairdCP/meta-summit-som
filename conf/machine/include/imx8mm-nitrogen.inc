@@ -14,7 +14,7 @@ include ${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'conf/machine
 
 DEFAULTTUNE:mx8m-generic-bsp = "armv8a-crc-crypto"
 
-MACHINE_FEATURES += "pci usbhost alsa rtc optee wifi bluetooth"
+MACHINE_FEATURES += "pci usbhost alsa rtc optee wifi bluetooth camera"
 
 SOC_DEFAULT_IMAGE_FSTYPES = ""
 

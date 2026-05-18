@@ -3,6 +3,9 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 SRC_URI:append:summitsom = " \
     file://0001-ts3a227-jack.patch \
     file://0006-sound_ts3a227_support.patch \
+    file://0004-simple_card_ts3a227.patch \
+    file://0011-lvds-codec-output-bridge.patch \
+    file://0012-lvds-codec-frequency-limit.patch \
     file://0008-fsl_aud2htx-probe.patch \
     file://0010-imx-sdma.patch \
     file://0011-fsl-sai.patch \
@@ -43,6 +46,7 @@ KERNEL_DTC_FLAGS:append:summitsom = " ${@' -@' if d.getVar('KERNEL_DEVICETREE').
 
 KERNEL_CONFIG_SUMMIT:mx8mm-generic-bsp = "file://nitrogen_imx8mm_defconfig"
 KERNEL_CONFIG_SUMMIT:mx8mp-generic-bsp = "file://nitrogen_imx8mp_defconfig"
+KERNEL_CONFIG_SUMMIT:mx91-generic-bsp = "file://nitrogen_imx91_defconfig"
 KERNEL_CONFIG_SUMMIT:mx93-generic-bsp = "file://nitrogen_imx93_defconfig"
 KERNEL_CONFIG_SUMMIT:mx95-generic-bsp = "file://nitrogen_imx95_defconfig"
 KERNEL_CONFIG_SUMMIT:imx8mp-summitsom = "file://summitsom_defconfig"

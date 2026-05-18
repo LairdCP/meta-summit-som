@@ -15,11 +15,6 @@ RDEPENDS:${PN}:append:imx8mp-summitsom = " \
     qfirehose \
     "
 
-RDEPENDS:${PN}:append:k3:summitsom = " \
+RDEPENDS:${PN}:append:alsa:summitsom = " \
     kernel-module-tac5x1x \
-    kernel-module-pivariety \
-    "
-
-RDEPENDS:${PN}:append:mx9-generic-bsp:summitsom = " \
-    kernel-module-pivariety \
     "

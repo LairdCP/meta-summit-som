@@ -1,0 +1,81 @@
+#@TYPE: Machine
+#@NAME: Nitrogen i.MX91
+#@SOC: i.MX91
+#@DESCRIPTION: Machine configuration for Nitrogen i.MX91
+#@MAINTAINER: Boris Krasnovskiy <Boris.Krasnovskiy@ezurio.com>
+
+MACHINEOVERRIDES =. "mx91:summitsom:"
+
+require conf/machine/include/imx-base.inc
+require conf/machine/include/arm/armv8-2a/tune-cortexa55.inc
+
+# for better sstate cache reuse
+DEFAULTTUNE:mx91-generic-bsp = "armv8a-crc-crypto"
+
+require conf/machine/include/u-boot-summit.inc
+include ${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'conf/machine/include/radio-stack.inc', '', d)}
+
+MACHINE_FEATURES += "usbhost alsa rtc optee wifi bluetooth"
+
+SOC_DEFAULT_IMAGE_FSTYPES = ""
+
+IMAGE_BOOT_FILES = "uboot.env ${KERNEL_IMAGETYPE}"
+SWUPDATE_IMAGES = "flash.bin uboot.env ${KERNEL_IMAGETYPE}"
+
+UBOOT_PROVIDES_BOOT_CONTAINER = "1"
+IMX_DEFAULT_BOOTLOADER:mx9-generic-bsp = "u-boot-imx-summit"
+IMX_DEFAULT_UBOOTTOOLS:imx-generic-bsp = "u-boot-summit-tools"
+
+DDR_FIRMWARE_VERSION = "202201"
+DDR_FIRMWARE_NAME = " \
+    lpddr4_dmem_1d_v${DDR_FIRMWARE_VERSION}.bin \
+    lpddr4_dmem_2d_v${DDR_FIRMWARE_VERSION}.bin \
+    lpddr4_imem_1d_v${DDR_FIRMWARE_VERSION}.bin \
+    lpddr4_imem_2d_v${DDR_FIRMWARE_VERSION}.bin \
+"
+
+SPL_BINARY = "spl/u-boot-spl.bin"
+
+ATF_PLATFORM = "imx91"
+
+SERIAL_CONSOLES = "115200;ttyLP0"
+
+LOADADDR = ""
+UBOOT_SUFFIX = "img"
+UBOOT_BINARY = "flash.bin"
+UBOOT_MAKE_TARGET = "all"
+IMX_BOOT_SEEK = "32"
+
+MACHINE_EXTRA_RDEPENDS += "${MACHINE_FIRMWARE} kernel-modules"
+SOC_HAS_VIVANTE_KERNEL_DRIVER_SUPPORT:imxgpu = "0"
+
+IMX_DEFAULT_BSP = "nxp"
+
+KERNEL_CLASSES  = "kernel-fitimage"
+KERNEL_IMAGETYPES = "fitImage"
+
+KERNEL_IMAGETYPE = "fitImage"
+KERNEL_IMAGETYPE:mx9-generic-bsp = "fitImage"
+IMAGE_CLASSES += "dm-verity"
+
+UBOOT_LOADADDRESS = "0x82000000"
+UBOOT_ENTRYPOINT:mx91-generic-bsp = "0x82000000"
+UBOOT_DTB_LOADADDRESS = "0x85000000"
+UBOOT_DTBO_LOADADDRESS = "0x85080000"
+
+FIT_KERNEL_COMP_ALG = "zstd"
+FIT_KERNEL_COMP_ALG_EXTENSION = ".zst"
+
+FIT_PAD_ALG = "pss"
+FIT_HASH_ALG = "sha256"
+FIT_SIGN_ALG = "rsa2048"
+
+CUSTOM_KEYS_DIR ?= ""
+UBOOT_SIGN_KEYDIR = "${@oe.utils.conditional('CUSTOM_KEYS_DIR', '', '${SUMMIT_SOM_KEYS_DIR}/nitrogen/nitrogen91/keys', '${CUSTOM_KEYS_DIR}', d)}"
+SIG_DATA_PATH ?= "${SUMMIT_SOM_KEYS_DIR}/nitrogen/nitrogen91"
+UBOOT_SIGN_KEYNAME = "dev"
+UBOOT_SIGN_ENABLE = "1"
+
+EMMC_BOOT_OFFSET = "0"
+EMMC_DEVICE = "0"
+SD_DEVICE = "1"

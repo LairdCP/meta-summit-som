@@ -8,6 +8,9 @@ IMAGE_INSTALL += "\
     packagegroup-summit-basic \
     packagegroup-summit-dvk \
     packagegroup-summit-diag \
+    "
+
+IMAGE_INSTALL:append:camera = " \
     packagegroup-summit-camera \
     "
 
