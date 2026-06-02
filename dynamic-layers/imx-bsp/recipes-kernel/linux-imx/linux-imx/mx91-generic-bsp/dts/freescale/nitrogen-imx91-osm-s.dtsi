@@ -29,8 +29,8 @@
 		serial2 = &lpuart5;		/* On-SOM BT HCI */
 		serial3 = &lpuart6;		/* UART_B */
 		ethernet0 = &eqos;		/* ETH_A */
-		i2c0 = &lpi2c1;			/* I2C_A (also PMIC/RTC) */
-		i2c1 = &lpi2c2;			/* I2C_B / I2C_C */
+		i2c0 = &lpi2c1;			/* I2C_B (also PMIC/RTC) */
+		i2c1 = &lpi2c2;			/* I2C_A */
 		spi0 = &lpspi4;			/* SPI_A */
 		can0 = &flexcan1;		/* CAN_A */
 		usb0 = &usbotg1;		/* USB_A */
@@ -159,7 +159,7 @@
 			linux,code = <KEY_WAKEUP>;
 			wakeup-source;
 
-			interrupts-extended = <&gpio2 8 IRQ_TYPE_EDGE_FALLING>;	/* GPIO_IO08 - SDIO_HOST_WAKE# */
+			interrupts-extended = <&gpio2 8 IRQ_TYPE_LEVEL_LOW>;	/* GPIO_IO08 - SDIO_HOST_WAKE# */
 			interrupt-names = "irq";
 		};
 
@@ -168,7 +168,7 @@
 			linux,code = <KEY_WAKEUP>;
 			wakeup-source;
 
-			interrupts-extended = <&gpio2 2 IRQ_TYPE_EDGE_FALLING>;	/* GPIO_IO02 - UART_HOST_WAKE# */
+			interrupts-extended = <&gpio2 2 IRQ_TYPE_LEVEL_LOW>;	/* GPIO_IO02 - UART_HOST_WAKE# */
 			interrupt-names = "irq";
 		};
 	};
@@ -213,7 +213,7 @@
 };
 
 &lpi2c1 {
-	/* I2C_A (also PMIC + on-SOM RTC) */
+	/* I2C_B (also PMIC + on-SOM RTC) */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_lpi2c1>;
 
@@ -328,7 +328,7 @@
 };
 
 &lpi2c2 {
-	/* I2C_B / I2C_C */
+	/* I2C_A */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_lpi2c2>;
 
@@ -408,7 +408,6 @@
 
 	bus-width = <8>;
 	non-removable;
-	fsl,tuning-step = <1>;
 
 	status = "okay";
 };
@@ -632,33 +631,33 @@
 
 	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
 		fsl,pins = <
-			MX91_PAD_SD1_CLK__USDHC1_CLK		0x158e
-			MX91_PAD_SD1_CMD__USDHC1_CMD		0x138e
-			MX91_PAD_SD1_DATA0__USDHC1_DATA0	0x138e
-			MX91_PAD_SD1_DATA1__USDHC1_DATA1	0x138e
-			MX91_PAD_SD1_DATA2__USDHC1_DATA2	0x138e
-			MX91_PAD_SD1_DATA3__USDHC1_DATA3	0x138e
-			MX91_PAD_SD1_DATA4__USDHC1_DATA4	0x138e
-			MX91_PAD_SD1_DATA5__USDHC1_DATA5	0x138e
-			MX91_PAD_SD1_DATA6__USDHC1_DATA6	0x138e
-			MX91_PAD_SD1_DATA7__USDHC1_DATA7	0x138e
-			MX91_PAD_SD1_STROBE__USDHC1_STROBE	0x158e
+			MX91_PAD_SD1_CLK__USDHC1_CLK		0x1586
+			MX91_PAD_SD1_CMD__USDHC1_CMD		0x1386
+			MX91_PAD_SD1_DATA0__USDHC1_DATA0	0x1386
+			MX91_PAD_SD1_DATA1__USDHC1_DATA1	0x1386
+			MX91_PAD_SD1_DATA2__USDHC1_DATA2	0x1386
+			MX91_PAD_SD1_DATA3__USDHC1_DATA3	0x1386
+			MX91_PAD_SD1_DATA4__USDHC1_DATA4	0x1386
+			MX91_PAD_SD1_DATA5__USDHC1_DATA5	0x1386
+			MX91_PAD_SD1_DATA6__USDHC1_DATA6	0x1386
+			MX91_PAD_SD1_DATA7__USDHC1_DATA7	0x1386
+			MX91_PAD_SD1_STROBE__USDHC1_STROBE	0x1586
 		>;
 	};
 
 	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
 		fsl,pins = <
-			MX91_PAD_SD1_CLK__USDHC1_CLK		0x15fe
-			MX91_PAD_SD1_CMD__USDHC1_CMD		0x13fe
-			MX91_PAD_SD1_DATA0__USDHC1_DATA0	0x13fe
-			MX91_PAD_SD1_DATA1__USDHC1_DATA1	0x13fe
-			MX91_PAD_SD1_DATA2__USDHC1_DATA2	0x13fe
-			MX91_PAD_SD1_DATA3__USDHC1_DATA3	0x13fe
-			MX91_PAD_SD1_DATA4__USDHC1_DATA4	0x13fe
-			MX91_PAD_SD1_DATA5__USDHC1_DATA5	0x13fe
-			MX91_PAD_SD1_DATA6__USDHC1_DATA6	0x13fe
-			MX91_PAD_SD1_DATA7__USDHC1_DATA7	0x13fe
-			MX91_PAD_SD1_STROBE__USDHC1_STROBE	0x15fe
+			MX91_PAD_SD1_CLK__USDHC1_CLK		0x1586
+			MX91_PAD_SD1_CMD__USDHC1_CMD		0x1386
+			MX91_PAD_SD1_DATA0__USDHC1_DATA0	0x1386
+			MX91_PAD_SD1_DATA1__USDHC1_DATA1	0x1386
+			MX91_PAD_SD1_DATA2__USDHC1_DATA2	0x1386
+			MX91_PAD_SD1_DATA3__USDHC1_DATA3	0x1386
+			MX91_PAD_SD1_DATA4__USDHC1_DATA4	0x1386
+			MX91_PAD_SD1_DATA5__USDHC1_DATA5	0x1386
+			MX91_PAD_SD1_DATA6__USDHC1_DATA6	0x1386
+			MX91_PAD_SD1_DATA7__USDHC1_DATA7	0x1386
+			MX91_PAD_SD1_STROBE__USDHC1_STROBE	0x1586
 		>;
 	};
 
@@ -777,55 +776,55 @@
 	/* ----- Per-OSM-signal pinctrl groups (carrier overrides as needed) ----- */
 	pinctrl_osm_gpio_a_0: osm-gpio-a-0-grp {
 		fsl,pins = <
-			MX91_PAD_GPIO_IO12__GPIO2_IO12				0x31e	/* GPIO_A_0 (F14) */
+			MX91_PAD_GPIO_IO12__GPIO2_IO12				0x131e	/* GPIO_A_0 (F14) */
 		>;
 	};
 
 	pinctrl_osm_gpio_a_1: osm-gpio-a-1-grp {
 		fsl,pins = <
-			MX91_PAD_GPIO_IO13__GPIO2_IO13				0x31e	/* GPIO_A_1 (G17) */
+			MX91_PAD_GPIO_IO13__GPIO2_IO13				0x131e	/* GPIO_A_1 (G17) */
 		>;
 	};
 
 	pinctrl_osm_gpio_a_2: osm-gpio-a-2-grp {
 		fsl,pins = <
-			MX91_PAD_GPIO_IO14__GPIO2_IO14				0x31e	/* GPIO_A_2 (H16) */
+			MX91_PAD_GPIO_IO14__GPIO2_IO14				0x131e	/* GPIO_A_2 (H16) */
 		>;
 	};
 
 	pinctrl_osm_gpio_a_3: osm-gpio-a-3-grp {
 		fsl,pins = <
-			MX91_PAD_GPIO_IO15__GPIO2_IO15				0x31e	/* GPIO_A_3 (H17) */
+			MX91_PAD_GPIO_IO15__GPIO2_IO15				0x131e	/* GPIO_A_3 (H17) */
 		>;
 	};
 
 	pinctrl_osm_gpio_a_4: osm-gpio-a-4-grp {
 		fsl,pins = <
-			MX91_PAD_GPIO_IO16__GPIO2_IO16				0x31e	/* GPIO_A_4 (J16) */
+			MX91_PAD_GPIO_IO16__GPIO2_IO16				0x131e	/* GPIO_A_4 (J16) */
 		>;
 	};
 
 	pinctrl_osm_gpio_a_5: osm-gpio-a-5-grp {
 		fsl,pins = <
-			MX91_PAD_GPIO_IO17__GPIO2_IO17				0x31e	/* GPIO_A_5 (K15) */
+			MX91_PAD_GPIO_IO17__GPIO2_IO17				0x131e	/* GPIO_A_5 (K15) */
 		>;
 	};
 
 	pinctrl_osm_gpio_a_6: osm-gpio-a-6-grp {
 		fsl,pins = <
-			MX91_PAD_GPIO_IO09__GPIO2_IO9				0x31e	/* GPIO_A_6 (F16) */
+			MX91_PAD_GPIO_IO09__GPIO2_IO9				0x131e	/* GPIO_A_6 (F16) */
 		>;
 	};
 
 	pinctrl_osm_gpio_a_7: osm-gpio-a-7-grp {
 		fsl,pins = <
-			MX91_PAD_PDM_BIT_STREAM1__GPIO1_IO10			0x31e	/* GPIO_A_7 (B10) */
+			MX91_PAD_PDM_BIT_STREAM1__GPIO1_IO10			0x131e	/* GPIO_A_7 (B10) */
 		>;
 	};
 
 	pinctrl_osm_gpio_b_0: osm-gpio-b-0-grp {
 		fsl,pins = <
-			MX91_PAD_SAI1_RXD0__GPIO1_IO14				0x31e	/* GPIO_B_0 (B14) */
+			MX91_PAD_SAI1_RXD0__GPIO1_IO14				0x131e	/* GPIO_B_0 (B14) */
 		>;
 	};
 

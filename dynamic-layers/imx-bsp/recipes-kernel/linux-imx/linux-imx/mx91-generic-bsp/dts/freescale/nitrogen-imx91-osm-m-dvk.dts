@@ -84,6 +84,53 @@
 			sound-dai = <&tac5112>;
 		};
 	};
+
+	dvk_keys {
+		compatible = "gpio-keys";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_osm_gpio_a_7>;
+
+		volume-up {
+			label = "Volume Up";
+			interrupts-extended = <&exp2 12 IRQ_TYPE_EDGE_FALLING>;
+			interrupt-names = "irq";
+			linux,code = <KEY_VOLUMEUP>;
+
+			//gpios = <&exp2 12 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+			//wakeup-event-action = <EV_ACT_ASSERTED>;
+		};
+
+		volume-down {
+			label = "Volume Down";
+			interrupts-extended = <&exp2 13 IRQ_TYPE_EDGE_FALLING>;
+			interrupt-names = "irq";
+			linux,code = <KEY_VOLUMEDOWN>;
+
+			//gpios = <&exp2 13 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+			//wakeup-event-action = <EV_ACT_ASSERTED>;
+		};
+
+		wakeup {
+			label = "Wakeup";
+			interrupts-extended = <&gpio1 10 IRQ_TYPE_EDGE_FALLING>; /* GPIO_A_7 / WAKEUP_BUTTON */
+			interrupt-names = "irq";
+			linux,code = <KEY_WAKEUP>;
+			wakeup-source;
+
+			//gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;
+			//wakeup-event-action = <EV_ACT_ASSERTED>;
+		};
+	};
+
+	leds {
+		compatible = "gpio-leds";
+
+		led0 {
+			color = <LED_COLOR_ID_GREEN>;
+			gpios = <&exp0 1 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+	};
 };
 
 &eqos { /* ETH_A */
@@ -184,6 +231,27 @@
 
 &lpi2c1 { /* I2C_A */
 	status = "okay";
+
+	power-sensor-5v@40 {
+		compatible = "ti,ina232"; /* TI, INA232AIDDFR */
+		reg = <0x40>;
+		vs-supply = <&reg_3v3>;
+		shunt-resistor = <33000>; /* 0.033 Ohms */
+	};
+
+	power-sensor-3v3@41 {
+		compatible = "ti,ina232"; /* TI, INA232AIDDFR */
+		reg = <0x41>;
+		vs-supply = <&reg_3v3>;
+		shunt-resistor = <33000>; /* 0.033 Ohms */
+	};
+
+	eeprom@54 {
+		/* U53, Giantec, GT24C256C-2GLI-TR */
+		compatible = "atmel,24c256";
+		reg = <0x54>;
+		vcc-supply = <&reg_1v8>;
+	};
 
 	exp1: gpio@74 {
 		compatible = "ti,tcal9539", "nxp,pcal9535";
