@@ -35,6 +35,8 @@ IMAGE_FEATURES:append:summit-secure = "\
     read-only-rootfs-delayed-postinsts \
     "
 
+IMAGE_INSTALL += "os-release"
+
 ROOTFS_POSTPROCESS_COMMAND += "rootfs_os_release; "
 
 # Ensure os-release is available for rootfs_os_release.
