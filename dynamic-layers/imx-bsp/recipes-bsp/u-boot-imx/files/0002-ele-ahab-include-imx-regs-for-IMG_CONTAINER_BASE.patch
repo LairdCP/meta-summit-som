@@ -1,0 +1,31 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Chris Trowbridge <chris.trowbridge@ezurio.com>
+Date: Mon, 8 Jun 2026 00:00:00 +0000
+Subject: [PATCH] ele_ahab: include imx-regs for IMG_CONTAINER_BASE
+
+`ele_ahab.c` uses `IMG_CONTAINER_BASE` and `FSB_BASE_ADDR`, but on
+current i.MX93 builds those macros are not visible through transitive
+includes anymore. Include `asm/arch/imx-regs.h` explicitly so the file
+builds reliably.
+
+Upstream-Status: Inappropriate [layer-specific build fix]
+
+Signed-off-by: Chris Trowbridge <chris.trowbridge@ezurio.com>
+---
+ arch/arm/mach-imx/ele_ahab.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/mach-imx/ele_ahab.c b/arch/arm/mach-imx/ele_ahab.c
+index 337bcf3f8f..d6e2b5d7cd 100644
+--- a/arch/arm/mach-imx/ele_ahab.c
++++ b/arch/arm/mach-imx/ele_ahab.c
+@@ -11,6 +11,7 @@
+ #include <asm/io.h>
+ #include <asm/mach-imx/ele_api.h>
+ #include <asm/mach-imx/sys_proto.h>
++#include <asm/arch/imx-regs.h>
+ #include <asm/arch-imx/cpu.h>
+ #include <asm/arch/sys_proto.h>
+ #include <console.h>
+-- 
+2.45.2

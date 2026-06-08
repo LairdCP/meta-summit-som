@@ -9,6 +9,7 @@ require recipes-bsp/u-boot-summit/u-boot-summit-env.inc
 
 SRC_URI = "${SUMMIT_EXTERNAL_GIT_URI}/u-boot-som.git;${SUMMIT_EXTERNAL_GIT_SUFFIX}"
 SRC_URI:summit-internal = "${SUMMIT_INTERNAL_GIT_URI}/cp_linux-u-boot-som60.git;${SUMMIT_INTERNAL_GIT_SUFFIX}"
+SRC_URI:append:mx9-generic-bsp = " file://0002-ele-ahab-include-imx-regs-for-IMG_CONTAINER_BASE.patch"
 SRC_URI:append:summit-secure:mx95-generic-bsp = " file://0001-imx8image-Set-signature-block-version-1-for-AHAB-V2.patch"
 
 SRC_URI:append:summitsom-wbx3-initramfs = " \
