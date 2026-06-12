@@ -24,6 +24,7 @@ RDEPENDS:${PN} = "\
     swupdate-client \
     mmc-utils \
     curl \
+    summit-initdata \
 "
 
 PACKAGES += "${PN}-push"

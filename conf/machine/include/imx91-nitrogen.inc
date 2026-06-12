@@ -73,9 +73,8 @@ FIT_PAD_ALG = "pss"
 FIT_HASH_ALG = "sha256"
 FIT_SIGN_ALG = "rsa2048"
 
-CUSTOM_KEYS_DIR ?= ""
-UBOOT_SIGN_KEYDIR = "${@oe.utils.conditional('CUSTOM_KEYS_DIR', '', '${SIG_DATA_PATH}/keys', '${CUSTOM_KEYS_DIR}', d)}"
-SIG_DATA_PATH ?= "${SUMMIT_SOM_KEYS_DIR}/nitrogen/nitrogen91"
+UBOOT_SIGN_KEYDIR = "${SIG_DATA_PATH}/keys"
+SIG_DATA_PATH ?= "${SUMMIT_SOM_KEYS_DIR}/nitrogen/ahab"
 UBOOT_SIGN_KEYNAME = "dev"
 UBOOT_SIGN_ENABLE = "1"
 
