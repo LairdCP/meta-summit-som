@@ -9,12 +9,13 @@ MACHINEOVERRIDES =. "mx8mm:summitsom:"
 require conf/machine/include/imx-base.inc
 require conf/machine/include/arm/armv8a/tune-cortexa53.inc
 
+# for better sstate cache reuse
+DEFAULTTUNE:mx8m-generic-bsp = "armv8a-crc-crypto"
+
 require conf/machine/include/u-boot-summit.inc
 include ${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'conf/machine/include/radio-stack.inc', '', d)}
 
-DEFAULTTUNE:mx8m-generic-bsp = "armv8a-crc-crypto"
-
-MACHINE_FEATURES += "pci usbhost alsa rtc optee wifi bluetooth camera"
+MACHINE_FEATURES += "pci usbgadget usbhost alsa rtc optee wifi bluetooth camera"
 
 SOC_DEFAULT_IMAGE_FSTYPES = ""
 
@@ -47,6 +48,7 @@ OPTEE_BIN_EXT = "8mm"
 TEE_LOAD_ADDR = "0xbe000000"
 
 MACHINE_EXTRA_RDEPENDS += "${MACHINE_FIRMWARE} kernel-modules"
+EXTRA_IMAGEDEPENDS += "virtual/bootloader"
 
 IMX_DEFAULT_BSP = "nxp"
 
@@ -59,8 +61,11 @@ KERNEL_IMAGETYPE = "fitImage"
 KERNEL_IMAGETYPE:mx8-generic-bsp = "fitImage"
 IMAGE_CLASSES += "dm-verity"
 
-UBOOT_DTB_LOADADDRESS = "0x43000000"
+UBOOT_LOADADDRESS = "0x40400000"
 UBOOT_ENTRYPOINT:mx8m-generic-bsp = "0x40400000"
+UBOOT_DTB_LOADADDRESS = "0x43000000"
+UBOOT_DTBO_LOADADDRESS = "0x43080000"
+#UBOOT_RD_ENTRYPOINT = "0x45000000"
 
 FIT_KERNEL_COMP_ALG = "zstd"
 FIT_KERNEL_COMP_ALG_EXTENSION = ".zst"

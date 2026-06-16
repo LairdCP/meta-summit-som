@@ -1,4 +1,4 @@
-LICENSE = "MIT"
+LICENSE = "Ezurio-Clause"
 
 inherit core-image extrausers
 

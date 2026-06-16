@@ -31,6 +31,6 @@ SRC_URI:append:summit-secure = " \
 
 SYSTEMD_SERVICE:${PN}:summitsom = "swupdate.socket"
 
-SRC_URI:append:summitsom-wbx3-initramfs = " file://no-systemd.cfg"
+SRC_URI:append:summitsom = "${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '', ' file://no-systemd.cfg', d)}"
 
 INSANE_SKIP:${PN} += "buildpaths"

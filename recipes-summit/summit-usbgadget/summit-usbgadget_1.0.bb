@@ -1,10 +1,10 @@
 SUMMARY = "Summit SOM USB Gadget"
 
-LICENSE = "Ezurio"
-NO_GENERIC_LICENSE[Ezurio] = "LICENSE.ezurio"
+LICENSE = "Ezurio-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE.ezurio;md5=fd3dd0630b215465b6f50540642d5b93"
 
-inherit allarch systemd
+inherit allarch systemd 
+inherit ${@oe.utils.conditional('VIRTUAL-RUNTIME_dev_manager', 'busybox-mdev', 'update-rc.d', '', d)}
 
 SRC_URI = " \
     file://LICENSE.ezurio \
@@ -36,6 +36,9 @@ S = "${UNPACKDIR}"
 
 FILES:${PN} += "${systemd_system_unitdir} ${libdir}"
 
+INITSCRIPT_NAME = "usb-gadget"
+INITSCRIPT_PARAMS = "defaults 43"
+
 do_install() {
     install -D -m 0755 -t "${D}${bindir}" "${S}/usb-gadget.sh"
     install -D -m 0600 -t "${D}${libdir}/NetworkManager/system-connections/" \
@@ -57,8 +60,12 @@ do_install() {
             "${S}/usb-gadget@.service"
         install -D -m 0644 "${S}/usb-gadget.rules.systemd" \
             "${D}${sysconfdir}/udev/rules.d/usb-gadget.rules"
-    else
+    elif ${@oe.utils.conditional('VIRTUAL-RUNTIME_dev_manager', 'busybox-mdev', 'false', 'true', d)}; then
         install -D -m 0644 "${S}/usb-gadget.rules" \
             "${D}${sysconfdir}/udev/rules.d/usb-gadget.rules"
+    else
+        mkdir -p "${D}${sysconfdir}/init.d"
+        ln -sf "${bindir}/usb-gadget.sh" \
+            "${D}${sysconfdir}/init.d/usb-gadget"
     fi
 }

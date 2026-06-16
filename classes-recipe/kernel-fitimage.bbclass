@@ -644,10 +644,9 @@ fitimage_assemble() {
 	# Step 3: Prepare a u-boot script section
 	#
 
-	if [ -n "${FIT_UBOOT_ENV}" ]; then
-		cp ${UNPACKDIR}/${FIT_UBOOT_ENV} ${B}
-		bootscr_id="${FIT_UBOOT_ENV}"
-		fitimage_emit_section_boot_script $1 "$bootscr_id" ${FIT_UBOOT_ENV}
+	if [ -n "${UBOOT_SCRIPT}" ]; then
+		bootscr_id="${UBOOT_SCRIPT}"
+		fitimage_emit_section_boot_script $1 "$bootscr_id" ${UBOOT_SCRIPT}
 	fi
 
 	#
@@ -759,19 +758,19 @@ SYSROOT_DIRS:append = " /sysroot-only"
 do_install:append() {
 	if echo ${KERNEL_IMAGETYPES} | grep -wq "fitImage" && \
 		[ "${UBOOT_SIGN_ENABLE}" = "1" ]; then
-		install -D ${B}/${KERNEL_OUTPUT_DIR}/fitImage-none ${D}/sysroot-only/fitImage
+		install -D "${B}/${KERNEL_OUTPUT_DIR}/fitImage-none" "${D}/sysroot-only/fitImage"
 	fi
 }
 
 do_assemble_fitimage_initramfs() {
 	if echo ${KERNEL_IMAGETYPES} | grep -wq "fitImage" && \
 		test -n "${INITRAMFS_IMAGE}" ; then
-		cd ${B}
+		cd "${B}"
 		if [ "${INITRAMFS_IMAGE_BUNDLE}" = "1" ]; then
-			fitimage_assemble fit-image-${INITRAMFS_IMAGE}.its fitImage-bundle ""
-			ln -sf fitImage-bundle ${B}/${KERNEL_OUTPUT_DIR}/fitImage
+			fitimage_assemble "fit-image-${INITRAMFS_IMAGE}.its" fitImage-bundle ""
+			ln -sf fitImage-bundle "${B}/${KERNEL_OUTPUT_DIR}/fitImage"
 		else
-			fitimage_assemble fit-image-${INITRAMFS_IMAGE}.its fitImage-${INITRAMFS_IMAGE} 1
+			fitimage_assemble "fit-image-${INITRAMFS_IMAGE}.its" "fitImage-${INITRAMFS_IMAGE}" 1
 		fi
 	fi
 }
@@ -832,30 +831,30 @@ kernel_do_deploy:append() {
 
 		if [ "${INITRAMFS_IMAGE_BUNDLE}" != "1" ]; then
 			bbnote "Copying fit-image.its source file..."
-			install -m 0644 ${B}/fit-image.its "$deployDir/fitImage-its-${KERNEL_FIT_NAME}.its"
+			install -m 0644 "${B}/fit-image.its" "$deployDir/fitImage-its-${KERNEL_FIT_NAME}.its"
 			if [ -n "${KERNEL_FIT_LINK_NAME}" ] ; then
-				ln -snf fitImage-its-${KERNEL_FIT_NAME}.its "$deployDir/fitImage-its-${KERNEL_FIT_LINK_NAME}"
+				ln -snf "fitImage-its-${KERNEL_FIT_NAME}.its" "$deployDir/fitImage-its-${KERNEL_FIT_LINK_NAME}"
 			fi
 
 			bbnote "Copying linux.bin file..."
-			install -m 0644 ${B}/linux.bin $deployDir/fitImage-linux.bin-${KERNEL_FIT_NAME}${KERNEL_FIT_BIN_EXT}
+			install -m 0644 "${B}/linux.bin" "$deployDir/fitImage-linux.bin-${KERNEL_FIT_NAME}${KERNEL_FIT_BIN_EXT}"
 			if [ -n "${KERNEL_FIT_LINK_NAME}" ] ; then
-				ln -snf fitImage-linux.bin-${KERNEL_FIT_NAME}${KERNEL_FIT_BIN_EXT} "$deployDir/fitImage-linux.bin-${KERNEL_FIT_LINK_NAME}"
+				ln -snf "fitImage-linux.bin-${KERNEL_FIT_NAME}${KERNEL_FIT_BIN_EXT}" "$deployDir/fitImage-linux.bin-${KERNEL_FIT_LINK_NAME}"
 			fi
 		fi
 
 		if [ -n "${INITRAMFS_IMAGE}" ]; then
 			bbnote "Copying fit-image-${INITRAMFS_IMAGE}.its source file..."
-			install -m 0644 ${B}/fit-image-${INITRAMFS_IMAGE}.its "$deployDir/fitImage-its-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_NAME}.its"
+			install -m 0644 "${B}/fit-image-${INITRAMFS_IMAGE}.its" "$deployDir/fitImage-its-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_NAME}.its"
 			if [ -n "${KERNEL_FIT_LINK_NAME}" ] ; then
-				ln -snf fitImage-its-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_NAME}.its "$deployDir/fitImage-its-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_LINK_NAME}"
+				ln -snf "fitImage-its-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_NAME}.its" "$deployDir/fitImage-its-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_LINK_NAME}"
 			fi
 
 			if [ "${INITRAMFS_IMAGE_BUNDLE}" != "1" ]; then
 				bbnote "Copying fitImage-${INITRAMFS_IMAGE} file..."
-				install -m 0644 ${B}/${KERNEL_OUTPUT_DIR}/fitImage-${INITRAMFS_IMAGE} "$deployDir/fitImage-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_NAME}${KERNEL_FIT_BIN_EXT}"
+				install -m 0644 "${B}/${KERNEL_OUTPUT_DIR}/fitImage-${INITRAMFS_IMAGE}" "$deployDir/fitImage-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_NAME}${KERNEL_FIT_BIN_EXT}"
 				if [ -n "${KERNEL_FIT_LINK_NAME}" ] ; then
-					ln -snf fitImage-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_NAME}${KERNEL_FIT_BIN_EXT} "$deployDir/fitImage-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_LINK_NAME}"
+					ln -snf "fitImage-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_NAME}${KERNEL_FIT_BIN_EXT}" "$deployDir/fitImage-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_LINK_NAME}"
 				fi
 			fi
 		fi

@@ -26,6 +26,7 @@ if [ "${1}" != "restart" ]; then
 	FIPS_ENABLED=$(/usr/sbin/sysctl -en crypto.fips_enabled || true)
 
 	overlay=false
+	#shellcheck disable=SC2154
 	for i in  ${inittype} none; do
 		case "${i}" in
 			overlay)
@@ -68,6 +69,7 @@ PERM_DEVICE=/dev/$(getPart perm)
 /usr/bin/mount -t "${mountFsType:?}" -o "${PERM_MOUNT_OPTS}" "${PERM_DEVICE}" ${PERM_MOUNT} ||
 	die "Failed to mount ${PERM_DEVICE} on ${PERM_MOUNT}"
 
+if [ -f "/etc/machine-id" ]; then
 # Make sure there is at least an empty machine-id file
 # (Referenced from symlink on the rootfs)
 if [ ! -f "${PERM_MOUNT}/etc/machine-id" ]; then
@@ -76,6 +78,7 @@ if [ ! -f "${PERM_MOUNT}/etc/machine-id" ]; then
 fi
 
 mount --bind ${PERM_MOUNT}/etc/machine-id /etc/machine-id
+fi
 
 mkdir -p ${PERM_MOUNT}/log/journal
 

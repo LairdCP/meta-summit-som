@@ -1,8 +1,7 @@
-DESCRIPTION = "Summit SOM WBx3 Image"
+SUMMARY = "Summit SOM WBx3 SD Card Boot Image"
+DESCRIPTION = "Summit SOM WBx3 Manufacturing Provisioning SD Card Boot Image"
 
-REQUIRED_DISTRO_FEATURES:append = " \
-    summitsom-wbx3 \
-    "
+REQUIRED_DISTRO_FEATURES += "summitsom-wbx3"
 
 FILESEXTRAPATHS:prepend := "\
 ${SUMMIT_SOM_LAYERDIR}/recipes-summit/images/files/nomcu:\
@@ -11,15 +10,32 @@ ${SUMMIT_SOM_LAYERDIR}/recipes-summit/images/files:\
 
 inherit image-summitsom-gen image-summitsom-sd-gen image-summitsom-swu-gen
 
-FITIMAGE_INITRAMFS_LINK ?= "fitImage-initramfs"
+IMAGE_FEATURES = "\
+    allow-empty-password \
+    allow-root-login \
+    empty-root-password \
+    "
 
-ARCHIVE_WILDCARD:append:summitsom-wbx3-initramfs = " \
-    ${DEPLOY_DIR_IMAGE}/flash-initramfs.bin \
-    ${DEPLOY_DIR_IMAGE}/${FITIMAGE_INITRAMFS_LINK}"
+IMAGE_INSTALL += "\
+    ca-certificates \
+    iproute2 \
+    optee-client \
+    summit-update \
+    summit-initdata \
+    ${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget', 'summit-usbgadget', '', d)} \
+    ${VIRTUAL-RUNTIME_base-utils-syslog} \
+    "
 
-IMAGE_POSTPROCESS_COMMAND:append:summitsom-wbx3-initramfs = " copy_initramfs_deploy_artifacts;"
+# Customization for provisioning init and serial auto-login
+ROOTFS_POSTPROCESS_COMMAND:append = " enable_serial_autologin; cleanup_rootfs;"
 
-copy_initramfs_deploy_artifacts() {
-    cp -fL "${DEPLOY_DIR_IMAGE}/flash.bin" "${DEPLOY_DIR_IMAGE}/flash-initramfs.bin"
-    cp -fL "${DEPLOY_DIR_IMAGE}/fitImage-image-${DISTRO}-${MACHINE}-${MACHINE}" "${DEPLOY_DIR_IMAGE}/${FITIMAGE_INITRAMFS_LINK}"
+enable_serial_autologin() {
+    sed -i \
+        -e 's,/usr/sbin/getty 115200.*,/bin/login -f root,g' \
+        -e 's,/agetty ,/agetty -a root ,g' \
+        "${IMAGE_ROOTFS}/etc/inittab"
+}
+
+cleanup_rootfs() {
+    chmod -x "${IMAGE_ROOTFS}/etc/init.d/populate-volatile.sh"
 }
