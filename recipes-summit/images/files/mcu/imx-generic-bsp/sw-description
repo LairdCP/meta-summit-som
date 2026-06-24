@@ -327,6 +327,7 @@ software =
 						type = "postinstall";
 						copyfrom = "/dev/mmcblk@@EMMC_DEVICE@@boot0";
 						chain = "raw";
+						size = "4194304";
 					};
 				},
 				{
