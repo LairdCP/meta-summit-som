@@ -39,7 +39,7 @@ software =
 					filename = "uboot.env";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot0";
 					type = "raw";
-					offset = "4032K";
+					offset = "@@UBOOT_ENV_OFFSET@@";
 					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(uboot.env)";
 				},
@@ -129,7 +129,7 @@ software =
 					filename = "uboot.env";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot1";
 					type = "raw";
-					offset = "4032K";
+					offset = "@@UBOOT_ENV_OFFSET@@";
 					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(uboot.env)";
 				},
@@ -266,14 +266,14 @@ software =
 					filename = "uboot.env";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot0";
 					type = "raw";
-					offset = "4032K";
+					offset = "@@UBOOT_ENV_OFFSET@@";
 					sha256 = "$swupdate_get_sha256(uboot.env)";
 				},
 				{
 					filename = "uboot.env";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot1";
 					type = "raw";
-					offset = "4032K";
+					offset = "@@UBOOT_ENV_OFFSET@@";
 					sha256 = "$swupdate_get_sha256(uboot.env)";
 				},
 				{

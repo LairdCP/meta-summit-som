@@ -32,6 +32,7 @@ software =
 					filename = "flash.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot0";
 					type = "raw";
+					offset = "@@EMMC_BOOT_OFFSET@@";
 					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(flash.bin)";
 				},
@@ -62,6 +63,14 @@ software =
 					sha256 = "$swupdate_get_sha256(fitImage)";
 				},
 				{
+					filename = "fitImageMcu.bin";
+					path = "fitImageMcu.bin";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
+					filesystem = "vfat";
+					installed-directly = true;
+					sha256 = "$swupdate_get_sha256(fitImageMcu.bin)";
+				},
+				{
 					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin";
 					path = "fitImageVerity.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
@@ -79,10 +88,8 @@ software =
 					sha256 = "$swupdate_get_sha256(erase_data_emmc.sh)";
 				},
 				{
-					filename = "update_support.sh";
-					type = "postinstall";
-					data = "a /dev/mmcblk@@EMMC_DEVICE@@";
-					sha256 = "$swupdate_get_sha256(update_support.sh)";
+					type = "emmc_boot";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@boot0";
 				}
 			);
 		};
@@ -114,6 +121,7 @@ software =
 					filename = "flash.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot1";
 					type = "raw";
+					offset = "@@EMMC_BOOT_OFFSET@@";
 					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(flash.bin)";
 				},
@@ -144,6 +152,14 @@ software =
 					sha256 = "$swupdate_get_sha256(fitImage)";
 				},
 				{
+					filename = "fitImageMcu.bin";
+					path = "fitImageMcu.bin";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
+					filesystem = "vfat";
+					installed-directly = true;
+					sha256 = "$swupdate_get_sha256(fitImageMcu.bin)";
+				},
+				{
 					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin";
 					path = "fitImageVerity.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
@@ -161,10 +177,8 @@ software =
 					sha256 = "$swupdate_get_sha256(erase_data_emmc.sh)";
 				},
 				{
-					filename = "update_support.sh";
-					type = "postinstall";
-					data = "b /dev/mmcblk@@EMMC_DEVICE@@";
-					sha256 = "$swupdate_get_sha256(update_support.sh)";
+					type = "emmc_boot";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@boot1";
 				}
 			);
 		};
@@ -238,12 +252,8 @@ software =
 					filename = "flash.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot0";
 					type = "raw";
-					sha256 = "$swupdate_get_sha256(flash.bin)";
-				},
-				{
-					filename = "flash.bin";
-					device = "/dev/mmcblk@@EMMC_DEVICE@@boot1";
-					type = "raw";
+					offset = "@@EMMC_BOOT_OFFSET@@";
+					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(flash.bin)";
 				},
 				{
@@ -251,25 +261,14 @@ software =
 					device = "/dev/mmcblk@@EMMC_DEVICE@@boot0";
 					type = "raw";
 					offset = "@@UBOOT_ENV_OFFSET@@";
-					sha256 = "$swupdate_get_sha256(uboot.env)";
-				},
-				{
-					filename = "uboot.env";
-					device = "/dev/mmcblk@@EMMC_DEVICE@@boot1";
-					type = "raw";
-					offset = "@@UBOOT_ENV_OFFSET@@";
+					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(uboot.env)";
 				},
 				{
 					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p2";
 					type = "raw";
-					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@)";
-				},
-				{
-					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@";
-					device = "/dev/mmcblk@@EMMC_DEVICE@@p5";
-					type = "raw";
+					installed-directly = true;
 					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@)";
 				}
 			);
@@ -283,6 +282,13 @@ software =
 					sha256 = "$swupdate_get_sha256(fitImage)";
 				},
 				{
+					filename = "fitImageMcu.bin";
+					path = "fitImageMcu.bin";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
+					filesystem = "vfat";
+					sha256 = "$swupdate_get_sha256(fitImageMcu.bin)";
+				},
+				{
 					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin";
 					path = "fitImageVerity.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
@@ -297,6 +303,13 @@ software =
 					sha256 = "$swupdate_get_sha256(fitImage)";
 				},
 				{
+					filename = "fitImageMcu.bin";
+					path = "fitImageMcu.bin";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
+					filesystem = "vfat";
+					sha256 = "$swupdate_get_sha256(fitImageMcu.bin)";
+				},
+				{
 					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin";
 					path = "fitImageVerity.bin";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
@@ -307,10 +320,58 @@ software =
 
 			scripts: (
 				{
-					filename = "update_support.sh";
-					type = "postinstall";
-					data = "a /dev/mmcblk@@EMMC_DEVICE@@";
-					sha256 = "$swupdate_get_sha256(update_support.sh)";
+					type = "copy";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@boot1";
+
+					properties: {
+						type = "postinstall";
+						copyfrom = "/dev/mmcblk@@EMMC_DEVICE@@boot0";
+						chain = "raw";
+					};
+				},
+				{
+					type = "copy";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@p5";
+
+					properties: {
+						type = "postinstall";
+						copyfrom = "/dev/mmcblk@@EMMC_DEVICE@@p2";
+						chain = "raw";
+						size = "$swupdate_get_file_size_bytes(@@IMAGE_ROOTFS_VERITY_NAME@@)";
+					};
+				},
+				{
+					type = "readback";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@boot1";
+
+					properties: {
+						sha256 = "$swupdate_get_sha256(flash.bin)";
+						size = "$swupdate_get_file_size_bytes(flash.bin)";
+						offset = "@@EMMC_BOOT_OFFSET@@";
+					};
+				},
+				{
+					type = "readback";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@boot1";
+
+					properties: {
+						sha256 = "$swupdate_get_sha256(uboot.env)";
+						size = "$swupdate_get_file_size_bytes(uboot.env)";
+						offset = "@@UBOOT_ENV_OFFSET@@";
+					};
+				},
+				{
+					type = "readback";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@p5";
+
+					properties: {
+						sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@)";
+						size = "$swupdate_get_file_size_bytes(@@IMAGE_ROOTFS_VERITY_NAME@@)";
+					};
+				},
+				{
+					type = "emmc_boot";
+					device = "/dev/mmcblk@@EMMC_DEVICE@@boot0";
 				}
 			);
 		};

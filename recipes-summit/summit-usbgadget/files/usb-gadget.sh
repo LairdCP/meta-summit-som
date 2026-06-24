@@ -85,7 +85,7 @@ create_gadget() {
 			echo "deadbeefdeadbeef" > strings/0x409/serialnumber
 		fi
 
-		echo "Ezurio-Clause" > strings/0x409/manufacturer
+		echo "Ezurio" > strings/0x409/manufacturer
 		read -r model < /sys/firmware/devicetree/base/model
 		echo "${model}" > strings/0x409/product
 
