@@ -31,8 +31,10 @@ DEPENDS = " \
     "
 
 do_configure() {
-    if [ -z "${AWS_KMS_KEY_ARN}" ]; then
-        bbfatal "Required variable AWS_KMS_KEY_ARN not set."
+    # At least one KMS ARN must be set (umbrella or role-specific)
+    if [ -z "${AWS_KMS_KEY_ARN}" ] && [ -z "${AWS_KMS_CSF_KEY_ARN}" ] && \
+       [ -z "${AWS_KMS_IMG_KEY_ARN}" ] && [ -z "${AWS_KMS_FIT_KEY_ARN}" ]; then
+        bbfatal "At least one of AWS_KMS_KEY_ARN, AWS_KMS_CSF_KEY_ARN, AWS_KMS_IMG_KEY_ARN, or AWS_KMS_FIT_KEY_ARN must be set."
     fi
 }
 
@@ -48,33 +50,35 @@ EXTRA_OEMAKE += "\
 # Extract the key ID (UUID) from the full ARN (arn:aws:kms:<region>:<account>:key/<key-id>)
 AWS_KMS_KEY_ID = "${@(d.getVar('AWS_KMS_KEY_ARN') or '').rsplit('/', 1)[-1]}"
 
-# PKCS#11 slot label: first 32 characters of the key ID
-AWS_KMS_SLOT_LABEL = "${@(d.getVar('AWS_KMS_KEY_ID') or '')[:32]}"
+# Collect all unique KMS ARNs for multi-slot config generation
+def aws_kms_unique_arns(data):
+    arns = set()
+    for v in ('AWS_KMS_KEY_ARN', 'AWS_KMS_CSF_KEY_ARN', 'AWS_KMS_IMG_KEY_ARN', 'AWS_KMS_FIT_KEY_ARN'):
+        arn = data.getVar(v)
+        if arn:
+            arns.add(arn)
+    return sorted(arns)
 
-# Path to the key file relative to the native sysroot, used for signing U-Boot. This is passed to
-# the Makefile via EXTRA_OEMAKE.
-PKCS11_KEY_PATH ?= "${datadir}/aws-kms-pkcs11/dev_pkcs11.pem"
+
 
 do_install() {
     install -d "${D}${libdir}/pkcs11"
     cp -P "${B}/aws_kms_pkcs11.so" "${D}${libdir}/pkcs11/"
 
-    install -m 0644 -D -t "${D}${datadir}/aws-kms-pkcs11" \
-        "${WORKDIR}/aws-kms-pkcs11-config.json"
-    sed -i "s|@@KMS_KEY_ARN@@|${AWS_KMS_KEY_ARN}|g" \
-        "${D}${datadir}/aws-kms-pkcs11/aws-kms-pkcs11-config.json"
-
-    install -d "$(dirname "${D}${PKCS11_KEY_PATH}")"
-    nativepython3 "${STAGING_BINDIR_NATIVE}/uri2pem.py" \
-        --bypass \
-        --out "${D}${PKCS11_KEY_PATH}" \
-        "pkcs11:token=${AWS_KMS_SLOT_LABEL};type=private"
+    # Generate multi-slot config from all unique KMS ARNs
+    install -d "${D}${datadir}/aws-kms-pkcs11"
+    nativepython3 -c "
+import json, sys
+arns = sys.argv[1:]
+config = {'slots': [{'kms_key_arn': arn} for arn in arns]}
+print(json.dumps(config, indent=2))
+" ${@' '.join("'%s'" % a for a in aws_kms_unique_arns(d))} \
+        > "${D}${datadir}/aws-kms-pkcs11/aws-kms-pkcs11-config.json"
 }
 
 FILES:${PN} = " \
     ${libdir}/pkcs11/aws_kms_pkcs11.so \
     ${datadir}/aws-kms-pkcs11/aws-kms-pkcs11-config.json \
-    ${PKCS11_KEY_PATH} \
     "
 
 BBCLASSEXTEND = "native nativesdk"

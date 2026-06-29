@@ -31,6 +31,10 @@ DEPENDS += "\
 
 include ${@'u-boot-imx-summit-secure.inc' if 'summit-secure' in d.getVar('OVERRIDES').split(':') else ''}
 
+SRC_URI:append = "${@' file://0002-rsa-sign-load-openssl-config-for-provider-support.patch' if any(d.getVar(v) for v in ('AWS_KMS_KEY_ARN','AWS_KMS_CSF_KEY_ARN','AWS_KMS_IMG_KEY_ARN','AWS_KMS_FIT_KEY_ARN')) else ''}"
+
+inherit ${@'nxp-hab4-uboot-aws-sign' if any(d.getVar(v) for v in ('AWS_KMS_KEY_ARN','AWS_KMS_CSF_KEY_ARN','AWS_KMS_IMG_KEY_ARN','AWS_KMS_FIT_KEY_ARN')) else ''}
+
 do_compile[depends] += " \
     ${@' '.join('%s:do_deploy' % r for r in '${IMX_EXTRA_FIRMWARE}'.split() )} \
     imx-atf:do_deploy \

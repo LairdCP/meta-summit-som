@@ -1,3 +1,10 @@
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+
+SRC_URI += " \
+    file://0001-uri2pem-exit-non-zero-on-verification-failure.patch \
+    file://0002-fix-install-path.patch \
+    "
+
 do_install:append() {
     install -m 755 -D "${S}/tools/uri2pem.py" "${D}${bindir}/uri2pem.py"
 }
