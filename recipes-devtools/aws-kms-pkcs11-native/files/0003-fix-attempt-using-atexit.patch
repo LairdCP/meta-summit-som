@@ -3,6 +3,8 @@ From: Doug Smith <doug.smith@ezurio.com>
 Date: Fri, 6 Feb 2026 08:58:38 -0500
 Subject: [PATCH] fix attempt using atexit
 
+Upstream-Status: Inappropriate [OE-specific]
+
 ---
  aws_kms_pkcs11.cpp | 23 +++++++++++++++++++++++
  1 file changed, 23 insertions(+)

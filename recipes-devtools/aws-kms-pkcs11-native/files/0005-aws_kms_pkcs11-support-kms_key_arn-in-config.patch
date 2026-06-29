@@ -1,3 +1,5 @@
+Upstream-Status: Inappropriate [OE-specific]
+
 --- a/b/aws_kms_pkcs11.cpp	2026-06-04 11:16:02.143269041 -0400
 +++ b/aws_kms_pkcs11.cpp	2026-06-04 11:16:24.650289261 -0400
 @@ -149,6 +149,7 @@
