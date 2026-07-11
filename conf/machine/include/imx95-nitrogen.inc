@@ -1,5 +1,5 @@
 #@TYPE: Machine
-#@NAME: Nitrogen i.MX95 Plus
+#@NAME: Nitrogen i.MX95
 #@SOC: i.MX95
 #@DESCRIPTION: Machine configuration for Nitrogen i.MX95
 #@MAINTAINER: Boris Krasnovskiy <Boris.Krasnovskiy@ezurio.com>
@@ -15,13 +15,13 @@ DEFAULTTUNE:mx95-generic-bsp = "armv8a-crc-crypto"
 require conf/machine/include/u-boot-summit.inc
 include ${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'conf/machine/include/radio-stack.inc', '', d)}
 
-MACHINE_FEATURES += "pci usbhost alsa rtc optee wifi bluetooth camera"
+MACHINE_FEATURES += "pci usbgadget usbhost alsa rtc optee wifi bluetooth camera"
 MACHINE_FEATURES:append:use-nxp-bsp = " dpdk"
 
 SOC_DEFAULT_IMAGE_FSTYPES = ""
 
-IMAGE_BOOT_FILES = "uboot.env ${KERNEL_IMAGETYPE}"
-SWUPDATE_IMAGES = "flash.bin uboot.env ${KERNEL_IMAGETYPE}"
+IMAGE_BOOT_FILES = "uboot.env fitImage"
+SWUPDATE_IMAGES = "flash.bin uboot.env fitImage"
 
 UBOOT_PROVIDES_BOOT_CONTAINER = "1"
 IMX_DEFAULT_BOOTLOADER:mx9-generic-bsp = "u-boot-imx-summit"
@@ -43,6 +43,7 @@ OEI_CORE   = "m33"
 OEI_SOC    = "mx95"
 OEI_BOARD  = "mx95lp5"
 OEI_DDR_CONFIG = "NITROGEN_IMX95_LPDDR5_6400MTS_timing"
+OEI_DDR_CONFIG_ECC = "NITROGEN_IMX95_LPDDR5_6400MTS_ecc_timing"
 
 DDR_TYPE   = "lpddr5"
 
@@ -57,7 +58,7 @@ UBOOT_MAKE_TARGET = "all"
 IMX_BOOT_SEEK = "32"
 
 MACHINE_EXTRA_RDEPENDS += "${MACHINE_FIRMWARE} kernel-modules"
-EXTRA_IMAGEDEPENDS += "virtual/bootloader"
+EXTRA_IMAGEDEPENDS += "virtual/bootloader linux-yocto-fitimage"
 
 SOC_HAS_VIVANTE_KERNEL_DRIVER_SUPPORT:imxgpu = "0"
 
@@ -65,11 +66,10 @@ IMX_DEFAULT_BSP = "nxp"
 
 MACHINE_EXTRA_RRECOMMENDS:remove = "imx-m33-demos"  
 
-KERNEL_CLASSES  = "kernel-fitimage"
-KERNEL_IMAGETYPES = "fitImage"
+KERNEL_CLASSES = "kernel-fit-extra-artifacts"
 
-KERNEL_IMAGETYPE = "fitImage"
-KERNEL_IMAGETYPE:mx9-generic-bsp = "fitImage"
+KERNEL_IMAGETYPE = "Image"
+KERNEL_IMAGETYPE:mx9-generic-bsp = "Image"
 IMAGE_CLASSES += "dm-verity"
 
 UBOOT_LOADADDRESS = "0x92000000"

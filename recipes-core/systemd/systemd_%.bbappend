@@ -1,7 +1,6 @@
 FILESEXTRAPATHS:prepend:summitsom := "${THISDIR}/files:"
 
 SRC_URI:append:summitsom = "\
-    file://0005-timedate-symlink.patch \
     file://95-network-generator.preset \
     "
 

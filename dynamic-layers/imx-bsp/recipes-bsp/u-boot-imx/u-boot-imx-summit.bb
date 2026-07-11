@@ -14,7 +14,6 @@ SRC_URI:append:summitsom-wbx3-initramfs = " \
     file://uboot-initramfs.cfg \
 "
 
-S = "${UNPACKDIR}/git"
 B = "${UNPACKDIR}/build"
 
 PROVIDES += "u-boot"

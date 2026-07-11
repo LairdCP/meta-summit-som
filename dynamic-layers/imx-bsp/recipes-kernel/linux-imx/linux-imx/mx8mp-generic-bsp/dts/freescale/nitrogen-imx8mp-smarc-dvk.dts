@@ -170,6 +170,11 @@
 	status = "okay";
 };
 
+/* SER0 */
+&uart4 {
+	status = "okay";
+};
+
 /* I2C_GP */
 &i2c2 {
 	status = "okay";

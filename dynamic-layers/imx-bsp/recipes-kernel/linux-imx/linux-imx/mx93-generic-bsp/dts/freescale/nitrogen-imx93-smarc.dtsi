@@ -10,7 +10,7 @@
 #include "imx93.dtsi"
 
 / {
-	model = "Ezurio i.MX93 Nitrogen SMARC board";
+	model = "Ezurio i.MX93 Nitrogen SMARC SOM";
 	compatible = "summit,imx93-nitrogen-smarc", "fsl,imx93";
 
 	aliases {
@@ -229,7 +229,7 @@
 	pinctrl-1 = <&pinctrl_flexcan2_sleep>;
 };
 
-&lpi2c1 { /* PMIC I2C bus, but the PMIC is on lpi2c2 */
+&lpi2c1 { /* PMIC I2C */
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_lpi2c1>;
 	pinctrl-1 = <&pinctrl_lpi2c1>;
@@ -432,7 +432,7 @@
 	status = "okay";
 };
 
-&lpuart2 { /* M33 console SER2 */
+&lpuart2 { /* SER2 */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart2>;
 };
@@ -453,6 +453,18 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart8>;
 	uart-has-rtscts;
+};
+
+&tmu {
+	status = "okay";
+};
+
+&mu1 {
+	status = "okay";
+};
+
+&mu2 {
+	status = "okay";
 };
 
 &usbotg1 { /* USB0 */
@@ -510,6 +522,13 @@
 
 &wdog3 {
 	status = "okay";
+};
+
+&sai3 { /* I2S0 */
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_sai3>;
+
+	#sound-dai-cells = <0>;
 };
 
 &tpm5 {
@@ -698,13 +717,13 @@
 	pinctrl_uart2: uart2grp {
 		fsl,pins = <
 			MX93_PAD_UART2_RXD__LPUART2_RX				0x131e
-			MX93_PAD_UART2_TXD__LPUART2_TX				0x31e
+			MX93_PAD_UART2_TXD__LPUART2_TX				0x131e
 		>;
 	};
 
 	pinctrl_uart5: uart5grp {
 		fsl,pins = <
-			MX93_PAD_DAP_TDO_TRACESWO__LPUART5_TX			0x31e
+			MX93_PAD_DAP_TDO_TRACESWO__LPUART5_TX			0x131e
 			MX93_PAD_DAP_TDI__LPUART5_RX				0x131e
 			MX93_PAD_DAP_TMS_SWDIO__LPUART5_RTS_B			0x131e
 			MX93_PAD_DAP_TCLK_SWCLK__LPUART5_CTS_B			0x131e
@@ -714,14 +733,14 @@
 	pinctrl_uart6: uart6grp {
 		fsl,pins = <
 			MX93_PAD_GPIO_IO05__LPUART6_RX				0x131e
-			MX93_PAD_GPIO_IO04__LPUART6_TX				0x31e
+			MX93_PAD_GPIO_IO04__LPUART6_TX				0x131e
 		>;
 	};
 
 	pinctrl_uart8: uart8grp {
 		fsl,pins = <
 			MX93_PAD_GPIO_IO13__LPUART8_RX				0x131e
-			MX93_PAD_GPIO_IO12__LPUART8_TX				0x31e
+			MX93_PAD_GPIO_IO12__LPUART8_TX				0x131e
 			MX93_PAD_GPIO_IO14__LPUART8_CTS_B			0x131e
 			MX93_PAD_GPIO_IO15__LPUART8_RTS_B			0x131e
 		>;

@@ -115,11 +115,7 @@ fi
 [ -e "${1}/conf/local.conf" ] && build_dir_setup_enabled=false ||
     build_dir_setup_enabled=true
 
-if [ -e "${PWD}/sources/oe-core" ]; then
-    OEROOT=${PWD}/sources/oe-core
-else
-    OEROOT=${PWD}/sources/poky
-fi
+OEROOT=${PWD}/sources/openembedded-core
 
 if [ -n "${RFPROS_FILESHARE_USER}" ] && [ -n "${RFPROS_FILESHARE_PASS}" ]; then
     export RFPROS_FILESHARE_AUTH="${RFPROS_FILESHARE_USER}:${RFPROS_FILESHARE_PASS}@"
@@ -129,6 +125,11 @@ fi
 [ -n "${BR2_DL_DIR}" ] && DL_DIR="${BR2_DL_DIR}" || DL_DIR="${HOME}/.br2_dl_dir"
 export DL_DIR
 BB_ENV_PASSTHROUGH_ADDITIONS="${BB_ENV_PASSTHROUGH_ADDITIONS} DL_DIR SSTATE_DIR VIGILES_KEY_FILE"
+
+if [ -n "${SSTATE_DIR}" ]; then
+    export BB_HASHSERVE_DB_DIR=${SSTATE_DIR}
+    BB_ENV_PASSTHROUGH_ADDITIONS="${BB_ENV_PASSTHROUGH_ADDITIONS} BB_HASHSERVE_DB_DIR"
+fi
 
 if [ -n "${VERSION}" ]; then
     export IMAGE_VERSION_SUFFIX="-${VERSION}"

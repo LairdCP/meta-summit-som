@@ -26,6 +26,7 @@ RADIO_COMMON_PACKAGES = " \
     summit-supplicant \
     summit-supplicant-cli \
     summit-networkmanager \
+    summit-networkmanager-wifi \
     summit-networkmanager-nmcli \
     summit-hostapd \
     "

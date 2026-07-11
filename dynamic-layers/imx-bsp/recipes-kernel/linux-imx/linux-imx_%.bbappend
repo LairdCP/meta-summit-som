@@ -13,14 +13,9 @@ SRC_URI:append:summitsom = " \
     file://0013-lcdifv3.patch \
     file://0015-imx8mp-hdmi-pavi.patch \
     file://0019-dm-verity-partition-wait-fix.patch \
-    file://0020-gpio-pca953x-Add-support-for-TI-TCA6418-GPIO-chip.patch \
     file://0021-sn65dsi83-nxp-bridge-compat.patch \
     file://0022-dw_mipi_dsi-imx-eprobe-defer.patch \
-    file://0047-media-ov5645-Add-support-for-streams.patch \
     file://0048-media-ov5640-digient-rc-delay-compensation.patch \
-    file://0049-gpio-pca953x-Add-support-for-level-triggered-interru.patch \
-    file://0050-gpio-pca953x-use-regmap_update_bits-to-improve-perfo.patch \
-    file://0053-loadpin-Fixed-auto-enable-config.patch\
     file://0054-rtc-rv3028-fix-eeprom-device-tree-support.patch \
     file://0055-rtc-rv3028-fix-name-collisions.patch \
     file://0056-media-i2c-ov5645-Report-streams-using-frame-descript.patch \
@@ -34,6 +29,7 @@ SRC_URI:append:summitsom = " \
     file://0064-media-imx-isi-cap-add-pivariety-workaround.patch \
     file://0065-media-imx-isi-cap-fix-subdev-stream-default-value.patch \
     file://0068-pinctrl-mcp23s08-add-wakeup-support.patch \
+    file://0069-fs_crypt-dm_crypt-Restored-use-of-crypto-engines.patch \
     file://dts \
     ${KERNEL_CONFIG_SUMMIT} \
     "
@@ -71,7 +67,7 @@ LOCALVERSION:summitsom = ""
 SCMVERSION:summitsom = "n"
 
 # Use our defconfig
-IMX_KERNEL_CONFIG_AARCH64:summitsom = ""
+KBUILD_DEFCONFIG:summitsom = ""
 
 # Remove kernel binary from rootfs
 RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base:summitsom = ""

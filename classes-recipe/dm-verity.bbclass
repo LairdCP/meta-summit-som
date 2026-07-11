@@ -12,7 +12,7 @@ verity_setup() {
     # Let's drop the first line of output (doesn't contain any useful info)
     # and feed the rest to another function.
     veritysetup --hash-offset=${size} format ${output} ${output} | \
-        sed -r '1d; s/^([^:]+):\s+(.+)/\U\1=\E\2/; s/ /_/g' > ${output}.env
+        sed -r '1d; s/^([^:]+):\s+(.+)/\U\1=\E\2/; s/ /_/g; s/_\[bytes\]$//' > ${output}.env
 
     ln -sf ${output}.env ${output_link}.env
 
@@ -29,7 +29,7 @@ verity_setup() {
 
     {
         printf 'boot_dev=/dev/mmcblk${mmcdev}p${rootvol}\n'
-        printf 'dm_table="vroot,%s,,ro,0 %s verity 1 ${boot_dev} ${boot_dev} %s %s %s %s %s %s %s"\n' \
+        printf 'dm_table="vroot,%s,,ro,0 %s verity 1 ${boot_dev} ${boot_dev} %s %s %s %s %s %s %s 0"\n' \
             ${UUID} ${DATA_SECT} ${DATA_BLOCK_SIZE} ${HASH_BLOCK_SIZE} \
             ${DATA_BLOCKS} ${HASH_BLOCK} ${HASH_ALGORITHM} ${ROOT_HASH} ${SALT}
         printf 'setenv bootargs "${bootargs} ${IMAGE_BOOTSTR} dm-mod.create=\\"${dm_table}\\" '

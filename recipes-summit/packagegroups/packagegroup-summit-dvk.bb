@@ -9,9 +9,12 @@ RDEPENDS:${PN} = " \
     summit-set-mode \
     python3 \
     python3-dbus-fast \
+    util-linux-dmesg \
     "
 
 RDEPENDS:${PN}:append:imx8mp-summitsom = " \
+    summit-networkmanager-ppp \
+    summit-networkmanager-wwan \
     qfirehose \
     "
 

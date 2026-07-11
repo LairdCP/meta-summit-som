@@ -19,8 +19,8 @@ MACHINE_FEATURES += "pci usbgadget usbhost alsa rtc optee wifi bluetooth camera"
 
 SOC_DEFAULT_IMAGE_FSTYPES = ""
 
-IMAGE_BOOT_FILES = "uboot.env ${KERNEL_IMAGETYPE}"
-SWUPDATE_IMAGES = "flash.bin uboot.env ${KERNEL_IMAGETYPE}"
+IMAGE_BOOT_FILES = "uboot.env fitImage"
+SWUPDATE_IMAGES = "flash.bin uboot.env fitImage"
 
 IMX_DEFAULT_BOOTLOADER:mx8m-generic-bsp = "u-boot-imx-summit"
 IMX_DEFAULT_UBOOTTOOLS:imx-generic-bsp = "u-boot-summit-tools"
@@ -48,17 +48,16 @@ OPTEE_BIN_EXT = "8mm"
 TEE_LOAD_ADDR = "0xbe000000"
 
 MACHINE_EXTRA_RDEPENDS += "${MACHINE_FIRMWARE} kernel-modules"
-EXTRA_IMAGEDEPENDS += "virtual/bootloader"
+EXTRA_IMAGEDEPENDS += "virtual/bootloader linux-yocto-fitimage"
 
 IMX_DEFAULT_BSP = "nxp"
 
 MACHINE_EXTRA_RRECOMMENDS:remove = "imx-m4-demos"
 
-KERNEL_CLASSES  = "kernel-fitimage"
-KERNEL_IMAGETYPES = "fitImage"
+KERNEL_CLASSES = "kernel-fit-extra-artifacts"
 
-KERNEL_IMAGETYPE = "fitImage"
-KERNEL_IMAGETYPE:mx8-generic-bsp = "fitImage"
+KERNEL_IMAGETYPE = "Image"
+KERNEL_IMAGETYPE:mx8-generic-bsp = "Image"
 IMAGE_CLASSES += "dm-verity"
 
 UBOOT_LOADADDRESS = "0x40400000"

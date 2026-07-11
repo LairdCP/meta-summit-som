@@ -1,12 +1,11 @@
-FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend:summitsom := "${THISDIR}/${PN}:"
 
-SRC_URI += "\
-        file://1000-Make-libyaml-optional.patch \
+SRC_URI:append:summitsom = " \
         file://1002-mtd-name.patch \
         file://1003-crc32.patch \
         file://1004-redund.patch \
         "
 
-DEPENDS:remove = "zlib libyaml"
+DEPENDS:summitsom = ""
 
-EXTRA_OECMAKE += "-DNO_YML_SUPPORT=ON"
+EXTRA_OECMAKE:append:summitsom = " -DNO_YML_SUPPORT=ON"

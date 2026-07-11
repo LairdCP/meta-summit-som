@@ -1,6 +1,6 @@
---- a/uvicorn/config.py	2020-02-01 19:00:00.000000000 -0500
-+++ b/uvicorn/config.py	2024-01-11 11:13:48.492675156 -0500
-@@ -260,6 +260,7 @@
+--- a/uvicorn/config.py
++++ b/uvicorn/config.py
+@@ -280,6 +280,7 @@ class Config:
          self.callback_notify = callback_notify
          self.ssl_keyfile = ssl_keyfile
          self.ssl_certfile = ssl_certfile
@@ -8,7 +8,7 @@
          self.ssl_keyfile_password = ssl_keyfile_password
          self.ssl_version = ssl_version
          self.ssl_cert_reqs = ssl_cert_reqs
-@@ -407,6 +408,8 @@
+@@ -466,6 +467,8 @@ class Config:
                  ca_certs=self.ssl_ca_certs,
                  ciphers=self.ssl_ciphers,
              )
@@ -17,9 +17,9 @@
          else:
              self.ssl = None
  
---- a/uvicorn/protocols/http/h11_impl.py	2020-02-01 19:00:00.000000000 -0500
-+++ b/uvicorn/protocols/http/h11_impl.py	2024-01-11 11:18:08.215795183 -0500
-@@ -21,7 +21,7 @@
+--- a/uvicorn/protocols/http/h11_impl.py
++++ b/uvicorn/protocols/http/h11_impl.py
+@@ -24,7 +24,7 @@ from uvicorn._types import (
  from uvicorn.config import Config
  from uvicorn.logging import TRACE_LOG_LEVEL
  from uvicorn.protocols.http.flow_control import CLOSE_HEADER, HIGH_WATER_LIMIT, FlowControl, service_unavailable
@@ -28,15 +28,15 @@
  from uvicorn.server import ServerState
  
 
-@@ -78,6 +78,7 @@
-         self.server: tuple[str, int] | None = None
+@@ -82,6 +82,7 @@ class H11Protocol(asyncio.Protocol):
+         self.server: tuple[str, int | None] | None = None
          self.client: tuple[str, int] | None = None
          self.scheme: Literal["http", "https"] | None = None
 +        self.tls:    Dict | None = None
  
          # Per-request state
          self.scope: HTTPScope = None  # type: ignore[assignment]
-@@ -96,6 +97,11 @@
+@@ -100,6 +101,11 @@ class H11Protocol(asyncio.Protocol):
          self.client = get_remote_addr(transport)
          self.scheme = "https" if is_ssl(transport) else "http"
  
@@ -48,7 +48,7 @@
          if self.logger.level <= TRACE_LOG_LEVEL:
              prefix = "%s:%d - " % self.client if self.client else ""
              self.logger.log(TRACE_LOG_LEVEL, "%sHTTP connection made", prefix)
-@@ -212,7 +218,12 @@
+@@ -216,7 +222,12 @@ class H11Protocol(asyncio.Protocol):
                      "query_string": query_string,
                      "headers": self.headers,
                      "state": self.app_state.copy(),
@@ -61,9 +61,9 @@
                  if self._should_upgrade():
                      self.handle_websocket_upgrade(event)
                      return
---- a/uvicorn/protocols/http/httptools_impl.py	2020-02-01 19:00:00.000000000 -0500
-+++ b/uvicorn/protocols/http/httptools_impl.py	2024-01-11 11:19:39.992806768 -0500
-@@ -22,7 +22,7 @@
+--- a/uvicorn/protocols/http/httptools_impl.py
++++ b/uvicorn/protocols/http/httptools_impl.py
+@@ -24,7 +24,7 @@ from uvicorn._types import (
  from uvicorn.config import Config
  from uvicorn.logging import TRACE_LOG_LEVEL
  from uvicorn.protocols.http.flow_control import CLOSE_HEADER, HIGH_WATER_LIMIT, FlowControl, service_unavailable
@@ -71,8 +71,8 @@
 +from uvicorn.protocols.utils import get_client_addr, get_local_addr, get_path_with_query_string, get_remote_addr, is_ssl, get_tls_info
  from uvicorn.server import ServerState
  
- HEADER_RE = re.compile(b'[\x00-\x1f\x7f()<>@,;:[]={} \t\\"]')
-@@ -87,6 +87,7 @@
+ HEADER_RE = re.compile(b'[\x00-\x1f\x7f()<>@,;:\\[\\]={} \t\\\\"]')
+@@ -90,6 +90,7 @@ class HttpToolsProtocol(asyncio.Protocol):
          self.client: tuple[str, int] | None = None
          self.scheme: Literal["http", "https"] | None = None
          self.pipeline: deque[tuple[RequestResponseCycle, ASGI3Application]] = deque()
@@ -80,7 +80,7 @@
  
          # Per-request state
          self.scope: HTTPScope = None  # type: ignore[assignment]
-@@ -106,6 +107,11 @@
+@@ -109,6 +110,11 @@ class HttpToolsProtocol(asyncio.Protocol):
          self.client = get_remote_addr(transport)
          self.scheme = "https" if is_ssl(transport) else "http"
  
@@ -92,7 +92,7 @@
          if self.logger.level <= TRACE_LOG_LEVEL:
              prefix = "%s:%d - " % self.client if self.client else ""
              self.logger.log(TRACE_LOG_LEVEL, "%sHTTP connection made", prefix)
-@@ -230,8 +236,12 @@
+@@ -233,8 +239,12 @@ class HttpToolsProtocol(asyncio.Protocol):
              "root_path": self.root_path,
              "headers": self.headers,
              "state": self.app_state.copy(),
@@ -105,9 +105,9 @@
      # Parser callbacks
      def on_url(self, url: bytes) -> None:
          self.url += url
---- a/uvicorn/protocols/utils.py	2020-02-01 19:00:00.000000000 -0500
-+++ b/uvicorn/protocols/utils.py	2024-01-11 11:22:51.886814641 -0500
-@@ -4,6 +4,28 @@
+--- a/uvicorn/protocols/utils.py
++++ b/uvicorn/protocols/utils.py
+@@ -6,6 +6,28 @@ import urllib.parse
  import urllib.parse
  
  from uvicorn._types import WWWScope
@@ -136,7 +136,7 @@
  
  
  class ClientDisconnected(OSError): ...
-@@ -54,3 +76,54 @@
+@@ -60,3 +82,54 @@ def get_path_with_query_string(scope: WWWScope) -> str:
      if scope["query_string"]:
          path_with_query_string = "{}?{}".format(path_with_query_string, scope["query_string"].decode("ascii"))
      return path_with_query_string

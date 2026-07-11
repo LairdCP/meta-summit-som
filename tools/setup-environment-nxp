@@ -129,11 +129,7 @@ if [ ! -e "${FSL_EULA_FILE}" ]; then
     return 1
 fi
 
-if [ -e "${PWD}/sources/oe-core" ]; then
-    OEROOT=${PWD}/sources/oe-core
-else
-    OEROOT=${PWD}/sources/poky
-fi
+OEROOT=${PWD}/sources/openembedded-core
 
 if [ -n "${RFPROS_FILESHARE_USER}" ] && [ -n "${RFPROS_FILESHARE_PASS}" ]; then
     export RFPROS_FILESHARE_AUTH="${RFPROS_FILESHARE_USER}:${RFPROS_FILESHARE_PASS}@"
@@ -145,6 +141,11 @@ export DL_DIR
 BB_ENV_PASSTHROUGH_ADDITIONS="${BB_ENV_PASSTHROUGH_ADDITIONS} DL_DIR SSTATE_DIR VIGILES_KEY_FILE"
 
 BB_ENV_PASSTHROUGH_ADDITIONS="${BB_ENV_PASSTHROUGH_ADDITIONS} SIG_DATA_PATH"
+
+if [ -n "${SSTATE_DIR}" ]; then
+    export BB_HASHSERVE_DB_DIR=${SSTATE_DIR}
+    BB_ENV_PASSTHROUGH_ADDITIONS="${BB_ENV_PASSTHROUGH_ADDITIONS} BB_HASHSERVE_DB_DIR"
+fi
 
 if [ -n "${VERSION}" ]; then
     export IMAGE_VERSION_SUFFIX="-${VERSION}"

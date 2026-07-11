@@ -302,17 +302,20 @@
 	};
 };
 
+&lpuart5 { /* SER0 */
+	status = "okay";
+};
+
 /* I2S0 */
 &sai3 {
-	#sound-dai-cells = <0>;
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_sai3>;
+	status = "okay";
+
 	assigned-clocks = <&clk IMX93_CLK_SAI3>;
 	assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>;
 	/* wm8962 needs MCLK 14 - 40 MHz */
 	assigned-clock-rates = <24000000>;
+
 	fsl,sai-mclk-direction-output;
-	status = "okay";
 };
 
 /* USB-C */

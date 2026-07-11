@@ -13,7 +13,6 @@ SRC_URI:summit-internal = "${SUMMIT_INTERNAL_GIT_URI}/cp_linux-u-boot-som60.git;
 SRC_URI:append = "${@' file://0002-rsa-sign-load-openssl-config-for-provider-support.patch' if any(d.getVar(v) for v in ('AWS_KMS_KEY_ARN','AWS_KMS_CSF_KEY_ARN','AWS_KMS_IMG_KEY_ARN','AWS_KMS_FIT_KEY_ARN')) else ''}"
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-S = "${UNPACKDIR}/git"
 B = "${UNPACKDIR}/build"
 
 DEPENDS += "flex-native bison-native python3-setuptools-native" 

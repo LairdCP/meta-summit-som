@@ -7,8 +7,8 @@ BBFILES ?= ""
 BBLAYERS = " \
   ${BSPDIR}/sources/meta-summit-som \
   \
-  ${BSPDIR}/sources/poky/meta \
-  ${BSPDIR}/sources/poky/meta-poky \
+  ${BSPDIR}/sources/openembedded-core/meta \
+  ${BSPDIR}/sources/meta-yocto/meta-poky \
   \
   ${BSPDIR}/sources/meta-openembedded/meta-oe \
   ${BSPDIR}/sources/meta-openembedded/meta-multimedia \
