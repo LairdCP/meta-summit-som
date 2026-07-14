@@ -16,9 +16,15 @@ do_assemble_fitimage[network] = "1"
 do_assemble_fitimage_initramfs[network] = "1"
 
 # Helper: extract PKCS#11 token label (first 32 chars of key UUID) from an ARN.
+# CK_TOKEN_INFO.label is exactly 32 bytes per the PKCS#11 spec.
 def aws_kms_token_label(arn):
     key_id = (arn or '').rsplit('/', 1)[-1]
     return key_id[:32]
+
+# Helper: extract the full key ID (UUID) from an ARN for CKA_LABEL lookups.
+# aws_kms_pkcs11.so reports key CKA_LABEL as the full key ID without truncation.
+def aws_kms_key_label(arn):
+    return (arn or '').rsplit('/', 1)[-1]
 
 # Create per-recipe OpenSSL config and export KMS environment variables.
 # Designed to be called at the top of do_compile:prepend() in subclasses.

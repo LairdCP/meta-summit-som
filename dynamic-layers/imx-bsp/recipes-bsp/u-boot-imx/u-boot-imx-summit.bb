@@ -30,9 +30,13 @@ DEPENDS += "\
 
 include ${@'u-boot-imx-summit-secure.inc' if 'summit-secure' in d.getVar('OVERRIDES').split(':') else ''}
 
-SRC_URI:append = "${@' file://0002-rsa-sign-load-openssl-config-for-provider-support.patch' if any(d.getVar(v) for v in ('AWS_KMS_KEY_ARN','AWS_KMS_CSF_KEY_ARN','AWS_KMS_IMG_KEY_ARN','AWS_KMS_FIT_KEY_ARN')) else ''}"
+SRC_URI:append = "${@' file://0002-rsa-sign-load-openssl-config-for-provider-support.patch' if any(d.getVar(v) for v in ('AWS_KMS_KEY_ARN','AWS_KMS_CSF_KEY_ARN','AWS_KMS_IMG_KEY_ARN','AWS_KMS_FIT_KEY_ARN','AWS_KMS_AHAB_KEY_ARN')) else ''}"
 
-inherit ${@'nxp-hab4-uboot-aws-sign' if any(d.getVar(v) for v in ('AWS_KMS_KEY_ARN','AWS_KMS_CSF_KEY_ARN','AWS_KMS_IMG_KEY_ARN','AWS_KMS_FIT_KEY_ARN')) else ''}
+# HAB4 (imx8m): CSF/IMG key wrappers + FIT signing via CST/binman
+inherit ${@'nxp-hab4-uboot-aws-sign' if 'mx8m-generic-bsp' in d.getVar('OVERRIDES').split(':') and any(d.getVar(v) for v in ('AWS_KMS_KEY_ARN','AWS_KMS_CSF_KEY_ARN','AWS_KMS_IMG_KEY_ARN','AWS_KMS_FIT_KEY_ARN')) else ''}
+
+# AHAB (imx9x): SPSDK PKCS#11 signer + FIT signing via nxpimage
+inherit ${@'nxp-ahab-uboot-aws-sign' if 'mx9-generic-bsp' in d.getVar('OVERRIDES').split(':') and (d.getVar('AWS_KMS_AHAB_KEY_ARN') or d.getVar('AWS_KMS_KEY_ARN')) else ''}
 
 do_compile[depends] += " \
     ${@' '.join('%s:do_deploy' % r for r in '${IMX_EXTRA_FIRMWARE}'.split() )} \

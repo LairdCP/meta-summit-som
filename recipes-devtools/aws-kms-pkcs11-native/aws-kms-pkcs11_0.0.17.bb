@@ -33,8 +33,9 @@ DEPENDS = " \
 do_configure() {
     # At least one KMS ARN must be set (umbrella or role-specific)
     if [ -z "${AWS_KMS_KEY_ARN}" ] && [ -z "${AWS_KMS_CSF_KEY_ARN}" ] && \
-       [ -z "${AWS_KMS_IMG_KEY_ARN}" ] && [ -z "${AWS_KMS_FIT_KEY_ARN}" ]; then
-        bbfatal "At least one of AWS_KMS_KEY_ARN, AWS_KMS_CSF_KEY_ARN, AWS_KMS_IMG_KEY_ARN, or AWS_KMS_FIT_KEY_ARN must be set."
+       [ -z "${AWS_KMS_IMG_KEY_ARN}" ] && [ -z "${AWS_KMS_FIT_KEY_ARN}" ] && \
+       [ -z "${AWS_KMS_AHAB_KEY_ARN}" ]; then
+        bbfatal "At least one of AWS_KMS_KEY_ARN, AWS_KMS_CSF_KEY_ARN, AWS_KMS_IMG_KEY_ARN, AWS_KMS_FIT_KEY_ARN, or AWS_KMS_AHAB_KEY_ARN must be set."
     fi
 }
 
@@ -53,7 +54,7 @@ AWS_KMS_KEY_ID = "${@(d.getVar('AWS_KMS_KEY_ARN') or '').rsplit('/', 1)[-1]}"
 # Collect all unique KMS ARNs for multi-slot config generation
 def aws_kms_unique_arns(data):
     arns = set()
-    for v in ('AWS_KMS_KEY_ARN', 'AWS_KMS_CSF_KEY_ARN', 'AWS_KMS_IMG_KEY_ARN', 'AWS_KMS_FIT_KEY_ARN'):
+    for v in ('AWS_KMS_KEY_ARN', 'AWS_KMS_CSF_KEY_ARN', 'AWS_KMS_IMG_KEY_ARN', 'AWS_KMS_FIT_KEY_ARN', 'AWS_KMS_AHAB_KEY_ARN'):
         arn = data.getVar(v)
         if arn:
             arns.add(arn)
