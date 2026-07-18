@@ -741,6 +741,20 @@
 		>;
 	};
 
+	pinctrl_uart2: uart2grp {
+		fsl,pins = <
+			IMX95_PAD_UART2_RXD__AONMIX_TOP_LPUART2_RX      0x131e
+			IMX95_PAD_UART2_TXD__AONMIX_TOP_LPUART2_TX      0x31e
+		>;
+	};
+
+	pinctrl_uart3: uart3grp {
+		fsl,pins = <
+			IMX95_PAD_GPIO_IO15__LPUART3_RX      0x131e
+			IMX95_PAD_GPIO_IO14__LPUART3_TX      0x31e
+		>;
+	};
+
 	pinctrl_uart6: uart6grp {
 		fsl,pins = <
 			IMX95_PAD_GPIO_IO04__LPUART6_TX			0x31e

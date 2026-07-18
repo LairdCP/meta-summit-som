@@ -1,0 +1,56 @@
+
+Upstream-Status: Inappropriate No time for upstreaming
+
+diff --git a/drivers/gpu/drm/bridge/lvds-codec.c b/drivers/gpu/drm/bridge/lvds-codec.c
+index e6a7147..f45dbcc 100644
+--- a/drivers/gpu/drm/bridge/lvds-codec.c
++++ b/drivers/gpu/drm/bridge/lvds-codec.c
+@@ -111,9 +111,8 @@ static const struct drm_bridge_funcs funcs = {
+ static int lvds_codec_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+-	struct device_node *panel_node;
+ 	struct device_node *bus_node;
+-	struct drm_panel *panel;
++	struct drm_panel *panel = NULL;
+ 	struct lvds_codec *lvds_codec;
+ 	u32 val;
+ 	int ret;
+@@ -137,26 +136,19 @@ static int lvds_codec_probe(struct platform_device *pdev)
+ 		return dev_err_probe(dev, PTR_ERR(lvds_codec->powerdown_gpio),
+ 				     "powerdown GPIO failure\n");
+ 
+-	/* Locate the panel DT node. */
+-	panel_node = of_graph_get_remote_node(dev->of_node, 1, 0);
+-	if (!panel_node) {
+-		dev_dbg(dev, "panel DT node not found\n");
+-		return -ENXIO;
+-	}
+-
+-	panel = of_drm_find_panel(panel_node);
+-	of_node_put(panel_node);
+-	if (IS_ERR(panel)) {
+-		dev_dbg(dev, "panel not found, deferring probe\n");
+-		return PTR_ERR(panel);
++	ret = drm_of_find_panel_or_bridge(dev->of_node, 1, 0, &panel,
++		&lvds_codec->panel_bridge);
++	if (ret)
++		return ret;
++
++	if (panel) {
++		lvds_codec->panel_bridge =
++			devm_drm_panel_bridge_add_typed(dev, panel,
++							lvds_codec->connector_type);
++		if (IS_ERR(lvds_codec->panel_bridge))
++			return PTR_ERR(lvds_codec->panel_bridge);
+ 	}
+ 
+-	lvds_codec->panel_bridge =
+-		devm_drm_panel_bridge_add_typed(dev, panel,
+-						lvds_codec->connector_type);
+-	if (IS_ERR(lvds_codec->panel_bridge))
+-		return PTR_ERR(lvds_codec->panel_bridge);
+-
+ 	/*
+ 	 * Decoder input LVDS format is a property of the decoder chip or even
+ 	 * its strapping. Handle data-mapping the same way lvds-panel does. In

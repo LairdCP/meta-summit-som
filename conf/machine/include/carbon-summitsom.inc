@@ -12,19 +12,21 @@ DEFAULTTUNE:k3 = "armv8a-crc-crypto"
 require conf/machine/include/u-boot-summit.inc
 include ${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'conf/machine/include/radio-stack.inc', '', d)}
 
-MACHINE_FEATURES = "usbgadget usbhost alsa rtc optee screen wifi bluetooth camera"
+MACHINE_FEATURES:k3r5 = ""
+MACHINE_FEATURES:k3 = "usbgadget usbhost alsa rtc optee screen wifi bluetooth camera"
 
-TI_PREFERRED_BSP = "ti-6_12"
+TI_PREFERRED_BSP = "ti-6_18"
 
-SWUPDATE_IMAGES = "${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin uboot.env ${KERNEL_IMAGETYPE}"
+SWUPDATE_IMAGES = "${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin uboot.env fitImage"
 
-BSP_BOOTLOADER_PROVIDER:bsp-ti-6_12 = "u-boot-ti-summit"
-BSP_BOOTLOADER_VERSION:bsp-ti-6_12 = "%"
+BSP_BOOTLOADER_PROVIDER:bsp-ti-6_18 = "u-boot-ti-summit"
+BSP_BOOTLOADER_VERSION:bsp-ti-6_18 = "%"
 
 SERIAL_CONSOLES = "115200;ttyS2"
 
-MACHINE_ESSENTIAL_EXTRA_RDEPENDS:remove = "kernel-image-image kernel-devicetree"
+MACHINE_ESSENTIAL_EXTRA_RDEPENDS:remove = "kernel-image-image kernel-devicetree ti-kernel-fitimage"
 MACHINE_EXTRA_RDEPENDS = "kernel-modules"
+EXTRA_IMAGEDEPENDS = "virtual/bootloader ti-kernel-fitimage"
 
 IMAGE_FSTYPES = ""
 
@@ -42,10 +44,9 @@ UBOOT_SIGN_KEYNAME = "dev"
 
 # Do not set these for k3r5
 UBOOT_SIGN_ENABLE:k3 = "1"
-KERNEL_IMAGETYPE:k3 = "fitImage"
-KERNEL_IMAGETYPES:k3 = "fitImage"
-IMAGE_BOOT_FILES:k3 = "${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin uboot.env ${KERNEL_IMAGETYPE}"
-
+KERNEL_IMAGETYPE:k3 = "Image"
+KERNEL_IMAGETYPES:k3 = "Image"
+IMAGE_BOOT_FILES:k3 = "${SPL_BINARYNAME} u-boot.${UBOOT_SUFFIX} tiboot3.bin uboot.env fitImage"
 
 UBOOT_ENV_OFFSET = "3670016"
 EMMC_SPL_OFFSET = "524288"

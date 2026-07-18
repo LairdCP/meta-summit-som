@@ -10,14 +10,11 @@ RDEPENDS:${PN} = " \
     python3 \
     python3-dbus-fast \
     util-linux-dmesg \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'alsa', 'kernel-module-tac5x1x', '', d)} \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'camera', 'packagegroup-summit-camera', '', d)} \
     "
 
 RDEPENDS:${PN}:append:imx8mp-summitsom = " \
-    summit-networkmanager-ppp \
     summit-networkmanager-wwan \
     qfirehose \
-    "
-
-RDEPENDS:${PN}:append:alsa:summitsom = " \
-    kernel-module-tac5x1x \
     "

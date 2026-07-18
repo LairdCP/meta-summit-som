@@ -30,6 +30,13 @@ SRC_URI:append:summitsom = " \
     file://0065-media-imx-isi-cap-fix-subdev-stream-default-value.patch \
     file://0068-pinctrl-mcp23s08-add-wakeup-support.patch \
     file://0069-fs_crypt-dm_crypt-Restored-use-of-crypto-engines.patch \
+    file://0070-imx93-clk-fracn-gppll-add-504mhz-rate.patch \
+    file://0071-imx93-dsi-remove-clock-whitelist.patch \
+    file://0072-media-imx8-mipi-csi2-sam-fix-s_power-null-deref.patch \
+    file://0073-media-imx8-isi-cap-tolerate-optional-get_frame_inte.patch \
+    file://0074-media-imx8-mipi-csi2-sam-quiet-phy-reset-no-sensor.patch \
+    file://0075-media-imx7-media-csi-validate-pixelformat-against-s.patch \
+    file://0076-media-imx7-media-csi-hold-a-cpu-latency-qos-request.patch \
     file://dts \
     ${KERNEL_CONFIG_SUMMIT} \
     "

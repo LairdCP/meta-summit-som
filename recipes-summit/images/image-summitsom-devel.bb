@@ -14,8 +14,4 @@ IMAGE_INSTALL += "\
     packagegroup-core-buildessential \
     "
 
-IMAGE_INSTALL:append:camera = " \
-    packagegroup-summit-camera \
-    "
-
 include image-summitsom-demo-mcu.inc
