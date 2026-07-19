@@ -11,6 +11,9 @@ CARGO_VENDORING_DIRECTORY = "${S}/vendor"
 CARGO_DISABLE_BITBAKE_VENDORING = "1"
 CARGO_BUILD_FLAGS += "--offline --locked"
 RUSTFLAGS += "-C panic=unwind"
+# Regenerate swupdate-ipc bindings from the SWUpdate headers staged by the
+# PACKAGECONFIG feature dependencies below.
+export SWUPDATE_INCLUDE_DIR = "${STAGING_INCDIR}"
 
 SRC_URI = "${SUMMIT_EXTERNAL_GIT_URI}/lrd-userspace-examples.git;${SUMMIT_EXTERNAL_GIT_SUFFIX}"
 SRC_URI:summit-internal = "${SUMMIT_INTERNAL_GIT_URI}/cp_apps-summit-usbgadget.git;${SUMMIT_INTERNAL_GIT_SUFFIX}"

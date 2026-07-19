@@ -18,6 +18,7 @@ SRC_URI = " \
 
 RDEPENDS:${PN} = "\
     v4l-utils \
+    media-ctl \
     "
 
 S = "${UNPACKDIR}"

@@ -6,6 +6,6 @@ inherit image-summitsom-gen image-summitsom-sd-gen image-summitsom-swu-gen
 
 IMAGE_INSTALL += "\
     packagegroup-summit-basic \
-    packagegroup-summit-rcm-rust \
     packagegroup-summit-diag \
+    summit-rcm-rust \
     "

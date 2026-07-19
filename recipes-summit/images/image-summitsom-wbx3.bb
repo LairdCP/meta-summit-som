@@ -22,7 +22,7 @@ IMAGE_INSTALL += "\
     optee-client \
     summit-update \
     summit-initdata \
-    ${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget', 'summit-usbgadget', '', d)} \
+    summit-usbgadget \
     ${VIRTUAL-RUNTIME_base-utils-syslog} \
     "
 

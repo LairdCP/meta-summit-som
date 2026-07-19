@@ -1,11 +1,11 @@
 
 Upstream-Status: Inappropriate No time for upstreaming
 
-Index: swupdate-2026.05.1/include/swupdate_image.h
-===================================================================
---- swupdate-2026.05.1.orig/include/swupdate_image.h	2026-07-07 15:36:50.315563818 -0400
-+++ swupdate-2026.05.1/include/swupdate_image.h	2026-07-07 15:36:50.724999059 -0400
-@@ -48,6 +48,7 @@
+diff --git a/include/swupdate_image.h b/include/swupdate_image.h
+index fb54ace55c..d1d3517daf 100644
+--- a/include/swupdate_image.h
++++ b/include/swupdate_image.h
+@@ -48,6 +48,7 @@ struct img_type {
  	char device[MAX_VOLNAME];	/* device associated with image if any */
  	char path[MAX_IMAGE_FNAME];	/* Path where image must be installed */
  	char mtdname[MAX_IMAGE_FNAME];	/* MTD device where image must be installed */
@@ -13,11 +13,11 @@ Index: swupdate-2026.05.1/include/swupdate_image.h
  	char type_data[SWUPDATE_GENERAL_STRING_SIZE];	/* Data for handler */
  	char extract_file[MAX_IMAGE_FNAME];
  	char filesystem[MAX_IMAGE_FNAME];
-Index: swupdate-2026.05.1/parser/parser.c
-===================================================================
---- swupdate-2026.05.1.orig/parser/parser.c	2026-07-07 15:36:50.679229307 -0400
-+++ swupdate-2026.05.1/parser/parser.c	2026-07-07 15:37:03.700086555 -0400
-@@ -479,6 +479,7 @@
+diff --git a/parser/parser.c b/parser/parser.c
+index f9da567a0c..d934a3678e 100644
+--- a/parser/parser.c
++++ b/parser/parser.c
+@@ -479,6 +479,7 @@ static int parse_common_attributes(parsertype p, void *elem, struct img_type *im
  	GET_FIELD_STRING(p, elem, "volume", image->volname);
  	GET_FIELD_STRING(p, elem, "device", image->device);
  	GET_FIELD_STRING(p, elem, "mtdname", image->mtdname);
@@ -25,10 +25,10 @@ Index: swupdate-2026.05.1/parser/parser.c
  	GET_FIELD_STRING(p, elem, "filesystem", image->filesystem);
  	GET_FIELD_STRING(p, elem, "type", image->type);
  	GET_FIELD_STRING(p, elem, "data", image->type_data);
-Index: swupdate-2026.05.1/handlers/flash_handler.c
-===================================================================
---- swupdate-2026.05.1.orig/handlers/flash_handler.c	2026-07-07 15:36:50.716217932 -0400
-+++ swupdate-2026.05.1/handlers/flash_handler.c	2026-07-07 15:37:03.968097022 -0400
+diff --git a/handlers/flash_handler.c b/handlers/flash_handler.c
+index dc829bab02..02e0c43937 100644
+--- a/handlers/flash_handler.c
++++ b/handlers/flash_handler.c
 @@ -35,6 +35,16 @@
  #define PROCMTD	"/proc/mtd"
  #define LINESIZE	80
@@ -240,7 +240,7 @@ Index: swupdate-2026.05.1/handlers/flash_handler.c
  static int erase_block(struct flash_priv *priv)
  {
  	int ret;
-@@ -628,6 +825,11 @@
+@@ -825,6 +1012,11 @@
  		priv.readout_buf = priv.filebuf + priv.filebuf_size;
  
  	ret = copyimage(&priv, img, flash_write);

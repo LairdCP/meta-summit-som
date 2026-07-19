@@ -10,8 +10,6 @@ PACKAGECONFIG:summitsom = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'xkbcommon', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'sysvinit', 'link-udev-shared', d)} \
     backlight \
-    binfmt \
-    hibernate \
     hostnamed \
     idn \
     kmod \
@@ -26,6 +24,10 @@ PACKAGECONFIG:summitsom = " \
     vconsole \
     zstd \
     microhttpd \
+"
+
+PAM_PLUGINS:append:summitsom = " \
+    pam-plugin-umask \
 "
 
 do_install:append:summitsom() {
