@@ -342,7 +342,7 @@ software =
 						type = "postinstall";
 						copyfrom = "/dev/mmcblk@@EMMC_DEVICE@@p2";
 						chain = "raw";
-						size = "$swupdate_get_file_size_bytes(@@IMAGE_ROOTFS_VERITY_NAME@@)";
+						size = "$swupdate_get_size(@@IMAGE_ROOTFS_VERITY_NAME@@)";
 					};
 				},
 				{
@@ -351,7 +351,7 @@ software =
 
 					properties: {
 						sha256 = "$swupdate_get_sha256(flash.bin)";
-						size = "$swupdate_get_file_size_bytes(flash.bin)";
+						size = "$swupdate_get_size(flash.bin)";
 						offset = "@@EMMC_BOOT_OFFSET@@";
 					};
 				},
@@ -361,7 +361,7 @@ software =
 
 					properties: {
 						sha256 = "$swupdate_get_sha256(uboot.env)";
-						size = "$swupdate_get_file_size_bytes(uboot.env)";
+						size = "$swupdate_get_size(uboot.env)";
 						offset = "@@UBOOT_ENV_OFFSET@@";
 					};
 				},
@@ -371,7 +371,7 @@ software =
 
 					properties: {
 						sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@)";
-						size = "$swupdate_get_file_size_bytes(@@IMAGE_ROOTFS_VERITY_NAME@@)";
+						size = "$swupdate_get_size(@@IMAGE_ROOTFS_VERITY_NAME@@)";
 					};
 				},
 				{

@@ -4,22 +4,6 @@ python () {
     d.setVarFlag("SWUPDATE_IMAGES_FSTYPES", image, "." + type)
 }
 
-def get_file_size_bytes(d, filename):
-    import os
-
-    deploy_dir = d.getVar('DEPLOY_DIR_IMAGE', True)
-    if not deploy_dir or not filename:
-        return ""
-
-    path = os.path.join(deploy_dir, filename)
-    if os.path.exists(path):
-        return str(os.path.getsize(path))
-
-    return ""
-
-def swupdate_get_file_size_bytes(d, s, filename):
-    return get_file_size_bytes(d, filename)
-
 inherit swupdate-image
 
 SRC_URI += "file://erase_data_emmc.sh"
