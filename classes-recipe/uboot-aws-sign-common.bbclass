@@ -7,7 +7,7 @@ AWS_KMS_CERT_DAYS ?= "3650"
 
 DEPENDS += "aws-kms-pkcs11-native"
 
-KMS_SIG_STAGING = "${WORKDIR}/kms-sig-data"
+KMS_SIG_STAGING = "${UNPACKDIR}/kms-sig-data"
 KMS_SIGN_KEYDIR_ORIG := "${UBOOT_SIGN_KEYDIR}"
 
 do_compile[network] = "1"
@@ -29,7 +29,7 @@ def aws_kms_key_label(arn):
 # Create per-recipe OpenSSL config and export KMS environment variables.
 # Designed to be called at the top of do_compile:prepend() in subclasses.
 uboot_aws_kms_setup_env() {
-    OPENSSL_CNF="${WORKDIR}/kms-openssl.cnf"
+    OPENSSL_CNF="${UNPACKDIR}/kms-openssl.cnf"
     if [ ! -f "$OPENSSL_CNF" ]; then
         cp "${STAGING_DIR_NATIVE}/usr/lib/ssl-3/openssl.cnf" "$OPENSSL_CNF"
         sed -i '/^default = default_sect$/a pkcs11 = pkcs11_sect' "$OPENSSL_CNF"
@@ -65,12 +65,12 @@ uboot_aws_kms_gen_cert() {
     "${STAGING_DIR_NATIVE}/usr/bin/openssl" req -new -x509 \
         -key "$1" \
         -out "$2" \
-        -days ${AWS_KMS_CERT_DAYS} -nodes \
+        -days "${AWS_KMS_CERT_DAYS}" -nodes \
         -subj "/CN=$3"
 }
 
 do_uboot_assemble_fitimage:prepend() {
     export AWS_KMS_PKCS11_CONFIG="${STAGING_DATADIR_NATIVE}/aws-kms-pkcs11/aws-kms-pkcs11-config.json"
     export LD_LIBRARY_PATH="${STAGING_LIBDIR_NATIVE}:${LD_LIBRARY_PATH}"
-    export OPENSSL_CONF="${WORKDIR}/kms-openssl.cnf"
+    export OPENSSL_CONF="${UNPACKDIR}/kms-openssl.cnf"
 }

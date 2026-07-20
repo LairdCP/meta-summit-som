@@ -8,9 +8,9 @@ inherit uboot-aws-sign-common
 # we get here, the effective ARN is always non-empty.
 AWS_KMS_FIT_KEY_ARN ?= "${AWS_KMS_KEY_ARN}"
 
-# Stage FIT signing wrappers in WORKDIR so we never overwrite any existing
+# Stage FIT signing wrappers in UNPACKDIR so we never overwrite any existing
 # keys in the original UBOOT_SIGN_KEYDIR.
-KMS_FIT_KEYDIR = "${WORKDIR}/kms-fit-keys"
+KMS_FIT_KEYDIR = "${UNPACKDIR}/kms-fit-keys"
 KMS_FIT_KEYDIR_ORIG := "${UBOOT_SIGN_KEYDIR}"
 UBOOT_SIGN_KEYDIR = "${KMS_FIT_KEYDIR}"
 

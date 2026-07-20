@@ -17,8 +17,6 @@ SRC_URI += "\
     file://aws-kms-pkcs11-config.json \
     "
 
-S = "${WORKDIR}/git"
-
 inherit native
 
 DEPENDS = " \

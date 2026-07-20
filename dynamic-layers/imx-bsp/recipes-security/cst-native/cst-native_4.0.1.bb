@@ -24,8 +24,8 @@ SRC_URI:summit-internal = "https://${RFPROS_FILESHARE_AUTH}files.devops.rfpros.c
 SRC_URI[sha256sum] = "60ffc243daa5e4e2ccfac8a9b74aec6d21446122a453fcb896dc52881d2a779d"
 
 SRC_URI:append = " \
-    file://0001-cmake-add-option-for-dynamic-OpenSSL-linking.patch;patchdir=${WORKDIR}/cst-${PV}/src \
-    file://0002-openssl-load-config-into-private-library-context.patch;patchdir=${WORKDIR}/cst-${PV}/src \
+    file://0001-cmake-add-option-for-dynamic-OpenSSL-linking.patch \
+    file://0002-openssl-load-config-into-private-library-context.patch \
 "
 
 python () {
@@ -39,7 +39,7 @@ python () {
 inherit cmake native
 
 # The release tarball extracts to "cst-${PV}"; source is in src/ subdirectory.
-S = "${WORKDIR}/cst-${PV}/src"
+S = "${UNPACKDIR}/cst-${PV}/src"
 
 DEPENDS = "openssl-native json-c-native bison-native flex-native"
 
