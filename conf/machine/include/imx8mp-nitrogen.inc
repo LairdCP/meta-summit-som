@@ -4,12 +4,6 @@
 #@DESCRIPTION: Machine configuration for Nitrogen i.MX8M Plus
 #@MAINTAINER: Boris Krasnovskiy <Boris.Krasnovskiy@ezurio.com>
 
-#@TYPE: Machine
-#@NAME: Summit SOM i.MX8M Plus
-#@SOC: i.MX8
-#@DESCRIPTION: Machine configuration for Summit SOM i.MX8M Plus
-#@MAINTAINER: Boris Krasnovskiy <Boris.Krasnovskiy@ezurio.com>
-
 MACHINEOVERRIDES =. "mx8mp:summitsom:"
 
 require conf/machine/include/imx-base.inc
