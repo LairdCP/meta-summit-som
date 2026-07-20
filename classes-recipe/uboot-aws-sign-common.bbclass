@@ -5,7 +5,7 @@
 AWS_KMS_FIT_KEY_ARN ?= ""
 AWS_KMS_CERT_DAYS ?= "3650"
 
-DEPENDS += "aws-kms-pkcs11-native"
+DEPENDS += "aws-kms-pkcs11-native aws-kms-pkcs11-config"
 
 KMS_SIG_STAGING = "${UNPACKDIR}/kms-sig-data"
 KMS_SIGN_KEYDIR_ORIG := "${UBOOT_SIGN_KEYDIR}"
