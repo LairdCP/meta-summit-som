@@ -18,23 +18,17 @@ LIC_FILES_CHKSUM = "\
 "
 
 CST_URI ?= ""
+CST_URI_SUM ?= ""
 
-SRC_URI = "${CST_URI}"
-SRC_URI:summit-internal = "https://${RFPROS_FILESHARE_AUTH}files.devops.rfpros.com/tools/nxp/cst/${PV}/IMX_CST_TOOL_NEW.tgz"
-SRC_URI[sha256sum] = "60ffc243daa5e4e2ccfac8a9b74aec6d21446122a453fcb896dc52881d2a779d"
+CST_URI:summit-internal = "https://${RFPROS_FILESHARE_AUTH}files.devops.rfpros.com/tools/nxp/cst/${PV}/IMX_CST_TOOL_NEW.tgz"
+CST_URI_SUM:summit-internal = "60ffc243daa5e4e2ccfac8a9b74aec6d21446122a453fcb896dc52881d2a779d"
 
-SRC_URI:append = " \
+SRC_URI = " \
+    ${CST_URI} \
     file://0001-cmake-add-option-for-dynamic-OpenSSL-linking.patch \
     file://0002-openssl-load-config-into-private-library-context.patch \
 "
-
-python () {
-    if not d.getVar('SRC_URI').strip():
-        raise bb.parse.SkipRecipe(
-            "No CST source configured: SRC_URI is empty. Set CST_URI to a CST "
-            "tarball URL."
-        )
-}
+SRC_URI[sha256sum] = "${CST_URI_SUM}"
 
 inherit cmake native
 
@@ -58,3 +52,5 @@ EXTRA_OECMAKE = "\
     -DBUILD_AHAB_SIGNED_MESSAGE=ON \
     -Djson_c_DIR=${STAGING_LIBDIR_NATIVE}/.. \
 "
+
+COMPATIBLE_MACHINE = "(hab4)"

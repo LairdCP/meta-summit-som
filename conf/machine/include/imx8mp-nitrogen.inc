@@ -4,7 +4,7 @@
 #@DESCRIPTION: Machine configuration for Nitrogen i.MX8M Plus
 #@MAINTAINER: Boris Krasnovskiy <Boris.Krasnovskiy@ezurio.com>
 
-MACHINEOVERRIDES =. "mx8mp:summitsom:"
+MACHINEOVERRIDES =. "mx8mp:summitsom:hab4:"
 
 require conf/machine/include/imx-base.inc
 require conf/machine/include/arm/armv8a/tune-cortexa53.inc

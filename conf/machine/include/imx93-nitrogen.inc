@@ -4,7 +4,7 @@
 #@DESCRIPTION: Machine configuration for Nitrogen i.MX93
 #@MAINTAINER: Boris Krasnovskiy <Boris.Krasnovskiy@ezurio.com>
 
-MACHINEOVERRIDES =. "mx93:summitsom:"
+MACHINEOVERRIDES =. "mx93:summitsom:ahab:"
 
 require conf/machine/include/imx-base.inc
 require conf/machine/include/arm/armv8-2a/tune-cortexa55.inc
