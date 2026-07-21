@@ -22,12 +22,6 @@ B = "${UNPACKDIR}/build"
 
 PROVIDES += "u-boot"
 
-SIG_CFGFILE = "sign.cfg"
-
-# SPSDK family name mapping for AHAB devices
-SPSDK_FAMILY:mx93-generic-bsp = "mimx9352"
-SPSDK_FAMILY:mx95-generic-bsp = "mimx9596"
-
 DEPENDS += "\
     flex-native \
     bison-native \
@@ -38,13 +32,11 @@ DEPENDS += "\
     ${@bb.utils.contains('MACHINE_FEATURES', 'optee', 'optee-os', '', d)} \
     "
 
-DEPENDS:append:summit-secure = " \
-    nxp-imx-signer-native \
-    "
+# AHAB secure boot: SPSDK family mapping and signing tool dependency.
+SPSDK_FAMILY:mx93-generic-bsp = "mimx9352"
+SPSDK_FAMILY:mx95-generic-bsp = "mimx9596"
 
-DEPENDS:append:mx9-generic-bsp:summit-secure = " \
-    python3-spsdk-native \
-    "
+DEPENDS:append:mx9-generic-bsp:summit-secure = " python3-spsdk-native"
 
 do_compile[depends] += " \
     ${@' '.join('%s:do_deploy' % r for r in '${IMX_EXTRA_FIRMWARE}'.split() )} \
@@ -93,64 +85,74 @@ do_compile:prepend:mx95-generic-bsp() {
     ln -sf "${DEPLOY_DIR_IMAGE}/${SYSTEM_MANAGER_FIRMWARE_NAME}.bin" "${B}/m33_image.bin"
 }
 
-do_compile:prepend:mx9-generic-bsp:summit-secure() {
-    # Update defconfig to enable secure boot
-    echo "CONFIG_AHAB_BOOT=y" >> ${B}/.config
+# --- AHAB secure boot signing (nxpimage / SPSDK) ------------------------------
+# flash.bin is signed by calling nxpimage (SPSDK) directly. The older
+# nxp-imx-signer (imx_signer) wrapper is intentionally not used: it is
+# incompatible with spsdk >= 3.7.0 (it strips the .bin extension and passes a
+# non-existent path to nxpimage's -b/--binary option).
+
+do_configure:append:mx9-generic-bsp:summit-secure() {
+    if [ ! -f "${B}/.config" ]; then
+        bbfatal "u-boot .config not found at '${B}/.config'; cannot enable CONFIG_AHAB_BOOT"
+    fi
+    grep -q "^CONFIG_AHAB_BOOT=y$" "${B}/.config" || echo "CONFIG_AHAB_BOOT=y" >> "${B}/.config"
 }
 
-# Signs the imx-boot image. This command assumes that the PKI tree was generated.
+# Signs the imx-boot flash.bin via nxpimage for AHAB platforms. The signer line
+# in spsdk_ahab.yaml is rewritten to a SPSDK SignatureProvider config string
+# (type=file;file_path=...;password=...) so nxpimage resolves the key through
+# SPSDK's plugin system, and SRK certificate paths are absolutized.
 do_sign_boot_image() {
-    # Check if flash.bin is available
+    if [ ! -e "${SIG_DATA_PATH}/spsdk_ahab.yaml" ]; then
+        bbfatal "SPSDK config not found at '${SIG_DATA_PATH}/spsdk_ahab.yaml'. Ensure SIG_DATA_PATH points at a PKI tree containing spsdk_ahab.yaml."
+    fi
     if [ ! -e "${B}/flash.bin" ]; then
-        bbfatal 'imx-boot flash.bin is not available to sign'
+        bbfatal "imx-boot flash.bin is not available to sign"
     fi
 
-    # Generate signed image using imx_signer
-    cd "${B}" || bbfatal "Failed to change directory to ${B}"
-    SIG_TOOL_PATH="${STAGING_DIR_NATIVE}${bindir}" \
-        SIG_DATA_PATH=${SIG_DATA_PATH} \
-        CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1 \
-        "${STAGING_DIR_NATIVE}${bindir}/imx_signer" \
-        -d \
-        -i "${B}/flash.bin" \
-        -c "${B}/${SIG_CFGFILE}"
-    if [ ! -e "${B}/signed-flash.bin" ]; then
-        bbfatal 'Image signing failed'
-    fi
-
-    cd - || bbfatal "Failed to change back to previous directory"
-}
-
-do_sign_boot_image:prepend:mx9-generic-bsp() {
-    # Creating a cfg file for imx_signer
-    if [ -e "${SIG_DATA_PATH}/spsdk_ahab.yaml" ]; then
-        # Use user defined keys
-        install -D -m 0644 "${SIG_DATA_PATH}/spsdk_ahab.yaml" "${B}/${SIG_CFGFILE}"
+    # Build the signer config string for the file-based signature provider.
+    KEY_PASS_TXT="${SIG_DATA_PATH}/keys/key_pass.txt"
+    if [ -f "${KEY_PASS_TXT}" ]; then
+        SIGNER_SED="s|^ *signer: *\(.*\)|signer: type=file;file_path=${SIG_DATA_PATH}/keys/\1;password=${KEY_PASS_TXT}|"
     else
-        # Use default keys
-        install -D -m 0644 "${STAGING_DIR_NATIVE}${datadir}/spsdk_ahab.yaml.sample" "${B}/${SIG_CFGFILE}"
+        SIGNER_SED="s|^ *signer: *\(.*\)|signer: type=file;file_path=${SIG_DATA_PATH}/keys/\1|"
     fi
 
-    bbnote "Setting SPSDK family to: ${SPSDK_FAMILY}, in ${SIG_CFGFILE} file"
-    sed -i "s/^family:.*/family: ${SPSDK_FAMILY}/" "${B}/${SIG_CFGFILE}"
+    # Prepare the signing YAML: set family, rewrite signer to config string,
+    # and absolutize certificate paths in the SRK array.
+    AHAB_SIGN_YAML="${B}/spsdk_ahab_sign.yaml"
+    sed -e "s|^ *\(family:\).*|\1 ${SPSDK_FAMILY}|" \
+        -e "${SIGNER_SED}" \
+        -e "/srk_array/,/^[^ #]/{s|- \([^/][^ ]*\.pem\)|- ${SIG_DATA_PATH}/crts/\1|}" \
+        "${SIG_DATA_PATH}/spsdk_ahab.yaml" > "${AHAB_SIGN_YAML}"
+
+    bbnote "AHAB signing flash.bin for ${SPSDK_FAMILY} via nxpimage"
+    CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1 \
+    "${STAGING_BINDIR_NATIVE}/nxpimage" ahab sign \
+        -c "${AHAB_SIGN_YAML}" \
+        -b "${B}/flash.bin" \
+        -o "${B}/signed-flash.bin" \
+        --force
+
+    if [ ! -e "${B}/signed-flash.bin" ]; then
+        bbfatal "AHAB signing failed -- signed-flash.bin was not produced"
+    fi
+    rm -f "${AHAB_SIGN_YAML}"
 }
 
 do_deploy:append:mx9-generic-bsp:summit-secure() {
     do_sign_boot_image
 
     # Copy signed image to DEPLOYDIR and link it to boot image
-    if [ -e "${B}/signed-flash.bin" ]; then
-        install -D -m 0644 -t "${DEPLOYDIR}/" "${B}/signed-flash.bin"
-        mv "${DEPLOYDIR}/flash.bin" "${DEPLOYDIR}/unsigned-flash.bin"
-        ln -sf "signed-flash.bin" "${DEPLOYDIR}/flash.bin"
-        # As per https://github.com/Freescale/meta-freescale/commit/161f1b3e69a3cf011a50e9b742fb8c46d61e41e8, create a tagged file.
-        cp -L "${DEPLOYDIR}/flash.bin" "${DEPLOYDIR}/flash.bin.tagged"
-        stat -L -cUUUBURNXXOEUZX7+A-XY5601QQWWZ%sEND \
-                "${DEPLOYDIR}/flash.bin.tagged" \
-                >> "${DEPLOYDIR}/flash.bin.tagged"
-    else
-        bbfatal "ERROR: Could not deploy Signed image"
-    fi
+    install -D -m 0644 -t "${DEPLOYDIR}/" "${B}/signed-flash.bin"
+    mv "${DEPLOYDIR}/flash.bin" "${DEPLOYDIR}/unsigned-flash.bin"
+    ln -sf "signed-flash.bin" "${DEPLOYDIR}/flash.bin"
+    # As per https://github.com/Freescale/meta-freescale/commit/161f1b3e69a3cf011a50e9b742fb8c46d61e41e8, create a tagged file.
+    cp -L "${DEPLOYDIR}/flash.bin" "${DEPLOYDIR}/flash.bin.tagged"
+    stat -L -cUUUBURNXXOEUZX7+A-XY5601QQWWZ%sEND \
+            "${DEPLOYDIR}/flash.bin.tagged" \
+            >> "${DEPLOYDIR}/flash.bin.tagged"
+    bbnote "AHAB: flash.bin signed successfully for ${SPSDK_FAMILY}"
 }
 
 EXTRA_OEMAKE:append:summit-secure = " KEY_PATH=${UBOOT_SIGN_KEYDIR}/${UBOOT_SIGN_KEYNAME}.key"
