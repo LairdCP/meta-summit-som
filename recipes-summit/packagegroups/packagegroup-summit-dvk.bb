@@ -9,7 +9,6 @@ RDEPENDS:${PN} = " \
     summit-set-mode \
     python3 \
     python3-dbus-fast \
-    util-linux-dmesg \
     ${@bb.utils.contains('MACHINE_FEATURES', 'alsa', 'kernel-module-tac5x1x', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'camera', 'packagegroup-summit-camera', '', d)} \
     "

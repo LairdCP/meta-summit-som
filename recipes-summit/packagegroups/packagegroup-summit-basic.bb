@@ -18,7 +18,7 @@ RDEPENDS:${PN} = " \
     optee-client \
     libgpiod \
     libgpiod-tools \
-    ncurses-terminfo \
+    util-linux-hwclock \
     summit-automount \
     summit-initdata \
     summit-update \
