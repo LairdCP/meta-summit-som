@@ -27,6 +27,8 @@ SRC_URI:append:summitsom = " \
     file://0058-drm-bridge-Add-simple-format-bridge-driver.patch \
     file://0059-gpio-Add-GPIO-fanout-driver.patch \
     file://0068-pinctrl-mcp23s08-add-wakeup-support.patch \
+    file://0069-rtc-rv3028-skip-eeprom-update-if-value-unchanged.patch \
+    file://0070-rtc-rv3028-add-backup-switchover-dsm-dt-property.patch \
     file://dts \
     "
 

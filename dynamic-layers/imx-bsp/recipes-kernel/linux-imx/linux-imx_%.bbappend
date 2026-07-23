@@ -37,6 +37,8 @@ SRC_URI:append:summitsom = " \
     file://0074-media-imx8-mipi-csi2-sam-quiet-phy-reset-no-sensor.patch \
     file://0075-media-imx7-media-csi-validate-pixelformat-against-s.patch \
     file://0076-media-imx7-media-csi-hold-a-cpu-latency-qos-request.patch \
+    file://0077-rtc-rv3028-skip-eeprom-update-if-value-unchanged.patch \
+    file://0078-rtc-rv3028-add-backup-switchover-dsm-dt-property.patch \
     file://dts \
     ${KERNEL_CONFIG_SUMMIT} \
     "
