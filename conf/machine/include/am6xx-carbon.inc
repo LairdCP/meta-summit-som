@@ -24,9 +24,9 @@ BSP_BOOTLOADER_VERSION:bsp-ti-6_18 = "%"
 
 SERIAL_CONSOLES = "115200;ttyS2"
 
-MACHINE_ESSENTIAL_EXTRA_RDEPENDS:remove = "kernel-image-image kernel-devicetree ti-kernel-fitimage"
-MACHINE_EXTRA_RDEPENDS = "kernel-modules"
-EXTRA_IMAGEDEPENDS = "virtual/bootloader ti-kernel-fitimage"
+MACHINE_ESSENTIAL_EXTRA_RDEPENDS:k3 = ""
+MACHINE_EXTRA_RDEPENDS:k3 = "kernel-modules"
+EXTRA_IMAGEDEPENDS:k3 = "virtual/bootloader ti-kernel-fitimage"
 
 IMAGE_FSTYPES = ""
 
