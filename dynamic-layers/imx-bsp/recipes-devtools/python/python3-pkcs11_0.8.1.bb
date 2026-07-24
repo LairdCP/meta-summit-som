@@ -11,8 +11,10 @@ PYPI_PACKAGE = "python_pkcs11"
 SRC_URI[sha256sum] = "f9e11df146ce2e6359aeb81fa84c2dd7ab9719f707cdae06ceae22d9e6a10818"
 SRC_URI += "file://0001-pyproject-lower-build-requirements-for-yocto.patch"
 
-DEPENDS += "python3-cython-native python3-setuptools-scm-native"
+DEPENDS += "python3-cython python3-setuptools-scm"
 
-RDEPENDS:${PN} += "python3-asn1crypto-native"
+RDEPENDS:${PN} += "python3-asn1crypto"
 
 inherit pypi python_setuptools_build_meta native
+
+BBCLASSEXTEND = "native nativesdk"

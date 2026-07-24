@@ -19,6 +19,7 @@ RDEPENDS:${PN} = " \
     libgpiod \
     libgpiod-tools \
     util-linux-hwclock \
+    pkcs11-provider \
     summit-automount \
     summit-initdata \
     summit-update \
