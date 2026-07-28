@@ -70,20 +70,12 @@ software =
 
 			files: (
 				{
-					filename = "fitImage";
-					path = "fitImage";
+					filename = "kernel.itb";
+					path = "kernel.itb";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
 					filesystem = "vfat";
 					installed-directly = true;
-					sha256 = "$swupdate_get_sha256(fitImage)";
-				},
-				{
-					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin";
-					path = "fitImageVerity.bin";
-					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
-					filesystem = "vfat";
-					installed-directly = true;
-					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin)";
+					sha256 = "$swupdate_get_sha256(kernel.itb)";
 				}
 			);
 
@@ -166,20 +158,12 @@ software =
 
 			files: (
 				{
-					filename = "fitImage";
-					path = "fitImage";
+					filename = "kernel.itb";
+					path = "kernel.itb";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
 					filesystem = "vfat";
 					installed-directly = true;
-					sha256 = "$swupdate_get_sha256(fitImage)";
-				},
-				{
-					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin";
-					path = "fitImageVerity.bin";
-					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
-					filesystem = "vfat";
-					installed-directly = true;
-					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin)";
+					sha256 = "$swupdate_get_sha256(kernel.itb)";
 				}
 			);
 
@@ -304,32 +288,18 @@ software =
 
 			files: (
 				{
-					filename = "fitImage";
-					path = "fitImage";
+					filename = "kernel.itb";
+					path = "kernel.itb";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
 					filesystem = "vfat";
-					sha256 = "$swupdate_get_sha256(fitImage)";
+					sha256 = "$swupdate_get_sha256(kernel.itb)";
 				},
 				{
-					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin";
-					path = "fitImageVerity.bin";
-					device = "/dev/mmcblk@@EMMC_DEVICE@@p1";
-					filesystem = "vfat";
-					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin)";
-				},
-				{
-					filename = "fitImage";
-					path = "fitImage";
+					filename = "kernel.itb";
+					path = "kernel.itb";
 					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
 					filesystem = "vfat";
-					sha256 = "$swupdate_get_sha256(fitImage)";
-				},
-				{
-					filename = "@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin";
-					path = "fitImageVerity.bin";
-					device = "/dev/mmcblk@@EMMC_DEVICE@@p4";
-					filesystem = "vfat";
-					sha256 = "$swupdate_get_sha256(@@IMAGE_ROOTFS_VERITY_NAME@@.scr.bin)";
+					sha256 = "$swupdate_get_sha256(kernel.itb)";
 				}
 			);
 

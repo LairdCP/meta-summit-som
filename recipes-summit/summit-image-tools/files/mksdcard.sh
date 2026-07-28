@@ -89,20 +89,20 @@ find_file() {
 
 cleanup() {
 	e=$?
-	rm -rf "${UNPACKDIR_TMP}"
+	rm -rf "${WORKDIR_TMP}"
 	exit ${e}
 }
 
 trap 'cleanup' EXIT INT TERM
 
-UNPACKDIR_TMP=$(mktemp -d -t mksdcard.XXXXXX)
+WORKDIR_TMP=$(mktemp -d -t mksdcard.XXXXXX)
 
 ROOTFS_PATH=$(find_file '*.verity')
 
 if [ ! -f "${ROOTFS_PATH}" ]; then
 	SWU_PATH=$(find_file '*.swu')
 	if [ -n "${SWU_PATH}" ]; then
-		SRCDIR=${UNPACKDIR_TMP}/swu_src
+		SRCDIR=${WORKDIR_TMP}/swu_src
 		cpio -idm --quiet < "${SWU_PATH}" -D "${SRCDIR}"
 		ROOTFS_PATH=$(find_file '*.verity')
 	else
@@ -156,7 +156,7 @@ unmount_all() {
 }
 
 check_format() {
-	temp=${UNPACKDIR_TMP}/check_format
+	temp=${WORKDIR_TMP}/check_format
 	/usr/sbin/sfdisk -qlo device,id,size "${TARGET}" > "${temp}" 2> /dev/null \
 		|| return 1
 
@@ -201,7 +201,7 @@ create_boot_partition() {
 	# Format boot partition
 	/usr/sbin/mkfs.vfat -F 32 -n BOOT "${1}" > /dev/null
 
-	BOOT_PART=${UNPACKDIR_TMP}/boot_part
+	BOOT_PART=${WORKDIR_TMP}/boot_part
 	mkdir -p "${BOOT_PART}"
 	/usr/bin/mount "${1}" "${BOOT_PART}"
 
@@ -224,8 +224,7 @@ create_boot_partition() {
 	fi
 
 	if ! ${boot_only}; then
-		cp -t "${BOOT_PART}" "${SRCDIR}/fitImage" 
-		cp "$(find_file '*.verity.scr.bin')" "${BOOT_PART}/fitImageVerity.bin" 
+		cp -t "${BOOT_PART}" "${SRCDIR}/kernel.itb"
 	fi
 
 	sync
@@ -252,7 +251,7 @@ add_swu() {
 	[ -n "${SWU_PATH}" ] || SWU_PATH=$(find_file '*.swu')
 	if [ -n "${SWU_PATH}" ]; then
 		echo "[Adding SWU file to rootfs_data partition...]"
-		ROOTFS_DATA_PATH=${UNPACKDIR_TMP}/rootfs_data
+		ROOTFS_DATA_PATH=${WORKDIR_TMP}/rootfs_data
 		mkdir -p "${ROOTFS_DATA_PATH}"
 		cp "${SWU_PATH}" "${ROOTFS_DATA_PATH}/"
 	else
@@ -293,7 +292,7 @@ fi
 ! ${ADD_SWU} || add_swu
 
 # Read partition table and create partitions
-/usr/sbin/sfdisk -qlo device "${TARGET}" > "${UNPACKDIR_TMP}/partitions"
+/usr/sbin/sfdisk -qlo device "${TARGET}" > "${WORKDIR_TMP}/partitions"
 while read -r DEVICE; do
 	num=${DEVICE#"${TARGET}"}
 	num=${num#p}
@@ -304,8 +303,8 @@ while read -r DEVICE; do
 		5) create_rootfs_partition "${DEVICE}" & ;;
 		6) create_ext4_partition "${DEVICE}" "rootfs_data_a" "${ROOTFS_DATA_PATH}" & ;;
 	esac
-done < "${UNPACKDIR_TMP}/partitions"
-rm -f "${UNPACKDIR_TMP}/partitions"
+done < "${WORKDIR_TMP}/partitions"
+rm -f "${WORKDIR_TMP}/partitions"
 
 echo "[Waiting for writes to complete ...]"
 wait

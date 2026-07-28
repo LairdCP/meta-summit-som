@@ -19,8 +19,8 @@ MACHINE_FEATURES += "pci usbgadget usbhost alsa rtc optee wifi bluetooth camera"
 
 SOC_DEFAULT_IMAGE_FSTYPES = ""
 
-IMAGE_BOOT_FILES = "uboot.env fitImage"
-SWUPDATE_IMAGES = "flash.bin uboot.env fitImage"
+IMAGE_BOOT_FILES = "uboot.env"
+SWUPDATE_IMAGES = "flash.bin uboot.env"
 
 IMX_DEFAULT_BOOTLOADER:mx8m-generic-bsp = "u-boot-imx-summit"
 IMX_DEFAULT_UBOOTTOOLS:imx-generic-bsp = "u-boot-summit-tools"
@@ -48,7 +48,7 @@ OPTEE_BIN_EXT = "8mm"
 TEE_LOAD_ADDR = "0xbe000000"
 
 MACHINE_EXTRA_RDEPENDS += "${MACHINE_FIRMWARE} kernel-modules"
-EXTRA_IMAGEDEPENDS += "virtual/bootloader linux-yocto-fitimage"
+EXTRA_IMAGEDEPENDS += "virtual/bootloader"
 
 IMX_DEFAULT_BSP = "nxp"
 

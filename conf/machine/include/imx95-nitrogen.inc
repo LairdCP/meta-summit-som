@@ -20,8 +20,8 @@ MACHINE_FEATURES:append:use-nxp-bsp = " dpdk"
 
 SOC_DEFAULT_IMAGE_FSTYPES = ""
 
-IMAGE_BOOT_FILES = "uboot.env fitImage"
-SWUPDATE_IMAGES = "flash.bin uboot.env fitImage"
+IMAGE_BOOT_FILES = "uboot.env"
+SWUPDATE_IMAGES = "flash.bin uboot.env"
 
 UBOOT_PROVIDES_BOOT_CONTAINER = "1"
 IMX_DEFAULT_BOOTLOADER:mx9-generic-bsp = "u-boot-imx-summit"
@@ -58,7 +58,7 @@ UBOOT_MAKE_TARGET = "all"
 IMX_BOOT_SEEK = "32"
 
 MACHINE_EXTRA_RDEPENDS += "${MACHINE_FIRMWARE} kernel-modules"
-EXTRA_IMAGEDEPENDS += "virtual/bootloader linux-yocto-fitimage"
+EXTRA_IMAGEDEPENDS += "virtual/bootloader"
 
 SOC_HAS_VIVANTE_KERNEL_DRIVER_SUPPORT:imxgpu = "0"
 
