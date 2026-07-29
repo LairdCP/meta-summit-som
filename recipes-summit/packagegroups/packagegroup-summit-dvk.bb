@@ -17,3 +17,15 @@ RDEPENDS:${PN}:append:imx8mp-summitsom = " \
     summit-networkmanager-wwan \
     qfirehose \
     "
+
+RDEPENDS:${PN}:append:imx91-nitrogen-osm-s = " \
+    summit-rcm-rust \
+    "
+
+RDEPENDS:${PN}:append:am62l-carbon = " \
+    summit-rcm-rust \
+    "
+
+RDEPENDS:${PN}:append:am62l-carbon-emmc = " \
+    summit-rcm-rust \
+    "
