@@ -12,7 +12,7 @@ UBOOT_GIT_PROTOCOL:summit-internal = "${SUMMIT_INTERNAL_GIT_PROTOCOL}"
 
 UBOOT_GIT_BRANCH = "${SUMMIT_PLATFORM_BRANCH}"
 
-KEY_PATH = "${UBOOT_SIGN_KEYDIR}/${UBOOT_SIGN_KEYNAME}.key"
+export KEY_PATH = "${UBOOT_SIGN_KEYDIR}/${UBOOT_SIGN_KEYNAME}.key"
 
 ENV_INCLUDE = ""
 ENV_INCLUDE:k3 = "recipes-bsp/u-boot-summit/u-boot-summit-env.inc"
@@ -20,7 +20,5 @@ ENV_INCLUDE:k3 = "recipes-bsp/u-boot-summit/u-boot-summit-env.inc"
 require ${ENV_INCLUDE}
 
 inherit ${@'ti-uboot-aws-sign' if any(d.getVar(v) for v in ('AWS_KMS_KEY_ARN','AWS_KMS_FIT_KEY_ARN')) else ''}
-
-EXTRA_OEMAKE += "KEY_PATH='${KEY_PATH}'"
 
 COMPATIBLE_MACHINE = "(ti-soc)"
