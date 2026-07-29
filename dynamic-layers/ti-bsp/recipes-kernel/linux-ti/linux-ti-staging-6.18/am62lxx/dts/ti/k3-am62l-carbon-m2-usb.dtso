@@ -1,0 +1,62 @@
+// SPDX-License-Identifier: GPL-2.0
+/*
+ * M.2 USB-USB radio module
+ *
+ * Copyright (C) 2025 Ezurio LLC
+ */
+
+#include <dt-bindings/gpio/gpio.h>
+
+/dts-v1/;
+/plugin/;
+
+&{/} {
+	reg_m2_power_en: regulator-m2-power-en {
+		compatible = "regulator-fixed";
+		regulator-name = "reg_m2_power_en";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+
+		vin-supply = <&reg_3v3_carrier>;
+
+		gpios = <&exp1 12 GPIO_ACTIVE_HIGH>;  /* M2_POWER_EN */
+		enable-active-high;
+		regulator-always-on;
+	};
+
+	rfkill-wifi-m2 {
+		compatible = "rfkill-gpio";
+		label = "rfkill-wifi-m2";
+		radio-type = "wlan";
+		shutdown-gpios = <&exp1 4 GPIO_ACTIVE_HIGH>;
+	};
+
+	rfkill-bt-m2 {
+		compatible = "rfkill-gpio";
+		label = "rfkill-bt-m2";
+		radio-type = "bluetooth";
+		shutdown-gpios = <&exp1 5 GPIO_ACTIVE_HIGH>;
+	};
+};
+
+&usbss1 {
+	status = "okay";
+};
+
+&usb1 {
+	dr_mode = "host";
+};
+
+&uart2 {
+	status = "okay";
+
+	uart-has-rtscts;
+};
+
+&exp1 {
+	uart_b_sel_hog {
+		gpio-hog;
+		output-high;
+		gpios = <15 GPIO_ACTIVE_HIGH>;
+	};
+};

@@ -1,0 +1,5 @@
+FILESEXTRAPATHS:prepend:summitsom := "${THISDIR}/files:"
+
+SRC_URI:append:summitsom = " \
+    file://0001-carbon-am62l-ddr.patch \
+    "

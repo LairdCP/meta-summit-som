@@ -6,14 +6,10 @@ python () {
 
 inherit swupdate-image
 
-SRC_URI += "file://erase_data_emmc.sh"
+SRC_URI += "file://erase_data_emmc.sh file://erase_data.sh file://copy_partitions.sh"
 SRC_URI:append:imx8mp-summitsom = " file://update_support.sh"
 
 DEPENDS += "summit-image-tools-native"
-
-# fitImage (already in SWUPDATE_IMAGES via machine .inc) now embeds the
-# verity boot script directly via FIT_UBOOT_ENV (see
-# summit-kernel-fitimage.bbclass), so the separate .scr.bin is obsolete here.
 
 ARCHIVE_WILDCARD += "${SWUDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.swu \
     ${STAGING_BINDIR_NATIVE}/mksdcard.sh"

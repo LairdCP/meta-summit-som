@@ -27,4 +27,5 @@ RDEPENDS:${PN} = " \
     packagegroup-summit-radio-stack-som \
     ${@bb.utils.contains('COMBINED_FEATURES', 'alsa', 'alsa-utils-alsamixer alsa-utils-aplay', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'less systemd-extra-utils', '', d)} \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'nand', 'mtd-utils mtd-utils-ubifs', '', d)} \
     "

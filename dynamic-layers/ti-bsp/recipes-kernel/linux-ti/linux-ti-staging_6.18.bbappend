@@ -35,6 +35,7 @@ SRC_URI:append:summitsom = " \
 KERNEL_DTC_FLAGS:append:summitsom = " ${@' -@' if d.getVar('KERNEL_DEVICETREE').find('.dtbo') else ''}"
 
 KERNEL_CONFIG_SUMMIT:am62xx = "k3-am625-carbon_defconfig"
+KERNEL_CONFIG_SUMMIT:am62lxx = "k3-am62l-carbon_defconfig"
 KERNEL_CONFIG_SUMMIT:j722s  = "k3-am675-carbon_defconfig"
 KERNEL_CONFIG_SUMMIT ?= ""
 
