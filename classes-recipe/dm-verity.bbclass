@@ -26,11 +26,18 @@ verity_setup() {
     printf "HASH_BLOCK=${HASH_BLOCK}\nDATA_SECT=${DATA_SECT}\n" >> ${output}.env
 
     {
-        printf 'boot_dev=/dev/mmcblk${mmcdev}p${rootvol}\n'
+        # mmcdev is unset by u-boot when booting from NAND (see set_bootside())
+        printf 'if test -z "${mmcdev}"; then\n'
+        printf '    boot_dev="/dev/ubiblock0_${bootvol}"\n'
+        printf '    ubi_args="ubi.fm_autoconvert=1 ubi.mtd=ubi,0,0,0,1 ubi.block=0,${bootvol}"\n'
+        printf 'else\n'
+        printf '    boot_dev="/dev/mmcblk${mmcdev}p${rootvol}"\n'
+        printf '    ubi_args="ubi.fm_autoconvert=1"\n'
+        printf 'fi\n'
         printf 'dm_table="vroot,%s,,ro,0 %s verity 1 ${boot_dev} ${boot_dev} %s %s %s %s %s %s %s 0"\n' \
             ${UUID} ${DATA_SECT} ${DATA_BLOCK_SIZE} ${HASH_BLOCK_SIZE} \
             ${DATA_BLOCKS} ${HASH_BLOCK} ${HASH_ALGORITHM} ${ROOT_HASH} ${SALT}
-        printf 'setenv bootargs "${bootargs} ${IMAGE_BOOTSTR} dm-mod.create=\\"${dm_table}\\" '
+        printf 'setenv bootargs "${bootargs} ${IMAGE_BOOTSTR} ${ubi_args} dm-mod.create=\\"${dm_table}\\" '
         printf 'dm-mod.waitfor=${boot_dev} root=/dev/dm-0 rootwait rootfstype=%s ro"\n' \
             ${type%%-*}
     } > ${output}.scr

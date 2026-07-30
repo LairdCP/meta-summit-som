@@ -101,7 +101,7 @@ copy_mtd_partition() {
 			die "Failed erasing ${dst_dev}"
 
 		nanddump -a --quiet --bb=skipbad --omitoob --length "${size}" "${src_dev}" | \
-			nandwrite --quiet --pad "${dst_dev}" - ||
+			nandwrite --quiet --pad --skip-all-ffs "${dst_dev}" - ||
 			die "Failed streaming ${src_dev} to ${dst_dev}"
 		;;
 
@@ -112,7 +112,8 @@ copy_mtd_partition() {
 		flash_erase "${dst_dev}" 0 0 ||
 			die "Failed erasing ${dst_dev}"
 
-		dd if="${src_dev}" of="${dst_dev}" bs=1 count="${size}" conv=fsync 2>/dev/null ||
+		head -c "${size}" "${src_dev}" | \
+			dd of="${dst_dev}" bs=1M conv=fsync 2>/dev/null ||
 			die "Failed copying ${src_dev} to ${dst_dev}"
 		;;
 	esac
