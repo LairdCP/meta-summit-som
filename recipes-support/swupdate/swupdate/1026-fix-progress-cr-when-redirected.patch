@@ -1,4 +1,4 @@
-From: Summit Semiconductor <solutions@summitsemi.com>
+From: Boris Krasnovskiy <boris.krasnovskiy@ezurio.com>
 Subject: [PATCH] swupdate-progress: avoid \r in redirected output
 
 When stdout is redirected (e.g. captured by systemd), the progress line

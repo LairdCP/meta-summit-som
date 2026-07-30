@@ -30,3 +30,7 @@ RDEPENDS:${PN} = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'less systemd-extra-utils', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'nand', 'mtd-utils mtd-utils-ubifs', '', d)} \
     "
+
+RDEPENDS:${PN}:append:k3 = " \
+    iproute2-devlink \
+    "
