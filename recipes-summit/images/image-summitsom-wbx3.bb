@@ -3,11 +3,6 @@ DESCRIPTION = "Summit SOM WBx3 Manufacturing Provisioning SD Card Boot Image"
 
 REQUIRED_DISTRO_FEATURES += "summitsom-wbx3"
 
-FILESEXTRAPATHS:prepend := "\
-${SUMMIT_SOM_LAYERDIR}/recipes-summit/images/files/nomcu:\
-${SUMMIT_SOM_LAYERDIR}/recipes-summit/images/files:\
-"
-
 inherit image-summitsom-gen image-summitsom-sd-gen image-summitsom-swu-gen
 
 IMAGE_FEATURES = "\

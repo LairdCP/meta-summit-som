@@ -79,7 +79,8 @@ python () {
         for v in ['FIT_LOADABLE_ARCH', 'FIT_LOADABLE_COMPRESSION',
                   'FIT_LOADABLE_DESCRIPTION', 'FIT_LOADABLE_ENTRYPOINT',
                   'FIT_LOADABLE_FILENAME', 'FIT_LOADABLE_LOADADDRESS',
-                  'FIT_LOADABLE_OS', 'FIT_LOADABLE_TYPE', 'FIT_LOADABLE_RECIPE']:
+                  'FIT_LOADABLE_OS', 'FIT_LOADABLE_TYPE',
+                  'FIT_LOADABLE_CORE_ID', 'FIT_LOADABLE_RECIPE']:
             if d.getVar(v):
                 raise bb.parse.SkipRecipe("You cannot use %s as a variable, you can only set flags." % v)
 
@@ -264,8 +265,6 @@ python do_compile_fit() {
             bb.fatal("File for loadable %s not specified through FIT_LOADABLE_FILENAME[%s]" % (loadable, loadable))
 
         loadable_loadaddress = d.getVarFlag('FIT_LOADABLE_LOADADDRESS', loadable)
-        if not loadable_loadaddress:
-            bb.fatal("Load address for loadable %s not specified through FIT_LOADABLE_LOADADDRESS[%s]" % (loadable, loadable))
 
         # Optional parameters
         loadable_arch = d.getVarFlag('FIT_LOADABLE_ARCH', loadable)
@@ -274,6 +273,7 @@ python do_compile_fit() {
         loadable_entrypoint = d.getVarFlag('FIT_LOADABLE_ENTRYPOINT', loadable)
         loadable_os = d.getVarFlag('FIT_LOADABLE_OS', loadable)
         loadable_type = d.getVarFlag('FIT_LOADABLE_TYPE', loadable)
+        loadable_core_id = d.getVarFlag('FIT_LOADABLE_CORE_ID', loadable)
 
         # Check if loadable artifact exists
         loadable_path = os.path.join(d.getVar("DEPLOY_DIR_IMAGE"), loadable_file)
@@ -287,6 +287,13 @@ python do_compile_fit() {
                                                  loadable_arch, loadable_os,
                                                  loadable_loadaddress,
                                                  loadable_entrypoint)
+        if loadable_core_id:
+            try:
+                core_id = int(loadable_core_id, 0)
+            except ValueError:
+                bb.fatal("Core ID for loadable %s is not an integer: %s" %
+                         (loadable, loadable_core_id))
+            root_node._loadables[-1].add_property("core-id", core_id)
 
     # Generate the configuration section
     root_node.fitimage_emit_section_config(d.getVar("FIT_CONF_DEFAULT_DTB"), d.getVar("FIT_CONF_MAPPINGS"))
