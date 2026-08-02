@@ -39,6 +39,7 @@ SRC_URI:append:summitsom = " \
     file://0076-media-imx7-media-csi-hold-a-cpu-latency-qos-request.patch \
     file://0077-rtc-rv3028-skip-eeprom-update-if-value-unchanged.patch \
     file://0078-rtc-rv3028-add-backup-switchover-dsm-dt-property.patch \
+    file://0079-fs_crypt-accept-trusted-keys-via-key_id.patch \
     file://dts \
     ${KERNEL_CONFIG_SUMMIT} \
     "

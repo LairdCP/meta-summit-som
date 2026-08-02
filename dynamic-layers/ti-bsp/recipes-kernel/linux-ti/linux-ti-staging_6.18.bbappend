@@ -29,6 +29,7 @@ SRC_URI:append:summitsom = " \
     file://0068-pinctrl-mcp23s08-add-wakeup-support.patch \
     file://0069-rtc-rv3028-skip-eeprom-update-if-value-unchanged.patch \
     file://0070-rtc-rv3028-add-backup-switchover-dsm-dt-property.patch \
+    file://0071-fs_crypt-accept-trusted-keys-via-key_id.patch \
     file://dts \
     "
 
