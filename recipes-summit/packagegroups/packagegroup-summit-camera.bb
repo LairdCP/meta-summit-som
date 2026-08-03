@@ -17,5 +17,17 @@ RDEPENDS:${PN} = " \
     ${@bb.utils.contains('LICENSE_FLAGS_ACCEPTED', 'commercial', 'gstreamer1.0-libav', '', d)} \
     summit-camera-setup \
     libcamera \
+    libcamera-gst \
+    libcamera-pycamera \
     kernel-module-pivariety \
     "
+
+RDEPENDS:${PN}:append:mx8mp-nxp-bsp = " \
+    isp-imx \
+    kernel-module-isp-vvcam \
+    "
+
+ISP_PKGS:mx95-nxp-bsp = " \
+    ${LIBCAMERA_PKGS} \
+    neo-ipa-uguzzi \
+"
