@@ -30,6 +30,7 @@ SRC_URI:append:summitsom = " \
     file://0069-rtc-rv3028-skip-eeprom-update-if-value-unchanged.patch \
     file://0070-rtc-rv3028-add-backup-switchover-dsm-dt-property.patch \
     file://0071-fs_crypt-accept-trusted-keys-via-key_id.patch \
+    file://0072-fs_crypt-dm_crypt-Restored-use-of-crypto-engines.patch \
     file://dts \
     "
 
