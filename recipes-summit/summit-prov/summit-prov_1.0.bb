@@ -23,6 +23,7 @@ FILES:${PN} += "\
 RDEPENDS:${PN} = "\
     openssl \
     opensc \
+    optee-client \
     optee-os-ta \
     summit-initdata \
     keyutils \
@@ -74,10 +75,14 @@ do_install:append:k3 () {
     # Create prov_data.tar.gz
     tar -C "${prov_data_path}" -czf "${S}/prov_data.tar.gz" .
 
-    case "${MACHINE}" in
-        am6*-carbon-hs)
-            # Secure target build, sign and encrypt the provisioning data using SMPK and
-            # SMEK
+    # Gate on SECURE_BOOT, not on the machine name. This used to test for an
+    # "am6*-carbon-hs" MACHINE, but those were removed when TI dropped separate
+    # HS machine configs, so that branch became unreachable.
+    case "${SECURE_BOOT}" in
+        1)
+            # HS-SE part: sign and encrypt the provisioning data using SMPK and
+            # SMEK.  The secure world verifies the certificate against the SMPK
+            # hash fused into the device, so no key material ships in the rootfs.
             "${S}/gen_core_x509_cert.sh" \
                 -b "${S}/prov_data.tar.gz" \
                 -k "${smpk_path}" \
@@ -91,9 +96,12 @@ do_install:append:k3 () {
             rm -f "${S}/cert_prov_data.tar.gz.bin" "${S}/prov_data.tar.gz-ENC"
             ;;
         *)
-            # If not a secure target build, encrypt the prov_data.tar.gz using SMEK and
-            # inject the SMEK and IV into the summit-prov.sh script using sed (for
-            # decryption during provisioning)
+            # Development path (SECURE_BOOT unset/0): encrypt the prov_data.tar.gz using
+            # SMEK and inject the SMEK and IV into the summit-prov.sh script using
+            # sed (for decryption during provisioning).
+            #
+            # This embeds the key in cleartext in /usr/sbin/summit-prov.sh on the
+            # rootfs and must not be used for a production device.
             KEY=$(xxd -p -c 0 "${smek_path}")
             IV=$(openssl rand -hex 16)
             openssl enc -aes-256-cbc \

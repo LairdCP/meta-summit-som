@@ -2,10 +2,10 @@
 # fitimage bbclasses.  Provides: variable defaults, dependencies, OpenSSL
 # config setup, environment exports, and helper shell functions.
 
-AWS_KMS_FIT_KEY_ARN ?= ""
+AWS_KMS_FIT_KEY_ARN ?= "${AWS_KMS_KEY_ARN}"
 AWS_KMS_CERT_DAYS ?= "3650"
 
-DEPENDS += "aws-kms-pkcs11-native aws-kms-pkcs11-config"
+DEPENDS += "aws-kms-pkcs11-native aws-kms-pkcs11-config-native"
 
 KMS_SIG_STAGING = "${UNPACKDIR}/kms-sig-data"
 KMS_SIGN_KEYDIR_ORIG := "${UBOOT_SIGN_KEYDIR}"

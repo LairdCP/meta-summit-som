@@ -21,4 +21,10 @@ require ${ENV_INCLUDE}
 
 inherit ${@'ti-uboot-aws-sign' if any(d.getVar(v) for v in ('AWS_KMS_KEY_ARN','AWS_KMS_FIT_KEY_ARN')) else ''}
 
+do_deploy:append:k3r5() {
+    if [ "${SECURE_BOOT}" = "1" ]; then
+        ln -sf tiboot3-*-hs-carbon.bin "${DEPLOYDIR}/tiboot3.bin"
+    fi
+}
+
 COMPATIBLE_MACHINE = "(ti-soc)"
