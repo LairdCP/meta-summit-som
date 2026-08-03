@@ -5,9 +5,9 @@
 # This script provisions keys and certificates into the OP-TEE secure storage using
 # the pkcs11-tool utility and also copies provisioning data files to /data/prov directory.
 #
-# The prov_data.tar.zst is expected to have the following structure:
+# The prov_data.tar.gz is expected to have the following structure:
 #
-# prov_data.tar.zst
+# prov_data.tar.gz
 # ├── keystore
 # │   ├── 01
 # │   │   ├── cert
