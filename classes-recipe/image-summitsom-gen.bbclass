@@ -114,7 +114,8 @@ do_backup_runtime () {
     # Needed to satisfy preset_all on some rebuilds
     #rm -rf "${IMAGE_ROOTFS}/etc/machine-id"
 
-    rm -rf "${IMAGE_ROOTFS:?}/media"
+    #shellcheck disable=SC2115
+    rm -rf "${IMAGE_ROOTFS}/media"
     ln -sf /run/media "${IMAGE_ROOTFS}/media"
 }
 
