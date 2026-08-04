@@ -32,6 +32,8 @@ SRC_URI:append:summit-secure = " \
         ${@oe.utils.conditional('SWUPDATE_CMS_IGNORE_EXPIRED_CERTS', '1', 'file://cms-ignore-expired-certs.cfg', '', d)} \
         "
 
+DEPENDS += "openssl"
+
 SYSTEMD_SERVICE:${PN}:summitsom = "swupdate.socket"
 
 INSANE_SKIP:${PN} += "buildpaths"
