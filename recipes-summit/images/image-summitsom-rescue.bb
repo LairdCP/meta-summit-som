@@ -1,7 +1,7 @@
-SUMMARY = "Summit SOM WBx3 SD Card Boot Image"
-DESCRIPTION = "Summit SOM WBx3 Manufacturing Provisioning SD Card Boot Image"
+SUMMARY = "Summit SOM Rescue SD Card Boot Image"
+DESCRIPTION = "Summit SOM Rescue Manufacturing Provisioning SD Card Boot Image"
 
-REQUIRED_DISTRO_FEATURES += "summitsom-wbx3"
+REQUIRED_DISTRO_FEATURES += "summitsom-rescue"
 
 inherit image-summitsom-gen image-summitsom-sd-gen image-summitsom-swu-gen
 

@@ -10,7 +10,7 @@ require recipes-bsp/u-boot-summit/u-boot-summit-env.inc
 SRC_URI = "${SUMMIT_EXTERNAL_GIT_URI}/u-boot-som.git;${SUMMIT_EXTERNAL_GIT_SUFFIX}"
 SRC_URI:summit-internal = "${SUMMIT_INTERNAL_GIT_URI}/cp_linux-u-boot-som60.git;${SUMMIT_INTERNAL_GIT_SUFFIX}"
 
-SRC_URI:append:summitsom-wbx3-initramfs = " \
+SRC_URI:append:summitsom-rescue-initramfs = " \
     file://uboot-initramfs.cfg \
 "
 

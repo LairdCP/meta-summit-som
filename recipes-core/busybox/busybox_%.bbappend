@@ -6,5 +6,3 @@ SRC_URI:append:summitsom = "\
         file://head.cfg \
         file://ps.cfg \
         "
-
-#RRECOMMENDS:${PN}:remove:summitsom = "${PN}-udhcpc"

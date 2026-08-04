@@ -1,33 +1,36 @@
 #
 # Assemble the kernel FIT image (kernel + dtb(s) + U-Boot boot script) as
 # part of the image recipe's own task graph, instead of depending on a
-# separate, shared linux-yocto-fitimage/ti-kernel-fitimage recipe.
+# separate, shared linux-yocto-fitimage/ti-kernel-fitimage recipe. This keeps
+# the fitImage tied to virtual/kernel:do_deploy and this image's own
+# do_image_<verity-type> task, so it's rebuilt whenever the rootfs (and its
+# embedded verity root hash) changes.
 #
-# This avoids any cross-recipe naming/signature problems: the kernel/dtb
-# dependency is the existing, machine-agnostic "virtual/kernel:do_deploy"
-# edge (already resolved per-machine via PREFERRED_PROVIDER_virtual/kernel),
-# and the dm-verity boot script is consumed directly from this same image
-# recipe's own do_image_<verity-type> conversion task, so BitBake's normal
-# intra-recipe task graph guarantees a fresh fitImage whenever the rootfs
-# (and therefore the embedded verity root hash) changes.
-#
-# NOTE: this deliberately does NOT `inherit kernel-fit-image` - that class is
-# designed for a standalone kernel-fitimage *recipe* (PACKAGE_ARCH,
-# EXCLUDE_FROM_WORLD, do_install/FILES:${PN} packaging, and a do_deploy task
-# via `inherit deploy`), none of which make sense bolted onto an image
-# recipe. Its do_deploy task in particular collides with meta-freescale's
-# image_populate_mfgtool.bbclass (which schedules do_populate_mfgtool both
-# before AND dependent-on do_deploy of the same recipe - fine when an image
-# has no real do_deploy, a hard cycle once it does). So instead we only pull
-# in the config/helper classes it needs and reimplement its do_compile()
-# logic here (same oe.fitimage library, same logic) as fully custom tasks,
-# do_compile_fit/do_deploy_fit - not do_compile/do_deploy, since other
-# classes can carry their own hidden assumptions tied to specific standard
-# task names being inert on images (exactly like image_populate_mfgtool did
-# for do_deploy). do_deploy_fit is a plain task (not wired through
-# deploy.bbclass's sstate/setscene machinery) that just copies the finished
-# fitImage into DEPLOY_DIR_IMAGE.
+# NOTE: deliberately does NOT `inherit kernel-fit-image` - that class is for
+# a standalone recipe (do_install/FILES:${PN} packaging, `inherit deploy`),
+# and its do_deploy task collides with meta-freescale's
+# image_populate_mfgtool.bbclass (do_populate_mfgtool depends on and runs
+# before do_deploy of the same recipe - a hard cycle once one exists). So we
+# only reuse the helper classes/oe.fitimage library and reimplement the
+# do_compile() logic as custom do_compile_fit/do_deploy_fit tasks instead.
+# do_deploy_fit writes straight to DEPLOY_DIR_IMAGE (not IMGDEPLOYDIR/
+# do_image_complete's publish step) because do_image_wic (see __anonymous
+# below) needs the real file and runs before do_image_complete would ever
+# publish it.
 inherit linux-kernel-base kernel-arch kernel-artifact-names uboot-config
+
+# Real, PN-unique filenames so multiple images sharing a MACHINE don't
+# overwrite each other's fitImage. do_deploy_fit also maintains plain
+# "fitImage"/"kernel.itb"/"fit-image.its" symlinks to these for u-boot/
+# swupdate/rootfs - same "last deploy wins" convention as
+# kernel.bbclass's KERNEL_IMAGE_LINK_NAME.
+FIT_DEPLOY_FITIMAGE_NAME ?= "fitImage-${PN}"
+FIT_DEPLOY_KERNEL_ITB_NAME ?= "kernel-${PN}.itb"
+FIT_DEPLOY_ITS_NAME ?= "fit-image-${PN}.its"
+
+# Set to "0" to skip pulling in virtual/dtb (and its .dtbo overlays) even
+# when PREFERRED_PROVIDER_virtual/dtb is set machine/distro-wide.
+FIT_EXTERNAL_DTB_OVERLAYS ?= "1"
 
 # Consume this image's own dm-verity boot script directly - no image name
 # or opaque/fixed filename lookup needed, since this is the same recipe.
@@ -70,7 +73,7 @@ python () {
             d.appendVarFlag('do_compile_fit', 'depends', ' ${INITRAMFS_IMAGE}:do_image_complete')
 
     providerdtb = d.getVar("PREFERRED_PROVIDER_virtual/dtb")
-    if providerdtb:
+    if providerdtb and d.getVar('FIT_EXTERNAL_DTB_OVERLAYS') == '1':
         d.appendVarFlag('do_compile_fit', 'depends', ' virtual/dtb:do_populate_sysroot')
         d.setVar('EXTERNAL_KERNEL_DEVICETREE', "${RECIPE_SYSROOT}/boot/devicetree")
 
@@ -333,6 +336,14 @@ python do_compile_fit() {
 do_compile_fit[dirs] = "${B}"
 do_compile_fit[depends] += "virtual/kernel:do_deploy"
 
+# DEPENDS alone doesn't guarantee this: bitbake only wires DEPENDS into the
+# standard do_configure/do_compile tasks' implicit sysroot dependency, and
+# this class deliberately uses do_compile_fit instead (see NOTE above) - so
+# without an explicit depends here, do_compile_fit can race ahead of
+# u-boot-tools-native/dtc-native's own do_populate_sysroot and fail to find
+# uboot-mkimage/dtc on PATH.
+do_compile_fit[depends] += "u-boot-tools-native:do_populate_sysroot dtc-native:do_populate_sysroot"
+
 # do_deploy alone isn't enough to guarantee STAGING_KERNEL_BUILDDIR (read
 # above for the kernel-abiversion file) is actually populated: it's written
 # by virtual/kernel's do_shared_workdir, which is deliberately not
@@ -347,32 +358,41 @@ addtask compile_fit before do_image_complete
 
 do_deploy_fit() {
     install -d "${DEPLOY_DIR_IMAGE}"
-    install -m 0644 "${B}/fitImage" "${DEPLOY_DIR_IMAGE}/fitImage"
-    ln -snf fitImage "${DEPLOY_DIR_IMAGE}/kernel.itb"
-    install -m 0644 "${B}/fit-image.its" "${DEPLOY_DIR_IMAGE}/fit-image.its"
+    install -m 0644 "${B}/fitImage" "${DEPLOY_DIR_IMAGE}/${FIT_DEPLOY_FITIMAGE_NAME}"
+    ln -snf "${FIT_DEPLOY_FITIMAGE_NAME}" "${DEPLOY_DIR_IMAGE}/${FIT_DEPLOY_KERNEL_ITB_NAME}"
+    install -m 0644 "${B}/fit-image.its" "${DEPLOY_DIR_IMAGE}/${FIT_DEPLOY_ITS_NAME}"
+
+    # Generic "current" names, same convention kernel.bbclass uses for
+    # KERNEL_IMAGE_LINK_NAME: whichever recipe deploys last wins the
+    # symlink. u-boot/swupdate/rootfs consume these plain names and don't
+    # care which image produced them.
+    ln -snf "${FIT_DEPLOY_FITIMAGE_NAME}" "${DEPLOY_DIR_IMAGE}/fitImage"
+    ln -snf "${FIT_DEPLOY_FITIMAGE_NAME}" "${DEPLOY_DIR_IMAGE}/kernel.itb"
+    ln -snf "${FIT_DEPLOY_ITS_NAME}" "${DEPLOY_DIR_IMAGE}/fit-image.its"
 
     if [ "${INITRAMFS_IMAGE_BUNDLE}" != "1" ]; then
-        ln -snf fit-image.its "${DEPLOY_DIR_IMAGE}/fitImage-its-${KERNEL_FIT_NAME}.its"
+        ln -snf "${FIT_DEPLOY_ITS_NAME}" "${DEPLOY_DIR_IMAGE}/${FIT_DEPLOY_FITIMAGE_NAME}-its-${KERNEL_FIT_NAME}.its"
         if [ -n "${KERNEL_FIT_LINK_NAME}" ] ; then
-            ln -snf fit-image.its "${DEPLOY_DIR_IMAGE}/fitImage-its-${KERNEL_FIT_LINK_NAME}"
+            ln -snf "${FIT_DEPLOY_ITS_NAME}" "${DEPLOY_DIR_IMAGE}/${FIT_DEPLOY_FITIMAGE_NAME}-its-${KERNEL_FIT_LINK_NAME}"
         fi
     fi
 
     if [ -n "${INITRAMFS_IMAGE}" ]; then
-        ln -snf fit-image.its "${DEPLOY_DIR_IMAGE}/fitImage-its-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_NAME}.its"
+        ln -snf "${FIT_DEPLOY_ITS_NAME}" "${DEPLOY_DIR_IMAGE}/${FIT_DEPLOY_FITIMAGE_NAME}-its-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_NAME}.its"
         if [ -n "${KERNEL_FIT_LINK_NAME}" ]; then
-            ln -snf fit-image.its "${DEPLOY_DIR_IMAGE}/fitImage-its-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_LINK_NAME}"
+            ln -snf "${FIT_DEPLOY_ITS_NAME}" "${DEPLOY_DIR_IMAGE}/${FIT_DEPLOY_FITIMAGE_NAME}-its-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_LINK_NAME}"
         fi
 
         if [ "${INITRAMFS_IMAGE_BUNDLE}" != "1" ]; then
-            ln -snf fitImage "${DEPLOY_DIR_IMAGE}/fitImage-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_NAME}${KERNEL_FIT_BIN_EXT}"
+            ln -snf "${FIT_DEPLOY_FITIMAGE_NAME}" "${DEPLOY_DIR_IMAGE}/${FIT_DEPLOY_FITIMAGE_NAME}-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_NAME}${KERNEL_FIT_BIN_EXT}"
             if [ -n "${KERNEL_FIT_LINK_NAME}" ] ; then
-                ln -snf fitImage "${DEPLOY_DIR_IMAGE}/fitImage-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_LINK_NAME}"
+                ln -snf "${FIT_DEPLOY_FITIMAGE_NAME}" "${DEPLOY_DIR_IMAGE}/${FIT_DEPLOY_FITIMAGE_NAME}-${INITRAMFS_IMAGE_NAME}-${KERNEL_FIT_LINK_NAME}"
             fi
         fi
     fi
 }
 addtask deploy_fit after do_compile_fit before do_image_complete
+
 
 python __anonymous() {
     fstype = d.getVar("IMAGE_ROOTFS_VERITY_TYPE")

@@ -22,8 +22,8 @@ IMAGE_FSTYPES:append:summitsom = " ${IMAGE_ROOTFS_VERITY_TYPE}"
 # been resolved, so this still takes effect even for machines that fully
 # override those variables.
 #
-# do_deploy_fit deploys kernel.itb as its own real file (not a rename/
-# symlink of fitImage), so it can be referenced directly here.
+# do_deploy_fit always maintains "kernel.itb" as a symlink to this build's
+# own real (PN-namespaced) fitImage, so it can be referenced directly here.
 IMAGE_BOOT_FILES:append = " kernel.itb"
 SWUPDATE_IMAGES:append = " kernel.itb"
 
