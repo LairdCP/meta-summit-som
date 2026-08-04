@@ -15,7 +15,7 @@ DEFAULTTUNE:mx95-generic-bsp = "armv8a-crc-crypto"
 require conf/machine/include/u-boot-summit.inc
 include ${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'conf/machine/include/radio-stack.inc', '', d)}
 
-MACHINE_FEATURES += "pci usbgadget usbhost alsa rtc optee wifi bluetooth camera"
+MACHINE_FEATURES = "pci usbgadget usbhost alsa rtc optee screen touchscreen wifi bluetooth camera"
 MACHINE_FEATURES:append:use-nxp-bsp = " dpdk"
 
 SOC_DEFAULT_IMAGE_FSTYPES = ""

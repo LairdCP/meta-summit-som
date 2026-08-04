@@ -12,7 +12,7 @@ DEFAULTTUNE = "armv8a-crc-crypto"
 require conf/machine/include/u-boot-summit.inc
 include ${@bb.utils.contains('BBFILE_COLLECTIONS', 'summit-radio', 'conf/machine/include/radio-stack.inc', '', d)}
 
-MACHINE_FEATURES = "usbgadget usbhost alsa rtc optee screen wifi bluetooth camera"
+MACHINE_FEATURES = "usbgadget usbhost alsa rtc optee screen touchscreen wifi bluetooth camera"
 
 TI_PREFERRED_BSP = "ti-6_18"
 
