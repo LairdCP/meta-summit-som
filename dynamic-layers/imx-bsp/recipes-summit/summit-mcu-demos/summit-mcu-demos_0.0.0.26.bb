@@ -27,7 +27,6 @@ S = "${UNPACKDIR}"
 
 FILES:${PN} += "${nonarch_base_libdir}"
 
-MCU_BIN = "summit-som8mplus-dvk-mcu-low-power-wakeup-demo-itcm.bin"
 MCU_ELF = "summit-som8mplus-dvk-mcu-low-power-wakeup-demo-itcm.elf"
 
 do_install () {
@@ -35,7 +34,7 @@ do_install () {
 }
 
 do_deploy () {
-   install -m 0644 -D -t "${DEPLOYDIR}" "${S}/${MCU_BIN}"
+   install -m 0644 -D -t "${DEPLOYDIR}" "${S}/${MCU_ELF}"
 }
 
 addtask deploy after do_compile
