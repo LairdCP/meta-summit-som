@@ -393,7 +393,6 @@ do_deploy_fit() {
 }
 addtask deploy_fit after do_compile_fit before do_image_complete
 
-
 python __anonymous() {
     fstype = d.getVar("IMAGE_ROOTFS_VERITY_TYPE")
     if not fstype:

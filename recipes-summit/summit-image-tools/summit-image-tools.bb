@@ -12,14 +12,22 @@ SRC_URI = " \
 
 S = "${UNPACKDIR}"
 
-do_install () {
-    install -D -m 0644 -t "${DEPLOY_DIR_IMAGE}" "${S}/mksdcard.sh"
+inherit allarch deploy
+
+do_configure[noexec] = "1"
+do_compile[noexec] = "1"
+do_install[noexec] = "1"
+
+addtask deploy before do_build after do_install
+
+do_deploy () {
+    install -D -m 0755 -t "${DEPLOYDIR}" "${S}/mksdcard.sh"
 }
 
-do_install:imx-generic-bsp:summitsom-rescue-initramfs () {
-    install -D -m 0644 -t "${DEPLOY_DIR_IMAGE}" "${S}/imx-rescue.uuu"
+do_deploy:imx-generic-bsp:summitsom-rescue-initramfs () {
+    install -D -m 0644 -t "${DEPLOYDIR}" "${S}/imx-rescue.uuu"
 }
 
-do_install:mx8mm-generic-bsp:summitsom-rescue-initramfs () {
-    install -D -m 0644 "${S}/imx-rescue.uuu" "${DEPLOY_DIR_IMAGE}/imx-rescue.uuu"
+do_deploy:mx8mm-generic-bsp:summitsom-rescue-initramfs () {
+    install -D -m 0644 "${S}/imx-rescue.uuu" "${DEPLOYDIR}/imx-rescue.uuu"
 }

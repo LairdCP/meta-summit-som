@@ -30,7 +30,7 @@ do_create_archive[depends] += "\
     virtual/kernel:do_deploy \
     virtual/bootloader:do_deploy \
     ${PN}:do_deploy_fit \
-    summit-image-tools:do_populate_sysroot \
+    summit-image-tools:do_deploy \
 "
 
 do_create_archive() {
