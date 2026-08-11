@@ -8,6 +8,7 @@ SRC_URI = " \
     file://mksdcard.sh \
     file://imx-rescue.uuu \
     file://imx8mm-rescue.uuu \
+    file://imx95-rescue.uuu \
     "
 
 S = "${UNPACKDIR}"
@@ -29,5 +30,9 @@ do_deploy:imx-generic-bsp:summitsom-rescue-initramfs () {
 }
 
 do_deploy:mx8mm-generic-bsp:summitsom-rescue-initramfs () {
-    install -D -m 0644 "${S}/imx-rescue.uuu" "${DEPLOYDIR}/imx-rescue.uuu"
+    install -D -m 0644 "${S}/imx8mm-rescue.uuu" "${DEPLOYDIR}/imx-rescue.uuu"
+}
+
+do_deploy:mx95-generic-bsp:summitsom-rescue-initramfs () {
+    install -D -m 0644 "${S}/imx95-rescue.uuu" "${DEPLOYDIR}/imx-rescue.uuu"
 }

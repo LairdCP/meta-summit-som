@@ -1,11 +1,8 @@
 uuu_version 1.4.165
 
-# The recovery initramfs must expose the fastboot-kernel (FBK) channel and
-# provide the `fw_update` utility. This script boots the board into recovery,
-# copies the SWU into RAM-backed storage, and applies it with a full-disk
-# (`complete`) update, which matches the initramfs path used by this project.
-
-# i.MX8MM / i.MX8MQ ROM entry.
+# ROM/SDP stage: i.MX8MN/8MP/9x expose the ROM's bulk SDPS protocol, so the ROM
+# streams the whole image and starts SPL, which then uses the ROM API to fetch
+# U-Boot proper out of the already-downloaded flash.bin.
 SDPS: boot -f flash-rescue.bin
 
 # Boot a temporary recovery Linux image. `download` only copies the FIT into
