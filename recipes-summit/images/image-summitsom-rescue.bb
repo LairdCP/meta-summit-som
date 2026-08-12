@@ -26,7 +26,7 @@ ROOTFS_POSTPROCESS_COMMAND:append = " enable_serial_autologin; cleanup_rootfs;"
 
 enable_serial_autologin() {
     sed -i \
-        -e 's,/usr/sbin/getty 115200.*,/bin/login -f root,g' \
+        -e 's,/usr/sbin/getty -L 115200.*,/bin/login -f root,g' \
         -e 's,/agetty ,/agetty -a root ,g' \
         "${IMAGE_ROOTFS}/etc/inittab"
 }
