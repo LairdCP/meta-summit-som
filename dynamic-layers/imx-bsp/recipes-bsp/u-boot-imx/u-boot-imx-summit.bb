@@ -85,6 +85,8 @@ do_compile:prepend:mx95-generic-bsp() {
     ln -sf "${DEPLOY_DIR_IMAGE}/${SYSTEM_MANAGER_FIRMWARE_NAME}.bin" "${B}/m33_image.bin"
 }
 
+UBOOT_AHAB_AUTO_LOCK ?= "0"
+
 # --- AHAB secure boot signing (nxpimage / SPSDK) ------------------------------
 # flash.bin is signed by calling nxpimage (SPSDK) directly. The older
 # nxp-imx-signer (imx_signer) wrapper is intentionally not used: it is
@@ -96,6 +98,12 @@ do_configure:append:mx9-generic-bsp:summit-secure() {
         bbfatal "u-boot .config not found at '${B}/.config'; cannot enable CONFIG_AHAB_BOOT"
     fi
     grep -q "^CONFIG_AHAB_BOOT=y$" "${B}/.config" || echo "CONFIG_AHAB_BOOT=y" >> "${B}/.config"
+
+    echo "CONFIG_SUMMIT_AHAB_AUTO_CLOSE=y" >> "${B}/.config"
+
+    if [ "${UBOOT_AHAB_AUTO_LOCK}" = "1" ]; then
+        echo "CONFIG_SUMMIT_AHAB_AUTO_LOCK=y" >> "${B}/.config"
+    fi
 }
 
 # Signs the imx-boot flash.bin via nxpimage for AHAB platforms. The signer line
